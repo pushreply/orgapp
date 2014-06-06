@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OrgApp</string>
+
+    <!-- Allgemeine Buttons -->
+    <string name="SUBMIT">Absenden</string>
+    <string name="CANCEL">Abbrechen</string>
+    
+    <!-- Startbildschirm -->
+    <string name="LOGIN">Login</string>
+    <string name="REGISTER">Registrieren</string>
+
+    <!-- Register/Login -->
+    <string name="EMAIL">E-Mail Adresse</string>
+    <string name="PASSWORD">Passwort</string>
+    <string name="FIRSTNAME">Vorname</string>
+    <string name="LASTNAME">Nachname</string>
+
+</resources>
