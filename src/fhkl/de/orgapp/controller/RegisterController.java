@@ -23,8 +23,8 @@ import com.example.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 
-public class RegisterController extends Activity {
-
+public class RegisterController extends Activity
+{
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -41,7 +41,8 @@ public class RegisterController extends Activity {
 	private static final String TAG_SUCCESS = "success";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 
@@ -56,37 +57,39 @@ public class RegisterController extends Activity {
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
 		// button click event
-		bSubmit.setOnClickListener(new View.OnClickListener() {
-
+		bSubmit.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View view) {
+			public void onClick(View view)
+			{
 				// creating new person in background thread
 				new CreateNewPerson().execute();
 			}
 		});
 
-		bCancel.setOnClickListener(new View.OnClickListener() {
-
+		bCancel.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View view) {
+			public void onClick(View view)
+			{
 				Intent i = new Intent(RegisterController.this,
 						StartController.class);
 				startActivity(i);
 			}
 		});
-
 	}
 
 	/**
 	 * Background Async Task to Create new person
 	 * */
-	class CreateNewPerson extends AsyncTask<String, String, String> {
-
+	class CreateNewPerson extends AsyncTask<String, String, String>
+	{
 		/**
 		 * Before starting background thread Show Progress Dialog
 		 * */
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(RegisterController.this);
 			pDialog.setMessage(IMessages.CREATING_PERSON);
@@ -98,7 +101,8 @@ public class RegisterController extends Activity {
 		/**
 		 * Creating person
 		 * */
-		protected String doInBackground(String... args) {
+		protected String doInBackground(String... args)
+		{
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
 			String firstName = inputFirstName.getText().toString();
@@ -120,21 +124,30 @@ public class RegisterController extends Activity {
 			Log.d("Create Response", json.toString());
 
 			// check for success tag
-			try {
+			try
+			{
 				int success = json.getInt(TAG_SUCCESS);
-
-				if (success == 1) {
+				
+				// TODO Validierung der Eingaben:
+				// auf gueltige e-mail pruefen (ist ein @ vorhanden?)
+				// passwort zweimal eingeben und Gleichheit pruefen
+				// weitere Eingaben wie Alter, Geschlecht...
+				if (success == 1)
+				{
 					// successfully created person
-					Intent i = new Intent(getApplicationContext(),
-							LoginController.class);
+					Intent i = new Intent(getApplicationContext(), LoginController.class);
 					startActivity(i);
 
 					// closing this screen
 					finish();
-				} else {
+				}
+				else
+				{
 					// failed to create person
 				}
-			} catch (JSONException e) {
+			}
+			catch (JSONException e)
+			{
 				e.printStackTrace();
 			}
 
@@ -144,10 +157,10 @@ public class RegisterController extends Activity {
 		/**
 		 * After completing background task Dismiss the progress dialog
 		 * **/
-		protected void onPostExecute(String file_url) {
+		protected void onPostExecute(String file_url)
+		{
 			// dismiss the dialog once done
 			pDialog.dismiss();
 		}
-
 	}
 }
