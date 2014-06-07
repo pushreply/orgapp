@@ -37,6 +37,10 @@
             android:name="fhkl.de.orgapp.controller.CalendarController"
             android:label="@+string/CALENDAR" >
         </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.ProfilController"
+            android:label="@string/PROFIL" >
+        </activity>
     </application>
 
     
