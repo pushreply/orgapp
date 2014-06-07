@@ -5,16 +5,16 @@
         android:title="@+string/CALENDAR">
     </item>
     <item
-        android:id="@+id/GROUP"
-        android:title="@+string/GROUP">
+        android:id="@+id/GROUPS"
+        android:title="@+string/GROUPS">
     </item>
     <item
-        android:id="@+id/NOTIFICATION"
-        android:title="@+string/NOTIFICATION">
+        android:id="@+id/NOTIFICATIONS"
+        android:title="@+string/NOTIFICATIONS">
     </item>
     <item
-        android:id="@+id/PROFILE"
-        android:title="@+string/PROFILE">
+        android:id="@+id/PROFIL"
+        android:title="@+string/PROFIL">
     </item>
 
 </menu>

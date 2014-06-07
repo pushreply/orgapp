@@ -21,16 +21,16 @@ import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.example.orgapp.R;
 
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 
-public class CalendarController extends Activity {
-
+public class CalendarController extends Activity
+{
 	private ProgressDialog pDialog;
+	private String eMailLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> eventList;
@@ -46,41 +46,53 @@ public class CalendarController extends Activity {
 	JSONArray calendar = null;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 		
 		eventList = new ArrayList<HashMap<String, String>>();
-
+		eMailLoggedPerson = getIntent().getStringExtra("UserEmail");
 		new Calendar().execute();
 
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.CALENDAR:
-			Intent i = new Intent(CalendarController.this,
-					StartController.class);
-			startActivity(i);
-			return true;
-
-		default:
-			return false;
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		Intent intent;
+		
+		switch (item.getItemId())
+		{
+			case R.id.CALENDAR:
+				intent  = new Intent(CalendarController.this, StartController.class);
+				startActivity(intent);
+				return true;
+			
+			case R.id.PROFIL:
+				intent = new Intent(CalendarController.this, ProfilController.class);
+				intent.putExtra("UserEmail", eMailLoggedPerson);
+				startActivity(intent);
+				return true;
+				
+			default:
+				return false;
 
 		}
 	}
 
-	class Calendar extends AsyncTask<String, String, String> {
-
+	class Calendar extends AsyncTask<String, String, String>
+	{
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CalendarController.this);
 			pDialog.setMessage(IMessages.LOADING_CALENDAR);
@@ -89,21 +101,23 @@ public class CalendarController extends Activity {
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) {
-
+		protected String doInBackground(String... args)
+		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			JSONObject json = jsonParser.makeHttpRequest(url_get_calendar,
 					"GET", params);
 
 			Log.d("Calendar: ", json.toString());
 
-			try {
-
+			try
+			{
 				int success = json.getInt(TAG_SUCCESS);
-				if (success == 1) {
+				if (success == 1)
+				{
 					calendar = json.getJSONArray("event");
 
-					for (int i = 0; i < calendar.length(); i++) {
+					for (int i = 0; i < calendar.length(); i++)
+					{
 						JSONObject c = calendar.getJSONObject(i);
 
 						String eventId = c.getString("eventId");
@@ -119,21 +133,27 @@ public class CalendarController extends Activity {
 
 						eventList.add(map);
 					}
-				} else {
+				}
+				else
+				{
 
 				}
-			} catch (JSONException e) {
+			}
+			catch (JSONException e)
+			{
 				e.printStackTrace();
 			}
 
 			return null;
 		}
 
-		protected void onPostExecute(String file_url) {
-
+		protected void onPostExecute(String file_url)
+		{
 			pDialog.dismiss();
-			runOnUiThread(new Runnable() {
-				public void run() {
+			runOnUiThread(new Runnable()
+			{
+				public void run()
+				{
 					ListAdapter adapter = new SimpleAdapter(
 							CalendarController.this, eventList,
 							R.layout.calendar_item, new String[] { TAG_EVENTID,
@@ -145,8 +165,6 @@ public class CalendarController extends Activity {
 					calenderList.setAdapter(adapter);
 				}
 			});
-
 		}
-
 	}
 }

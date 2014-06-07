@@ -8,13 +8,34 @@
     <string name="CANCEL">Abbrechen</string>
     
     <!-- Startbildschirm -->
-    <string name="LOGIN">Login</string>
-    <string name="REGISTER">Registrieren</string>
+    <string name="LOGIN">login</string>
+    <string name="REGISTER">register</string>
 
     <!-- Register/Login -->
-    <string name="EMAIL">E-Mail Adresse</string>
-    <string name="PASSWORD">Passwort</string>
-    <string name="FIRSTNAME">Vorname</string>
-    <string name="LASTNAME">Nachname</string>
+    <string name="EMAIL">email address</string>
+    <string name="PASSWORD">password</string>
+    <string name="FIRSTNAME">first name</string>
+    <string name="LASTNAME">last name</string>
+    
+    <!-- Calendar -->
+    <string name="CALENDAR">Calendar</string>
+    
+    <!-- Groups -->
+    <string name="GROUPS">Groups</string>
+    
+    <!-- Notifications -->
+    <string name="NOTIFICATIONS">Notifications</string>
+    
+    <!-- Profil -->
+    <string name="PROFIL">Profil</string>
+    <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
+    <string name="LIST_EVENT_HISTORY">List of event history</string>
+    <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
+    <string name="FIRST_NAME">first name:</string>
+    <string name="LAST_NAME">last name:</string>
+    <string name="BIRTHDAY">birthday:</string>
+    <string name="GENDER">gender:</string>
+    <string name="MEMBER_SINCE">member since:</string>
+    <string name="PASSWORD_PROFIL">password:</string>
 
 </resources>

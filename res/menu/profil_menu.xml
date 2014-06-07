@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/CHANGE_PRIVATE_INFORMATION"
+        android:title="@string/CHANGE_PRIVATE_INFORMATION" >
+    </item>
+    
+    <item
+        android:id="@+id/LIST_EVENT_HISTORY"
+        android:title="@string/LIST_EVENT_HISTORY" >
+    </item>
+    
+    <item
+        android:id="@+id/CHANGE_SECURITY_INFORMATION"
+        android:title="@string/CHANGE_SECURITY_INFORMATION" >
+    </item>"
+    
+</menu>

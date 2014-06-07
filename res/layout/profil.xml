@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/FIRST_NAME" />
+        
+        <TextView
+            android:id="@+id/USER_FIRST_NAME"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/LAST_NAME" />
+        
+        <TextView
+            android:id="@+id/USER_LAST_NAME"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/BIRTHDAY" />
+        
+        <TextView
+            android:id="@+id/USER_BIRTHDAY"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/GENDER" />
+        
+        <TextView
+            android:id="@+id/USER_GENDER"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/MEMBER_SINCE" />
+        
+        <TextView
+            android:id="@+id/USER_MEMBER_SINCE"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/PASSWORD_PROFIL" />
+        
+        <TextView
+            android:id="@+id/USER_PASSWORD_PROFIL"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+
+</TableLayout>
