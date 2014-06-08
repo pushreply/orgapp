@@ -15,7 +15,7 @@ if (mysql_num_rows($result) > 0) {
         $event["eventId"] = $row["eventId"];
         $event["personId"] = $row["personId"];
         $event["groupId"] = $row["groupId"];
-        $event["name"] = $row["name"];
+        $event["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
         $event["eventDate"] = $row["eventDate"];
         $event["eventTime"] = $row["eventTime"];
         $event["regularity"] = $row["regularity"];
