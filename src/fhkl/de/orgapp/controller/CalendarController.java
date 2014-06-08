@@ -73,6 +73,13 @@ public class CalendarController extends Activity
 		{
 			case R.id.CALENDAR:
 				intent  = new Intent(CalendarController.this, StartController.class);
+				intent.putExtra("UserEmail", eMailLoggedPerson);
+				startActivity(intent);
+				return true;
+			
+			case R.id.NOTIFICATIONS:
+				intent  = new Intent(CalendarController.this, NotificationController.class);
+				intent.putExtra("UserEmail", eMailLoggedPerson);
 				startActivity(intent);
 				return true;
 			
