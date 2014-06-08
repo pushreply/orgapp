@@ -106,9 +106,7 @@ public class LoginController extends Activity
 				{
 					person = json.getJSONArray("person");
 					
-					for (int p = 0; p < person.length(); p++)
-					{
-						JSONObject e = person.getJSONObject(p);
+						JSONObject e = person.getJSONObject(0);
 						
 						String eMail = e.getString("eMail");
 						
@@ -137,7 +135,7 @@ public class LoginController extends Activity
 							return IMessages.INVALID_USER;
 						}
 					}
-				}
+				
 				else
 				{
 					//invokes onPostExecute(String)
