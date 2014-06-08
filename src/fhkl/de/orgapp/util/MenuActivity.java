@@ -19,10 +19,11 @@ public class MenuActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
-		if(getIntent().getComponent().getClassName().equals(NotificationController.class.getName())) {
+		if (getIntent().getComponent().getClassName()
+				.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.NOTIFICATION_SETTINGS).setVisible(true);
 		}
-		
+
 		return true;
 	}
 
@@ -32,6 +33,7 @@ public class MenuActivity extends Activity {
 		personIdLoggedPerson = getIntent().getStringExtra("UserId");
 
 		switch (item.getItemId()) {
+
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
@@ -47,6 +49,13 @@ public class MenuActivity extends Activity {
 		case R.id.PROFIL:
 			intent = new Intent(MenuActivity.this, ProfilController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+
+		case R.id.NOTIFICATION_SETTINGS:
+			intent = new Intent(MenuActivity.this, NotificationController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("Settings", "true");
 			startActivity(intent);
 			return true;
 

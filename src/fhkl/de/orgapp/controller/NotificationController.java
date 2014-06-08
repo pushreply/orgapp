@@ -25,8 +25,8 @@ import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 
 public class NotificationController extends MenuActivity {
-	private ProgressDialog pDialog;
 
+	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> notificationList;
 
@@ -40,10 +40,14 @@ public class NotificationController extends MenuActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.notification);
 
-		notificationList = new ArrayList<HashMap<String, String>>();
-		new Notification().execute();
+		if (getIntent().getStringExtra("Settings") != null) {
+			setContentView(R.layout.notification_settings);
+		} else {
+			setContentView(R.layout.notification);
+			notificationList = new ArrayList<HashMap<String, String>>();
+			new Notification().execute();
+		}		
 	}
 
 	class Notification extends AsyncTask<String, String, String> {
@@ -59,10 +63,11 @@ public class NotificationController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
-			
-			JSONObject json = jsonParser.makeHttpRequest(url_Notifications,
-					"GET", params);
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
+					"UserId")));
+
+			JSONObject json = jsonParser.makeHttpRequest(url_Notifications, "GET",
+					params);
 
 			Log.d("Notification: ", json.toString());
 
