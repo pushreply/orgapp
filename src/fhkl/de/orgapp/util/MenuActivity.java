@@ -19,6 +19,10 @@ public class MenuActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
+		if(getIntent().getComponent().getClassName().equals(NotificationController.class.getName())) {
+			menu.findItem(R.id.NOTIFICATION_SETTINGS).setVisible(true);
+		}
+		
 		return true;
 	}
 

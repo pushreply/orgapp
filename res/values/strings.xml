@@ -25,6 +25,7 @@
     
     <!-- Notifications -->
     <string name="NOTIFICATIONS">Benachrichtigungen</string>
+    <string name="NOTIFICATION_SETTINGS">Einstellungen</string>
     
     <!-- Profil -->
     <string name="PROFIL">Profil</string>
