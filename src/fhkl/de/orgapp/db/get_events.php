@@ -11,7 +11,6 @@ if (mysql_num_rows($result) > 0) {
 
     $response["event"] = array(); 
     while ($row = mysql_fetch_array($result)) {
-        // temp user array
         $event = array();
         $event["eventId"] = $row["eventId"];
         $event["personId"] = $row["personId"];

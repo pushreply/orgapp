@@ -18,13 +18,13 @@
     <string name="LASTNAME">last name</string>
     
     <!-- Calendar -->
-    <string name="CALENDAR">Calendar</string>
+    <string name="CALENDAR">Kalender</string>
     
     <!-- Groups -->
-    <string name="GROUPS">Groups</string>
+    <string name="GROUPS">Meine Gruppen</string>
     
     <!-- Notifications -->
-    <string name="NOTIFICATIONS">Notifications</string>
+    <string name="NOTIFICATIONS">Benachrichtigungen</string>
     
     <!-- Profil -->
     <string name="PROFIL">Profil</string>

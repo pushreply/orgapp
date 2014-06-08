@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,19 +20,17 @@ import android.widget.SimpleAdapter;
 
 import com.example.orgapp.R;
 
-import fhkl.de.orgapp.controller.CalendarController.Calendar;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 
 public class NotificationController extends MenuActivity {
 	private ProgressDialog pDialog;
-	private String eMailLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> notificationList;
 
-	private static String url_get_notifications = "http://pushrply.com/get_notifications.php";
+	private static String url_Notifications = "http://pushrply.com/Notifications.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MESSAGE = "MESSAGE";
@@ -44,7 +43,6 @@ public class NotificationController extends MenuActivity {
 		setContentView(R.layout.notification);
 
 		notificationList = new ArrayList<HashMap<String, String>>();
-		eMailLoggedPerson = getIntent().getStringExtra("UserEmail");
 		new Notification().execute();
 	}
 
@@ -61,7 +59,9 @@ public class NotificationController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			JSONObject json = jsonParser.makeHttpRequest(url_get_notifications,
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
+			
+			JSONObject json = jsonParser.makeHttpRequest(url_Notifications,
 					"GET", params);
 
 			Log.d("Notification: ", json.toString());
@@ -96,7 +96,7 @@ public class NotificationController extends MenuActivity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListAdapter adapter = new SimpleAdapter(NotificationController.this,
-							notificationList, R.layout.calendar_item,
+							notificationList, R.layout.notification_item,
 							new String[] { TAG_MESSAGE }, new int[] { R.id.MESSAGE });
 					ListView notificationList = (ListView) findViewById(android.R.id.list);
 					notificationList.setAdapter(adapter);

@@ -119,7 +119,7 @@ public class LoginController extends Activity
 							if (password.equals(inputPassword.getText().toString()))
 							{
 								Intent intent = new Intent(getApplicationContext(), CalendarController.class);
-								intent.putExtra("UserEmail", e.getString("eMail"));
+								intent.putExtra("UserId", e.getString("personId"));
 								startActivity(intent);
 								finish();
 								//invokes onPostExecute(String)

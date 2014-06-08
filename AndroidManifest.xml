@@ -38,6 +38,10 @@
             android:label="@+string/CALENDAR" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.NotificationController"
+            android:label="@+string/NOTIFICATIONS" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.ProfilController"
             android:label="@string/PROFIL" >
         </activity>

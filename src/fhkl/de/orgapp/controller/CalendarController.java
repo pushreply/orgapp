@@ -9,15 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,11 +21,11 @@ import com.example.orgapp.R;
 
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.MenuActivity;
 
-public class CalendarController extends Activity
+public class CalendarController extends MenuActivity
 {
 	private ProgressDialog pDialog;
-	private String eMailLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> eventList;
@@ -52,47 +47,8 @@ public class CalendarController extends Activity
 		setContentView(R.layout.calendar);
 		
 		eventList = new ArrayList<HashMap<String, String>>();
-		eMailLoggedPerson = getIntent().getStringExtra("UserEmail");
 		new Calendar().execute();
 
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		Intent intent;
-		
-		switch (item.getItemId())
-		{
-			case R.id.CALENDAR:
-				intent  = new Intent(CalendarController.this, StartController.class);
-				intent.putExtra("UserEmail", eMailLoggedPerson);
-				startActivity(intent);
-				return true;
-			
-			case R.id.NOTIFICATIONS:
-				intent  = new Intent(CalendarController.this, NotificationController.class);
-				intent.putExtra("UserEmail", eMailLoggedPerson);
-				startActivity(intent);
-				return true;
-			
-			case R.id.PROFIL:
-				intent = new Intent(CalendarController.this, ProfilController.class);
-				intent.putExtra("UserEmail", eMailLoggedPerson);
-				startActivity(intent);
-				return true;
-				
-			default:
-				return false;
-
-		}
 	}
 
 	class Calendar extends AsyncTask<String, String, String>
