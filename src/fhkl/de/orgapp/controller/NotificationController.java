@@ -41,7 +41,7 @@ public class NotificationController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getIntent().getStringExtra("Settings") != null) {
+		if (getIntent().getStringExtra("Notification_Settings") != null) {
 			setContentView(R.layout.notification_settings);
 		} else {
 			setContentView(R.layout.notification);

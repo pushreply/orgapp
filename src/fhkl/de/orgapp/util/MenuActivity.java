@@ -55,7 +55,7 @@ public class MenuActivity extends Activity {
 		case R.id.NOTIFICATION_SETTINGS:
 			intent = new Intent(MenuActivity.this, NotificationController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
-			intent.putExtra("Settings", "true");
+			intent.putExtra("Notification_Settings", "true");
 			startActivity(intent);
 			return true;
 
