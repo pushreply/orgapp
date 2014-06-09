@@ -9,9 +9,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_FIRST_NAME"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/FIRST_NAME" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_FIRST_NAME"
@@ -25,9 +25,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_LAST_NAME"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/LAST_NAME" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_LAST_NAME"
@@ -41,9 +41,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_BIRTHDAY"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/BIRTHDAY" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_BIRTHDAY"
@@ -57,9 +57,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_GENDER"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/GENDER" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_GENDER"
@@ -73,9 +73,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_MEMBER_SINCE"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/MEMBER_SINCE" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_MEMBER_SINCE"
@@ -89,9 +89,9 @@
 		android:layout_height="wrap_content" >
    		
         <TextView
+            android:id="@+id/TEXT_PASSWORD_PROFIL"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/PASSWORD_PROFIL" />
+			android:layout_height="wrap_content" />
         
         <TextView
             android:id="@+id/USER_PASSWORD_PROFIL"
