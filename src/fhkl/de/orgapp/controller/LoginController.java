@@ -92,7 +92,7 @@ public class LoginController extends Activity
 		protected String doInBackground(String... arg0)
 		{
 			// url to select a person
-			String urlSelectPerson = "http://pushrply.com/select_person.php";
+			String urlSelectPerson = "http://pushrply.com/select_person_by_email.php";
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 			
