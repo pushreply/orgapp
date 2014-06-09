@@ -7,25 +7,26 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.orgapp.R;
 
+import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.MenuActivity;
 
-public class ProfilController extends Activity
+public class ProfilController extends MenuActivity
 {
-	private String eMailLoggedPerson;
-	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person.php";
+	// Progress Dialog
+	private ProgressDialog pDialog;
+	
+	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person_by_personId.php";
 	private JSONObject person = null;
 	
+	TextView textFirstName, textLastName, textBirthday, textGender, textMemberSince, textPassword;
 	TextView firstName, lastName, birthday, gender, memberSince, password;
 	
 	@Override
@@ -33,7 +34,13 @@ public class ProfilController extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profil);
-		eMailLoggedPerson = getIntent().getStringExtra("UserEmail");
+		
+		textFirstName = (TextView) findViewById(R.id.TEXT_FIRST_NAME);
+		textLastName = (TextView) findViewById(R.id.TEXT_LAST_NAME);
+		textBirthday = (TextView) findViewById(R.id.TEXT_BIRTHDAY);
+		textGender = (TextView) findViewById(R.id.TEXT_GENDER);
+		textMemberSince = (TextView) findViewById(R.id.TEXT_MEMBER_SINCE);
+		textPassword = (TextView) findViewById(R.id.TEXT_PASSWORD_PROFIL);
 		
 		firstName = (TextView) findViewById(R.id.USER_FIRST_NAME);
 		lastName = (TextView) findViewById(R.id.USER_LAST_NAME);
@@ -48,10 +55,22 @@ public class ProfilController extends Activity
 	class UserData extends AsyncTask<String, String, String>
 	{
 		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			
+			pDialog = new ProgressDialog(ProfilController.this);
+			pDialog.setMessage(IMessages.LOADING_PROFIL);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(false);
+			pDialog.show();
+		}
+
+		@Override
 		protected String doInBackground(String... arg0)
 		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("eMail", eMailLoggedPerson));
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
 			
 			JSONObject json = new JSONParser().makeHttpRequest(URL_SELECT_PERSON, "GET", params);
 			
@@ -86,16 +105,25 @@ public class ProfilController extends Activity
 		@Override
 		protected void onPostExecute(String result)
 		{
+			super.onPostExecute(result);
+			
+			pDialog.dismiss();
+			
 			if(result == null)
 				return;
-			
-			super.onPostExecute(result);
 			
 			//seperate result by ", "
 			String[] datas = result.split(", ");
 			
 			if(datas.length != 6)
 				return;
+			
+			textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
+			textLastName.setText(getString(R.string.LASTNAME) + ":");
+			textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
+			textGender.setText(getString(R.string.GENDER) + ":");
+			textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
+			textPassword.setText(getString(R.string.PASSWORD) + ":");
 			
 			firstName.setText(datas[0]);
 			lastName.setText(datas[1]);
@@ -104,20 +132,5 @@ public class ProfilController extends Activity
 			memberSince.setText(datas[4]);
 			password.setText(datas[5]);
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.profil_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		Intent intent;
-		return false;
 	}
 }
