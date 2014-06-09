@@ -29,14 +29,21 @@
     
     <!-- Profil -->
     <string name="PROFIL">Profil</string>
+    <string name="PROFIL_SETTINGS">Einstellungen</string>
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
     <string name="LIST_EVENT_HISTORY">List of event history</string>
     <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
-    <string name="FIRST_NAME">first name:</string>
-    <string name="LAST_NAME">last name:</string>
-    <string name="BIRTHDAY">birthday:</string>
-    <string name="GENDER">gender:</string>
-    <string name="MEMBER_SINCE">member since:</string>
-    <string name="PASSWORD_PROFIL">password:</string>
+    <string name="BIRTHDAY">birthday</string>
+    <string name="GENDER">gender</string>
+    <string name="MEMBER_SINCE">member since</string>
+    
+    <!-- private information -->
+    <string name="PRIVATE_INFORMATION">Private information</string>
+    
+    <!-- security information -->
+    <string name="SECURITY_INFORMATION">Security information</string>
+    
+    <!-- Event history -->
+    <string name="EVENT_HISTORY">Event history</string>
 
 </resources>
