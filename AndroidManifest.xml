@@ -45,6 +45,19 @@
             android:name="fhkl.de.orgapp.controller.ProfilController"
             android:label="@string/PROFIL" >
         </activity>
+        
+        <activity
+            android:name="fhkl.de.orgapp.controller.PrivateInfoController"
+            android:label="@string/PRIVATE_INFORMATION" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.SecurityInfoController"
+            android:label="@string/SECURITY_INFORMATION" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.EventHistoryController"
+            android:label="@string/EVENT_HISTORY" >
+        </activity>
     </application>
 
     
