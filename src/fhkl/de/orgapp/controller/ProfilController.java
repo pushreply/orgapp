@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class ProfilController extends MenuActivity
 	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person_by_personId.php";
 	private JSONObject person = null;
 	
-	TextView textFirstName, textLastName, textBirthday, textGender, textMemberSince, textPassword;
+	TextView textFirstName, textLastName, textBirthday, textGender, textMemberSince, textPassword, textPrivateInformation, textSecurityInformation;
 	TextView firstName, lastName, birthday, gender, memberSince, password;
 	
 	@Override
@@ -41,6 +42,8 @@ public class ProfilController extends MenuActivity
 		textGender = (TextView) findViewById(R.id.TEXT_GENDER);
 		textMemberSince = (TextView) findViewById(R.id.TEXT_MEMBER_SINCE);
 		textPassword = (TextView) findViewById(R.id.TEXT_PASSWORD_PROFIL);
+		textPrivateInformation = (TextView) findViewById(R.id.TEXT_PRIVATE_INFORMATION);
+		textSecurityInformation = (TextView) findViewById(R.id.TEXT_SECURITY_INFORMATION);
 		
 		firstName = (TextView) findViewById(R.id.USER_FIRST_NAME);
 		lastName = (TextView) findViewById(R.id.USER_LAST_NAME);
@@ -118,11 +121,21 @@ public class ProfilController extends MenuActivity
 			if(datas.length != 6)
 				return;
 			
+			setTexts(datas);
+			setTextSizes();
+		}
+		
+		private void setTexts(String[] datas)
+		{
+			textPrivateInformation.setText(R.string.PRIVATE_INFORMATION);
+			textPrivateInformation.setPaintFlags(textPrivateInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
 			textLastName.setText(getString(R.string.LASTNAME) + ":");
 			textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
 			textGender.setText(getString(R.string.GENDER) + ":");
 			textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
+			textSecurityInformation.setText(R.string.SECURITY_INFORMATION);
+			textSecurityInformation.setPaintFlags(textSecurityInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			textPassword.setText(getString(R.string.PASSWORD) + ":");
 			
 			firstName.setText(datas[0]);
@@ -131,6 +144,29 @@ public class ProfilController extends MenuActivity
 			gender.setText(datas[3]);
 			memberSince.setText(datas[4]);
 			password.setText(datas[5]);
+		}
+		
+		private void setTextSizes()
+		{
+			int sectionTextSize = (int) getResources().getDimension(R.dimen.PROFIL_SECTION_TEXT_SIZE);
+			int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
+			
+			textPrivateInformation.setTextSize(sectionTextSize);
+			textSecurityInformation.setTextSize(sectionTextSize);
+			
+			textFirstName.setTextSize(userTextSize);
+			textLastName.setTextSize(userTextSize);
+			textBirthday.setTextSize(userTextSize);
+			textGender.setTextSize(userTextSize);
+			textMemberSince.setTextSize(userTextSize);
+			textPassword.setTextSize(userTextSize);
+			
+			firstName.setTextSize(userTextSize);
+			lastName.setTextSize(userTextSize);
+			birthday.setTextSize(userTextSize);
+			gender.setTextSize(userTextSize);
+			memberSince.setTextSize(userTextSize);
+			password.setTextSize(userTextSize);
 		}
 	}
 }
