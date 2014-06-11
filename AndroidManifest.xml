@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.orgapp"
+    package="fhkl.de.orgapp"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,7 +9,7 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -24,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="fhkl.de.orgapp.controller.RegisterController"
             android:label="@+string/REGISTER" >
@@ -45,7 +44,6 @@
             android:name="fhkl.de.orgapp.controller.ProfilController"
             android:label="@string/PROFIL" >
         </activity>
-        
         <activity
             android:name="fhkl.de.orgapp.controller.PrivateInfoController"
             android:label="@string/PRIVATE_INFORMATION" >
@@ -58,7 +56,10 @@
             android:name="fhkl.de.orgapp.controller.EventHistoryController"
             android:label="@string/EVENT_HISTORY" >
         </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.GroupController"
+            android:label="@string/GROUPS" >
+        </activity>
     </application>
 
-    
 </manifest>
