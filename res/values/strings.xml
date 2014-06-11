@@ -4,8 +4,8 @@
     <string name="app_name">OrgApp</string>
 
     <!-- Allgemeine Buttons -->
-    <string name="SUBMIT">Absenden</string>
-    <string name="CANCEL">Abbrechen</string>
+    <string name="SUBMIT">Submit</string>
+    <string name="CANCEL">Cancel</string>
     
     <!-- Startbildschirm -->
     <string name="LOGIN">login</string>

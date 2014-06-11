@@ -17,14 +17,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.orgapp.R;
 
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 
-public class RegisterController extends Activity
-{
+public class RegisterController extends Activity {
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -41,8 +41,7 @@ public class RegisterController extends Activity
 	private static final String TAG_SUCCESS = "success";
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 
@@ -57,23 +56,18 @@ public class RegisterController extends Activity
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
 		// button click event
-		bSubmit.setOnClickListener(new View.OnClickListener()
-		{
+		bSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				// creating new person in background thread
 				new CreateNewPerson().execute();
 			}
 		});
 
-		bCancel.setOnClickListener(new View.OnClickListener()
-		{
+		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view)
-			{
-				Intent i = new Intent(RegisterController.this,
-						StartController.class);
+			public void onClick(View view) {
+				Intent i = new Intent(RegisterController.this, StartController.class);
 				startActivity(i);
 			}
 		});
@@ -82,32 +76,45 @@ public class RegisterController extends Activity
 	/**
 	 * Background Async Task to Create new person
 	 * */
-	class CreateNewPerson extends AsyncTask<String, String, String>
-	{
+	class CreateNewPerson extends AsyncTask<String, String, String> {
+
+		public CreateNewPerson() {
+		}
+
 		/**
 		 * Before starting background thread Show Progress Dialog
 		 * */
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(RegisterController.this);
 			pDialog.setMessage(IMessages.CREATING_PERSON);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
+			pDialog.setCancelable(false);
 			pDialog.show();
 		}
 
 		/**
 		 * Creating person
 		 * */
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
 			String firstName = inputFirstName.getText().toString();
 			String lastName = inputLastName.getText().toString();
 
+			if (!eMail.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) {
+				return IMessages.INVALID_EMAIL;
+			}
+			if (password.length() == 0 || password.length() > 255) {
+				return IMessages.INVALID_PASSWORD;
+			}
+			if (firstName.length() == 0 || firstName.length() > 255) {
+				return IMessages.INVALID_FIRSTNAME;
+			}
+			if (lastName.length() == 0 || lastName.length() > 255) {
+				return IMessages.INVALID_LASTNAME;
+			}
 			// Building Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eMail", eMail));
@@ -116,38 +123,28 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("lastName", lastName));
 
 			// getting JSON Object
-			// Note that create person url accepts POST method
-			JSONObject json = jsonParser.makeHttpRequest(url_create_person,
-					"GET", params);
+			// Note that create person url accepts GET method
+			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET",
+					params);
 
 			// check log cat fro response
 			Log.d("Create Response", json.toString());
 
 			// check for success tag
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
-				
-				// TODO Validierung der Eingaben:
-				// auf gueltige e-mail pruefen (ist ein @ vorhanden?)
-				// passwort zweimal eingeben und Gleichheit pruefen
-				// weitere Eingaben wie Alter, Geschlecht...
-				if (success == 1)
-				{
+
+				if (success == 1) {
 					// successfully created person
 					Intent i = new Intent(getApplicationContext(), LoginController.class);
 					startActivity(i);
 
 					// closing this screen
 					finish();
-				}
-				else
-				{
+				} else {
 					// failed to create person
 				}
-			}
-			catch (JSONException e)
-			{
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 
@@ -157,10 +154,15 @@ public class RegisterController extends Activity
 		/**
 		 * After completing background task Dismiss the progress dialog
 		 * **/
-		protected void onPostExecute(String file_url)
-		{
+		protected void onPostExecute(String message) {
+			super.onPostExecute(message);
 			// dismiss the dialog once done
 			pDialog.dismiss();
+
+			if (message != null) {
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
+						.show();
+			}
 		}
 	}
 }
