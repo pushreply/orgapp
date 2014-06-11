@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
@@ -86,9 +83,9 @@ public class GroupController extends MenuActivity {
 						JSONObject c = groups.getJSONObject(i);
 
 						String groupId = c.getString("groupId");
-						String gname = c.getString("name");
-						String ginfo = c.getString("info");
-						String gpic = c.getString("picture");
+						String gname = c.getString("gname");
+						String ginfo = c.getString("ginfo");
+						String gpic = c.getString("gpicture");
 
 						HashMap<String, String> map = new HashMap<String, String>();
 						map.put(GROUP_ID, groupId);
@@ -106,7 +103,7 @@ public class GroupController extends MenuActivity {
 			}
 			catch (JSONException e)
 			{
-				System.out.println("Error in UserData.doInBackground(String... arg0): " + e.getMessage());
+				System.out.println("Error in GroupData.doInBackground(String... arg0): " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -117,9 +114,12 @@ public class GroupController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					ListAdapter adapter = new SimpleAdapter(GroupController.this,
-							groupList, R.layout.group_item,
-							new String[] {GROUP_NAME, GROUP_INFO, GROUP_PICTURE }, new int[] { R.id.GROUPITEM });
+					ListAdapter adapter = new SimpleAdapter(
+							GroupController.this,
+							groupList, 
+							R.layout.group_item, 
+							new String[] {GROUP_NAME}, 
+							new int[] { R.id.GROUPITEM });
 					
 					//update listview
 					ListView groupList = (ListView) findViewById(android.R.id.list);
