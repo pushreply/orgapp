@@ -30,12 +30,12 @@ if(mysql_num_rows($result) > 0)
 	{
 		$group = array();
 
-		$group["groupId"] = $row["groupId"];
-		$group["name"] = $row["name"];
-		$group["info"] = $row["info"];
-		$group["picture"] = $row["picture"];
+		$groups["groupId"] = $row["groupId"];
+		$groups["gname"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
+		$groups["ginfo"] = html_entity_decode($row["info"], ENT_QUOTES, 'UTF-8');
+		$groups["gpicture"] = $row["picture"];
 
-		array_push($response["group"], $group);
+		array_push($response["groups"], $groups);
 	}
 
 	$response ["success"] = 1;
@@ -45,6 +45,7 @@ if(mysql_num_rows($result) > 0)
 else
 {
 	$response ["success"] = 0;
+	$response["gname"] = "You are not in a group.";
 	echo json_encode($response);
 }
 
