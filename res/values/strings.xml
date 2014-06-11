@@ -8,8 +8,8 @@
     <string name="CANCEL">Cancel</string>
     
     <!-- Startbildschirm -->
-    <string name="LOGIN">login</string>
-    <string name="REGISTER">register</string>
+    <string name="LOGIN">Login</string>
+    <string name="REGISTER">Register</string>
 
     <!-- Register/Login -->
     <string name="EMAIL">email address</string>
