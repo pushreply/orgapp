@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.orgapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="fhkl.de.orgapp.controller.StartController"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="fhkl.de.orgapp.controller.RegisterController"
+            android:label="@+string/REGISTER" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.LoginController"
+            android:label="@+string/LOGIN" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.CalendarController"
+            android:label="@+string/CALENDAR" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.NotificationController"
+            android:label="@+string/NOTIFICATIONS" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.ProfilController"
+            android:label="@string/PROFIL" >
+        </activity>
+        
+        <activity
+            android:name="fhkl.de.orgapp.controller.PrivateInfoController"
+            android:label="@string/PRIVATE_INFORMATION" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.SecurityInfoController"
+            android:label="@string/SECURITY_INFORMATION" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.EventHistoryController"
+            android:label="@string/EVENT_HISTORY" >
+        </activity>
+    </application>
+
+    
+</manifest>
