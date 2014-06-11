@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="PROFIL_SECTION_TEXT_SIZE">20dp</dimen>
-    <dimen name="PROFIL_USER_TEXT_SIZE">15dp</dimen>
+    <dimen name="xxPROFIL_SECTION_TEXT_SIZE">20dp</dimen>
+    <dimen name="xxPROFIL_USER_TEXT_SIZE">15dp</dimen>
 </resources>
