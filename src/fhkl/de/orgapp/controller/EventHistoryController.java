@@ -2,7 +2,7 @@ package fhkl.de.orgapp.controller;
 
 import android.os.Bundle;
 
-import com.example.orgapp.R;
+import fhkl.de.orgapp.R;
 
 import fhkl.de.orgapp.util.MenuActivity;
 

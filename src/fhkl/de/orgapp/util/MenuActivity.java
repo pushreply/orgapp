@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import com.example.orgapp.R;
-
+import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.CalendarController;
 import fhkl.de.orgapp.controller.EventHistoryController;
+import fhkl.de.orgapp.controller.GroupController;
 import fhkl.de.orgapp.controller.NotificationController;
 import fhkl.de.orgapp.controller.PrivateInfoController;
 import fhkl.de.orgapp.controller.ProfilController;
@@ -84,6 +83,12 @@ public class MenuActivity extends Activity
 				
 			case R.id.CHANGE_SECURITY_INFORMATION:
 				intent = new Intent(MenuActivity.this, SecurityInfoController.class);
+				intent.putExtra("UserId", personIdLoggedPerson);
+				startActivity(intent);
+				return true;
+				
+			case R.id.GROUPS:
+				intent = new Intent(MenuActivity.this, GroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
 				startActivity(intent);
 				return true;
