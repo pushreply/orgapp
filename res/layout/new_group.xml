@@ -22,26 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <ImageButton
-            android:id="@+id/ADD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/INVITE_MEMBER"
-            android:src="@drawable/ic_action_new"
-             />
-
-        <TextView
-            android:id="@+id/INVITE_MEMBER"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical"
-            android:text="@string/INVITE_MEMBER" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
         <Button
             android:id="@+id/SUBMIT"
             android:layout_width="0dp"
