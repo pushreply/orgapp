@@ -41,6 +41,14 @@
             android:label="@string/GROUPS" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.groups.ManualInviteMemberController"
+            android:label="@string/INVITE_MEMBER" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.groups.ListInviteMemberController"
+            android:label="@string/INVITE_MEMBER" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.groups.NewGroupController"
             android:label="@string/NEW_GROUP" >
         </activity>

@@ -139,6 +139,9 @@ public class RegisterController extends Activity {
 			// Building Parameters
 			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
 			paramsCreate.add(new BasicNameValuePair("eMail", eMail));
+			
+			//verschlüsselung
+			
 			paramsCreate.add(new BasicNameValuePair("password", password));
 			paramsCreate.add(new BasicNameValuePair("firstName", firstName));
 			paramsCreate.add(new BasicNameValuePair("lastName", lastName));

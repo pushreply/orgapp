@@ -113,6 +113,7 @@ public class LoginController extends Activity
 						if (eMail.equals(inputEMail.getText().toString()))
 						{
 							String password = e.getString("password");
+							//verschlüsselung
 							
 							if (password.equals(inputPassword.getText().toString()))
 							{
