@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="fhkl.de.orgapp.controller.StartController"
+            android:name="fhkl.de.orgapp.controller.start.StartController"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,39 +25,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.RegisterController"
-            android:label="@+string/REGISTER" >
+            android:name="fhkl.de.orgapp.controller.registration.RegisterController"
+            android:label="@string/REGISTER" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.LoginController"
-            android:label="@+string/LOGIN" >
+            android:name="fhkl.de.orgapp.controller.login.LoginController"
+            android:label="@string/LOGIN" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.CalendarController"
-            android:label="@+string/CALENDAR" >
+            android:name="fhkl.de.orgapp.controller.calendar.CalendarController"
+            android:label="@string/CALENDAR" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.NotificationController"
-            android:label="@+string/NOTIFICATIONS" >
+            android:name="fhkl.de.orgapp.controller.notification.NotificationController"
+            android:label="@string/NOTIFICATIONS" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.ProfilController"
+            android:name="fhkl.de.orgapp.controller.notification.NotificationSettingsController"
+            android:label="@string/NOTIFICATION_SETTINGS" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.profile.ProfilController"
             android:label="@string/PROFIL" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.PrivateInfoController"
+            android:name="fhkl.de.orgapp.controller.profile.PrivateInfoController"
             android:label="@string/PRIVATE_INFORMATION" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.SecurityInfoController"
+            android:name="fhkl.de.orgapp.controller.profile.SecurityInfoController"
             android:label="@string/SECURITY_INFORMATION" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.EventHistoryController"
+            android:name="fhkl.de.orgapp.controller.profile.EventHistoryController"
             android:label="@string/EVENT_HISTORY" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.GroupController"
+            android:name="fhkl.de.orgapp.controller.groups.GroupController"
             android:label="@string/GROUPS" >
         </activity>
     </application>

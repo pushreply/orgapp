@@ -9,6 +9,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.groups.GroupController;
 import fhkl.de.orgapp.controller.notification.NotificationController;
+import fhkl.de.orgapp.controller.notification.NotificationSettingsController;
 import fhkl.de.orgapp.controller.profile.EventHistoryController;
 import fhkl.de.orgapp.controller.profile.PrivateInfoController;
 import fhkl.de.orgapp.controller.profile.ProfilController;
@@ -63,9 +64,8 @@ public class MenuActivity extends Activity
 				return true;
 	
 			case R.id.NOTIFICATION_SETTINGS:
-				intent = new Intent(MenuActivity.this, NotificationController.class);
+				intent = new Intent(MenuActivity.this, NotificationSettingsController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
-				intent.putExtra("Notification_Settings", "true");
 				startActivity(intent);
 				return true;
 			
