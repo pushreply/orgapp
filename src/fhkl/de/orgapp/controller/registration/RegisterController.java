@@ -34,7 +34,8 @@ public class RegisterController extends Activity {
 	EditText inputFirstName;
 	EditText inputLastName;
 
-	// url to create new person
+	// url to check existing person and create new person
+	private static String url_check_person = "http://pushrply.com/select_person_by_email.php";
 	private static String url_create_person = "http://pushrply.com/create_person.php";
 
 	// JSON Node names
@@ -115,17 +116,37 @@ public class RegisterController extends Activity {
 			if (lastName.length() == 0 || lastName.length() > 255) {
 				return IMessages.INVALID_LASTNAME;
 			}
+			
+			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
+			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
+			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET",
+					paramsCheck);
+
+			Log.d("Create Response", jsonCheck.toString());
+
+			// check for success tag
+			try {
+				int success = jsonCheck.getInt(TAG_SUCCESS);
+
+				if (success == 1) {
+					return IMessages.DUPLICATE_PERSON;
+				} 
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			
 			// Building Parameters
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("eMail", eMail));
-			params.add(new BasicNameValuePair("password", password));
-			params.add(new BasicNameValuePair("firstName", firstName));
-			params.add(new BasicNameValuePair("lastName", lastName));
+			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
+			paramsCreate.add(new BasicNameValuePair("eMail", eMail));
+			paramsCreate.add(new BasicNameValuePair("password", password));
+			paramsCreate.add(new BasicNameValuePair("firstName", firstName));
+			paramsCreate.add(new BasicNameValuePair("lastName", lastName));
 
 			// getting JSON Object
 			// Note that create person url accepts GET method
 			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET",
-					params);
+					paramsCreate);
 
 			// check log cat fro response
 			Log.d("Create Response", json.toString());

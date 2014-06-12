@@ -13,4 +13,5 @@ public interface IMessages
 	public static final String LOADING_NOTIFICATIONS = "Loading Notifications...";
 	public static final String LOADING_PROFIL = "Loading Profil...";
 	public static final String LOADING_GROUPS = "Loading Groups...";
+	public static final String DUPLICATE_PERSON = "Person already exists";
 }
