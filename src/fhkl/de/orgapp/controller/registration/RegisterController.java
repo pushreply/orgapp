@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.controller;
+package fhkl.de.orgapp.controller.registration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.login.LoginController;
+import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 

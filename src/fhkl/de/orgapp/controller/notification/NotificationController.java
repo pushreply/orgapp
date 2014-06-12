@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.controller;
+package fhkl.de.orgapp.controller.notification;
 
 import java.util.ArrayList;
 import java.util.HashMap;

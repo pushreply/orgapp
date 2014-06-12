@@ -6,13 +6,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.controller.CalendarController;
-import fhkl.de.orgapp.controller.EventHistoryController;
-import fhkl.de.orgapp.controller.GroupController;
-import fhkl.de.orgapp.controller.NotificationController;
-import fhkl.de.orgapp.controller.PrivateInfoController;
-import fhkl.de.orgapp.controller.ProfilController;
-import fhkl.de.orgapp.controller.SecurityInfoController;
+import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.groups.GroupController;
+import fhkl.de.orgapp.controller.notification.NotificationController;
+import fhkl.de.orgapp.controller.profile.EventHistoryController;
+import fhkl.de.orgapp.controller.profile.PrivateInfoController;
+import fhkl.de.orgapp.controller.profile.ProfilController;
+import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 
 public class MenuActivity extends Activity
 {

@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.controller;
+package fhkl.de.orgapp.controller.start;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.login.LoginController;
+import fhkl.de.orgapp.controller.registration.RegisterController;
 
 public class StartController extends Activity {
   private Button bLogin;

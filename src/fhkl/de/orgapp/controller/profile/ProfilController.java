@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.controller;
+package fhkl.de.orgapp.controller.profile;
 
 import java.util.ArrayList;
 import java.util.List;

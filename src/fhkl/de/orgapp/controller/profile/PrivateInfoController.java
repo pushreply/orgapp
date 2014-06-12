@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.controller;
+package fhkl.de.orgapp.controller.profile;
 
 import android.os.Bundle;
 import fhkl.de.orgapp.R;
