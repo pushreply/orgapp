@@ -1,49 +1,48 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-  	<item android:id="@+id/NOTIFICATION_SETTINGS"
-          android:icon="@drawable/ic_action_settings"
-          android:title="@string/NOTIFICATION_SETTINGS"
-          android:showAsAction="ifRoom"
-          android:visible="false" />
-  	
-  	<item android:id="@+id/PROFIL_SETTINGS"
-  	      android:icon="@drawable/ic_action_settings"
-          android:title="@string/PROFIL_SETTINGS"
-          android:showAsAction="ifRoom"
-          android:visible="false">
-
-  	    <menu>
-		  	<item
-		        android:id="@+id/CHANGE_PRIVATE_INFORMATION"
-		        android:title="@string/CHANGE_PRIVATE_INFORMATION" />
-		    
-		    <item
-		        android:id="@+id/LIST_EVENT_HISTORY"
-		        android:title="@string/LIST_EVENT_HISTORY" />
-		    
-		    <item
-		        android:id="@+id/CHANGE_SECURITY_INFORMATION"
-		        android:title="@string/CHANGE_SECURITY_INFORMATION" />
-		    
-  	    </menu>
-  	    
-	</item>
-  	
+    <item
+        android:id="@+id/NOTIFICATION_SETTINGS"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="ifRoom"
+        android:title="@string/NOTIFICATION_SETTINGS"
+        android:visible="false"/>
+    <item
+        android:id="@+id/PROFIL_SETTINGS"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="ifRoom"
+        android:title="@string/PROFIL_SETTINGS"
+        android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/CHANGE_PRIVATE_INFORMATION"
+                android:title="@string/CHANGE_PRIVATE_INFORMATION"/>
+            <item
+                android:id="@+id/LIST_EVENT_HISTORY"
+                android:title="@string/LIST_EVENT_HISTORY"/>
+            <item
+                android:id="@+id/CHANGE_SECURITY_INFORMATION"
+                android:title="@string/CHANGE_SECURITY_INFORMATION"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/CALENDAR"
-        android:title="@+string/CALENDAR">
+        android:title="@string/CALENDAR">
     </item>
     <item
         android:id="@+id/GROUPS"
-        android:title="@+string/GROUPS">
+        android:title="@string/GROUPS">
     </item>
     <item
         android:id="@+id/NOTIFICATIONS"
-        android:title="@+string/NOTIFICATIONS">
+        android:title="@string/NOTIFICATIONS">
     </item>
     <item
         android:id="@+id/PROFIL"
-        android:title="@+string/PROFIL">
+        android:title="@string/PROFIL">
+    </item>
+    <item
+        android:id="@+id/LOGOUT"
+        android:title="@string/LOGOUT">
     </item>
 
 </menu>

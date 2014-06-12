@@ -14,6 +14,7 @@ import fhkl.de.orgapp.controller.profile.EventHistoryController;
 import fhkl.de.orgapp.controller.profile.PrivateInfoController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.profile.SecurityInfoController;
+import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity
 {
@@ -90,6 +91,11 @@ public class MenuActivity extends Activity
 			case R.id.GROUPS:
 				intent = new Intent(MenuActivity.this, GroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
+				startActivity(intent);
+				return true;
+				
+			case R.id.LOGOUT:
+				intent = new Intent(MenuActivity.this, StartController.class);
 				startActivity(intent);
 				return true;
 	

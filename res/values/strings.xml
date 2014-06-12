@@ -17,18 +17,21 @@
     <string name="FIRSTNAME">first name</string>
     <string name="LASTNAME">last name</string>
     
-    <!-- Calendar -->
+    <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
+    <string name="GROUPS">My Groups</string>
+    <string name="NOTIFICATIONS">Notifications</string>
+    <string name="PROFIL">Profile</string>
+    <string name="LOGOUT">Logout</string>
+    
+    <!-- Calendar -->
     
     <!-- Groups -->
-    <string name="GROUPS">My Groups</string>
     
     <!-- Notifications -->
-    <string name="NOTIFICATIONS">Notifications</string>
     <string name="NOTIFICATION_SETTINGS">Settings</string>
     
     <!-- Profil -->
-    <string name="PROFIL">Profile</string>
     <string name="PROFIL_SETTINGS">Settings</string>
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
     <string name="LIST_EVENT_HISTORY">List of event history</string>
@@ -37,10 +40,10 @@
     <string name="GENDER">gender</string>
     <string name="MEMBER_SINCE">member since</string>
     
-    <!-- private information -->
+    <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>
     
-    <!-- security information -->
+    <!-- Security information -->
     <string name="SECURITY_INFORMATION">Security information</string>
     
     <!-- Event history -->
