@@ -57,7 +57,12 @@ public class GroupController extends MenuActivity {
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(GroupController.this);
-			pDialog.setMessage(IMessages.LOADING_GROUPS);
+			
+			if(getIntent().getStringExtra("Refresh") != null)
+				pDialog.setMessage(IMessages.UPDATING);
+			else
+				pDialog.setMessage(IMessages.LOADING_GROUPS);
+			
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();

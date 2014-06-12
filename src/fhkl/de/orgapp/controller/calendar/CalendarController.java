@@ -56,7 +56,12 @@ public class CalendarController extends MenuActivity
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CalendarController.this);
-			pDialog.setMessage(IMessages.LOADING_CALENDAR);
+			
+			if(getIntent().getStringExtra("Refresh") != null)
+				pDialog.setMessage(IMessages.UPDATING);
+			else
+				pDialog.setMessage(IMessages.LOADING_CALENDAR);
+			
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();

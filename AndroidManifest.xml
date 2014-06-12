@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name="fhkl.de.orgapp.controller.profile.ProfileController"
-            android:label="@string/PROFIL" >
+            android:label="@string/PROFILE" >
         </activity>
         <activity
             android:name="fhkl.de.orgapp.controller.profile.PrivateInfoController"

@@ -49,7 +49,12 @@ public class NotificationController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NotificationController.this);
-			pDialog.setMessage(IMessages.LOADING_NOTIFICATIONS);
+			
+			if(getIntent().getStringExtra("Refresh") != null)
+				pDialog.setMessage(IMessages.UPDATING);
+			else
+				pDialog.setMessage(IMessages.LOADING_NOTIFICATIONS);
+			
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();

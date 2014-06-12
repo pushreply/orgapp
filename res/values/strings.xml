@@ -6,6 +6,7 @@
     <!-- Allgemeine Buttons -->
     <string name="SUBMIT">Submit</string>
     <string name="CANCEL">Cancel</string>
+    <string name="REFRESH">Refresh</string>
     
     <!-- Startbildschirm -->
     <string name="LOGIN">Login</string>
@@ -21,7 +22,7 @@
     <string name="CALENDAR">Calendar</string>
     <string name="GROUPS">My groups</string>
     <string name="NOTIFICATIONS">Notifications</string>
-    <string name="PROFIL">Profile</string>
+    <string name="PROFILE">Profile</string>
     <string name="LOGOUT">Logout</string>
     
     <!-- Calendar -->
@@ -36,7 +37,7 @@
     <string name="NOTIFICATION_SETTINGS">Settings</string>
     
     <!-- Profil -->
-    <string name="PROFIL_SETTINGS">Settings</string>
+    <string name="PROFILE_SETTINGS">Settings</string>
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
     <string name="LIST_EVENT_HISTORY">List of event history</string>
     <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
