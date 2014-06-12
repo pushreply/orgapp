@@ -19,7 +19,7 @@
     
     <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
-    <string name="GROUPS">My Groups</string>
+    <string name="GROUPS">My groups</string>
     <string name="NOTIFICATIONS">Notifications</string>
     <string name="PROFIL">Profile</string>
     <string name="LOGOUT">Logout</string>
@@ -27,6 +27,10 @@
     <!-- Calendar -->
     
     <!-- Groups -->
+    <string name="NEW_GROUP">New Group</string>
+    <string name="NAME">Group name</string>
+    <string name="INFO">Info</string>
+    <string name="INVITE_MEMBER">Invite a new member</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>
