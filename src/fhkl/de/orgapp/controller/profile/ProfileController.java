@@ -17,7 +17,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 
-public class ProfilController extends MenuActivity
+public class ProfileController extends MenuActivity
 {
 	// Progress Dialog
 	private ProgressDialog pDialog;
@@ -60,7 +60,7 @@ public class ProfilController extends MenuActivity
 		{
 			super.onPreExecute();
 			
-			pDialog = new ProgressDialog(ProfilController.this);
+			pDialog = new ProgressDialog(ProfileController.this);
 			pDialog.setMessage(IMessages.LOADING_PROFIL);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);

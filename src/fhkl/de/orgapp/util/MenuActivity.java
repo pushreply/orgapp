@@ -12,7 +12,7 @@ import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.notification.NotificationSettingsController;
 import fhkl.de.orgapp.controller.profile.EventHistoryController;
 import fhkl.de.orgapp.controller.profile.PrivateInfoController;
-import fhkl.de.orgapp.controller.profile.ProfilController;
+import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 
 public class MenuActivity extends Activity
@@ -29,7 +29,7 @@ public class MenuActivity extends Activity
 			menu.findItem(R.id.NOTIFICATION_SETTINGS).setVisible(true);
 		}
 		
-		if(getIntent().getComponent().getClassName().equals(ProfilController.class.getName()))
+		if(getIntent().getComponent().getClassName().equals(ProfileController.class.getName()))
 		{
 			menu.findItem(R.id.PROFIL_SETTINGS).setVisible(true);
 		}
@@ -58,7 +58,7 @@ public class MenuActivity extends Activity
 				return true;
 	
 			case R.id.PROFIL:
-				intent = new Intent(MenuActivity.this, ProfilController.class);
+				intent = new Intent(MenuActivity.this, ProfileController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
 				startActivity(intent);
 				return true;

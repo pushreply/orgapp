@@ -45,7 +45,7 @@
             android:label="@string/NOTIFICATION_SETTINGS" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.profile.ProfilController"
+            android:name="fhkl.de.orgapp.controller.profile.ProfileController"
             android:label="@string/PROFIL" >
         </activity>
         <activity
