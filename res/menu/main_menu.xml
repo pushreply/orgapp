@@ -7,6 +7,12 @@
         android:title="@string/NEW_GROUP"
         android:visible="false"/>
     <item
+        android:id="@+id/INVITE_MEMBER"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/INVITE_MEMBER"
+        android:visible="false"/>
+    <item
         android:id="@+id/NOTIFICATION_SETTINGS"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom"

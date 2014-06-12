@@ -31,7 +31,7 @@
     <string name="NEW_GROUP">New Group</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
-    <string name="INVITE_MEMBER">Invite a new member</string>
+    <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>
