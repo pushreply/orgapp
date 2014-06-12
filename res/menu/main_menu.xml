@@ -3,24 +3,32 @@
     <item
         android:id="@+id/NEW_GROUP"
         android:icon="@drawable/ic_action_new"
+        android:menuCategory="system"
+        android:orderInCategory="5"
         android:showAsAction="ifRoom"
         android:title="@string/NEW_GROUP"
         android:visible="false"/>
     <item
         android:id="@+id/INVITE_MEMBER"
         android:icon="@drawable/ic_action_new"
+        android:menuCategory="system"
+        android:orderInCategory="4"
         android:showAsAction="ifRoom"
         android:title="@string/INVITE_MEMBER"
         android:visible="false"/>
     <item
         android:id="@+id/NOTIFICATION_SETTINGS"
         android:icon="@drawable/ic_action_settings"
+        android:menuCategory="system"
+        android:orderInCategory="3"
         android:showAsAction="ifRoom"
         android:title="@string/NOTIFICATION_SETTINGS"
         android:visible="false"/>
     <item
         android:id="@+id/PROFILE_SETTINGS"
         android:icon="@drawable/ic_action_settings"
+        android:menuCategory="system"
+        android:orderInCategory="2"
         android:showAsAction="ifRoom"
         android:title="@string/PROFILE_SETTINGS"
         android:visible="false">
@@ -28,42 +36,44 @@
             <item
                 android:id="@+id/CHANGE_PRIVATE_INFORMATION"
                 android:title="@string/CHANGE_PRIVATE_INFORMATION"
-                android:visible="false" />
-            <item
-                android:id="@+id/LIST_EVENT_HISTORY"
-                android:title="@string/LIST_EVENT_HISTORY"
-                android:visible="false" />
+                android:visible="false"/>
             <item
                 android:id="@+id/CHANGE_SECURITY_INFORMATION"
                 android:title="@string/CHANGE_SECURITY_INFORMATION"
-                android:visible="false" />
+                android:visible="false"/>
+            <item
+                android:id="@+id/LIST_EVENT_HISTORY"
+                android:title="@string/LIST_EVENT_HISTORY"
+                android:visible="false"/>
         </menu>
     </item>
     <item
         android:id="@+id/REFRESH"
         android:icon="@drawable/ic_action_refresh"
+        android:menuCategory="system"
+        android:orderInCategory="1"
         android:showAsAction="ifRoom"
         android:title="@string/REFRESH"
-        android:visible="false" />
+        android:visible="false"/>
     <item
         android:id="@+id/CALENDAR"
         android:title="@string/CALENDAR"
-        android:visible="true" >
+        android:visible="true">
     </item>
     <item
         android:id="@+id/GROUPS"
         android:title="@string/GROUPS"
-        android:visible="true" >
+        android:visible="true">
     </item>
     <item
         android:id="@+id/NOTIFICATIONS"
         android:title="@string/NOTIFICATIONS"
-        android:visible="true" >
+        android:visible="true">
     </item>
     <item
         android:id="@+id/PROFILE"
         android:title="@string/PROFILE"
-        android:visible="true" >
+        android:visible="true">
     </item>
     <item
         android:id="@+id/LOGOUT"
