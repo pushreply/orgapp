@@ -76,8 +76,7 @@ public class MenuActivity extends Activity {
 
 		if (nameCurrentController.equals(CalendarController.class.getName())
 				|| nameCurrentController.equals(GroupController.class.getName())
-				|| nameCurrentController.equals(NotificationController.class.getName())
-				|| nameCurrentController.equals(ProfileController.class.getName())) {
+				|| nameCurrentController.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.REFRESH).setVisible(true);
 		}
 

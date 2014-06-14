@@ -61,12 +61,7 @@ public class ProfileController extends MenuActivity
 			super.onPreExecute();
 			
 			pDialog = new ProgressDialog(ProfileController.this);
-			
-			if(getIntent().getStringExtra("Refresh") != null)
-				pDialog.setMessage(IMessages.UPDATING);
-			else
-				pDialog.setMessage(IMessages.LOADING_PROFIL);
-			
+			pDialog.setMessage(IMessages.LOADING_PROFIL);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
