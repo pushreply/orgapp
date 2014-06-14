@@ -32,6 +32,10 @@
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
     <string name="INVITE_MEMBER">Invite new members</string>
+    <string name="MANUAL_INVITE">Invite</string>
+    <string name="MANUAL_CANCEL">Cancel</string>
+    <string name="LIST_INVITE">Invite</string>
+    <string name="LIST_CANCEL">Cancel</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>

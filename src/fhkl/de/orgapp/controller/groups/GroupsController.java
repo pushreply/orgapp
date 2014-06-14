@@ -48,10 +48,10 @@ public class GroupsController extends MenuActivity {
 		setContentView(R.layout.groups);
 
 		groupList = new ArrayList<HashMap<String, String>>();
-		new Group().execute();
+		new Groups().execute();
 	}
 
-	class Group extends AsyncTask<String, String, String> {
+	class Groups extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {

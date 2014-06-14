@@ -1,6 +1,9 @@
 package fhkl.de.orgapp.controller.groups;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -36,6 +39,7 @@ public class NewGroupController extends MenuActivity {
 	JSONParser jsonParser = new JSONParser();
 	private static String url_check_group = "http://pushrply.com/get_groups.php";
 	private static String url_create_group = "http://pushrply.com/create_group.php";
+	private static String url_create_user_in_group = "http://pushrply.com/create_user_in_group_by_personId.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -52,7 +56,6 @@ public class NewGroupController extends MenuActivity {
 		Button bSubmit = (Button) findViewById(R.id.SUBMIT);
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
-		// button click event
 		bSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -76,6 +79,8 @@ public class NewGroupController extends MenuActivity {
 	 * Background Async Task to Create new group
 	 * */
 	class CreateNewGroup extends AsyncTask<String, String, String> {
+
+		String groupId;
 
 		/**
 		 * Before starting background thread Show Progress Dialog
@@ -112,7 +117,6 @@ public class NewGroupController extends MenuActivity {
 
 			Log.d("Create Response", jsonCheck.toString());
 
-			// check for success tag
 			try {
 				int success = jsonCheck.getInt(TAG_SUCCESS);
 
@@ -123,31 +127,42 @@ public class NewGroupController extends MenuActivity {
 				e.printStackTrace();
 			}
 
-			// Building Parameters
-			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
+			List<NameValuePair> paramsCreateGroup = new ArrayList<NameValuePair>();
 
-			paramsCreate.add(new BasicNameValuePair("personId", personId));
-			paramsCreate.add(new BasicNameValuePair("name", name));
-			paramsCreate.add(new BasicNameValuePair("info", info));
+			paramsCreateGroup.add(new BasicNameValuePair("personId", personId));
+			paramsCreateGroup.add(new BasicNameValuePair("name", name));
+			paramsCreateGroup.add(new BasicNameValuePair("info", info));
 
-			// getting JSON Object
-			// Note that create group url accepts GET method
 			JSONObject json = jsonParser.makeHttpRequest(url_create_group, "GET",
-					paramsCreate);
+					paramsCreateGroup);
 
-			// check log cat fro response
 			Log.d("Create Response", json.toString());
 
-			// check for success tag
 			try {
-				int success = json.getInt(TAG_SUCCESS);
+				Integer success = json.getInt(TAG_SUCCESS);
+				if (success != 0) {
+					groupId = success.toString();
+					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
 
-				if (success == 1) {
-					// successfully created group
+					paramsCreateUserInGroup
+							.add(new BasicNameValuePair("groupId", groupId));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("personId",
+							personId));
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					Date date = new Date();
+					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince",
+							dateFormat.format(date).toString()));
 
-					// closing this screen
+					json = jsonParser.makeHttpRequest(url_create_user_in_group, "GET",
+							paramsCreateUserInGroup);
+
+					Log.d("Create Response", json.toString());
+					success = json.getInt(TAG_SUCCESS);
+					if (success != 0) {
+						// erfolg!
+					}
 				} else {
-					// failed to create group
+
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -161,7 +176,6 @@ public class NewGroupController extends MenuActivity {
 		 * **/
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
-			// dismiss the dialog once done
 			pDialog.dismiss();
 
 			if (message != null) {
@@ -189,6 +203,7 @@ public class NewGroupController extends MenuActivity {
 						Intent intent = new Intent(NewGroupController.this,
 								ManualInviteMemberController.class);
 						intent.putExtra("UserId", personIdLoggedPerson);
+						intent.putExtra("GroupId", groupId);
 						startActivity(intent);
 					}
 				});

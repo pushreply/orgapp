@@ -6,8 +6,6 @@
 $response = array ();
 
 if (isset ( $_GET ['name'] ) && isset ( $_GET ['info'] )) {
-	$response ["success"] = 0;
-	echo json_encode ( $response );
 
 	// include db connect class
 	require_once __DIR__ . '/db_connect.php';
@@ -20,25 +18,25 @@ if (isset ( $_GET ['name'] ) && isset ( $_GET ['info'] )) {
 	$info = $_GET ['info'];
 
 	$result = mysql_query ( "Insert into groups(personId, name, info) values('$personId', '$name', '$info')" ) or die ( mysql_error () );
-
 	if ($result) {
 		// successfully inserted into database
-		$response ["success"] = 1;
+		$response ["success"] = mysql_insert_id();
 		$response ["message"] = "Group successfully created.";
 
 		// echoing JSON response
 		echo json_encode ( $response );
 	} else {
 		// failed to insert row
-		$response ["success"] = 0;
+		$response ["success"] = "0";
 		$response ["message"] = "Oops! An error occurred.";
 
 		// echoing JSON response
 		echo json_encode ( $response );
 	}
 } else {
+
 	// required field is missing
-	$response ["success"] = 0;
+	$response ["success"] = "0";
 	$response ["message"] = "Required field(s) is missing";
 
 	// echoing JSON response
