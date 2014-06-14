@@ -35,6 +35,7 @@ if(mysql_num_rows($result) > 0)
 		$person["password"] = $row["password"];
 		$person["firstName"] = $row["firstName"];
 		$person["lastName"] = $row["lastName"];
+		$person["created"] = $row["created"];
 		$person["birthday"] = $row["birthday"];
 		$person["gender"] = $row["gender"];
 		$person["picture"] = $row["picture"];
@@ -43,7 +44,7 @@ if(mysql_num_rows($result) > 0)
 	}
 
 	$response ["success"] = 1;
-	
+
 	echo json_encode($response);
 }
 else

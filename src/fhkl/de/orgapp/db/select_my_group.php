@@ -29,8 +29,8 @@ if(mysql_num_rows($result) > 0)
 	while ($row = mysql_fetch_array($result))
 	{
 		$group = array();
-		$groups["personId"] = $row["personId"];
 		$groups["groupId"] = $row["groupId"];
+		$groups["personId"] = $row["personId"];
 		$groups["gname"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
 		$groups["ginfo"] = html_entity_decode($row["info"], ENT_QUOTES, 'UTF-8');
 		$groups["gpicture"] = $row["picture"];
@@ -39,7 +39,7 @@ if(mysql_num_rows($result) > 0)
 	}
 
 	$response ["success"] = 1;
-	
+
 	echo json_encode($response);
 }
 else

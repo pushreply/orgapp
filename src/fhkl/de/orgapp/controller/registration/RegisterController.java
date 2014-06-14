@@ -1,6 +1,7 @@
 package fhkl.de.orgapp.controller.registration;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -116,11 +117,11 @@ public class RegisterController extends Activity {
 			if (lastName.length() == 0 || lastName.length() > 255) {
 				return IMessages.INVALID_LASTNAME;
 			}
-			
+
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET",
-					paramsCheck);
+			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person,
+					"GET", paramsCheck);
 
 			Log.d("Create Response", jsonCheck.toString());
 
@@ -130,21 +131,22 @@ public class RegisterController extends Activity {
 
 				if (success == 1) {
 					return IMessages.DUPLICATE_PERSON;
-				} 
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 
-			
 			// Building Parameters
 			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
 			paramsCreate.add(new BasicNameValuePair("eMail", eMail));
-			
-			//verschlüsselung
-			
+
+			// verschlüsselung
+
 			paramsCreate.add(new BasicNameValuePair("password", password));
 			paramsCreate.add(new BasicNameValuePair("firstName", firstName));
 			paramsCreate.add(new BasicNameValuePair("lastName", lastName));
+			paramsCreate
+					.add(new BasicNameValuePair("created", new Date().toString()));
 
 			// getting JSON Object
 			// Note that create person url accepts GET method

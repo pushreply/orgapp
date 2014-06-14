@@ -94,6 +94,7 @@ public class NewGroupController extends MenuActivity {
 		 * Creating group
 		 * */
 		protected String doInBackground(String... args) {
+			String personId = getIntent().getStringExtra("UserId");
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
@@ -124,6 +125,8 @@ public class NewGroupController extends MenuActivity {
 
 			// Building Parameters
 			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
+
+			paramsCreate.add(new BasicNameValuePair("personId", personId));
 			paramsCreate.add(new BasicNameValuePair("name", name));
 			paramsCreate.add(new BasicNameValuePair("info", info));
 
@@ -165,9 +168,7 @@ public class NewGroupController extends MenuActivity {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
 						.show();
 
-				
-			}
-			else {
+			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						NewGroupController.this);
 				builder.setMessage(IMessages.MEMBER_QUESTION);
