@@ -1,5 +1,7 @@
 package fhkl.de.orgapp.controller.registration;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,8 +147,10 @@ public class RegisterController extends Activity {
 			paramsCreate.add(new BasicNameValuePair("password", password));
 			paramsCreate.add(new BasicNameValuePair("firstName", firstName));
 			paramsCreate.add(new BasicNameValuePair("lastName", lastName));
-			paramsCreate
-					.add(new BasicNameValuePair("created", new Date().toString()));
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = new Date();
+			paramsCreate.add(new BasicNameValuePair("created", dateFormat
+					.format(date).toString()));
 
 			// getting JSON Object
 			// Note that create person url accepts GET method

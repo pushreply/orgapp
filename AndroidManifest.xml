@@ -37,7 +37,7 @@
             android:label="@string/CALENDAR" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.GroupController"
+            android:name="fhkl.de.orgapp.controller.groups.GroupsController"
             android:label="@string/GROUPS" >
         </activity>
         <activity

@@ -7,7 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
-import fhkl.de.orgapp.controller.groups.GroupController;
+import fhkl.de.orgapp.controller.groups.GroupsController;
 import fhkl.de.orgapp.controller.groups.NewGroupController;
 import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.notification.NotificationSettingsController;
@@ -25,7 +25,7 @@ public class MenuActivity extends Activity {
 		inflater.inflate(R.menu.main_menu, menu);
 		String nameCurrentController = getIntent().getComponent().getClassName();
 
-		if (nameCurrentController.equals(GroupController.class.getName())) {
+		if (nameCurrentController.equals(GroupsController.class.getName())) {
 			menu.findItem(R.id.NEW_GROUP).setVisible(true);
 		}
 
@@ -62,7 +62,7 @@ public class MenuActivity extends Activity {
 			menu.findItem(R.id.CALENDAR).setVisible(false);
 		}
 
-		if (nameCurrentController.equals(GroupController.class.getName())) {
+		if (nameCurrentController.equals(GroupsController.class.getName())) {
 			menu.findItem(R.id.GROUPS).setVisible(false);
 		}
 
@@ -75,7 +75,7 @@ public class MenuActivity extends Activity {
 		}
 
 		if (nameCurrentController.equals(CalendarController.class.getName())
-				|| nameCurrentController.equals(GroupController.class.getName())
+				|| nameCurrentController.equals(GroupsController.class.getName())
 				|| nameCurrentController.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.REFRESH).setVisible(true);
 		}
@@ -96,7 +96,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.GROUPS:
-			intent = new Intent(MenuActivity.this, GroupController.class);
+			intent = new Intent(MenuActivity.this, GroupsController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;

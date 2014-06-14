@@ -65,7 +65,7 @@ public class NewGroupController extends MenuActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(NewGroupController.this,
-						GroupController.class);
+						GroupsController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
 				startActivity(intent);
 			}

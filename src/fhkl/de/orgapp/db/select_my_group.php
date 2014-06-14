@@ -31,9 +31,9 @@ if(mysql_num_rows($result) > 0)
 		$group = array();
 		$groups["groupId"] = $row["groupId"];
 		$groups["personId"] = $row["personId"];
-		$groups["gname"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
-		$groups["ginfo"] = html_entity_decode($row["info"], ENT_QUOTES, 'UTF-8');
-		$groups["gpicture"] = $row["picture"];
+		$groups["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
+		$groups["info"] = html_entity_decode($row["info"], ENT_QUOTES, 'UTF-8');
+		$groups["picture"] = $row["picture"];
 
 		array_push($response["groups"], $groups);
 	}

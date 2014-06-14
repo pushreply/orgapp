@@ -22,7 +22,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 
-public class GroupController extends MenuActivity {
+public class GroupsController extends MenuActivity {
 
 	// Progress Dialog
 	private ProgressDialog pDialog;
@@ -34,11 +34,11 @@ public class GroupController extends MenuActivity {
 
 	// JSON nodes
 	private static final String TAG_SUCCESS = "success";
-	private static final String GROUP_ID = "GROUPID";
-	private static final String PERSON_ID = "PERSONID";
-	private static final String GROUP_NAME = "GROUPNAME";
-	private static final String GROUP_INFO = "GROUPINFO";
-	private static final String GROUP_PICTURE = "GROUP_PICTURE_URL";
+	private static final String TAG_GROUP_ID = "GROUPID";
+	private static final String TAG_PERSON_ID = "PERSONID";
+	private static final String TAG_GROUP_NAME = "GROUPNAME";
+	private static final String TAG_GROUP_INFO = "GROUPINFO";
+	private static final String TAG_GROUP_PICTURE = "GROUP_PICTURE_URL";
 
 	JSONArray groups = null;
 
@@ -56,7 +56,7 @@ public class GroupController extends MenuActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pDialog = new ProgressDialog(GroupController.this);
+			pDialog = new ProgressDialog(GroupsController.this);
 
 			if (getIntent().getStringExtra("Refresh") != null)
 				pDialog.setMessage(IMessages.UPDATING);
@@ -88,16 +88,16 @@ public class GroupController extends MenuActivity {
 
 						String groupId = c.getString("groupId");
 						String personId = c.getString("personId");
-						String gname = c.getString("gname");
-						String ginfo = c.getString("ginfo");
-						String gpic = c.getString("gpicture");
+						String name = c.getString("name");
+						String info = c.getString("info");
+						String pic = c.getString("picture");
 
 						HashMap<String, String> map = new HashMap<String, String>();
-						map.put(GROUP_ID, groupId);
-						map.put(PERSON_ID, personId);
-						map.put(GROUP_NAME, gname);
-						map.put(GROUP_INFO, ginfo);
-						map.put(GROUP_PICTURE, gpic);
+						map.put(TAG_GROUP_ID, groupId);
+						map.put(TAG_PERSON_ID, personId);
+						map.put(TAG_GROUP_NAME, name);
+						map.put(TAG_GROUP_INFO, info);
+						map.put(TAG_GROUP_PICTURE, pic);
 
 						groupList.add(map);
 					}
@@ -118,12 +118,12 @@ public class GroupController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					ListAdapter adapter = new SimpleAdapter(GroupController.this,
-							groupList, R.layout.group_item, new String[] { GROUP_ID,
-									GROUP_NAME }, new int[] { R.id.GROUPID, R.id.GROUPNAME });
+					ListAdapter adapter = new SimpleAdapter(GroupsController.this,
+							groupList, R.layout.groups_item, new String[] { TAG_GROUP_ID,
+									TAG_GROUP_NAME }, new int[] { R.id.GROUPID, R.id.GROUPNAME });
 
 					// update listview
-					ListView groupList = (ListView) findViewById(android.R.id.list);
+					ListView groupList = (ListView) findViewById(R.id.GROUPLISTVIEW);
 					groupList.setAdapter(adapter);
 				}
 			});
