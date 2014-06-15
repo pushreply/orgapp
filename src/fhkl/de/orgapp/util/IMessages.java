@@ -34,4 +34,6 @@ public interface IMessages {
 	public static final String PRIVATE_INFO_NOT_UPDATED = "You have to update your private information";
 	public static final String SECURITY_INFO_NOT_UPDATED = "You have to update your security information";
 	public static final String REQUIRED_FIELDS_NOT_COMPLETE = "You have to fill out the required fields";
+	public static final String MESSAGE_INVITE = "You have been invited to the following group: ";
+	public static final String MISSING_EMAIL = "E-Mail address missing";
 }

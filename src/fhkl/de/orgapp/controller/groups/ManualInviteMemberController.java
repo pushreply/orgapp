@@ -3,6 +3,7 @@ package fhkl.de.orgapp.controller.groups;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ public class ManualInviteMemberController extends Activity {
 	private static String URL_EXIST_USER = "http://pushrply.com/select_person_by_email.php";
 	private static String URL_USER_INVITED = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
+	private static String URL_SEND_NOTIFICATIONS = "http://pushrply.com/create_notification.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -94,7 +96,6 @@ public class ManualInviteMemberController extends Activity {
 						SingleGroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
 				intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-				System.out.println(getIntent().getStringExtra("GroupName"));
 				intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 				startActivity(intent);
 			}
@@ -213,13 +214,20 @@ public class ManualInviteMemberController extends Activity {
 
 		protected String doInBackground(String... params) {
 			int editTextLength = textLayout.getChildCount();
+			if (editTextLength == 0) {
+				return IMessages.MISSING_EMAIL;
+			}
 			String[] editTextArray = new String[editTextLength / 2];
 			for (int i = 0; i < editTextLength; i++) {
 				if (i % 2 == 0) {
 					EditText tmp = (EditText) textLayout.getChildAt(i);
 					if (i != 0) {
-						if (editTextArray[i / 2].contains(tmp.getText().toString())) {
+						System.out.println("I ist:" + i);
+						System.out.println(tmp.getText().toString());
+
+						if (Arrays.asList(editTextArray).contains(tmp.getText().toString())) {
 							// Duplicate Input
+							System.out.println("duplicate");
 							return IMessages.DUPLICATE_EMAIL;
 						} else {
 							editTextArray[i / 2] = tmp.getText().toString();
@@ -297,12 +305,24 @@ public class ManualInviteMemberController extends Activity {
 				try {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
-						Intent intent = new Intent(ManualInviteMemberController.this,
-								SingleGroupController.class);
-						intent.putExtra("UserId", personIdLoggedPerson);
-						startActivity(intent);
+						// Send Notifications
+						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
+						paramsNotification.add(new BasicNameValuePair("eMail",
+								editTextArray[i]));
+						paramsNotification
+								.add(new BasicNameValuePair("classification", "0"));
+						String message = IMessages.MESSAGE_INVITE
+								+ getIntent().getStringExtra("GroupName");
+						paramsNotification.add(new BasicNameValuePair("message", message));
+						paramsNotification.add(new BasicNameValuePair("syncInterval", "0"));
+						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET",
+								paramsNotification);
+						json.getInt(TAG_SUCCESS);
+						if (success != 1) {
+							// unknown error
+						}
 					} else {
-
+						// unknown error
 					}
 				} catch (JSONException e) {
 					System.out
@@ -310,9 +330,14 @@ public class ManualInviteMemberController extends Activity {
 									+ e.getMessage());
 					e.printStackTrace();
 				}
-
 			}
-
+			Intent intent = new Intent(ManualInviteMemberController.this,
+					SingleGroupController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
+			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
+			startActivity(intent);
+			startActivity(intent);
 			return null;
 		}
 

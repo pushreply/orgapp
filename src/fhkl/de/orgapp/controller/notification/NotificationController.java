@@ -28,7 +28,7 @@ public class NotificationController extends MenuActivity {
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> notificationList;
 
-	private static String url_Notifications = "http://pushrply.com/Notifications.php";
+	private static String url_Notifications = "http://pushrply.com/get_notifications.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MESSAGE = "MESSAGE";
@@ -49,12 +49,12 @@ public class NotificationController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NotificationController.this);
-			
-			if(getIntent().getStringExtra("Refresh") != null)
+
+			if (getIntent().getStringExtra("Refresh") != null)
 				pDialog.setMessage(IMessages.UPDATING);
 			else
 				pDialog.setMessage(IMessages.LOADING_NOTIFICATIONS);
-			
+
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
