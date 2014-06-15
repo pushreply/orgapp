@@ -13,10 +13,10 @@
     <string name="REGISTER">Register</string>
 
     <!-- Register/Login -->
-    <string name="EMAIL">email address</string>
+    <string name="EMAIL">Email address</string>
     <string name="PASSWORD">password</string>
-    <string name="FIRSTNAME">first name</string>
-    <string name="LASTNAME">last name</string>
+    <string name="FIRSTNAME">First name</string>
+    <string name="LASTNAME">Last name</string>
     
     <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
@@ -51,9 +51,11 @@
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
     <string name="LIST_EVENT_HISTORY">List of event history</string>
     <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
-    <string name="BIRTHDAY">birthday</string>
-    <string name="GENDER">gender</string>
-    <string name="MEMBER_SINCE">member since</string>
+    <string name="BIRTHDAY">Birthday</string>
+    <string name="GENDER">Gender</string>
+    <string name="MEMBER_SINCE">Member since</string>
+    <string name="CHANGE_INFO">Change information</string>
+    <string name="GENERAL_INFORMATION">General information</string>
     
     <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>
