@@ -32,6 +32,7 @@
     <string name="GROUP_SETTINGS">Group settings</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
+    <string name="ADD_EMAIL_FIELD">New E-Mail Field</string>
     <string name="MANUAL_INVITE">Invite</string>
     <string name="MANUAL_CANCEL">Cancel</string>
     <string name="LIST_INVITE">Invite</string>
