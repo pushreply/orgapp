@@ -12,12 +12,16 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,11 +33,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.notification.NotificationController;
+import fhkl.de.orgapp.controller.profile.ProfileController;
+import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.MenuActivity;
 
-public class ManualInviteMemberController extends MenuActivity {
+public class ManualInviteMemberController extends Activity {
 
 	private ProgressDialog pDialog;
 
@@ -50,7 +56,6 @@ public class ManualInviteMemberController extends MenuActivity {
 	GridLayout textLayout;
 	private String personIdLoggedPerson;
 
-	private ImageButton bAdd;
 	private Button bInvite;
 	private Button bCancel;
 
@@ -72,75 +77,124 @@ public class ManualInviteMemberController extends MenuActivity {
 		textLayout.setColumnCount(4);
 
 		containerLayout.addView(textLayout);
-		bAdd = (ImageButton) findViewById(R.id.ADD);
 		bInvite = (Button) findViewById(R.id.INVITE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
 
-		bAdd.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				Integer tmpCnt = Integer.valueOf(getIntent().getStringExtra("cnt")
-						.toString());
-
-				EditText editText = new EditText(ManualInviteMemberController.this);
-				editText.setId(tmpCnt);
-				editText.setInputType(InputType.TYPE_CLASS_TEXT
-						| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-				editText.setHint(R.string.EMAIL);
-
-				tmpCnt++;
-
-				ImageButton imageButton = new ImageButton(
-						ManualInviteMemberController.this);
-				imageButton.setId(tmpCnt);
-				imageButton.setImageResource(R.drawable.ic_action_remove);
-
-				tmpCnt++;
-				getIntent().putExtra("cnt", tmpCnt.toString());
-
-				textLayout.addView(editText);
-				LayoutParams layoutParams = (GridLayout.LayoutParams) editText
-						.getLayoutParams();
-				layoutParams.columnSpec = GridLayout.spec(0, 3);
-				layoutParams.setGravity(Gravity.FILL);
-				editText.setLayoutParams(layoutParams);
-
-				textLayout.addView(imageButton);
-				layoutParams = (GridLayout.LayoutParams) imageButton.getLayoutParams();
-				layoutParams.columnSpec = GridLayout.spec(3);
-				layoutParams.width = LayoutParams.WRAP_CONTENT;
-				layoutParams.height = LayoutParams.WRAP_CONTENT;
-				imageButton.setLayoutParams(layoutParams);
-
-				imageButton.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						textLayout.removeView(findViewById(v.getId() - 1));
-						textLayout.removeView(v);
-					}
-				});
-			}
-		});
-
 		bInvite.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View view) {
 				new InviteMembers().execute();
 			}
 		});
 
 		bCancel.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				// ToDo: CalendarController to single group controller
+			public void onClick(View view) {
 				Intent intent = new Intent(ManualInviteMemberController.this,
-						CalendarController.class);
+						SingleGroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
+				intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
+				System.out.println(getIntent().getStringExtra("GroupName"));
+				intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 				startActivity(intent);
 			}
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		menu.findItem(R.id.ADD_EMAIL_FIELD).setVisible(true);
+		menu.findItem(R.id.CALENDAR).setVisible(true);
+		menu.findItem(R.id.GROUPS).setVisible(true);
+		menu.findItem(R.id.NOTIFICATIONS).setVisible(true);
+		menu.findItem(R.id.PROFILE).setVisible(true);
+		menu.findItem(R.id.LOGOUT).setVisible(true);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+
+		switch (item.getItemId()) {
+		case R.id.CALENDAR:
+			intent = new Intent(ManualInviteMemberController.this,
+					CalendarController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+		case R.id.GROUPS:
+			intent = new Intent(ManualInviteMemberController.this,
+					GroupsController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+		case R.id.NOTIFICATIONS:
+			intent = new Intent(ManualInviteMemberController.this,
+					NotificationController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+		case R.id.PROFILE:
+			intent = new Intent(ManualInviteMemberController.this,
+					ProfileController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+		case R.id.LOGOUT:
+			intent = new Intent(ManualInviteMemberController.this,
+					StartController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+		case R.id.ADD_EMAIL_FIELD:
+			Integer tmpCnt = Integer.valueOf(getIntent().getStringExtra("cnt")
+					.toString());
+
+			EditText editText = new EditText(ManualInviteMemberController.this);
+			editText.setId(tmpCnt);
+			editText.setInputType(InputType.TYPE_CLASS_TEXT
+					| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+			editText.setHint(R.string.EMAIL);
+
+			tmpCnt++;
+
+			ImageButton imageButton = new ImageButton(
+					ManualInviteMemberController.this);
+			imageButton.setId(tmpCnt);
+			imageButton.setImageResource(R.drawable.ic_action_remove);
+
+			tmpCnt++;
+			getIntent().putExtra("cnt", tmpCnt.toString());
+
+			textLayout.addView(editText);
+			LayoutParams layoutParams = (GridLayout.LayoutParams) editText
+					.getLayoutParams();
+			layoutParams.columnSpec = GridLayout.spec(0, 3);
+			layoutParams.setGravity(Gravity.FILL);
+			editText.setLayoutParams(layoutParams);
+
+			textLayout.addView(imageButton);
+			layoutParams = (GridLayout.LayoutParams) imageButton.getLayoutParams();
+			layoutParams.columnSpec = GridLayout.spec(3);
+			layoutParams.width = LayoutParams.WRAP_CONTENT;
+			layoutParams.height = LayoutParams.WRAP_CONTENT;
+			imageButton.setLayoutParams(layoutParams);
+
+			imageButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					textLayout.removeView(findViewById(v.getId() - 1));
+					textLayout.removeView(v);
+				}
+			});
+			return true;
+		default:
+			return true;
+		}
 	}
 
 	class InviteMembers extends AsyncTask<String, String, String> {
@@ -244,7 +298,7 @@ public class ManualInviteMemberController extends MenuActivity {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						Intent intent = new Intent(ManualInviteMemberController.this,
-								GroupsController.class);
+								SingleGroupController.class);
 						intent.putExtra("UserId", personIdLoggedPerson);
 						startActivity(intent);
 					} else {

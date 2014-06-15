@@ -204,6 +204,8 @@ public class NewGroupController extends MenuActivity {
 								ManualInviteMemberController.class);
 						intent.putExtra("UserId", personIdLoggedPerson);
 						intent.putExtra("GroupId", groupId);
+						EditText inputName = (EditText) findViewById(R.id.NAME);
+						intent.putExtra("GroupName", inputName.getText().toString());
 						startActivity(intent);
 					}
 				});

@@ -28,30 +28,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:text="@string/MANUAL_CANCEL" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <ImageButton
-                android:id="@+id/ADD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/INVITE_MEMBER"
-                android:src="@drawable/ic_action_new" />
-
-            <TextView
-                android:id="@+id/INVITE_MEMBER"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/INVITE_MEMBER" />
-        </LinearLayout>
-
-        <LinearLayout
+        <LinearLayout
             android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

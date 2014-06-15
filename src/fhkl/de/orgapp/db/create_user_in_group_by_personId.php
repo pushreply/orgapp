@@ -15,7 +15,11 @@ $personId = $_GET ['personId'];
 $groupId = $_GET ['groupId'];
 $memberSince = $_GET ['memberSince'];
 
-$result = mysql_query ( "Insert into privilege(personId, groupId, memberSince) values('$personId', '$groupId', '$memberSince')" ) or die ( mysql_error () );
+$result = mysql_query ( "Insert into privilege(personId, groupId, memberSince,
+		privilegeManagement, memberInvitation, memberlistEditing,
+		eventCreation, eventEditing, eventDeleting, commentEdition,
+		commentDeleting)
+		values('$personId', '$groupId', '$memberSince', true, true, true, true, true, true, true, true)" ) or die ( mysql_error () );
 if ($result) {
 	// successfully inserted into database
 	$response ["success"] = "1";

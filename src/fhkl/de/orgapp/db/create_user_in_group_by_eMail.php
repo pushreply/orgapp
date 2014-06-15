@@ -18,7 +18,12 @@ require_once __DIR__ . '/db_connect.php';
 $db = new DB_CONNECT ();
 
 // mysql inserting a new row
-$result = mysql_query ( "INSERT INTO privilege(personId, groupId, memberSince) VALUES((select personId from person where eMail = '$eMail'), '$groupId', '$memberSince')" );
+$result = mysql_query ( "INSERT INTO privilege(personId, groupId, memberSince,
+		privilegeManagement, memberInvitation, memberlistEditing,
+		eventCreation, eventEditing, eventDeleting, commentEdition,
+		commentDeleting)
+		VALUES((select personId from person where eMail = '$eMail'), '$groupId', '$memberSince',
+		true, true, true, true, true, true, true, true)" );
 
 // check if row inserted or not
 if ($result) {
