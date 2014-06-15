@@ -14,7 +14,7 @@ require_once __DIR__ .'/db_connect.php';
 $db = new DB_CONNECT ();
 
 $groupId = $_GET ['groupId'];
-$eMail = $_GET ['eMail'];
+$eMail = htmlentities($_GET ['eMail']);
 $result = mysql_query("SELECT * FROM privilege p, person pers WHERE p.groupId = '$groupId'
 		 and p.personId = pers.personId and pers.eMail = '$eMail'") or die(mysql_error());
 

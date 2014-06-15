@@ -12,10 +12,10 @@ if (isset ( $_GET ['eMail'] ) && isset ( $_GET ['password'] ) &&
 	isset ( $_GET ['firstName'] ) && isset ( $_GET ['lastName'])) {
 
 
-	$eMail = $_GET ['eMail'];
+	$eMail = htmlentities($_GET ['eMail']);
 	$password = $_GET ['password'];
-	$firstName = $_GET ['firstName'];
-	$lastName = $_GET ['lastName'];
+	$firstName = htmlentities($_GET ['firstName']);
+	$lastName = htmlentities($_GET ['lastName']);
 	$created = $_GET ['created'];
 
 

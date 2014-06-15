@@ -14,8 +14,8 @@ if (isset ( $_GET ['name'] ) && isset ( $_GET ['info'] )) {
 	$db = new DB_CONNECT ();
 
 	$personId = $_GET ['personId'];
-	$name = $_GET ['name'];
-	$info = $_GET ['info'];
+	$name = htmlentities($_GET ['name']);
+	$info = htmlentities($_GET ['info']);
 
 	$result = mysql_query ( "Insert into groups(personId, name, info) values('$personId', '$name', '$info')" ) or die ( mysql_error () );
 	if ($result) {

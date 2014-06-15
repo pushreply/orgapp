@@ -8,7 +8,7 @@
 $response = array ();
 
 $groupId = $_GET ['groupId'];
-$eMail = $_GET ['eMail'];
+$eMail = htmlentities($_GET ['eMail']);
 $memberSince = $_GET ['memberSince'];
 
 // include db connect class

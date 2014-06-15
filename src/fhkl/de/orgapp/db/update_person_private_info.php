@@ -19,8 +19,8 @@ require_once __DIR__ .'/db_connect.php';
 $db = new DB_CONNECT ();
 
 $personId = $_GET['personId'];
-$firstName = $_GET['firstName'];
-$lastName = $_GET['lastName'];
+$firstName = htmlentities($_GET['firstName']);
+$lastName = htmlentities($_GET['lastName']);
 $birthday = $_GET['birthday'];
 $gender = $_GET['gender'];
 
@@ -31,7 +31,7 @@ $result = mysql_query("UPDATE person
 if($result == 1)
 {
 	$response ["success"] = 1;
-	
+
 	echo json_encode($response);
 }
 else

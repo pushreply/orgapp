@@ -7,9 +7,9 @@
 // array for JSON response
 $response = array ();
 
-$eMail = $_GET ['eMail'];
+$eMail = htmlentities($_GET ['eMail']);
 $classification = $_GET ['classification'];
-$message = $_GET ['message'];
+$message = htmlentities($_GET ['message']);
 $syncInterval = $_GET ['syncInterval'];
 
 // include db connect class

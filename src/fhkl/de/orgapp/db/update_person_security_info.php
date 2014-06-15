@@ -19,14 +19,14 @@ require_once __DIR__ .'/db_connect.php';
 $db = new DB_CONNECT ();
 
 $personId = $_GET['personId'];
-$eMail = $_GET['eMail'];
+$eMail = htmlentities($_GET['eMail']);
 
 $result = mysql_query("UPDATE person SET eMail = '$eMail' WHERE personId = '$personId'") or die(mysql_error());
 
 if($result == 1)
 {
 	$response ["success"] = 1;
-	
+
 	echo json_encode($response);
 }
 else
