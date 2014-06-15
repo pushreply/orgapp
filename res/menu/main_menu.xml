@@ -9,13 +9,40 @@
         android:title="@string/NEW_GROUP"
         android:visible="false"/>
     <item
-        android:id="@+id/INVITE_MEMBER"
-        android:icon="@drawable/ic_action_new"
+        android:id="@+id/GROUP_SETTINGS"
+        android:icon="@drawable/ic_action_settings"
         android:menuCategory="system"
         android:orderInCategory="4"
         android:showAsAction="ifRoom"
-        android:title="@string/INVITE_MEMBER"
-        android:visible="false"/>
+        android:title="@string/GROUP_SETTINGS"
+        android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/CREATE_EVENT"
+                android:title="@string/CREATE_EVENT"
+                android:visible="false"/>
+            <item
+                android:id="@+id/EDIT_GROUP"
+                android:title="@string/EDIT_GROUP"
+                android:visible="false"/>
+            <item
+                android:id="@+id/DELETE_GROUP"
+                android:title="@string/DELETE_GROUP"
+                android:visible="false"/>
+            <item
+                android:id="@+id/LEAVE_GROUP"
+                android:title="@string/LEAVE_GROUP"
+                android:visible="false"/>
+            <item
+                android:id="@+id/MEMBER_LIST"
+                android:title="@string/MEMBER_LIST"
+                android:visible="false"/>
+            <item
+                android:id="@+id/INVITE_MEMBER"
+                android:title="@string/INVITE_MEMBER"
+                android:visible="false"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/NOTIFICATION_SETTINGS"
         android:icon="@drawable/ic_action_settings"

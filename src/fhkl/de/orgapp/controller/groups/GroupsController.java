@@ -11,12 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
@@ -26,6 +30,7 @@ public class GroupsController extends MenuActivity {
 
 	// Progress Dialog
 	private ProgressDialog pDialog;
+	private String personIdLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> groupList;
@@ -123,7 +128,30 @@ public class GroupsController extends MenuActivity {
 									TAG_GROUP_NAME }, new int[] { R.id.GROUPID, R.id.GROUPNAME });
 
 					// update listview
-					ListView groupList = (ListView) findViewById(R.id.GROUPLISTVIEW);
+					final ListView groupList = (ListView) findViewById(android.R.id.list);
+
+					groupList
+							.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(AdapterView<?> parent, View view,
+										int position, long id) {
+									Intent intent = new Intent(GroupsController.this,
+											SingleGroupController.class);
+									personIdLoggedPerson = getIntent().getStringExtra("UserId");
+									TextView tv = (TextView) view.findViewById(R.id.GROUPID);
+									String groupId = tv.getText().toString();
+									TextView tv2 = (TextView) view.findViewById(R.id.GROUPNAME);
+									String groupName = tv2.getText().toString();
+									System.out.println(groupName);
+									intent.putExtra("UserId", personIdLoggedPerson);
+									intent.putExtra("GroupId", groupId);
+									intent.putExtra("GroupName", groupName);
+									startActivity(intent);
+
+								}
+
+							});
 					groupList.setAdapter(adapter);
 				}
 			});

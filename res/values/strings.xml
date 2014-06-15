@@ -29,13 +29,19 @@
     
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
+    <string name="GROUP_SETTINGS">Group settings</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
-    <string name="INVITE_MEMBER">Invite new members</string>
     <string name="MANUAL_INVITE">Invite</string>
     <string name="MANUAL_CANCEL">Cancel</string>
     <string name="LIST_INVITE">Invite</string>
     <string name="LIST_CANCEL">Cancel</string>
+    <string name="CREATE_EVENT">Create new event</string>
+    <string name="EDIT_GROUP">Edit group</string>
+    <string name="DELETE_GROUP">Delete group</string>
+    <string name="LEAVE_GROUP">Leave group</string>
+    <string name="MEMBER_LIST">Show member list</string>
+    <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>

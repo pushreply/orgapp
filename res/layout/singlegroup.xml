@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/SINGLEGROUP_LINEARLAYOUT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/GROUPID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

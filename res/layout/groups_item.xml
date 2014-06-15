@@ -4,11 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
     
-	<ImageButton
-	    android:id="@+id/DELETEGROUPBUTTON"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:src="@drawable/ic_action_discard" />
 
 	<TextView
 	    android:id="@+id/GROUPID"
