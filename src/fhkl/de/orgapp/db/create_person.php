@@ -33,7 +33,7 @@ if (isset ( $_GET ['eMail'] ) && isset ( $_GET ['password'] ) &&
 	// check if row inserted or not
 	if ($result) {
 		// successfully inserted into database
-		$response ["success"] = 1;
+		$response ["success"] = mysql_insert_id();
 		$response ["message"] = "Person successfully created.";
 
 		// echoing JSON response

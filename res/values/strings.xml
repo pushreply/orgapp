@@ -47,6 +47,24 @@
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>
     
+    <!-- Notifications Settings -->
+    
+    <string name="RECEIVED_NOTIFICATIONS">When would you like to receive notifications?</string>
+    <string name="GROUP_INVITES">Group invites</string>
+    <string name="GROUP_EDITED">Group edited</string>
+    <string name="GROUP_REMOVED">Group removed</string>
+    <string name="EVENTS_ADDED">Events added</string>
+    <string name="EVENTS_EDITED">Events edited</string>
+    <string name="EVENTS_REMOVED">Events removed</string>
+    <string name="COMMENTS_ADDED">Comments added</string>
+    <string name="COMMENTS_EDITED">Comments edited</string>
+    <string name="COMMENTS_REMOVED">Comments removed</string>
+    <string name="PRIVILEGES_GIVEN">Privileges given</string>
+    <string name="RECEIVED_ENTRIES">How much entries would you like to see?</string>
+    <string name="NUMBER_ENTRIES">Number of entries</string>
+    <string name="NOTIFICATION_SETTINGS_SAVE">Save</string>
+    <string name="NOTIFICATION_SETTINGS_CANCEL">Cancel</string>
+    
     <!-- Profil -->
     <string name="PROFILE_SETTINGS">Settings</string>
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>

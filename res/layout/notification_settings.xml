@@ -1,12 +1,123 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@+string/app_name" />
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/RECEIVED_NOTIFICATIONS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/RECEIVED_NOTIFICATIONS" />
+
+        <CheckBox
+            android:id="@+id/GROUP_INVITES"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GROUP_INVITES" />
+
+        <CheckBox
+            android:id="@+id/GROUP_EDITED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GROUP_EDITED" />
+
+        <CheckBox
+            android:id="@+id/GROUP_REMOVED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/GROUP_REMOVED" />
+
+        <CheckBox
+            android:id="@+id/EVENTS_ADDED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTS_ADDED" />
+
+        <CheckBox
+            android:id="@+id/EVENTS_EDITED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTS_EDITED" />
+
+        <CheckBox
+            android:id="@+id/EVENTS_REMOVED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTS_REMOVED" />
+
+        <CheckBox
+            android:id="@+id/COMMENTS_ADDED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/COMMENTS_ADDED" />
+
+        <CheckBox
+            android:id="@+id/COMMENTS_REMOVED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/COMMENTS_REMOVED" />
+
+        <CheckBox
+            android:id="@+id/COMMENTS_EDITED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/COMMENTS_EDITED" />
+
+        <CheckBox
+            android:id="@+id/PRIVILEGES_GIVEN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/PRIVILEGES_GIVEN" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:layout_marginBottom="10dip"
+            android:background="#000000"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <TextView
+            android:id="@+id/RECEIVED_ENTRIES"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/RECEIVED_ENTRIES" />
+
+        <EditText
+            android:id="@+id/NUMBER_ENTRIES"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/NUMBER_ENTRIES"
+            android:inputType="number" >
+
+           
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/NOTIFICATION_SETTINGS_SAVE"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/NOTIFICATION_SETTINGS_SAVE" />
+
+            <Button
+                android:id="@+id/NOTIFICATION_SETTINGS_CANCEL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/NOTIFICATION_SETTINGS_CANCEL" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

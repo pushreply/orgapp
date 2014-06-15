@@ -40,6 +40,7 @@ public class RegisterController extends Activity {
 	// url to check existing person and create new person
 	private static String url_check_person = "http://pushrply.com/select_person_by_email.php";
 	private static String url_create_person = "http://pushrply.com/create_person.php";
+	private static String url_create_notification_settings = "http://pushrply.com/create_notification_settings.php";
 
 	// JSON Node names
 	private static final String TAG_SUCCESS = "success";
@@ -162,12 +163,23 @@ public class RegisterController extends Activity {
 
 			// check for success tag
 			try {
-				int success = json.getInt(TAG_SUCCESS);
+				Integer success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1) {
+				if (success != 0) {
 					// successfully created person
-					Intent i = new Intent(getApplicationContext(), LoginController.class);
-					startActivity(i);
+					List<NameValuePair> paramsSettings = new ArrayList<NameValuePair>();
+					paramsSettings.add(new BasicNameValuePair("personId", success
+							.toString()));
+					json = jsonParser.makeHttpRequest(url_create_notification_settings,
+							"GET", paramsSettings);
+					json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+						Intent i = new Intent(getApplicationContext(),
+								LoginController.class);
+						startActivity(i);
+					} else {
+						// failed to create notification settings
+					}
 
 					// closing this screen
 					finish();

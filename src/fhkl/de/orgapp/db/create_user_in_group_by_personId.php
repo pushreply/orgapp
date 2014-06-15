@@ -17,7 +17,7 @@ $memberSince = $_GET ['memberSince'];
 
 $result = mysql_query ( "Insert into privilege(personId, groupId, memberSince,
 		privilegeManagement, memberInvitation, memberlistEditing,
-		eventCreation, eventEditing, eventDeleting, commentEdition,
+		eventCreating, eventEditing, eventDeleting, commentEditing,
 		commentDeleting)
 		values('$personId', '$groupId', '$memberSince', true, true, true, true, true, true, true, true)" ) or die ( mysql_error () );
 if ($result) {

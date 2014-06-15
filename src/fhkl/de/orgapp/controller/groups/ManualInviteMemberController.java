@@ -314,7 +314,8 @@ public class ManualInviteMemberController extends Activity {
 						String message = IMessages.MESSAGE_INVITE
 								+ getIntent().getStringExtra("GroupName");
 						paramsNotification.add(new BasicNameValuePair("message", message));
-						paramsNotification.add(new BasicNameValuePair("syncInterval", "0"));
+						paramsNotification
+								.add(new BasicNameValuePair("syncInterval", null));
 						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET",
 								paramsNotification);
 						json.getInt(TAG_SUCCESS);

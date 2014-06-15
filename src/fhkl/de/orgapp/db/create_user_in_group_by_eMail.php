@@ -20,7 +20,7 @@ $db = new DB_CONNECT ();
 // mysql inserting a new row
 $result = mysql_query ( "INSERT INTO privilege(personId, groupId, memberSince,
 		privilegeManagement, memberInvitation, memberlistEditing,
-		eventCreation, eventEditing, eventDeleting, commentEdition,
+		eventCreating, eventEditing, eventDeleting, commentEditing,
 		commentDeleting)
 		VALUES((select personId from person where eMail = '$eMail'), '$groupId', '$memberSince',
 		true, true, true, true, true, true, true, true)" );
