@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:stretchColumns="*" >
     
-    <TextView
+    <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/SECURITY_INFO_TEXT_EMAIL"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/SECURITY_INFO_USER_EMAIL"
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="show security information" />
-
-</LinearLayout>
+			android:inputType="textEmailAddress" />
+       
+   </TableRow>
+   
+   <TableRow
+     	android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+       
+   		<Button
+   		    android:id="@+id/CHANGE_SECURITY_INFO_BUTTON"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="changeSecurityInfo" />
+   		
+   		<Button
+   		    android:id="@+id/CANCEL_SECURITY_INFO_VIEW"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="cancelSecurityInfoView" />
+   </TableRow>
+   
+</TableLayout>

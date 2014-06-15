@@ -1,11 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:stretchColumns="*" >
     
-    <TextView
+    <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/PRIVATE_INFO_TEXT_FIRST_NAME"
         	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="show private information" />
-
-</LinearLayout>
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/PRIVATE_INFO_USER_FIRST_NAME"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/PRIVATE_INFO_TEXT_LAST_NAME"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/PRIVATE_INFO_USER_LAST_NAME"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/PRIVATE_INFO_TEXT_BIRTHDAY"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/PRIVATE_INFO_USER_BIRTHDAY"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/PRIVATE_INFO_TEXT_GENDER"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/PRIVATE_INFO_USER_GENDER"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+       
+   </TableRow>
+   
+   <TableRow
+     	android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+       
+   		<Button
+   		    android:id="@+id/CHANGE_PRIVATE_INFO_BUTTON"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="changePrivateInfo" />
+   		
+   		<Button
+   		    android:id="@+id/CANCEL_PRIVATE_INFO_VIEW"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="cancelPrivateInfoView" />
+   </TableRow>
+   
+</TableLayout>
