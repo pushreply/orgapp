@@ -25,4 +25,13 @@ public interface IMessages {
 	public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 	public static final String EXIST_USER = "User does not exist: ";
 	public static final String USER_INVITED = "User already invited";
+	public static final String LOADING_PRIVATE_INFO = "Loading private information...";
+	public static final String LOADING_SECURITY_INFO = "Loading security information...";
+	public static final String UPDATING_PRIVATE_INFO = "Updating private information...";
+	public static final String UPDATING_SECURITY_INFO = "Updating security information...";
+	public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
+	public static final String UPDATE_WAS_NOT_SUCCESSFUL = "Update was not successful";
+	public static final String PRIVATE_INFO_NOT_UPDATED = "You have to update your private information";
+	public static final String SECURITY_INFO_NOT_UPDATED = "You have to update your security information";
+	public static final String REQUIRED_FIELDS_NOT_COMPLETE = "You have to fill out the required fields";
 }
