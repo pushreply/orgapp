@@ -25,8 +25,8 @@ public class ProfileController extends MenuActivity
 	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person_by_personId.php";
 	private JSONObject person = null;
 	
-	TextView textFirstName, textLastName, textBirthday, textGender, textMemberSince, textPassword, textPrivateInformation, textSecurityInformation;
-	TextView firstName, lastName, birthday, gender, memberSince, password;
+	TextView textFirstName, textLastName, textBirthday, textGender, textMemberSince, textEmail, textPrivateInformation, textSecurityInformation, textGeneralInformation;
+	TextView firstName, lastName, birthday, gender, email, memberSince;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -38,22 +38,23 @@ public class ProfileController extends MenuActivity
 		textLastName = (TextView) findViewById(R.id.TEXT_LAST_NAME);
 		textBirthday = (TextView) findViewById(R.id.TEXT_BIRTHDAY);
 		textGender = (TextView) findViewById(R.id.TEXT_GENDER);
+		textEmail = (TextView) findViewById(R.id.TEXT_EMAIL_PROFIL);
 		textMemberSince = (TextView) findViewById(R.id.TEXT_MEMBER_SINCE);
-		textPassword = (TextView) findViewById(R.id.TEXT_PASSWORD_PROFIL);
 		textPrivateInformation = (TextView) findViewById(R.id.TEXT_PRIVATE_INFORMATION);
 		textSecurityInformation = (TextView) findViewById(R.id.TEXT_SECURITY_INFORMATION);
+		textGeneralInformation = (TextView) findViewById(R.id.TEXT_GENERAL_INFORMATION);
 		
 		firstName = (TextView) findViewById(R.id.USER_FIRST_NAME);
 		lastName = (TextView) findViewById(R.id.USER_LAST_NAME);
 		birthday = (TextView) findViewById(R.id.USER_BIRTHDAY);
 		gender = (TextView) findViewById(R.id.USER_GENDER);
+		email = (TextView) findViewById(R.id.USER_EMAIL_PROFIL);
 		memberSince = (TextView) findViewById(R.id.USER_MEMBER_SINCE);
-		password = (TextView) findViewById(R.id.USER_PASSWORD_PROFIL);
 		
-		new UserData().execute();
+		new UserDataGetter().execute();
 	}
 	
-	class UserData extends AsyncTask<String, String, String>
+	class UserDataGetter extends AsyncTask<String, String, String>
 	{
 		@Override
 		protected void onPreExecute()
@@ -88,15 +89,15 @@ public class ProfileController extends MenuActivity
 					result += ", " + person.getString("lastName");
 					result += ", " + person.getString("birthday");
 					result += ", " + person.getString("gender");
-					result += ", "; //member sice, TODO wie in der Datenbank speichern?
-					result += ", " + person.getString("password");
+					result += ", " + person.getString("eMail");
+					result += ", " + person.getString("created");
 					
 					return result;
 				}
 			}
 			catch(Exception e)
 			{
-				System.out.println("Error in UserData.doInBackground(String... arg0): " + e.getMessage());
+				System.out.println("Error in UserDataGetter.doInBackground(String... arg0): " + e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -131,17 +132,21 @@ public class ProfileController extends MenuActivity
 			textLastName.setText(getString(R.string.LASTNAME) + ":");
 			textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
 			textGender.setText(getString(R.string.GENDER) + ":");
-			textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
+			
 			textSecurityInformation.setText(R.string.SECURITY_INFORMATION);
 			textSecurityInformation.setPaintFlags(textSecurityInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-			textPassword.setText(getString(R.string.PASSWORD) + ":");
+			textEmail.setText(getString(R.string.EMAIL) + ":");
+			
+			textGeneralInformation.setText(R.string.GENERAL_INFORMATION);
+			textGeneralInformation.setPaintFlags(textGeneralInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
 			
 			firstName.setText(datas[0]);
 			lastName.setText(datas[1]);
 			birthday.setText(datas[2]);
 			gender.setText(datas[3]);
-			memberSince.setText(datas[4]);
-			password.setText(datas[5]);
+			email.setText(datas[4]);
+			memberSince.setText(datas[5]);
 		}
 		
 		private void setTextSizes()
@@ -151,20 +156,21 @@ public class ProfileController extends MenuActivity
 			
 			textPrivateInformation.setTextSize(sectionTextSize);
 			textSecurityInformation.setTextSize(sectionTextSize);
+			textGeneralInformation.setTextSize(sectionTextSize);
 			
 			textFirstName.setTextSize(userTextSize);
 			textLastName.setTextSize(userTextSize);
 			textBirthday.setTextSize(userTextSize);
 			textGender.setTextSize(userTextSize);
+			textEmail.setTextSize(userTextSize);
 			textMemberSince.setTextSize(userTextSize);
-			textPassword.setTextSize(userTextSize);
 			
 			firstName.setTextSize(userTextSize);
 			lastName.setTextSize(userTextSize);
 			birthday.setTextSize(userTextSize);
 			gender.setTextSize(userTextSize);
+			email.setTextSize(userTextSize);
 			memberSince.setTextSize(userTextSize);
-			password.setTextSize(userTextSize);
 		}
 	}
 }
