@@ -31,6 +31,7 @@ public class NotificationSettingsController extends MenuActivity {
 	private ProgressDialog pDialog;
 
 	private static String URL_SELECT_NOTIFICATION_SETTINGS = "http://pushrply.com/get_notification_settings.php";
+	private static String URL_UPDATE_NOTIFICATION_SETTINGS = "http://pushrply.com/update_notification_settings.php";
 	private static final String TAG_SUCCESS = "success";
 
 	CheckBox groupInvites, groupEdited, groupRemoved, eventsAdded, eventsEdited,
@@ -46,6 +47,7 @@ public class NotificationSettingsController extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notification_settings);
 
+		personIdLoggedPerson = getIntent().getStringExtra("UserId");
 		groupInvites = (CheckBox) findViewById(R.id.GROUP_INVITES);
 		groupEdited = (CheckBox) findViewById(R.id.GROUP_EDITED);
 		groupRemoved = (CheckBox) findViewById(R.id.GROUP_REMOVED);
@@ -62,12 +64,13 @@ public class NotificationSettingsController extends MenuActivity {
 		bSave = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_SAVE);
 		bCancel = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_CANCEL);
 
-		new SaveSettings().execute();
+		new GetSettings().execute();
 
 		bSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 
+				new SaveSettings().execute();
 			}
 		});
 
@@ -82,13 +85,13 @@ public class NotificationSettingsController extends MenuActivity {
 		});
 	}
 
-	class SaveSettings extends AsyncTask<String, String, String> {
+	class GetSettings extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NotificationSettingsController.this);
-			pDialog.setMessage(IMessages.SAVING_SETTINGS);
+			pDialog.setMessage(IMessages.LOADING_NOTIFICATION_SETTINGS);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -181,4 +184,78 @@ public class NotificationSettingsController extends MenuActivity {
 
 		}
 	}
+
+	class SaveSettings extends AsyncTask<String, String, String> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(NotificationSettingsController.this);
+			pDialog.setMessage(IMessages.SAVING_SETTINGS);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(false);
+			pDialog.show();
+		}
+
+		protected String doInBackground(String... args) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
+					"UserId")));
+			System.out.println(numberEntries.getText().toString());
+			params.add(new BasicNameValuePair("shownEntries", numberEntries.getText()
+					.toString()));
+
+			params.add(new BasicNameValuePair("groupInvites", groupInvites
+					.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("groupEdited",
+					groupEdited.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("groupRemoved", groupRemoved
+					.isChecked() == true ? "1" : "0"));
+
+			params.add(new BasicNameValuePair("eventsAdded",
+					eventsAdded.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("eventsEdited", eventsEdited
+					.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("eventsRemoved", eventsRemoved
+					.isChecked() == true ? "1" : "0"));
+
+			params.add(new BasicNameValuePair("commentsAdded", commentsAdded
+					.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("commentsEdited", commentsEdited
+					.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("commentsRemoved", commentsRemoved
+					.isChecked() == true ? "1" : "0"));
+
+			params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven
+					.isChecked() == true ? "1" : "0"));
+
+			JSONObject json = new JSONParser().makeHttpRequest(
+					URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+
+				if (success == 1) {
+					Intent intent = new Intent(NotificationSettingsController.this,
+							NotificationController.class);
+					intent.putExtra("UserId", personIdLoggedPerson);
+					startActivity(intent);
+				} else {
+					// unknown error
+				}
+			} catch (Exception e) {
+				System.out
+						.println("Error in SaveSettings.doInBackground(String... args): "
+								+ e.getMessage());
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		protected void onPostExecute(String result) {
+			pDialog.dismiss();
+		}
+	}
+
 }

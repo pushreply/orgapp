@@ -37,4 +37,5 @@ public interface IMessages {
 	public static final String MESSAGE_INVITE = "You have been invited to the following group: ";
 	public static final String MISSING_EMAIL = "E-Mail address missing";
 	public static final String SAVING_SETTINGS = "Saving settings";
+	public static final String LOADING_NOTIFICATION_SETTINGS = "Loading notification settings...";
 }
