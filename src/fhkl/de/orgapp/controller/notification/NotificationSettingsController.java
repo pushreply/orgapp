@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -15,7 +16,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
@@ -36,7 +39,7 @@ public class NotificationSettingsController extends MenuActivity {
 
 	CheckBox groupInvites, groupEdited, groupRemoved, eventsAdded, eventsEdited,
 			eventsRemoved, commentsAdded, commentsEdited, commentsRemoved,
-			privilegeGiven;
+			privilegeGiven, received_entries;
 	EditText numberEntries;
 	Button bSave, bCancel;
 
@@ -58,11 +61,27 @@ public class NotificationSettingsController extends MenuActivity {
 		commentsEdited = (CheckBox) findViewById(R.id.COMMENTS_EDITED);
 		commentsRemoved = (CheckBox) findViewById(R.id.COMMENTS_REMOVED);
 		privilegeGiven = (CheckBox) findViewById(R.id.PRIVILEGES_GIVEN);
+		received_entries = (CheckBox) findViewById(R.id.RECEIVED_ENTRIES);
 
 		numberEntries = (EditText) findViewById(R.id.NUMBER_ENTRIES);
 
 		bSave = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_SAVE);
 		bCancel = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_CANCEL);
+
+		received_entries
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+
+						if (isChecked == true) {
+							numberEntries.setVisibility(View.VISIBLE);
+						} else {
+							numberEntries.setVisibility(View.GONE);
+						}
+					}
+				});
 
 		new GetSettings().execute();
 
@@ -136,7 +155,11 @@ public class NotificationSettingsController extends MenuActivity {
 					result += notificationSettings.getInt("privilegeGiven") == 1 ? "true"
 							+ ", " : "false" + ", ";
 
-					result += notificationSettings.getInt("shownEntries");
+					try {
+						result += notificationSettings.getInt("shownEntries");
+					} catch (Exception e) {
+						result += "null";
+					}
 
 					return result;
 				} else {
@@ -180,7 +203,13 @@ public class NotificationSettingsController extends MenuActivity {
 			commentsRemoved.setChecked(Boolean.parseBoolean(datas[8]));
 			privilegeGiven.setChecked(Boolean.parseBoolean(datas[9]));
 
-			numberEntries.setText(datas[10]);
+			if (!datas[10].equals("null")) {
+				received_entries.setChecked(true);
+				numberEntries.setText(datas[10]);
+				numberEntries.setVisibility(View.VISIBLE);
+			} else {
+				numberEntries.setVisibility(View.GONE);
+			}
 
 		}
 	}
@@ -201,9 +230,20 @@ public class NotificationSettingsController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
 					"UserId")));
-			System.out.println(numberEntries.getText().toString());
-			params.add(new BasicNameValuePair("shownEntries", numberEntries.getText()
-					.toString()));
+
+			if (received_entries.isChecked() == true) {
+				Integer shownEntries;
+				try {
+					shownEntries = Integer.valueOf(numberEntries.getText().toString());
+					if (shownEntries > Integer.MAX_VALUE) {
+						return IMessages.INVALID_NUMBER;
+					}
+				} catch (NumberFormatException e) {
+					return IMessages.INVALID_NUMBER;
+				}
+				params.add(new BasicNameValuePair("shownEntries", numberEntries
+						.getText().toString()));
+			}
 
 			params.add(new BasicNameValuePair("groupInvites", groupInvites
 					.isChecked() == true ? "1" : "0"));
@@ -229,10 +269,11 @@ public class NotificationSettingsController extends MenuActivity {
 			params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven
 					.isChecked() == true ? "1" : "0"));
 
-			JSONObject json = new JSONParser().makeHttpRequest(
-					URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
-
 			try {
+				System.out.println("fehler hier");
+				JSONObject json = new JSONParser().makeHttpRequest(
+						URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
+				System.out.println("fehler hier");
 				int success = json.getInt(TAG_SUCCESS);
 
 				if (success == 1) {
@@ -243,7 +284,7 @@ public class NotificationSettingsController extends MenuActivity {
 				} else {
 					// unknown error
 				}
-			} catch (Exception e) {
+			} catch (JSONException e) {
 				System.out
 						.println("Error in SaveSettings.doInBackground(String... args): "
 								+ e.getMessage());
@@ -253,8 +294,14 @@ public class NotificationSettingsController extends MenuActivity {
 			return null;
 		}
 
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(String message) {
 			pDialog.dismiss();
+
+			if (message != null) {
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
+						.show();
+
+			}
 		}
 	}
 

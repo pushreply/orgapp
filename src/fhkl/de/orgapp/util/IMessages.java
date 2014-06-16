@@ -38,4 +38,5 @@ public interface IMessages {
 	public static final String MISSING_EMAIL = "E-Mail address missing";
 	public static final String SAVING_SETTINGS = "Saving settings";
 	public static final String LOADING_NOTIFICATION_SETTINGS = "Loading notification settings...";
+	public static final String INVALID_NUMBER = "Invalid number";
 }

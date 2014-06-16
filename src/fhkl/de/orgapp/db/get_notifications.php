@@ -47,7 +47,8 @@ if (isset ( $_GET ['shownEntries'] )) {
 		echo json_encode ( $response );
 	}
 } else {
-	$result = mysql_query ( "SELECT * FROM notifications where personId = '$personId'" ) or die ( mysql_error () );
+	$result = mysql_query ( "SELECT * FROM notifications where personId = '$personId' and classification in
+			('$groupInvites', '$groupEdited', '$groupRemoved', '$eventsAdded', '$eventsEdited', '$eventsRemoved', '$commentsAdded', '$commentsEdited', '$commentsRemoved', '$privilegeGiven') order by notificationsId desc" ) or die ( mysql_error () );
 
 	if (mysql_num_rows ( $result ) > 0) {
 

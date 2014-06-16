@@ -82,7 +82,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true" />
 
-        <TextView
+        <CheckBox
             android:id="@+id/RECEIVED_ENTRIES"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -93,7 +93,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/NUMBER_ENTRIES"
-            android:inputType="number" >
+            android:inputType="number"
+            android:visibility="gone" >
 
            
         </EditText>

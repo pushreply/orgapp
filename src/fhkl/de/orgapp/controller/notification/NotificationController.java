@@ -131,14 +131,18 @@ public class NotificationController extends MenuActivity {
 						}
 						String privilegeGiven = c.getInt("privilegeGiven") == 1 ? "10"
 								: null;
-						System.out.println("privi" + privilegeGiven);
 						if (privilegeGiven != null) {
 							paramsNotifications.add(new BasicNameValuePair("privilegeGiven",
 									privilegeGiven));
 						}
 
-						paramsNotifications.add(new BasicNameValuePair("shownEntries", c
-								.getString("shownEntries")));
+						try {
+							Integer shownEntries = c.getInt("shownEntries");
+							paramsNotifications.add(new BasicNameValuePair("shownEntries",
+									shownEntries.toString()));
+						} catch (JSONException e) {
+
+						}
 
 					}
 
