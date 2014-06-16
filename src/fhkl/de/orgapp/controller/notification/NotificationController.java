@@ -28,12 +28,14 @@ public class NotificationController extends MenuActivity {
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> notificationList;
 
-	private static String url_Notifications = "http://pushrply.com/get_notifications.php";
+	private static String url_get_notification_settings = "http://pushrply.com/get_notification_settings.php";
+	private static String url_get_notification = "http://pushrply.com/get_notifications.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MESSAGE = "MESSAGE";
 
 	JSONArray notification = null;
+	JSONArray notificationSettings = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,25 +67,98 @@ public class NotificationController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
 					"UserId")));
 
-			JSONObject json = jsonParser.makeHttpRequest(url_Notifications, "GET",
-					params);
+			JSONObject json = jsonParser.makeHttpRequest(
+					url_get_notification_settings, "GET", params);
 
-			Log.d("Notification: ", json.toString());
+			Log.d("NotificationSettings: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
-					notification = json.getJSONArray("notification");
+					List<NameValuePair> paramsNotifications = new ArrayList<NameValuePair>();
+					paramsNotifications.add(new BasicNameValuePair("personId",
+							getIntent().getStringExtra("UserId")));
 
-					for (int i = 0; i < notification.length(); i++) {
-						JSONObject c = notification.getJSONObject(i);
+					notificationSettings = json.getJSONArray("notificationSettings");
+					for (int i = 0; i < notificationSettings.length(); i++) {
+						JSONObject c = notificationSettings.getJSONObject(i);
+						String groupInvites = c.getInt("groupInvites") == 1 ? "1" : null;
+						if (groupInvites != null) {
+							paramsNotifications.add(new BasicNameValuePair("groupInvites",
+									groupInvites));
+						}
+						String groupEdited = c.getInt("groupEdited") == 1 ? "2" : null;
+						if (groupEdited != null) {
+							paramsNotifications.add(new BasicNameValuePair("groupEdited",
+									groupEdited));
+						}
+						String groupRemoved = c.getInt("groupRemoved") == 1 ? "3" : null;
+						if (groupRemoved != null) {
+							paramsNotifications.add(new BasicNameValuePair("groupRemoved",
+									groupRemoved));
+						}
+						String eventsAdded = c.getInt("eventsAdded") == 1 ? "4" : null;
+						if (eventsAdded != null) {
+							paramsNotifications.add(new BasicNameValuePair("eventsAdded",
+									eventsAdded));
+						}
+						String eventsEdited = c.getInt("eventsEdited") == 1 ? "5" : null;
+						if (eventsEdited != null) {
+							paramsNotifications.add(new BasicNameValuePair("eventsEdited",
+									eventsEdited));
+						}
+						String eventsRemoved = c.getInt("eventsRemoved") == 1 ? "6" : null;
+						if (eventsRemoved != null) {
+							paramsNotifications.add(new BasicNameValuePair("eventsRemoved",
+									eventsRemoved));
+						}
+						String commentsAdded = c.getInt("commentsAdded") == 1 ? "7" : null;
+						if (commentsAdded != null) {
+							paramsNotifications.add(new BasicNameValuePair("commentsAdded",
+									commentsAdded));
+						}
+						String commentsEdited = c.getInt("commentsEdited") == 1 ? "8"
+								: null;
+						if (commentsEdited != null) {
+							paramsNotifications.add(new BasicNameValuePair("commentsEdited",
+									commentsEdited));
+						}
+						String commentsRemoved = c.getInt("commentsRemoved") == 1 ? "9"
+								: null;
+						if (commentsRemoved != null) {
+							paramsNotifications.add(new BasicNameValuePair("commentsRemoved",
+									commentsRemoved));
+						}
+						String privilegeGiven = c.getInt("privilegeGiven") == 1 ? "10"
+								: null;
+						System.out.println("privi" + privilegeGiven);
+						if (privilegeGiven != null) {
+							paramsNotifications.add(new BasicNameValuePair("privilegeGiven",
+									privilegeGiven));
+						}
 
-						String message = c.getString("message");
+						paramsNotifications.add(new BasicNameValuePair("shownEntries", c
+								.getString("shownEntries")));
 
-						HashMap<String, String> map = new HashMap<String, String>();
-						map.put(TAG_MESSAGE, message);
+					}
 
-						notificationList.add(map);
+					json = jsonParser.makeHttpRequest(url_get_notification, "GET",
+							paramsNotifications);
+					if (success == 1) {
+						notification = json.getJSONArray("notification");
+
+						for (int i = 0; i < notification.length(); i++) {
+							JSONObject c = notification.getJSONObject(i);
+
+							String message = c.getString("message");
+
+							HashMap<String, String> map = new HashMap<String, String>();
+							map.put(TAG_MESSAGE, message);
+
+							notificationList.add(map);
+						}
+					} else {
+
 					}
 				} else {
 
