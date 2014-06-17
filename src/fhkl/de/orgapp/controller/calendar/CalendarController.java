@@ -20,6 +20,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class CalendarController extends MenuActivity
 {
@@ -29,7 +30,8 @@ public class CalendarController extends MenuActivity
 	ArrayList<HashMap<String, String>> eventList;
 
 	private static String url_get_calendar = "http://pushrply.com/get_events.php";
-
+	private static int START_ACTIVITY_COUNTER = 0;
+	
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_EVENTID = "EVENTID";
 	private static final String TAG_EVENTDATE = "EVENTDATE";
@@ -44,9 +46,28 @@ public class CalendarController extends MenuActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 		
+		START_ACTIVITY_COUNTER++;
+		
+		//set user data after login
+		if(START_ACTIVITY_COUNTER == 1)
+		{
+			UserData.setID(getIntent().getStringExtra("UserId"));
+			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
+			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
+			UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
+			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
+			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
+			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
+		}
+		
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
 
+	}
+	
+	public static void resetSTART_ACTIVITY_COUNTER()
+	{
+		START_ACTIVITY_COUNTER = 0;
 	}
 
 	class Calendar extends AsyncTask<String, String, String>

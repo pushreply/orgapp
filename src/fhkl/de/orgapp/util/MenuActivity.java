@@ -27,30 +27,7 @@ import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity {
 	
-	//counter for starting this activity during user is logged in
-	private static int START_ACTIVITY_COUNTER = 0;
-	
 	private String personIdLoggedPerson;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		
-		START_ACTIVITY_COUNTER++;
-		
-		//set user data after login
-		if(START_ACTIVITY_COUNTER == 1)
-		{
-			UserData.setID(getIntent().getStringExtra("UserId"));
-			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
-			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
-			UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
-			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
-			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
-			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
-		}
-	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -232,7 +209,7 @@ public class MenuActivity extends Activity {
 
 		case R.id.LOGOUT:
 			//reset counter and user data at logout
-			START_ACTIVITY_COUNTER = 0;
+			CalendarController.resetSTART_ACTIVITY_COUNTER();
 			
 			UserData.setID("");
 			UserData.setFIRST_NAME("");
@@ -253,5 +230,21 @@ public class MenuActivity extends Activity {
 		default:
 			return false;
 		}
+	}
+	
+	protected void logout()
+	{
+		CalendarController.resetSTART_ACTIVITY_COUNTER();
+		
+		UserData.setID("");
+		UserData.setFIRST_NAME("");
+		UserData.setLAST_NAME("");
+		UserData.setBIRTHDAY("");
+		UserData.setGENDER("");
+		UserData.setEMAIL("");
+		UserData.setMEMBER_SINCE("");
+		
+		Intent intent = new Intent(MenuActivity.this, StartController.class);
+		startActivity(intent);
 	}
 }
