@@ -208,19 +208,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.LOGOUT:
-			//reset counter and user data at logout
-			CalendarController.resetSTART_ACTIVITY_COUNTER();
-			
-			UserData.setID("");
-			UserData.setFIRST_NAME("");
-			UserData.setLAST_NAME("");
-			UserData.setBIRTHDAY("");
-			UserData.setGENDER("");
-			UserData.setEMAIL("");
-			UserData.setMEMBER_SINCE("");
-			
-			intent = new Intent(MenuActivity.this, StartController.class);
-			startActivity(intent);
+			logout();
 			return true;
 
 		case R.id.REFRESH:
