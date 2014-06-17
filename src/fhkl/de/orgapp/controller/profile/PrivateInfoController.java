@@ -193,7 +193,7 @@ public class PrivateInfoController extends MenuActivity
 			if(message != null)
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			
-			cancelButton.setVisibility(View.INVISIBLE);
+			logout();
 		}
 	}
 }
