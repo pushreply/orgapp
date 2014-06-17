@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +26,31 @@ import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity {
+	
+	//counter for starting this activity during user is logged in
+	private static int START_ACTIVITY_COUNTER = 0;
+	
 	private String personIdLoggedPerson;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		
+		START_ACTIVITY_COUNTER++;
+		
+		//set user data after login
+		if(START_ACTIVITY_COUNTER == 1)
+		{
+			UserData.setID(getIntent().getStringExtra("UserId"));
+			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
+			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
+			UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
+			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
+			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
+			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
+		}
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -102,8 +128,9 @@ public class MenuActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
+		
 		personIdLoggedPerson = getIntent().getStringExtra("UserId");
-
+		
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -164,7 +191,12 @@ public class MenuActivity extends Activity {
 
 		case R.id.PROFILE:
 			intent = new Intent(MenuActivity.this, ProfileController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("FirstName", UserData.getFIRST_NAME());
+			intent.putExtra("LastName", UserData.getLAST_NAME());
+			intent.putExtra("Birthday", UserData.getBIRTHDAY());
+			intent.putExtra("Gender", UserData.getGENDER());
+			intent.putExtra("Email", UserData.getEMAIL());
+			intent.putExtra("MemberSince", UserData.getMEMBER_SINCE());
 			startActivity(intent);
 			return true;
 
@@ -177,7 +209,11 @@ public class MenuActivity extends Activity {
 
 		case R.id.CHANGE_PRIVATE_INFORMATION:
 			intent = new Intent(MenuActivity.this, PrivateInfoController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("UserId", UserData.getID());
+			intent.putExtra("FirstName", UserData.getFIRST_NAME());
+			intent.putExtra("LastName", UserData.getLAST_NAME());
+			intent.putExtra("Birthday", UserData.getBIRTHDAY());
+			intent.putExtra("Gender", UserData.getGENDER());
 			startActivity(intent);
 			return true;
 
@@ -189,11 +225,23 @@ public class MenuActivity extends Activity {
 
 		case R.id.CHANGE_SECURITY_INFORMATION:
 			intent = new Intent(MenuActivity.this, SecurityInfoController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("UserId", UserData.getID());
+			intent.putExtra("Email", UserData.getEMAIL());
 			startActivity(intent);
 			return true;
 
 		case R.id.LOGOUT:
+			//reset counter and user data at logout
+			START_ACTIVITY_COUNTER = 0;
+			
+			UserData.setID("");
+			UserData.setFIRST_NAME("");
+			UserData.setLAST_NAME("");
+			UserData.setBIRTHDAY("");
+			UserData.setGENDER("");
+			UserData.setEMAIL("");
+			UserData.setMEMBER_SINCE("");
+			
 			intent = new Intent(MenuActivity.this, StartController.class);
 			startActivity(intent);
 			return true;

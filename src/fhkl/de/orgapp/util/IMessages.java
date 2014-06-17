@@ -10,7 +10,6 @@ public interface IMessages {
 	public static final String CREATING_PERSON = "Creating Person...";
 	public static final String LOADING_CALENDAR = "Loading Calendar...";
 	public static final String LOADING_NOTIFICATIONS = "Loading Notifications...";
-	public static final String LOADING_PROFIL = "Loading Profil...";
 	public static final String LOADING_GROUPS = "Loading Groups...";
 	public static final String DUPLICATE_PERSON = "Person already exists";
 	public static final String UPDATING = "Updating...";
@@ -25,8 +24,6 @@ public interface IMessages {
 	public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 	public static final String EXIST_USER = "User does not exist: ";
 	public static final String USER_INVITED = "User already invited";
-	public static final String LOADING_PRIVATE_INFO = "Loading private information...";
-	public static final String LOADING_SECURITY_INFO = "Loading security information...";
 	public static final String UPDATING_PRIVATE_INFO = "Updating private information...";
 	public static final String UPDATING_SECURITY_INFO = "Updating security information...";
 	public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";

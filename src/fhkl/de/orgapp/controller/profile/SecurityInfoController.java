@@ -22,17 +22,13 @@ import fhkl.de.orgapp.util.MenuActivity;
 
 public class SecurityInfoController extends MenuActivity
 {
-	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person_by_personId.php";
 	private static String URL_UPDATE_PERSON_SECURITY_INFO = "http://pushrply.com/update_person_security_info.php";
 	
 	private ProgressDialog pDialog;
-	private JSONObject person = null;
 	
 	TextView textEmail;
 	EditText emailNew;
 	Button changeButton, cancelButton;
-	
-	String emailOld;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,16 +36,33 @@ public class SecurityInfoController extends MenuActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.security_information);
 		
+		getViews();
+		setTexts();
+		setTextSizes();
+	}
+	
+	private void getViews()
+	{
 		textEmail = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL);
-		
 		emailNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL);
-		
 		changeButton = (Button) findViewById(R.id.CHANGE_SECURITY_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_SECURITY_INFO_VIEW);
+	}
+	
+	private void setTexts()
+	{
+		textEmail.setText(getString(R.string.EMAIL) + ":");
+		emailNew.setText(getIntent().getStringExtra("Email"));
+		changeButton.setText(getString(R.string.CHANGE_INFO));
+		cancelButton.setText(getString(R.string.CANCEL));
+	}
+	
+	private void setTextSizes()
+	{
+		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
 		
-		emailNew.setVisibility(View.INVISIBLE);
-		
-		new SecurityInfoGetter().execute();
+		textEmail.setTextSize(userTextSize);
+		emailNew.setTextSize(userTextSize);
 	}
 	
 	public void changeSecurityInfo(View view)
@@ -85,98 +98,10 @@ public class SecurityInfoController extends MenuActivity
 	
 	private boolean hasSecurityInfoChanged()
 	{
-		if(emailOld.equals(emailNew.getText().toString()))
+		if(emailNew.getText().toString().equals(getIntent().getStringExtra("Email")))
 			return false;
 		
 		return true;
-	}
-	
-	// TODO security Informationen aus dem ProfilController holen anstatt erneut aus der Datenbank -> performance
-	class SecurityInfoGetter extends AsyncTask<String, String, String>
-	{
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			
-			pDialog = new ProgressDialog(SecurityInfoController.this);
-			pDialog.setMessage(IMessages.LOADING_SECURITY_INFO);
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
-			pDialog.show();
-		}
-		
-		@Override
-		protected String doInBackground(String... arg0)
-		{
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
-			
-			JSONObject json = new JSONParser().makeHttpRequest(URL_SELECT_PERSON, "GET", params);
-			
-			try
-			{
-				int success = json.getInt("success");
-				
-				if(success == 1)
-				{
-					person = json.getJSONArray("person").getJSONObject(0);
-					String result;
-					
-					emailOld = person.getString("eMail");
-					
-					result = person.getString("eMail");
-					
-					return result;
-				}
-			}
-			catch(Exception e)
-			{
-				System.out.println("Error in SecurityInfoGetter.doInBackground(String... arg0): " + e.getMessage());
-				e.printStackTrace();
-			}
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			
-			pDialog.dismiss();
-			
-			if(result == null)
-				return;
-			
-			setText(result);
-			setTextSizes();
-			doEditTextVisible();
-		}
-		
-		private void setText(String data)
-		{
-			textEmail.setText(getString(R.string.EMAIL) + ":");
-			
-			emailNew.setText(data);
-			
-			changeButton.setText(getString(R.string.CHANGE_INFO));
-			cancelButton.setText(getString(R.string.CANCEL));
-		}
-		
-		private void setTextSizes()
-		{
-			int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
-			
-			textEmail.setTextSize(userTextSize);
-			
-			emailNew.setTextSize(userTextSize);
-		}
-		
-		private void doEditTextVisible()
-		{
-			emailNew.setVisibility(View.VISIBLE);
-		}
 	}
 	
 	class SecurityInfoUpdater extends AsyncTask<String, String, String>

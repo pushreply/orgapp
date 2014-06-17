@@ -22,17 +22,13 @@ import fhkl.de.orgapp.util.MenuActivity;
 
 public class PrivateInfoController extends MenuActivity
 {
-	private static String URL_SELECT_PERSON = "http://pushrply.com/select_person_by_personId.php";
 	private static String URL_UPDATE_PERSON_PRIVATE_INFO = "http://pushrply.com/update_person_private_info.php";
 	
 	private ProgressDialog pDialog;
-	private JSONObject person = null;
 	
 	TextView textFirstName, textLastName, textBirthday, textGender;
 	EditText firstNameNew, lastNameNew, birthdayNew, genderNew;
 	Button changeButton, cancelButton;
-	
-	String firstNameOld, lastNameOld, birthdayOld, genderOld;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +36,13 @@ public class PrivateInfoController extends MenuActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.private_information);
 		
+		getViews();
+		setTexts();
+		setTextSizes();
+	}
+	
+	private void getViews()
+	{
 		textFirstName = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_FIRST_NAME);
 		textLastName = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_LAST_NAME);
 		textBirthday = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_BIRTHDAY);
@@ -52,13 +55,37 @@ public class PrivateInfoController extends MenuActivity
 		
 		changeButton = (Button) findViewById(R.id.CHANGE_PRIVATE_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_PRIVATE_INFO_VIEW);
+	}
+	
+	private void setTexts()
+	{
+		textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
+		textLastName.setText(getString(R.string.LASTNAME) + ":");
+		textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
+		textGender.setText(getString(R.string.GENDER) + ":");
 		
-		firstNameNew.setVisibility(View.INVISIBLE);
-		lastNameNew.setVisibility(View.INVISIBLE);
-		birthdayNew.setVisibility(View.INVISIBLE);
-		genderNew.setVisibility(View.INVISIBLE);
+		firstNameNew.setText(getIntent().getStringExtra("FirstName"));
+		lastNameNew.setText(getIntent().getStringExtra("LastName"));
+		birthdayNew.setText(getIntent().getStringExtra("Birthday"));
+		genderNew.setText(getIntent().getStringExtra("Gender"));
 		
-		new PrivateInfoGetter().execute();
+		changeButton.setText(getString(R.string.CHANGE_INFO));
+		cancelButton.setText(getString(R.string.CANCEL));
+	}
+	
+	private void setTextSizes()
+	{
+		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
+		
+		textFirstName.setTextSize(userTextSize);
+		textLastName.setTextSize(userTextSize);
+		textBirthday.setTextSize(userTextSize);
+		textGender.setTextSize(userTextSize);
+		
+		firstNameNew.setTextSize(userTextSize);
+		lastNameNew.setTextSize(userTextSize);
+		birthdayNew.setTextSize(userTextSize);
+		genderNew.setTextSize(userTextSize);
 	}
 	
 	public void changePrivateInfo(View view)
@@ -86,10 +113,10 @@ public class PrivateInfoController extends MenuActivity
 	private boolean hasPrivateInfoChanged()
 	{
 		if(
-		     firstNameOld.equals(firstNameNew.getText().toString())
-		     && lastNameOld.equals(lastNameNew.getText().toString())
-		     && birthdayOld.equals(birthdayNew.getText().toString())
-		     && genderOld.equals(genderNew.getText().toString())
+		     firstNameNew.getText().toString().equals(getIntent().getStringExtra("FirstName"))
+		     && lastNameNew.getText().toString().equals(getIntent().getStringExtra("LastName"))
+		     && birthdayNew.getText().toString().equals(getIntent().getStringExtra("Birthday"))
+		     && genderNew.getText().toString().equals(getIntent().getStringExtra("Gender"))
 		  )
 			return false;
 		
@@ -107,121 +134,6 @@ public class PrivateInfoController extends MenuActivity
 			return false;
 		
 		return true;
-	}
-	
-	// TODO private Informationen aus dem ProfilController holen anstatt erneut aus der Datenbank -> performance
-	class PrivateInfoGetter extends AsyncTask<String, String, String>
-	{
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			
-			pDialog = new ProgressDialog(PrivateInfoController.this);
-			pDialog.setMessage(IMessages.LOADING_PRIVATE_INFO);
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
-			pDialog.show();
-		}
-		
-		@Override
-		protected String doInBackground(String... arg0)
-		{
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
-			
-			JSONObject json = new JSONParser().makeHttpRequest(URL_SELECT_PERSON, "GET", params);
-			
-			try
-			{
-				int success = json.getInt("success");
-				
-				if(success == 1)
-				{
-					person = json.getJSONArray("person").getJSONObject(0);
-					String result;
-					
-					firstNameOld = person.getString("firstName");
-					lastNameOld = person.getString("lastName");
-					birthdayOld = person.getString("birthday");
-					genderOld = person.getString("gender");
-					
-					result = person.getString("firstName");
-					result += ", " + person.getString("lastName");
-					result += ", " + person.getString("birthday");
-					result += ", " + person.getString("gender");
-					
-					return result;
-				}
-			}
-			catch(Exception e)
-			{
-				System.out.println("Error in PrivateInfoGetter.doInBackground(String... arg0): " + e.getMessage());
-				e.printStackTrace();
-			}
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(String result)
-		{
-			super.onPostExecute(result);
-			
-			pDialog.dismiss();
-			
-			if(result == null)
-				return;
-			
-			//seperate result by ", "
-			String[] datas = result.split(", ");
-			
-			if(datas.length != 4)
-				return;
-			
-			setTexts(datas);
-			setTextSizes();
-			doEditTextVisible();
-		}
-		
-		private void setTexts(String[] datas)
-		{
-			textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
-			textLastName.setText(getString(R.string.LASTNAME) + ":");
-			textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
-			textGender.setText(getString(R.string.GENDER) + ":");
-			
-			firstNameNew.setText(datas[0]);
-			lastNameNew.setText(datas[1]);
-			birthdayNew.setText(datas[2]);
-			genderNew.setText(datas[3]);
-			
-			changeButton.setText(getString(R.string.CHANGE_INFO));
-			cancelButton.setText(getString(R.string.CANCEL));
-		}
-		
-		private void setTextSizes()
-		{
-			int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
-			
-			textFirstName.setTextSize(userTextSize);
-			textLastName.setTextSize(userTextSize);
-			textBirthday.setTextSize(userTextSize);
-			textGender.setTextSize(userTextSize);
-			
-			firstNameNew.setTextSize(userTextSize);
-			lastNameNew.setTextSize(userTextSize);
-			birthdayNew.setTextSize(userTextSize);
-			genderNew.setTextSize(userTextSize);
-		}
-		
-		private void doEditTextVisible()
-		{
-			firstNameNew.setVisibility(View.VISIBLE);
-			lastNameNew.setVisibility(View.VISIBLE);
-			birthdayNew.setVisibility(View.VISIBLE);
-			genderNew.setVisibility(View.VISIBLE);
-		}
 	}
 	
 	class PrivateInfoUpdater extends AsyncTask<String, String, String>

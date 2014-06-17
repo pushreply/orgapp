@@ -119,6 +119,12 @@ public class LoginController extends Activity
 							{
 								Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 								intent.putExtra("UserId", e.getString("personId"));
+								intent.putExtra("UserFirstName", e.getString("firstName"));
+								intent.putExtra("UserLastName", e.getString("lastName"));
+								intent.putExtra("UserBirthday", e.getString("birthday"));
+								intent.putExtra("UserGender", e.getString("gender"));
+								intent.putExtra("UserEmail", e.getString("eMail"));
+								intent.putExtra("UserMemberSince", e.getString("created"));
 								startActivity(intent);
 								finish();
 								//invokes onPostExecute(String)
