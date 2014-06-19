@@ -23,13 +23,12 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class NotificationSettingsController extends MenuActivity {
 
 	JSONParser jsonParser = new JSONParser();
 	private JSONObject notificationSettings = null;
-
-	private String personIdLoggedPerson;
 
 	private ProgressDialog pDialog;
 
@@ -50,7 +49,6 @@ public class NotificationSettingsController extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notification_settings);
 
-		personIdLoggedPerson = getIntent().getStringExtra("UserId");
 		groupInvites = (CheckBox) findViewById(R.id.GROUP_INVITES);
 		groupEdited = (CheckBox) findViewById(R.id.GROUP_EDITED);
 		groupRemoved = (CheckBox) findViewById(R.id.GROUP_REMOVED);
@@ -98,7 +96,6 @@ public class NotificationSettingsController extends MenuActivity {
 			public void onClick(View view) {
 				Intent intent = new Intent(NotificationSettingsController.this,
 						NotificationController.class);
-				intent.putExtra("UserId", personIdLoggedPerson);
 				startActivity(intent);
 			}
 		});
@@ -118,8 +115,7 @@ public class NotificationSettingsController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"UserId")));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			JSONObject json = new JSONParser().makeHttpRequest(
 					URL_SELECT_NOTIFICATION_SETTINGS, "GET", params);
@@ -228,8 +224,7 @@ public class NotificationSettingsController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"UserId")));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			if (received_entries.isChecked() == true) {
 				Integer shownEntries;
@@ -279,7 +274,6 @@ public class NotificationSettingsController extends MenuActivity {
 				if (success == 1) {
 					Intent intent = new Intent(NotificationSettingsController.this,
 							NotificationController.class);
-					intent.putExtra("UserId", personIdLoggedPerson);
 					startActivity(intent);
 				} else {
 					// unknown error

@@ -21,6 +21,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class NotificationController extends MenuActivity {
 
@@ -64,8 +65,7 @@ public class NotificationController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"UserId")));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			JSONObject json = jsonParser.makeHttpRequest(
 					url_get_notification_settings, "GET", params);
@@ -76,8 +76,8 @@ public class NotificationController extends MenuActivity {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
 					List<NameValuePair> paramsNotifications = new ArrayList<NameValuePair>();
-					paramsNotifications.add(new BasicNameValuePair("personId",
-							getIntent().getStringExtra("UserId")));
+					paramsNotifications.add(new BasicNameValuePair("personId", UserData
+							.getPERSONID()));
 
 					notificationSettings = json.getJSONArray("notificationSettings");
 					for (int i = 0; i < notificationSettings.length(); i++) {
