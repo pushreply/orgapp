@@ -9,10 +9,11 @@ require_once __DIR__ . '/db_connect.php';
 $db = new DB_CONNECT ();
 
 $personId = $_GET ['personId'];
+$groupId = $_GET ['groupId'];
 $result = mysql_query ( "select distinct priv.personId, pers.eMail, pers.firstName, pers.lastName
 		from privilege priv join person pers using (personId)
 		where priv.groupId in (select groupId from groups where personId = '$personId')
-		and priv.personId not like '$personId'" ) or die ( mysql_error () );
+		and priv.personId not like '$personId' and priv.groupId not like '$groupId'") or die ( mysql_error () );
 
 if (mysql_num_rows ( $result ) > 0) {
 
