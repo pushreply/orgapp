@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -67,10 +68,8 @@ public class MemberListController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"UserId")));
-			params.add(new BasicNameValuePair("groupId", getIntent().getStringExtra(
-					"GroupId")));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_MEMBER_LIST, "GET",
 					params);
@@ -130,7 +129,7 @@ public class MemberListController extends MenuActivity {
 											MemberPrivilegeInfoController.class);
 									TextView tv = (TextView) view.findViewById(R.id.MEMBERID);
 									System.out.println(tv.getText().toString());
-									personIdLoggedPerson = UserData.getID();
+									personIdLoggedPerson = UserData.getPERSONID();
 									intent.putExtra("UserId", personIdLoggedPerson);
 									intent.putExtra("MemberId", tv.getText().toString());
 									intent.putExtra("GroupId",

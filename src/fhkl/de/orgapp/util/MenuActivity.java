@@ -105,7 +105,7 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 
-		personIdLoggedPerson = UserData.getID();
+		personIdLoggedPerson = UserData.getPERSONID();
 
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
@@ -192,7 +192,7 @@ public class MenuActivity extends Activity {
 
 		case R.id.CHANGE_PRIVATE_INFORMATION:
 			intent = new Intent(MenuActivity.this, PrivateInfoController.class);
-			intent.putExtra("UserId", UserData.getID());
+			intent.putExtra("UserId", UserData.getPERSONID());
 			intent.putExtra("FirstName", UserData.getFIRST_NAME());
 			intent.putExtra("LastName", UserData.getLAST_NAME());
 			intent.putExtra("Birthday", UserData.getBIRTHDAY());
@@ -202,13 +202,13 @@ public class MenuActivity extends Activity {
 
 		case R.id.LIST_EVENT_HISTORY:
 			intent = new Intent(MenuActivity.this, EventHistoryController.class);
-			intent.putExtra("UserId", UserData.getID());
+			intent.putExtra("UserId", UserData.getPERSONID());
 			startActivity(intent);
 			return true;
 
 		case R.id.CHANGE_SECURITY_INFORMATION:
 			intent = new Intent(MenuActivity.this, SecurityInfoController.class);
-			intent.putExtra("UserId", UserData.getID());
+			intent.putExtra("UserId", UserData.getPERSONID());
 			intent.putExtra("Email", UserData.getEMAIL());
 			startActivity(intent);
 			return true;
@@ -229,7 +229,7 @@ public class MenuActivity extends Activity {
 	protected void logout() {
 		CalendarController.resetSTART_ACTIVITY_COUNTER();
 
-		UserData.setID("");
+		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
 		UserData.setBIRTHDAY("");

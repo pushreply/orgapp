@@ -51,7 +51,7 @@ public class CalendarController extends MenuActivity
 		//set user data after login
 		if(START_ACTIVITY_COUNTER == 1)
 		{
-			UserData.setID(getIntent().getStringExtra("UserId"));
+			UserData.setPERSONID(getIntent().getStringExtra("UserId"));
 			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
 			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
 			UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));

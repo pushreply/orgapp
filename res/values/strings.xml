@@ -45,6 +45,15 @@
     <string name="SHOW_MEMBER_LIST">Show member list</string>
     <string name="MEMBER_LIST">Member list</string>
     <string name="MEMBER_INFO">Member information</string>
+    <string name="CHOOSE_USER_PRIVILEGE">Which privileges would you grant this user?</string>
+    <string name="PRIVILEGE_INVITATION">Able to invite member</string>
+    <string name="PRIVILEGE_MEMBERLIST_Editing">Able to kick member</string>
+    <string name="PRIVILEGE_EVENT_CREATING">Able to create events</string>
+    <string name="PRIVILEGE_EVENT_EDITING">Able to edit events</string>
+    <string name="PRIVILEGE_EVENT_DELETING">Able to delete events</string>
+    <string name="PRIVILEGE_COMMENT_EDITING">Able to edit comments</string>
+    <string name="PRIVILEGE_COMMENT_DELETING">Able to delete comments</string>
+    <string name="PRIVILEGE_MANAGEMENT">Able to manage privileges</string>
     <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->

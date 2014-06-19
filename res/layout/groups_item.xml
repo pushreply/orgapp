@@ -3,20 +3,36 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
-    
 
-	<TextView
-	    android:id="@+id/GROUPID"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_margin="10dp"
-	    android:textSize="20sp" />
+    <TextView
+        android:id="@+id/GROUPID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
-	<TextView
-	    android:id="@+id/GROUPNAME"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_margin="10dp"
-	    android:textSize="20sp" />
-        
+    <TextView
+        android:id="@+id/PERSONID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/GROUPNAME"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/GROUPINFO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/GROUPPICTURE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
 </LinearLayout>
