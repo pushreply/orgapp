@@ -20,28 +20,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/PASSWORD"
-        android:inputType="textPassword" >
-
-        <requestFocus />
-    </EditText>
+        android:inputType="textPassword" />
+    
+    <EditText
+        android:id="@+id/PASSWORD_CONFIRMATION"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/PASSWORD_CONFIRMATION"
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/FIRSTNAME"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/FIRSTNAME" >
-
-        <requestFocus />
-    </EditText>
+        android:hint="@string/FIRSTNAME" />
 
     <EditText
         android:id="@+id/LASTNAME"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/LASTNAME" >
-
-        <requestFocus />
-    </EditText>
+        android:hint="@string/LASTNAME" />
 
     <LinearLayout
         android:layout_width="match_parent"

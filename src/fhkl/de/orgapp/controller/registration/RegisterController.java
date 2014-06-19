@@ -34,6 +34,7 @@ public class RegisterController extends Activity {
 	JSONParser jsonParser = new JSONParser();
 	EditText inputEMail;
 	EditText inputPassword;
+	EditText inputPasswordConfirm;
 	EditText inputFirstName;
 	EditText inputLastName;
 
@@ -53,6 +54,7 @@ public class RegisterController extends Activity {
 		// Edit Text
 		inputEMail = (EditText) findViewById(R.id.EMAIL);
 		inputPassword = (EditText) findViewById(R.id.PASSWORD);
+		inputPasswordConfirm = (EditText) findViewById(R.id.PASSWORD_CONFIRMATION);
 		inputFirstName = (EditText) findViewById(R.id.FIRSTNAME);
 		inputLastName = (EditText) findViewById(R.id.LASTNAME);
 
@@ -105,6 +107,7 @@ public class RegisterController extends Activity {
 		protected String doInBackground(String... args) {
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
+			String passwordConfirm = inputPasswordConfirm.getText().toString();
 			String firstName = inputFirstName.getText().toString();
 			String lastName = inputLastName.getText().toString();
 
@@ -113,6 +116,10 @@ public class RegisterController extends Activity {
 			}
 			if (password.length() == 0 || password.length() > 255) {
 				return IMessages.INVALID_PASSWORD;
+			}
+			if(!password.equals(passwordConfirm))
+			{
+				return IMessages.PASSWORDS_DO_NOT_MATCH;
 			}
 			if (firstName.length() == 0 || firstName.length() > 255) {
 				return IMessages.INVALID_FIRSTNAME;

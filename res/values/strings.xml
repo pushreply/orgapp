@@ -15,6 +15,7 @@
     <!-- Register/Login -->
     <string name="EMAIL">Email address</string>
     <string name="PASSWORD">password</string>
+    <string name="PASSWORD_CONFIRMATION">password (confirmation)</string>
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
     
@@ -70,11 +71,17 @@
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
     <string name="LIST_EVENT_HISTORY">List of event history</string>
     <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
+    <string name="FIRSTNAME_MUST_HAVE">First name *</string>
+    <string name="LASTNAME_MUST_HAVE">Last name *</string>
+    <string name="BIRTHDAY_MUST_HAVE">Birthday *</string>
+    <string name="GENDER_MUST_HAVE">Gender *</string>
     <string name="BIRTHDAY">Birthday</string>
     <string name="GENDER">Gender</string>
     <string name="MEMBER_SINCE">Member since</string>
     <string name="CHANGE_INFO">Change information</string>
     <string name="GENERAL_INFORMATION">General information</string>
+    <string name="EMAIL_MUST_HAVE">Email address *</string>
+    <string name="EMAIL_CONFIRM_MUST_HAVE">Email address (confirmation) *</string>
     
     <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>

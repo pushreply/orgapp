@@ -26,8 +26,8 @@ public class SecurityInfoController extends MenuActivity
 	
 	private ProgressDialog pDialog;
 	
-	TextView textEmail;
-	EditText emailNew;
+	TextView textEmail, textEmailConfirm;
+	EditText emailNew, emailConfirmNew;
 	Button changeButton, cancelButton;
 	
 	@Override
@@ -45,14 +45,18 @@ public class SecurityInfoController extends MenuActivity
 	{
 		textEmail = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL);
 		emailNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL);
+		textEmailConfirm = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL_CONFIRM);
+		emailConfirmNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL_CONFIRM);
 		changeButton = (Button) findViewById(R.id.CHANGE_SECURITY_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_SECURITY_INFO_VIEW);
 	}
 	
 	private void setTexts()
 	{
-		textEmail.setText(getString(R.string.EMAIL) + ":");
+		textEmail.setText(getString(R.string.EMAIL_MUST_HAVE) + ":");
+		textEmailConfirm.setText(getString(R.string.EMAIL_CONFIRM_MUST_HAVE) + ":");
 		emailNew.setText(getIntent().getStringExtra("Email"));
+		emailConfirmNew.setHint(getIntent().getStringExtra("Email"));
 		changeButton.setText(getString(R.string.CHANGE_INFO));
 		cancelButton.setText(getString(R.string.CANCEL));
 	}
@@ -63,13 +67,27 @@ public class SecurityInfoController extends MenuActivity
 		
 		textEmail.setTextSize(userTextSize);
 		emailNew.setTextSize(userTextSize);
+		textEmailConfirm.setTextSize(userTextSize);
+		emailConfirmNew.setTextSize(userTextSize);
 	}
 	
 	public void changeSecurityInfo(View view)
 	{
+		if(!isSecurityInfoComplete())
+		{
+			Toast.makeText(getApplicationContext(), IMessages.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		if(!isEmailValid())
 		{
 			Toast.makeText(getApplicationContext(), IMessages.INVALID_EMAIL, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		if(!emailNew.getText().toString().equals(emailConfirmNew.getText().toString()))
+		{
+			Toast.makeText(getApplicationContext(), IMessages.EMAIL_ADDRESSES_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -85,6 +103,17 @@ public class SecurityInfoController extends MenuActivity
 	public void cancelSecurityInfoView(View view)
 	{
 		finish();
+	}
+	
+	private boolean isSecurityInfoComplete()
+	{
+		if(
+		     emailNew.getText().toString().equals("")
+			 || emailConfirmNew.getText().toString().equals("")
+		  )
+				return false;
+			
+			return true;
 	}
 	
 	//TODO in eine util-Klasse auslagern

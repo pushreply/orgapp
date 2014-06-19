@@ -59,10 +59,10 @@ public class PrivateInfoController extends MenuActivity
 	
 	private void setTexts()
 	{
-		textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
-		textLastName.setText(getString(R.string.LASTNAME) + ":");
-		textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
-		textGender.setText(getString(R.string.GENDER) + ":");
+		textFirstName.setText(getString(R.string.FIRSTNAME_MUST_HAVE) + ":");
+		textLastName.setText(getString(R.string.LASTNAME_MUST_HAVE) + ":");
+		textBirthday.setText(getString(R.string.BIRTHDAY_MUST_HAVE) + ":");
+		textGender.setText(getString(R.string.GENDER_MUST_HAVE) + ":");
 		
 		firstNameNew.setText(getIntent().getStringExtra("FirstName"));
 		lastNameNew.setText(getIntent().getStringExtra("LastName"));
