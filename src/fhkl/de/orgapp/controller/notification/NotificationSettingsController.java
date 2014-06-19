@@ -265,10 +265,8 @@ public class NotificationSettingsController extends MenuActivity {
 					.isChecked() == true ? "1" : "0"));
 
 			try {
-				System.out.println("fehler hier");
 				JSONObject json = new JSONParser().makeHttpRequest(
 						URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
-				System.out.println("fehler hier");
 				int success = json.getInt(TAG_SUCCESS);
 
 				if (success == 1) {

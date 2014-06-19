@@ -265,7 +265,8 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 					paramsNotification.add(new BasicNameValuePair("eMail", tv_eMail
 							.getText().toString()));
-					paramsNotification.add(new BasicNameValuePair("classification", ""));
+					paramsNotification
+							.add(new BasicNameValuePair("classification", "10"));
 					String message = new String();
 					boolean firstEntry = false;
 					message += "You were granted the following rights in "
@@ -341,6 +342,15 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						} else {
 							message += res.getString(R.string.PRIVILEGE_MANAGEMENT);
 						}
+					}
+
+					if (firstEntry == false) {
+						Intent intent = new Intent(MemberPrivilegeInfoController.this,
+								MemberPrivilegeInfoController.class);
+						intent.putExtra("MemberId", getIntent().getStringExtra("MemberId"));
+						finish();
+						startActivity(intent);
+						return null;
 					}
 
 					paramsNotification.add(new BasicNameValuePair("message", message));
