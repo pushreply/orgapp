@@ -47,6 +47,10 @@
             android:label="@string/MEMBER_LIST" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.groups.MemberPrivilegeInfoController"
+            android:label="@string/MEMBER_INFO" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.groups.ManualInviteMemberController"
             android:label="@string/INVITE_MEMBER" >
         </activity>

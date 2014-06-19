@@ -5,9 +5,10 @@ require_once __DIR__ . '/db_connect.php';
 
 $db = new DB_CONNECT();
 
+$personId = $_GET ['personId'];
 $groupId = $_GET ['groupId'];
 $result = mysql_query("SELECT pers.personId, pers.firstName, pers.lastName
-from person pers join privilege priv using(personId) where priv.groupId = '$groupId'") or die(mysql_error());
+from person pers join privilege priv using(personId) where priv.groupId = '$groupId' and priv.personId not like '$personId'") or die(mysql_error());
 
 if (mysql_num_rows($result) > 0) {
 

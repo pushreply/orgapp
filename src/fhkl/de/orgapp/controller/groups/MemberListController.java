@@ -11,16 +11,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class MemberListController extends MenuActivity {
 
@@ -33,7 +38,8 @@ public class MemberListController extends MenuActivity {
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 
 	private static final String TAG_SUCCESS = "success";
-	private static final String TAG_PERSON_NAME = "PERSONNAME";
+	private static final String TAG_MEMBER_ID = "MEMBERID";
+	private static final String TAG_MEMBER_NAME = "MEMBERNAME";
 
 	JSONArray member = null;
 
@@ -42,8 +48,8 @@ public class MemberListController extends MenuActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_list);
-
 		memberList = new ArrayList<HashMap<String, String>>();
+
 		new MemberList().execute();
 	}
 
@@ -61,6 +67,8 @@ public class MemberListController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
+					"UserId")));
 			params.add(new BasicNameValuePair("groupId", getIntent().getStringExtra(
 					"GroupId")));
 
@@ -83,7 +91,8 @@ public class MemberListController extends MenuActivity {
 						String lastName = c.getString("lastName");
 
 						HashMap<String, String> map = new HashMap<String, String>();
-						map.put(TAG_PERSON_NAME, firstName + " " + lastName);
+						map.put(TAG_MEMBER_ID, personId);
+						map.put(TAG_MEMBER_NAME, firstName + " " + lastName);
 
 						memberList.add(map);
 					}
@@ -100,44 +109,43 @@ public class MemberListController extends MenuActivity {
 			return null;
 		}
 
-		protected void onPostExecute(String file_url) {
+		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListAdapter adapter = new SimpleAdapter(MemberListController.this,
-							memberList, R.layout.member_list_item,
-							new String[] { TAG_PERSON_NAME }, new int[] { R.id.PERSONNAME });
+							memberList, R.layout.member_list_item, new String[] {
+									TAG_MEMBER_ID, TAG_MEMBER_NAME }, new int[] { R.id.MEMBERID,
+									R.id.MEMBERNAME });
 
-					// update listview
 					final ListView memberListView = (ListView) findViewById(android.R.id.list);
-					//
-					// groupList
-					// .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					//
-					// @Override
-					// public void onItemClick(AdapterView<?> parent, View view,
-					// int position, long id) {
-					// Intent intent = new Intent(GroupsController.this,
-					// SingleGroupController.class);
-					// personIdLoggedPerson = getIntent().getStringExtra("UserId");
-					// TextView tv = (TextView) view.findViewById(R.id.GROUPID);
-					// String groupId = tv.getText().toString();
-					// TextView tv2 = (TextView) view.findViewById(R.id.GROUPNAME);
-					// String groupName = tv2.getText().toString();
-					// System.out.println(groupName);
-					// intent.putExtra("UserId", personIdLoggedPerson);
-					// intent.putExtra("GroupId", groupId);
-					// intent.putExtra("GroupName", groupName);
-					// startActivity(intent);
-					//
-					// }
-					//
-					// });
+
+					memberListView
+							.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+								@Override
+								public void onItemClick(AdapterView<?> parent, View view,
+										int position, long id) {
+									Intent intent = new Intent(MemberListController.this,
+											MemberPrivilegeInfoController.class);
+									TextView tv = (TextView) view.findViewById(R.id.MEMBERID);
+									System.out.println(tv.getText().toString());
+									personIdLoggedPerson = UserData.getID();
+									intent.putExtra("UserId", personIdLoggedPerson);
+									intent.putExtra("MemberId", tv.getText().toString());
+									intent.putExtra("GroupId",
+											getIntent().getStringExtra("GroupId"));
+									intent.putExtra("GroupName",
+											getIntent().getStringExtra("GroupName"));
+									startActivity(intent);
+
+								}
+
+							});
 					memberListView.setAdapter(adapter);
 				}
 			});
 		}
-
 	}
 
 }

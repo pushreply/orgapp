@@ -44,6 +44,7 @@
     <string name="LEAVE_GROUP">Leave group</string>
     <string name="SHOW_MEMBER_LIST">Show member list</string>
     <string name="MEMBER_LIST">Member list</string>
+    <string name="MEMBER_INFO">Member information</string>
     <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->
