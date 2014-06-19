@@ -138,7 +138,6 @@ public class MenuActivity extends Activity {
 							ListInviteMemberController.class);
 					intent.putExtra("UserId", personIdLoggedPerson);
 					intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-					System.out.println(getIntent().getStringExtra("GroupName"));
 					intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 					startActivity(intent);
 				}
