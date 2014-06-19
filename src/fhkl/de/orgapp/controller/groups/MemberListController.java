@@ -79,7 +79,6 @@ public class MemberListController extends MenuActivity {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
 					member = json.getJSONArray("member");
-					System.out.println(member);
 
 					for (int i = 0; i < member.length(); i++) {
 						JSONObject c = member.getJSONObject(i);

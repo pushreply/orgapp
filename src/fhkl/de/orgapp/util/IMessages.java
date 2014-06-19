@@ -41,4 +41,6 @@ public interface IMessages {
 	public static final String LOADING_LIST = "Loading list...";
 	public static final String LOADING_EVENT_HISTORY = "Loading event history...";
 	public static final String LOADING_MEMBER_LIST = "Loading member list...";
+	public static final String LOADING_INFO = "Loading member info...";
+	public static final String SAVING_PRIVILEGES = "Saving privileges";
 }

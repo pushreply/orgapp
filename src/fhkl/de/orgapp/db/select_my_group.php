@@ -19,7 +19,8 @@ require_once __DIR__ .'/db_connect.php';
 $db = new DB_CONNECT ();
 
 $personId = $_GET['personId'];
-$result = mysql_query("SELECT * FROM groups g, privilege p WHERE g.groupId=p.groupId and p.personId = '$personId'") or die(mysql_error());
+$result = mysql_query("SELECT g.groupId, g.personId, g.name, g.info, g.picture
+		FROM groups g join privilege p using (groupId) WHERE p.personId = '$personId'") or die(mysql_error());
 
 // check for required fields
 if(mysql_num_rows($result) > 0)

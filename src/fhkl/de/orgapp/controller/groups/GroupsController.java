@@ -160,6 +160,8 @@ public class GroupsController extends MenuActivity {
 									GroupData.setGROUPINFO(tv_groupInfo.getText().toString());
 									GroupData.setPICTURE(tv_groupPicture.getText().toString());
 
+									System.out.println("group admin: "
+											+ tv_personId.getText().toString());
 									new Privileges().execute();
 
 									startActivity(intent);

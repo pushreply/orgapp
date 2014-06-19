@@ -198,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?android:attr/selectableItemBackground"
-                        android:text="@+string/SAVE" />
+                        android:text="@string/SAVE_PRIVILEGES" />
 
                     <Button
                         android:id="@+id/CANCEL"
@@ -206,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?android:attr/selectableItemBackground"
-                        android:text="@+string/CANCEL" />
+                        android:text="@string/CANCEL" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

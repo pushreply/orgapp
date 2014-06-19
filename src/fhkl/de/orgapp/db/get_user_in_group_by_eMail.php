@@ -29,6 +29,7 @@ if (mysql_num_rows ( $result ) > 0) {
 	$member ["eventDeleting"] = $row ["eventDeleting"];
 	$member ["commentEditing"] = $row ["commentEditing"];
 	$member ["commentDeleting"] = $row ["commentDeleting"];
+	$member ["memberSince"] = $row ["memberSince"];
 
 	array_push ( $response ["member"], $member );
 

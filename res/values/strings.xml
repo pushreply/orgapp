@@ -54,6 +54,7 @@
     <string name="PRIVILEGE_COMMENT_EDITING">Able to edit comments</string>
     <string name="PRIVILEGE_COMMENT_DELETING">Able to delete comments</string>
     <string name="PRIVILEGE_MANAGEMENT">Able to manage privileges</string>
+    <string name="SAVE_PRIVILEGES">Save</string>
     <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->
