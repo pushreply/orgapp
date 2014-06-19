@@ -69,7 +69,7 @@ public class GroupsController extends MenuActivity {
 				pDialog.setMessage(IMessages.LOADING_GROUPS);
 
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

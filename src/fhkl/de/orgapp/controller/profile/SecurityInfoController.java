@@ -143,7 +143,7 @@ public class SecurityInfoController extends MenuActivity
 			pDialog = new ProgressDialog(SecurityInfoController.this);
 			pDialog.setMessage(IMessages.UPDATING_SECURITY_INFO);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

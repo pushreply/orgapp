@@ -112,7 +112,7 @@ public class NotificationSettingsController extends MenuActivity {
 			pDialog = new ProgressDialog(NotificationSettingsController.this);
 			pDialog.setMessage(IMessages.LOADING_NOTIFICATION_SETTINGS);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

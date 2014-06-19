@@ -97,7 +97,7 @@ public class RegisterController extends Activity {
 			pDialog = new ProgressDialog(RegisterController.this);
 			pDialog.setMessage(IMessages.CREATING_PERSON);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

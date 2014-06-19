@@ -58,7 +58,7 @@ public class NotificationController extends MenuActivity {
 				pDialog.setMessage(IMessages.LOADING_NOTIFICATIONS);
 
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

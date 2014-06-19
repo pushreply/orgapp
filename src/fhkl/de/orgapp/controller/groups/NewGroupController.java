@@ -91,7 +91,7 @@ public class NewGroupController extends MenuActivity {
 			pDialog = new ProgressDialog(NewGroupController.this);
 			pDialog.setMessage(IMessages.CREATING_GROUP);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

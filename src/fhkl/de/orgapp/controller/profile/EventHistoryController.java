@@ -57,7 +57,7 @@ public class EventHistoryController extends MenuActivity
 			pDialog.setMessage(IMessages.LOADING_EVENT_HISTORY);
 
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

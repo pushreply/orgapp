@@ -146,7 +146,7 @@ public class PrivateInfoController extends MenuActivity
 			pDialog = new ProgressDialog(PrivateInfoController.this);
 			pDialog.setMessage(IMessages.UPDATING_PRIVATE_INFO);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 

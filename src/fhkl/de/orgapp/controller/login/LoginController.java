@@ -84,7 +84,7 @@ public class LoginController extends Activity
 			pDialog = new ProgressDialog(LoginController.this);
 			pDialog.setMessage(IMessages.CHECKING_DATA);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 		

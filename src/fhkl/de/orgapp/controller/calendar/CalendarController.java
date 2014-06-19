@@ -84,7 +84,7 @@ public class CalendarController extends MenuActivity
 				pDialog.setMessage(IMessages.LOADING_CALENDAR);
 			
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 
