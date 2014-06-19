@@ -4,6 +4,8 @@ public interface IMessages {
 	public static final String INVALID_USER = "Invalid user";
 	public static final String INVALID_EMAIL = "Invalid e-mail address";
 	public static final String INVALID_PASSWORD = "Invalid password";
+	public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
+	public static final String EMAIL_ADDRESSES_DO_NOT_MATCH = "Email addresses do not match";
 	public static final String INVALID_FIRSTNAME = "Invalid firstname";
 	public static final String INVALID_LASTNAME = "Invalid lastname";
 	public static final String CHECKING_DATA = "Checking data...";
@@ -36,4 +38,5 @@ public interface IMessages {
 	public static final String SAVING_SETTINGS = "Saving settings";
 	public static final String LOADING_NOTIFICATION_SETTINGS = "Loading notification settings...";
 	public static final String INVALID_NUMBER = "Invalid number";
+	public static final String LOADING_EVENT_HISTORY = "Loading event history...";
 }

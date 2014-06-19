@@ -2,4 +2,6 @@
 <resources>
     <dimen name="PROFIL_SECTION_TEXT_SIZE">15dp</dimen>
     <dimen name="PROFIL_USER_TEXT_SIZE">12dp</dimen>
+    <dimen name="PROFIL_PREVIOUS_EVENT_NAME_SIZE">20dp</dimen>
+	<dimen name="PROFIL_PREVIOUS_EVENT_DATE_SIZE">12dp</dimen>
 </resources>

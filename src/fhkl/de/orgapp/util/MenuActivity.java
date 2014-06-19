@@ -196,7 +196,7 @@ public class MenuActivity extends Activity {
 
 		case R.id.LIST_EVENT_HISTORY:
 			intent = new Intent(MenuActivity.this, EventHistoryController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("UserId", UserData.getID());
 			startActivity(intent);
 			return true;
 
