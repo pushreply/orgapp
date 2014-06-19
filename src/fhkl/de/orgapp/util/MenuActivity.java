@@ -26,8 +26,6 @@ import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity {
 
-	private String personIdLoggedPerson;
-
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
@@ -105,32 +103,24 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 
-		personIdLoggedPerson = UserData.getPERSONID();
-
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 
 		case R.id.GROUPS:
 			intent = new Intent(MenuActivity.this, GroupsController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 
 		case R.id.NEW_GROUP:
 			intent = new Intent(MenuActivity.this, NewGroupController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 
 		case R.id.SHOW_MEMBER_LIST:
 			intent = new Intent(MenuActivity.this, MemberListController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
-			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 			startActivity(intent);
 			return true;
 
@@ -143,9 +133,6 @@ public class MenuActivity extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this,
 							ListInviteMemberController.class);
-					intent.putExtra("UserId", personIdLoggedPerson);
-					intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-					intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 					startActivity(intent);
 				}
 
@@ -156,10 +143,6 @@ public class MenuActivity extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this,
 							ManualInviteMemberController.class);
-					intent.putExtra("UserId", personIdLoggedPerson);
-					intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-					System.out.println(getIntent().getStringExtra("GroupName"));
-					intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 					startActivity(intent);
 				}
 			});
@@ -168,7 +151,6 @@ public class MenuActivity extends Activity {
 
 		case R.id.NOTIFICATIONS:
 			intent = new Intent(MenuActivity.this, NotificationController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 
@@ -186,7 +168,6 @@ public class MenuActivity extends Activity {
 		case R.id.NOTIFICATION_SETTINGS:
 			intent = new Intent(MenuActivity.this,
 					NotificationSettingsController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 

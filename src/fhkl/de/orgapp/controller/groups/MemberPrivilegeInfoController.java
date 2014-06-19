@@ -27,5 +27,4 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		bSave = (Button) findViewById(R.id.SAVE_PRIVILEGES);
 		bCancel = (Button) findViewById(R.id.CANCEL);
 	}
-
 }

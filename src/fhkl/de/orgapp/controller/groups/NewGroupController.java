@@ -27,11 +27,11 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class NewGroupController extends MenuActivity {
 
 	AlertDialog member_question;
-	private String personIdLoggedPerson;
 	private ProgressDialog pDialog;
 	EditText inputName;
 	EditText inputInfo;
@@ -47,8 +47,6 @@ public class NewGroupController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_group);
-
-		personIdLoggedPerson = getIntent().getStringExtra("UserId");
 
 		inputName = (EditText) findViewById(R.id.NAME);
 		inputInfo = (EditText) findViewById(R.id.INFO);
@@ -69,7 +67,6 @@ public class NewGroupController extends MenuActivity {
 			public void onClick(View view) {
 				Intent intent = new Intent(NewGroupController.this,
 						GroupsController.class);
-				intent.putExtra("UserId", personIdLoggedPerson);
 				startActivity(intent);
 			}
 		});
@@ -99,7 +96,7 @@ public class NewGroupController extends MenuActivity {
 		 * Creating group
 		 * */
 		protected String doInBackground(String... args) {
-			String personId = getIntent().getStringExtra("UserId");
+			String personId = UserData.getPERSONID();
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
@@ -202,10 +199,6 @@ public class NewGroupController extends MenuActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(NewGroupController.this,
 								ManualInviteMemberController.class);
-						intent.putExtra("UserId", personIdLoggedPerson);
-						intent.putExtra("GroupId", groupId);
-						EditText inputName = (EditText) findViewById(R.id.NAME);
-						intent.putExtra("GroupName", inputName.getText().toString());
 						startActivity(intent);
 					}
 				});

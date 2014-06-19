@@ -32,7 +32,6 @@ public class GroupsController extends MenuActivity {
 
 	// Progress Dialog
 	private ProgressDialog pDialog;
-	private String personIdLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> groupList;
@@ -79,8 +78,7 @@ public class GroupsController extends MenuActivity {
 
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
-			vp.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"UserId")));
+			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_MY_GROUP, "GET",
 					vp);
@@ -145,7 +143,6 @@ public class GroupsController extends MenuActivity {
 									Intent intent = new Intent(GroupsController.this,
 											SingleGroupController.class);
 
-									personIdLoggedPerson = UserData.getPERSONID();
 									TextView tv_groupId = (TextView) view
 											.findViewById(R.id.GROUPID);
 									TextView tv_personId = (TextView) view
@@ -165,10 +162,6 @@ public class GroupsController extends MenuActivity {
 
 									new Privileges().execute();
 
-									intent.putExtra("UserId", personIdLoggedPerson);
-									intent.putExtra("GroupId", tv_groupId.getText().toString());
-									intent.putExtra("GroupName", tv_groupName.getText()
-											.toString());
 									startActivity(intent);
 
 								}

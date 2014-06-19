@@ -31,7 +31,6 @@ import fhkl.de.orgapp.util.UserData;
 public class MemberListController extends MenuActivity {
 
 	private ProgressDialog pDialog;
-	private String personIdLoggedPerson;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> memberList;
@@ -128,14 +127,7 @@ public class MemberListController extends MenuActivity {
 									Intent intent = new Intent(MemberListController.this,
 											MemberPrivilegeInfoController.class);
 									TextView tv = (TextView) view.findViewById(R.id.MEMBERID);
-									System.out.println(tv.getText().toString());
-									personIdLoggedPerson = UserData.getPERSONID();
-									intent.putExtra("UserId", personIdLoggedPerson);
 									intent.putExtra("MemberId", tv.getText().toString());
-									intent.putExtra("GroupId",
-											getIntent().getStringExtra("GroupId"));
-									intent.putExtra("GroupName",
-											getIntent().getStringExtra("GroupName"));
 									startActivity(intent);
 
 								}
@@ -146,5 +138,4 @@ public class MemberListController extends MenuActivity {
 			});
 		}
 	}
-
 }
