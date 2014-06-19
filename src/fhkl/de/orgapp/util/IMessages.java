@@ -40,4 +40,5 @@ public interface IMessages {
 	public static final String INVALID_NUMBER = "Invalid number";
 	public static final String LOADING_LIST = "Loading list...";
 	public static final String LOADING_EVENT_HISTORY = "Loading event history...";
+	public static final String LOADING_MEMBER_LIST = "Loading member list...";
 }
