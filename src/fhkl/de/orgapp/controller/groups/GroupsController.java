@@ -25,6 +25,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class GroupsController extends MenuActivity {
 
@@ -138,7 +139,7 @@ public class GroupsController extends MenuActivity {
 										int position, long id) {
 									Intent intent = new Intent(GroupsController.this,
 											SingleGroupController.class);
-									personIdLoggedPerson = getIntent().getStringExtra("UserId");
+									personIdLoggedPerson = UserData.getID();
 									TextView tv = (TextView) view.findViewById(R.id.GROUPID);
 									String groupId = tv.getText().toString();
 									TextView tv2 = (TextView) view.findViewById(R.id.GROUPNAME);

@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +13,7 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
 import fhkl.de.orgapp.controller.groups.ListInviteMemberController;
 import fhkl.de.orgapp.controller.groups.ManualInviteMemberController;
+import fhkl.de.orgapp.controller.groups.MemberListController;
 import fhkl.de.orgapp.controller.groups.NewGroupController;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.controller.notification.NotificationController;
@@ -26,7 +25,7 @@ import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity {
-	
+
 	private String personIdLoggedPerson;
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,7 +80,7 @@ public class MenuActivity extends Activity {
 			menu.findItem(R.id.EDIT_GROUP).setVisible(true);
 			menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
-			menu.findItem(R.id.MEMBER_LIST).setVisible(true);
+			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
 			menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
@@ -105,9 +104,9 @@ public class MenuActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-		
-		personIdLoggedPerson = getIntent().getStringExtra("UserId");
-		
+
+		personIdLoggedPerson = UserData.getID();
+
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -124,6 +123,14 @@ public class MenuActivity extends Activity {
 		case R.id.NEW_GROUP:
 			intent = new Intent(MenuActivity.this, NewGroupController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
+			startActivity(intent);
+			return true;
+
+		case R.id.SHOW_MEMBER_LIST:
+			intent = new Intent(MenuActivity.this, MemberListController.class);
+			intent.putExtra("UserId", personIdLoggedPerson);
+			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
+			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 			startActivity(intent);
 			return true;
 
@@ -218,11 +225,10 @@ public class MenuActivity extends Activity {
 			return false;
 		}
 	}
-	
-	protected void logout()
-	{
+
+	protected void logout() {
 		CalendarController.resetSTART_ACTIVITY_COUNTER();
-		
+
 		UserData.setID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -230,7 +236,7 @@ public class MenuActivity extends Activity {
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
-		
+
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
 		startActivity(intent);
 	}

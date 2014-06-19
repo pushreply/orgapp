@@ -42,7 +42,8 @@
     <string name="EDIT_GROUP">Edit group</string>
     <string name="DELETE_GROUP">Delete group</string>
     <string name="LEAVE_GROUP">Leave group</string>
-    <string name="MEMBER_LIST">Show member list</string>
+    <string name="SHOW_MEMBER_LIST">Show member list</string>
+    <string name="MEMBER_LIST">Member list</string>
     <string name="INVITE_MEMBER">Invite new members</string>
     
     <!-- Notifications -->

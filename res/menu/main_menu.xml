@@ -42,8 +42,8 @@
                 android:title="@string/LEAVE_GROUP"
                 android:visible="false"/>
             <item
-                android:id="@+id/MEMBER_LIST"
-                android:title="@string/MEMBER_LIST"
+                android:id="@+id/SHOW_MEMBER_LIST"
+                android:title="@string/SHOW_MEMBER_LIST"
                 android:visible="false"/>
             <item
                 android:id="@+id/INVITE_MEMBER"

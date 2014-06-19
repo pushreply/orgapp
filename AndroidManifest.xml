@@ -43,6 +43,10 @@
         <activity android:name="fhkl.de.orgapp.controller.groups.SingleGroupController" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.groups.MemberListController"
+            android:label="@string/MEMBER_LIST" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.groups.ManualInviteMemberController"
             android:label="@string/INVITE_MEMBER" >
         </activity>
