@@ -59,7 +59,7 @@ public class RegisterController extends Activity {
 		inputLastName = (EditText) findViewById(R.id.LASTNAME);
 
 		// Create button
-		Button bSubmit = (Button) findViewById(R.id.SUBMIT);
+		Button bSubmit = (Button) findViewById(R.id.SAVE);
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
 		// button click event

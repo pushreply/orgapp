@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
 import fhkl.de.orgapp.controller.groups.ListInviteMemberController;
 import fhkl.de.orgapp.controller.groups.ManualInviteMemberController;
@@ -40,27 +41,27 @@ public class MenuActivity extends Activity {
 		}
 
 		if (nameCurrentController.equals(ProfileController.class.getName())
-				|| nameCurrentController.equals(PrivateInfoController.class.getName())
-				|| nameCurrentController.equals(SecurityInfoController.class.getName())
-				|| nameCurrentController.equals(EventHistoryController.class.getName())) {
+						|| nameCurrentController.equals(PrivateInfoController.class.getName())
+						|| nameCurrentController.equals(SecurityInfoController.class.getName())
+						|| nameCurrentController.equals(EventHistoryController.class.getName())) {
 			menu.findItem(R.id.PROFILE_SETTINGS).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(ProfileController.class.getName())
-				|| nameCurrentController.equals(EventHistoryController.class.getName())
-				|| nameCurrentController.equals(SecurityInfoController.class.getName())) {
+						|| nameCurrentController.equals(EventHistoryController.class.getName())
+						|| nameCurrentController.equals(SecurityInfoController.class.getName())) {
 			menu.findItem(R.id.CHANGE_PRIVATE_INFORMATION).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(ProfileController.class.getName())
-				|| nameCurrentController.equals(PrivateInfoController.class.getName())
-				|| nameCurrentController.equals(SecurityInfoController.class.getName())) {
+						|| nameCurrentController.equals(PrivateInfoController.class.getName())
+						|| nameCurrentController.equals(SecurityInfoController.class.getName())) {
 			menu.findItem(R.id.LIST_EVENT_HISTORY).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(ProfileController.class.getName())
-				|| nameCurrentController.equals(PrivateInfoController.class.getName())
-				|| nameCurrentController.equals(EventHistoryController.class.getName())) {
+						|| nameCurrentController.equals(PrivateInfoController.class.getName())
+						|| nameCurrentController.equals(EventHistoryController.class.getName())) {
 			menu.findItem(R.id.CHANGE_SECURITY_INFORMATION).setVisible(true);
 		}
 
@@ -91,8 +92,8 @@ public class MenuActivity extends Activity {
 		}
 
 		if (nameCurrentController.equals(CalendarController.class.getName())
-				|| nameCurrentController.equals(GroupsController.class.getName())
-				|| nameCurrentController.equals(NotificationController.class.getName())) {
+						|| nameCurrentController.equals(GroupsController.class.getName())
+						|| nameCurrentController.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.REFRESH).setVisible(true);
 		}
 
@@ -119,6 +120,11 @@ public class MenuActivity extends Activity {
 			startActivity(intent);
 			return true;
 
+		case R.id.EDIT_GROUP:
+			intent = new Intent(MenuActivity.this, EditGroupController.class);
+			startActivity(intent);
+			return true;
+
 		case R.id.SHOW_MEMBER_LIST:
 			intent = new Intent(MenuActivity.this, MemberListController.class);
 			startActivity(intent);
@@ -131,8 +137,7 @@ public class MenuActivity extends Activity {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(MenuActivity.this,
-							ListInviteMemberController.class);
+					Intent intent = new Intent(MenuActivity.this, ListInviteMemberController.class);
 					startActivity(intent);
 				}
 
@@ -141,8 +146,7 @@ public class MenuActivity extends Activity {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(MenuActivity.this,
-							ManualInviteMemberController.class);
+					Intent intent = new Intent(MenuActivity.this, ManualInviteMemberController.class);
 					startActivity(intent);
 				}
 			});
@@ -166,8 +170,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.NOTIFICATION_SETTINGS:
-			intent = new Intent(MenuActivity.this,
-					NotificationSettingsController.class);
+			intent = new Intent(MenuActivity.this, NotificationSettingsController.class);
 			startActivity(intent);
 			return true;
 

@@ -23,12 +23,12 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/SUBMIT"
+            android:id="@+id/SAVE"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@+string/SUBMIT" />
+            android:text="@string/SAVE_GROUP" />
 
         <Button
             android:id="@+id/CANCEL"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@+string/CANCEL" />
+            android:text="@string/CANCEL" />
     </LinearLayout>
 
 </LinearLayout>

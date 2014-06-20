@@ -44,4 +44,6 @@ public interface IMessages {
 	public static final String LOADING_INFO = "Loading member info...";
 	public static final String SAVING_PRIVILEGES = "Saving privileges";
 	public static final String NO_CHANGES_MADE = "No changes were made";
+	public static final String SAVING_GROUP = "Saving group";
+	public static final String LOADING_GROUP = "Loading group...";
 }

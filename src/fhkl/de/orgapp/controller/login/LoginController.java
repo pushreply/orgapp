@@ -43,7 +43,7 @@ public class LoginController extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		bSubmit = (Button) findViewById(R.id.SUBMIT);
+		bSubmit = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
 
 		inputEMail = (EditText) findViewById(R.id.EMAIL);

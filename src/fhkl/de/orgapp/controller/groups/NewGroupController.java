@@ -37,7 +37,7 @@ public class NewGroupController extends MenuActivity {
 	EditText inputInfo;
 
 	JSONParser jsonParser = new JSONParser();
-	private static String url_check_group = "http://pushrply.com/get_groups.php";
+	private static String url_check_group = "http://pushrply.com/get_group.php";
 	private static String url_create_group = "http://pushrply.com/create_group.php";
 	private static String url_create_user_in_group = "http://pushrply.com/create_user_in_group_by_personId.php";
 
@@ -46,18 +46,17 @@ public class NewGroupController extends MenuActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.new_group);
+		setContentView(R.layout.new_edit_group);
 
 		inputName = (EditText) findViewById(R.id.NAME);
 		inputInfo = (EditText) findViewById(R.id.INFO);
 
-		Button bSubmit = (Button) findViewById(R.id.SUBMIT);
+		Button bSubmit = (Button) findViewById(R.id.SAVE);
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
 		bSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// creating new group in background thread
 				new CreateNewGroup().execute();
 			}
 		});
@@ -65,23 +64,16 @@ public class NewGroupController extends MenuActivity {
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(NewGroupController.this,
-						GroupsController.class);
+				Intent intent = new Intent(NewGroupController.this, GroupsController.class);
 				startActivity(intent);
 			}
 		});
 	}
 
-	/**
-	 * Background Async Task to Create new group
-	 * */
 	class CreateNewGroup extends AsyncTask<String, String, String> {
 
 		String groupId;
 
-		/**
-		 * Before starting background thread Show Progress Dialog
-		 * */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -92,9 +84,6 @@ public class NewGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
-		/**
-		 * Creating group
-		 * */
 		protected String doInBackground(String... args) {
 			String personId = UserData.getPERSONID();
 			String name = inputName.getText().toString();
@@ -109,8 +98,7 @@ public class NewGroupController extends MenuActivity {
 
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 			paramsCheck.add(new BasicNameValuePair("name", name));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_group, "GET",
-					paramsCheck);
+			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_group, "GET", paramsCheck);
 
 			Log.d("Create Response", jsonCheck.toString());
 
@@ -130,8 +118,7 @@ public class NewGroupController extends MenuActivity {
 			paramsCreateGroup.add(new BasicNameValuePair("name", name));
 			paramsCreateGroup.add(new BasicNameValuePair("info", info));
 
-			JSONObject json = jsonParser.makeHttpRequest(url_create_group, "GET",
-					paramsCreateGroup);
+			JSONObject json = jsonParser.makeHttpRequest(url_create_group, "GET", paramsCreateGroup);
 
 			Log.d("Create Response", json.toString());
 
@@ -141,17 +128,13 @@ public class NewGroupController extends MenuActivity {
 					groupId = success.toString();
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
 
-					paramsCreateUserInGroup
-							.add(new BasicNameValuePair("groupId", groupId));
-					paramsCreateUserInGroup.add(new BasicNameValuePair("personId",
-							personId));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 					Date date = new Date();
-					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince",
-							dateFormat.format(date).toString()));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 
-					json = jsonParser.makeHttpRequest(url_create_user_in_group, "GET",
-							paramsCreateUserInGroup);
+					json = jsonParser.makeHttpRequest(url_create_user_in_group, "GET", paramsCreateUserInGroup);
 
 					Log.d("Create Response", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -168,27 +151,21 @@ public class NewGroupController extends MenuActivity {
 			return null;
 		}
 
-		/**
-		 * After completing background task Dismiss the progress dialog
-		 * **/
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();
 
 			if (message != null) {
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
 			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						NewGroupController.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(NewGroupController.this);
 				builder.setMessage(IMessages.MEMBER_QUESTION);
 				builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Intent i = new Intent(NewGroupController.this,
-								ListInviteMemberController.class);
+						Intent i = new Intent(NewGroupController.this, ListInviteMemberController.class);
 						startActivity(i);
 					}
 
@@ -197,8 +174,7 @@ public class NewGroupController extends MenuActivity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(NewGroupController.this,
-								ManualInviteMemberController.class);
+						Intent intent = new Intent(NewGroupController.this, ManualInviteMemberController.class);
 						startActivity(intent);
 					}
 				});
