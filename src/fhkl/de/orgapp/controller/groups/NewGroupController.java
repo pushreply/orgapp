@@ -160,7 +160,7 @@ public class NewGroupController extends MenuActivity {
 
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(NewGroupController.this);
-				builder.setMessage(IMessages.MEMBER_QUESTION);
+				builder.setMessage(IMessages.QUESTION_MEMBER);
 				builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
 
 					@Override

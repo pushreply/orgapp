@@ -76,7 +76,9 @@ public class MenuActivity extends Activity {
 		if (nameCurrentController.equals(SingleGroupController.class.getName())) {
 			menu.findItem(R.id.GROUP_SETTINGS).setVisible(true);
 			menu.findItem(R.id.CREATE_EVENT).setVisible(true);
-			menu.findItem(R.id.EDIT_GROUP).setVisible(true);
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+				menu.findItem(R.id.EDIT_GROUP).setVisible(true);
+			}
 			menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
@@ -132,7 +134,7 @@ public class MenuActivity extends Activity {
 
 		case R.id.INVITE_MEMBER:
 			AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
-			builder.setMessage(IMessages.MEMBER_QUESTION);
+			builder.setMessage(IMessages.QUESTION_MEMBER);
 			builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
 
 				@Override

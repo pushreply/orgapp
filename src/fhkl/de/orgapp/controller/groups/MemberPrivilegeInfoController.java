@@ -53,7 +53,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_privilege_info);
 
-		if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
 			LinearLayout privilege_options = (LinearLayout) findViewById(R.id.PRIVILEGE_OPTIONS);
 			privilege_options.setVisibility(View.VISIBLE);
 
@@ -191,7 +191,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		tv_gender.setText(datas[5]);
 		tv_memberSince.setText(datas[6]);
 
-		if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
 			privilegeInvitation.setChecked(Boolean.parseBoolean(datas[7]));
 			privilegeMemberlistEditing.setChecked(Boolean.parseBoolean(datas[8]));
 			privilegeEventCreating.setChecked(Boolean.parseBoolean(datas[9]));
@@ -216,6 +216,9 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
+			if (GroupData.getPERSONID().equals(getIntent().getStringExtra("MemberId"))) {
+				return IMessages.PRIVILEGE_ADMIN;
+			}
 			String afterMemberInvitation = privilegeInvitation.isChecked() == true ? "1" : "0";
 			String afterMemberlistEditing = privilegeMemberlistEditing.isChecked() == true ? "1" : "0";
 			String afterEventCreating = privilegeEventCreating.isChecked() == true ? "1" : "0";

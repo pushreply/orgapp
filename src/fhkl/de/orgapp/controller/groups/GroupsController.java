@@ -80,8 +80,7 @@ public class GroupsController extends MenuActivity {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
 			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_MY_GROUP, "GET",
-					vp);
+			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_MY_GROUP, "GET", vp);
 
 			Log.d("Groups: ", json.toString());
 
@@ -112,9 +111,7 @@ public class GroupsController extends MenuActivity {
 
 				}
 			} catch (JSONException e) {
-				System.out
-						.println("Error in GroupData.doInBackground(String... arg0): "
-								+ e.getMessage());
+				System.out.println("Error in GroupData.doInBackground(String... arg0): " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -125,50 +122,39 @@ public class GroupsController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					ListAdapter adapter = new SimpleAdapter(GroupsController.this,
-							groupList, R.layout.groups_item, new String[] { TAG_GROUP_ID,
-									TAG_PERSON_ID, TAG_GROUP_NAME, TAG_GROUP_INFO,
-									TAG_GROUP_PICTURE }, new int[] { R.id.GROUPID, R.id.PERSONID,
-									R.id.GROUPNAME, R.id.GROUPINFO, R.id.GROUPPICTURE });
+					ListAdapter adapter = new SimpleAdapter(GroupsController.this, groupList, R.layout.groups_item, new String[] {
+									TAG_GROUP_ID, TAG_PERSON_ID, TAG_GROUP_NAME, TAG_GROUP_INFO, TAG_GROUP_PICTURE }, new int[] {
+									R.id.GROUPID, R.id.PERSONID, R.id.GROUPNAME, R.id.GROUPINFO, R.id.GROUPPICTURE });
 
 					// update listview
 					final ListView groupList = (ListView) findViewById(android.R.id.list);
 
-					groupList
-							.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-								@Override
-								public void onItemClick(AdapterView<?> parent, View view,
-										int position, long id) {
-									Intent intent = new Intent(GroupsController.this,
-											SingleGroupController.class);
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
 
-									TextView tv_groupId = (TextView) view
-											.findViewById(R.id.GROUPID);
-									TextView tv_personId = (TextView) view
-											.findViewById(R.id.PERSONID);
-									TextView tv_groupName = (TextView) view
-											.findViewById(R.id.GROUPNAME);
-									TextView tv_groupInfo = (TextView) view
-											.findViewById(R.id.GROUPINFO);
-									TextView tv_groupPicture = (TextView) view
-											.findViewById(R.id.GROUPPICTURE);
+							TextView tv_groupId = (TextView) view.findViewById(R.id.GROUPID);
+							TextView tv_personId = (TextView) view.findViewById(R.id.PERSONID);
+							TextView tv_groupName = (TextView) view.findViewById(R.id.GROUPNAME);
+							TextView tv_groupInfo = (TextView) view.findViewById(R.id.GROUPINFO);
+							TextView tv_groupPicture = (TextView) view.findViewById(R.id.GROUPPICTURE);
 
-									GroupData.setGROUPID(tv_groupId.getText().toString());
-									GroupData.setPERSONID(tv_personId.getText().toString());
-									GroupData.setGROUPNAME(tv_groupName.getText().toString());
-									GroupData.setGROUPINFO(tv_groupInfo.getText().toString());
-									GroupData.setPICTURE(tv_groupPicture.getText().toString());
+							GroupData.setGROUPID(tv_groupId.getText().toString());
+							GroupData.setPERSONID(tv_personId.getText().toString());
+							GroupData.setGROUPNAME(tv_groupName.getText().toString());
+							GroupData.setGROUPINFO(tv_groupInfo.getText().toString());
+							GroupData.setPICTURE(tv_groupPicture.getText().toString());
 
-									System.out.println("group admin: "
-											+ tv_personId.getText().toString());
-									new Privileges().execute();
+							System.out.println("group admin: " + tv_personId.getText().toString());
+							new Privileges().execute();
 
-									startActivity(intent);
+							startActivity(intent);
 
-								}
+						}
 
-							});
+					});
 					groupList.setAdapter(adapter);
 				}
 			});
@@ -182,8 +168,7 @@ public class GroupsController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP,
-					"GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", params);
 
 			Log.d("Member: ", json.toString());
 
@@ -195,24 +180,18 @@ public class GroupsController extends MenuActivity {
 					for (int i = 0; i < member.length(); i++) {
 						JSONObject c = member.getJSONObject(i);
 
-						GroupData.setPRIVILEGE_MANAGEMENT(c
-								.getString("privilegeManagement"));
-						GroupData.setPRIVILEGE_INVITE_MEMBER(c
-								.getString("memberInvitation"));
-						GroupData.setPRIVILEGE_EDIT_MEMBERLIST(c
-								.getString("memberlistEditing"));
+						GroupData.setPRIVILEGE_MANAGEMENT(c.getString("privilegeManagement"));
+						GroupData.setPRIVILEGE_INVITE_MEMBER(c.getString("memberInvitation"));
+						GroupData.setPRIVILEGE_EDIT_MEMBERLIST(c.getString("memberlistEditing"));
 						GroupData.setPRIVILEGE_CREATE_EVENT(c.getString("eventCreating"));
 						GroupData.setPRIVILEGE_EDIT_EVENT(c.getString("eventEditing"));
 						GroupData.setPRIVILEGE_DELETE_EVENT(c.getString("eventDeleting"));
 						GroupData.setPRIVILEGE_EDIT_COMMENT(c.getString("commentEditing"));
-						GroupData.setPRIVILEGE_DELETE_COMMENT(c
-								.getString("commentDeleting"));
+						GroupData.setPRIVILEGE_DELETE_COMMENT(c.getString("commentDeleting"));
 					}
 				}
 			} catch (JSONException e) {
-				System.out
-						.println("Error in GroupData.doInBackground(String... arg0): "
-								+ e.getMessage());
+				System.out.println("Error in GroupData.doInBackground(String... arg0): " + e.getMessage());
 				e.printStackTrace();
 			}
 

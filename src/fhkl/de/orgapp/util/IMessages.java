@@ -15,7 +15,7 @@ public interface IMessages {
 	public static final String LOADING_GROUPS = "Loading Groups...";
 	public static final String DUPLICATE_PERSON = "Person already exists";
 	public static final String UPDATING = "Updating...";
-	public static final String MEMBER_QUESTION = "Do you want do insert member manually or by list?";
+	public static final String QUESTION_MEMBER = "Do you want do insert member manually or by list?";
 	public static final String MANUALLY = "Manual";
 	public static final String LIST = "List";
 	public static final String CREATING_GROUP = "Creating Group...";
@@ -46,4 +46,11 @@ public interface IMessages {
 	public static final String NO_CHANGES_MADE = "No changes were made";
 	public static final String SAVING_GROUP = "Saving group";
 	public static final String LOADING_GROUP = "Loading group...";
+	public static final String QUESTION_DELETE_MEMBER = "Do you really want to remove this member from the group?";
+	public static final String YES = "Yes";
+	public static final String NO = "No";
+	public static final String REMOVING_MEMBER = "Removing member";
+	public static final String INSUFFICIENT_PRIVILEGES = "Insufficient privileges";
+	public static final String REMOVING_ADMIN = "Admin can not be removed";
+	public static final String PRIVILEGE_ADMIN = "Admin privileges can not be altered";
 }
