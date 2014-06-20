@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
@@ -42,11 +42,9 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 	JSONArray member = null;
 
-	TextView tv_eMail, tv_firstName, tv_lastName, tv_birthday, tv_gender,
-			tv_memberSince;
-	CheckBox privilegeInvitation, privilegeMemberlistEditing,
-			privilegeEventCreating, privilegeEventEditing, privilegeEventDeleting,
-			privilegeCommentEditing, privilegeCommentDeleting, privilegeManagement;
+	TextView tv_eMail, tv_firstName, tv_lastName, tv_birthday, tv_gender, tv_memberSince;
+	CheckBox privilegeInvitation, privilegeMemberlistEditing, privilegeEventCreating, privilegeEventEditing,
+					privilegeEventDeleting, privilegeCommentEditing, privilegeCommentDeleting, privilegeManagement;
 	Button bSave, bCancel;
 
 	@Override
@@ -89,8 +87,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent i = new Intent(MemberPrivilegeInfoController.this,
-						MemberListController.class);
+				Intent i = new Intent(MemberPrivilegeInfoController.this, MemberListController.class);
 				startActivity(i);
 			}
 		});
@@ -114,11 +111,9 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			String result = null;
 			String eMail = null;
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"MemberId")));
+			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("MemberId")));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON, "GET",
-					params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON, "GET", params);
 
 			Log.d("Member: ", json.toString());
 
@@ -141,12 +136,10 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					}
 
 					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
-					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData
-							.getGROUPID()));
+					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("eMail", eMail));
 
-					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET",
-							paramsPrivileges);
+					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges);
 
 					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -157,29 +150,20 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							result += c.getString("memberSince") + ", ";
-							result += c.getInt("memberInvitation") == 1 ? "true" + ", "
-									: "false" + ", ";
-							result += c.getInt("memberlistEditing") == 1 ? "true" + ", "
-									: "false" + ", ";
-							result += c.getInt("eventCreating") == 1 ? "true" + ", "
-									: "false" + ", ";
-							result += c.getInt("eventEditing") == 1 ? "true" + ", " : "false"
-									+ ", ";
-							result += c.getInt("eventDeleting") == 1 ? "true" + ", "
-									: "false" + ", ";
-							result += c.getInt("commentEditing") == 1 ? "true" + ", "
-									: "false" + ", ";
-							result += c.getInt("commentDeleting") == 1 ? "true" + ", "
-									: "false" + ", ";
+							result += c.getInt("memberInvitation") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("memberlistEditing") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("eventCreating") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("eventEditing") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("eventDeleting") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("commentEditing") == 1 ? "true" + ", " : "false" + ", ";
+							result += c.getInt("commentDeleting") == 1 ? "true" + ", " : "false" + ", ";
 							result += c.getInt("privilegeManagement") == 1 ? "true" : "false";
 						}
 					}
 				}
 				return result;
 			} catch (JSONException e) {
-				System.out
-						.println("Error in GetPrivilegesInfo.doInBackground(String... args): "
-								+ e.getMessage());
+				System.out.println("Error in GetPrivilegesInfo.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -232,154 +216,261 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
+			String afterMemberInvitation = privilegeInvitation.isChecked() == true ? "1" : "0";
+			String afterMemberlistEditing = privilegeMemberlistEditing.isChecked() == true ? "1" : "0";
+			String afterEventCreating = privilegeEventCreating.isChecked() == true ? "1" : "0";
+			String afterEventEditing = privilegeEventEditing.isChecked() == true ? "1" : "0";
+			String afterEventDeleting = privilegeEventDeleting.isChecked() == true ? "1" : "0";
+			String afterCommentEditing = privilegeCommentEditing.isChecked() == true ? "1" : "0";
+			String afterCommentDeleting = privilegeCommentDeleting.isChecked() == true ? "1" : "0";
+			String afterPrivilegeManagement = privilegeManagement.isChecked() == true ? "1" : "0";
+
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra(
-					"MemberId")));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			params.add(new BasicNameValuePair("memberInvitation", privilegeInvitation
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("memberlistEditing",
-					privilegeMemberlistEditing.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("eventCreating", privilegeEventCreating
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("eventEditing", privilegeEventEditing
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("eventDeleting", privilegeEventDeleting
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("commentEditing",
-					privilegeCommentEditing.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("commentDeleting",
-					privilegeCommentDeleting.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("privilegeManagement",
-					privilegeManagement.isChecked() == true ? "1" : "0"));
+			params.add(new BasicNameValuePair("eMail", tv_eMail.getText().toString()));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_UPDATE_PRIVILEGES,
-					"GET", params);
-
-			Log.d("Member: ", json.toString());
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
-					Resources res = getResources();
-					List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
-					paramsNotification.add(new BasicNameValuePair("eMail", tv_eMail
-							.getText().toString()));
-					paramsNotification
-							.add(new BasicNameValuePair("classification", "10"));
-					String message = new String();
-					boolean firstEntry = false;
-					message += "You were granted the following rights in "
-							+ GroupData.getGROUPNAME() + ": ";
 
-					if (privilegeInvitation.isChecked() == true) {
-						message += res.getString(R.string.PRIVILEGE_INVITATION);
-						firstEntry = true;
-					}
+					member = json.getJSONArray("member");
+					String[] privilegesGiven = new String[8];
+					for (int i = 0; i < member.length(); i++) {
+						JSONObject c = member.getJSONObject(i);
 
-					if (privilegeMemberlistEditing.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", "
-									+ res.getString(R.string.PRIVILEGE_MEMBERLIST_Editing);
+						String beforeMemberInvitation = c.getString("memberInvitation");
+						String beforeMemberlistEditing = c.getString("memberlistEditing");
+						String beforeEventCreating = c.getString("eventCreating");
+						String beforeEventEditing = c.getString("eventEditing");
+						String beforeEventDeleting = c.getString("eventDeleting");
+						String beforeCommentEditing = c.getString("commentEditing");
+						String beforeCommentDeleting = c.getString("commentDeleting");
+						String beforePrivilegeManagement = c.getString("privilegeManagement");
+						boolean privilegeChanged = false;
+
+						if (beforeMemberInvitation.equals(afterMemberInvitation)) {
+							privilegesGiven[0] = "";
 						} else {
-							message += res.getString(R.string.PRIVILEGE_MEMBERLIST_Editing);
-							firstEntry = true;
+							privilegeChanged = true;
+							if (beforeMemberInvitation.equals("1") && afterMemberInvitation.equals("0")) {
+								privilegesGiven[0] = "Revoked";
+							} else {
+								privilegesGiven[0] = "Granted";
+							}
+						}
+
+						if (beforeMemberlistEditing.equals(afterMemberlistEditing)) {
+							privilegesGiven[1] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeMemberlistEditing.equals("1") && afterMemberlistEditing.equals("0")) {
+								privilegesGiven[1] = "Revoked";
+							} else {
+								privilegesGiven[1] = "Granted";
+							}
+						}
+
+						if (beforeEventCreating.equals(afterEventCreating)) {
+							privilegesGiven[2] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeEventCreating.equals("1") && afterEventCreating.equals("0")) {
+								privilegesGiven[2] = "Revoked";
+							} else {
+								privilegesGiven[2] = "Granted";
+							}
+						}
+
+						if (beforeEventEditing.equals(afterEventEditing)) {
+							privilegesGiven[3] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeEventEditing.equals("1") && afterEventEditing.equals("0")) {
+								privilegesGiven[3] = "Revoked";
+							} else {
+								privilegesGiven[3] = "Granted";
+							}
+						}
+
+						if (beforeEventDeleting.equals(afterEventDeleting)) {
+							privilegesGiven[4] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeEventDeleting.equals("1") && afterEventDeleting.equals("0")) {
+								privilegesGiven[4] = "Revoked";
+							} else {
+								privilegesGiven[4] = "Granted";
+							}
+						}
+
+						if (beforeCommentEditing.equals(afterCommentEditing)) {
+							privilegesGiven[5] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeCommentEditing.equals("1") && afterCommentEditing.equals("0")) {
+								privilegesGiven[5] = "Revoked";
+							} else {
+								privilegesGiven[5] = "Granted";
+							}
+						}
+
+						if (beforeCommentDeleting.equals(afterCommentDeleting)) {
+							privilegesGiven[6] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforeCommentDeleting.equals("1") && afterCommentDeleting.equals("0")) {
+								privilegesGiven[6] = "Revoked";
+							} else {
+								privilegesGiven[6] = "Granted";
+							}
+						}
+
+						if (beforePrivilegeManagement.equals(afterPrivilegeManagement)) {
+							privilegesGiven[7] = "";
+						} else {
+							privilegeChanged = true;
+							if (beforePrivilegeManagement.equals("1") && afterPrivilegeManagement.equals("0")) {
+								privilegesGiven[7] = "Revoked";
+							} else {
+								privilegesGiven[7] = "Granted";
+							}
+						}
+
+						if (privilegeChanged == false) {
+							return IMessages.NO_CHANGES_MADE;
 						}
 					}
 
-					if (privilegeEventCreating.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", "
-									+ res.getString(R.string.PRIVILEGE_EVENT_CREATING);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_EVENT_CREATING);
-							firstEntry = true;
-						}
-					}
+					List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
+					paramsUpdate.add(new BasicNameValuePair("personId", getIntent().getStringExtra("MemberId")));
+					paramsUpdate.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsUpdate.add(new BasicNameValuePair("memberInvitation", afterMemberInvitation));
+					paramsUpdate.add(new BasicNameValuePair("memberlistEditing", afterMemberlistEditing));
+					paramsUpdate.add(new BasicNameValuePair("eventCreating", afterEventCreating));
+					paramsUpdate.add(new BasicNameValuePair("eventEditing", afterEventEditing));
+					paramsUpdate.add(new BasicNameValuePair("eventDeleting", afterEventDeleting));
+					paramsUpdate.add(new BasicNameValuePair("commentEditing", afterCommentEditing));
+					paramsUpdate.add(new BasicNameValuePair("commentDeleting", afterCommentDeleting));
+					paramsUpdate.add(new BasicNameValuePair("privilegeManagement", afterPrivilegeManagement));
 
-					if (privilegeEventEditing.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", " + res.getString(R.string.PRIVILEGE_EVENT_EDITING);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_EVENT_EDITING);
-							firstEntry = true;
-						}
-					}
+					json = jsonParser.makeHttpRequest(URL_UPDATE_PRIVILEGES, "GET", paramsUpdate);
 
-					if (privilegeEventDeleting.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", "
-									+ res.getString(R.string.PRIVILEGE_EVENT_DELETING);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_EVENT_DELETING);
-							firstEntry = true;
-						}
-					}
-
-					if (privilegeCommentEditing.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", "
-									+ res.getString(R.string.PRIVILEGE_COMMENT_EDITING);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_COMMENT_EDITING);
-							firstEntry = true;
-						}
-					}
-
-					if (privilegeCommentDeleting.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", "
-									+ res.getString(R.string.PRIVILEGE_COMMENT_DELETING);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_COMMENT_DELETING);
-							firstEntry = true;
-						}
-					}
-
-					if (privilegeManagement.isChecked() == true) {
-						if (firstEntry == true) {
-							message += ", " + res.getString(R.string.PRIVILEGE_MANAGEMENT);
-						} else {
-							message += res.getString(R.string.PRIVILEGE_MANAGEMENT);
-						}
-					}
-
-					if (firstEntry == false) {
-						Intent intent = new Intent(MemberPrivilegeInfoController.this,
-								MemberPrivilegeInfoController.class);
-						intent.putExtra("MemberId", getIntent().getStringExtra("MemberId"));
-						finish();
-						startActivity(intent);
-						return null;
-					}
-
-					paramsNotification.add(new BasicNameValuePair("message", message));
-					paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-					json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET",
-							paramsNotification);
+					Log.d("Member: ", json.toString());
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
+						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
+						paramsNotification.add(new BasicNameValuePair("eMail", tv_eMail.getText().toString()));
+						paramsNotification.add(new BasicNameValuePair("classification", "10"));
+						String message = new String();
+						boolean firstEntry = true;
+						message += "The following privileges were changed in the group \"" + GroupData.getGROUPNAME() + "\": ";
 
-						Intent intent = new Intent(MemberPrivilegeInfoController.this,
-								MemberPrivilegeInfoController.class);
-						intent.putExtra("MemberId", getIntent().getStringExtra("MemberId"));
-						finish();
-						startActivity(intent);
+						if (!privilegesGiven[0].isEmpty()) {
+							message += privilegesGiven[0] + " member invitation right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[1].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[1] + " memberlist editing right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[2].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[2] + " event creating right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[3].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[3] + " event editing right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[4].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[4] + " event deleting right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[5].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[5] + " comment editing right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[6].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[6] + " comment deleting right";
+							firstEntry = false;
+						} else {
+							firstEntry = true;
+						}
+
+						if (!privilegesGiven[7].isEmpty()) {
+							if (firstEntry == false) {
+								message += ", ";
+							}
+							message += privilegesGiven[7] + " privilege management right";
+							firstEntry = false;
+						}
+
+						paramsNotification.add(new BasicNameValuePair("message", message));
+						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
+						json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsNotification);
+
+						success = json.getInt(TAG_SUCCESS);
+						if (success == 1) {
+
+							Intent intent = new Intent(MemberPrivilegeInfoController.this, MemberPrivilegeInfoController.class);
+							intent.putExtra("MemberId", getIntent().getStringExtra("MemberId"));
+							finish();
+							startActivity(intent);
+						}
 					}
 				}
 			} catch (JSONException e) {
-				System.out
-						.println("Error in SavePrivileges.doInBackground(String... args): "
-								+ e.getMessage());
+				System.out.println("Error in SavePrivileges.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
 			}
 
 			return null;
 		}
 
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(String message) {
 			pDialog.dismiss();
+
+			if (message != null)
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
 		}
 	}
 }
