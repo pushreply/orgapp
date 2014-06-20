@@ -13,12 +13,12 @@ public class InputValidator
 		return true;
 	}
 	
-	public static boolean isStringLengthInRange(String value)
+	public static boolean isStringLengthInRange(String value, int minLength, int maxLength)
 	{
 		if(value == null)
 			return false;
 		
-		if(value.length() == 0 || value.length() > 255)
+		if(value.length() == minLength || value.length() > maxLength)
 			return false;
 		
 		return true;

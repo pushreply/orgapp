@@ -116,16 +116,16 @@ public class RegisterController extends Activity {
 			if (!InputValidator.isEmailValid(eMail))
 				return IMessages.INVALID_EMAIL;
 			
-			if (!InputValidator.isStringLengthInRange(password))
+			if (!InputValidator.isStringLengthInRange(password, 0, 255))
 				return IMessages.INVALID_PASSWORD;
 			
 			if(!password.equals(passwordConfirm))
 				return IMessages.PASSWORDS_DO_NOT_MATCH;
 			
-			if(!InputValidator.isStringLengthInRange(firstName))
+			if(!InputValidator.isStringLengthInRange(firstName, 0, 255))
 				return IMessages.INVALID_FIRSTNAME;
 			
-			if(InputValidator.isStringLengthInRange(lastName))
+			if(InputValidator.isStringLengthInRange(lastName, 0, 255))
 				return IMessages.INVALID_LASTNAME;
 
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
