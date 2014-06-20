@@ -21,7 +21,7 @@ if (mysql_num_rows ( $result ) > 0) {
 	while ( $row = mysql_fetch_array ( $result ) ) {
 		$member = array ();
 		$member ["personId"] = $row ["personId"];
-		$member ["eMail"] = $row ["eMail"];
+		$member ["eMail"] = html_entity_decode($row["eMail"], ENT_QUOTES, 'UTF-8');
 
 		array_push ( $response ["member"], $member );
 	}

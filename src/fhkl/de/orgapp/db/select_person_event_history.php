@@ -29,7 +29,7 @@ if(mysql_num_rows($result) > 0)
 		if(strtotime($row["eventDate"]) < strtotime($currentDate))
 		{
 			$previousEvent = array();
-			$previousEvent["name"] = $row["name"];
+			$previousEvent["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
 			$previousEvent["eventDate"] = $row["eventDate"];
 			array_push($response["previousEvents"], $previousEvent);
 		}
