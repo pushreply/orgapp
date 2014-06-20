@@ -51,6 +51,14 @@
                 android:visible="false"/>
         </menu>
     </item>
+    
+    <item
+        android:id="@+id/BACK_TO_GROUP"
+        android:icon="@drawable/ic_action_back"
+        android:showAsAction="ifRoom"
+        android:title="@string/BACK_TO_GROUP"
+        android:visible="false"/>
+    
     <item
         android:id="@+id/NOTIFICATION_SETTINGS"
         android:icon="@drawable/ic_action_settings"

@@ -85,6 +85,10 @@ public class MenuActivity extends Activity {
 			menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
+		if (nameCurrentController.equals(MemberListController.class.getName())) {
+			menu.findItem(R.id.BACK_TO_GROUP).setVisible(true);
+		}
+
 		if (nameCurrentController.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.NOTIFICATIONS).setVisible(false);
 		}
@@ -129,6 +133,11 @@ public class MenuActivity extends Activity {
 
 		case R.id.SHOW_MEMBER_LIST:
 			intent = new Intent(MenuActivity.this, MemberListController.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.BACK_TO_GROUP:
+			intent = new Intent(MenuActivity.this, SingleGroupController.class);
 			startActivity(intent);
 			return true;
 
