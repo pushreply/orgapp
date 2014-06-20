@@ -5,8 +5,11 @@
 
     <!-- Allgemeine Buttons -->
     <string name="SUBMIT">Submit</string>
+    <string name="SAVE">Save</string>
     <string name="CANCEL">Cancel</string>
     <string name="REFRESH">Refresh</string>
+    <string name="MALE">m</string>
+    <string name="FEMALE">w</string>
     
     <!-- Startbildschirm -->
     <string name="LOGIN">Login</string>
@@ -93,12 +96,14 @@
     <string name="GENDER">Gender</string>
     <string name="MEMBER_SINCE">Member since</string>
     <string name="CHANGE_INFO">Change information</string>
+    <string name="CHANGE_BIRTHDAY">Change birthday</string>
     <string name="GENERAL_INFORMATION">General information</string>
     <string name="EMAIL_MUST_HAVE">Email address *</string>
     <string name="EMAIL_CONFIRM_MUST_HAVE">Email address (confirmation) *</string>
     
     <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>
+    <string name="SET_NEW_BIRTHDAY">Set new birthday</string>
     
     <!-- Security information -->
     <string name="SECURITY_INFORMATION">Security information</string>

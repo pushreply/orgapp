@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class ProfileController extends MenuActivity
 {
@@ -60,12 +61,12 @@ public class ProfileController extends MenuActivity
 		textGeneralInformation.setPaintFlags(textGeneralInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
 		
-		firstName.setText(getIntent().getStringExtra("FirstName"));
-		lastName.setText(getIntent().getStringExtra("LastName"));
-		birthday.setText(getIntent().getStringExtra("Birthday"));
-		gender.setText(getIntent().getStringExtra("Gender"));
-		email.setText(getIntent().getStringExtra("Email"));
-		memberSince.setText(getIntent().getStringExtra("MemberSince"));
+		firstName.setText(UserData.getFIRST_NAME());
+		lastName.setText(UserData.getLAST_NAME());
+		birthday.setText(UserData.getBIRTHDAY());
+		gender.setText(UserData.getGENDER());
+		email.setText(UserData.getEMAIL());
+		memberSince.setText(UserData.getMEMBER_SINCE());
 	}
 	
 	private void setTextSizes()

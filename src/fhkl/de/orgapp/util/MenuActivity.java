@@ -171,12 +171,6 @@ public class MenuActivity extends Activity {
 
 		case R.id.PROFILE:
 			intent = new Intent(MenuActivity.this, ProfileController.class);
-			intent.putExtra("FirstName", UserData.getFIRST_NAME());
-			intent.putExtra("LastName", UserData.getLAST_NAME());
-			intent.putExtra("Birthday", UserData.getBIRTHDAY());
-			intent.putExtra("Gender", UserData.getGENDER());
-			intent.putExtra("Email", UserData.getEMAIL());
-			intent.putExtra("MemberSince", UserData.getMEMBER_SINCE());
 			startActivity(intent);
 			return true;
 

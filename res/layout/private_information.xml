@@ -46,10 +46,22 @@
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
         
-        <EditText
-            android:id="@+id/PRIVATE_INFO_USER_BIRTHDAY"
-        	android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+        <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		    
+	        <TextView
+	            android:id="@+id/PRIVATE_INFO_USER_BIRTHDAY"
+	        	android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+	        
+	        <Button
+	            android:id="@+id/PRIVATE_INFO_PICK_BIRTHDAY_BUTTON"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:onClick="selectBirthday" />
+        </LinearLayout>
        
    </TableRow>
    
@@ -62,10 +74,20 @@
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
         
-        <EditText
-            android:id="@+id/PRIVATE_INFO_USER_GENDER"
-        	android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+        <RadioGroup
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+    		android:orientation="horizontal">
+    		    		
+		    <RadioButton android:id="@+id/PRIVATE_INFO_USER_GENDER_MALE"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="selectGender"/>
+		    <RadioButton android:id="@+id/PRIVATE_INFO_USER_GENDER_FEMALE"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:onClick="selectGender"/>
+		</RadioGroup>
        
    </TableRow>
    

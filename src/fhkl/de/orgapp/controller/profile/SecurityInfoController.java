@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 
 public class SecurityInfoController extends MenuActivity
 {
@@ -102,7 +104,13 @@ public class SecurityInfoController extends MenuActivity
 	
 	public void cancelSecurityInfoView(View view)
 	{
-		finish();
+		backToProfile();
+	}
+	
+	private void backToProfile()
+	{
+		Intent intent = new Intent(this, ProfileController.class);
+		startActivity(intent);
 	}
 	
 	private boolean isSecurityInfoComplete()
@@ -187,7 +195,9 @@ public class SecurityInfoController extends MenuActivity
 			if(message != null)
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			
-			logout();
+			UserData.setEMAIL(emailNew.getText().toString());
+			
+			backToProfile();
 		}
 	}
 }
