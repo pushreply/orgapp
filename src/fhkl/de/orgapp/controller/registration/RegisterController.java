@@ -25,6 +25,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.login.LoginController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 
 public class RegisterController extends Activity {
@@ -104,29 +105,28 @@ public class RegisterController extends Activity {
 		/**
 		 * Creating person
 		 * */
-		protected String doInBackground(String... args) {
+		protected String doInBackground(String... args)
+		{
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
 			String passwordConfirm = inputPasswordConfirm.getText().toString();
 			String firstName = inputFirstName.getText().toString();
 			String lastName = inputLastName.getText().toString();
 
-			if (!eMail.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) {
+			if (!InputValidator.isEmailValid(eMail))
 				return IMessages.INVALID_EMAIL;
-			}
-			if (password.length() == 0 || password.length() > 255) {
+			
+			if (!InputValidator.isStringLengthInRange(password))
 				return IMessages.INVALID_PASSWORD;
-			}
+			
 			if(!password.equals(passwordConfirm))
-			{
 				return IMessages.PASSWORDS_DO_NOT_MATCH;
-			}
-			if (firstName.length() == 0 || firstName.length() > 255) {
+			
+			if(!InputValidator.isStringLengthInRange(firstName))
 				return IMessages.INVALID_FIRSTNAME;
-			}
-			if (lastName.length() == 0 || lastName.length() > 255) {
+			
+			if(InputValidator.isStringLengthInRange(lastName))
 				return IMessages.INVALID_LASTNAME;
-			}
 
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
