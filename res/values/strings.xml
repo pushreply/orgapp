@@ -61,6 +61,10 @@
     <string name="PRIVILEGE_MANAGEMENT">Able to manage privileges</string>
     <string name="SAVE_PRIVILEGES">Save</string>
     <string name="INVITE_MEMBER">Invite new members</string>
+    <string name="TEXT_FIRST_NAME">First name</string>
+    <string name="TEXT_LAST_NAME">Last name</string>
+    <string name="TEXT_EMAIL">Email</string>
+    <string name="USER_SELECTED">User selected</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>
