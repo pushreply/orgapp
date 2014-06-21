@@ -38,6 +38,7 @@ import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 
 public class ManualInviteMemberController extends Activity {
@@ -92,8 +93,7 @@ public class ManualInviteMemberController extends Activity {
 		bCancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(ManualInviteMemberController.this,
-						SingleGroupController.class);
+				Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
 				intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
 				intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
@@ -121,49 +121,41 @@ public class ManualInviteMemberController extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
-			intent = new Intent(ManualInviteMemberController.this,
-					CalendarController.class);
+			intent = new Intent(ManualInviteMemberController.this, CalendarController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 		case R.id.GROUPS:
-			intent = new Intent(ManualInviteMemberController.this,
-					GroupsController.class);
+			intent = new Intent(ManualInviteMemberController.this, GroupsController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 		case R.id.NOTIFICATIONS:
-			intent = new Intent(ManualInviteMemberController.this,
-					NotificationController.class);
+			intent = new Intent(ManualInviteMemberController.this, NotificationController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 		case R.id.PROFILE:
-			intent = new Intent(ManualInviteMemberController.this,
-					ProfileController.class);
+			intent = new Intent(ManualInviteMemberController.this, ProfileController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 		case R.id.LOGOUT:
-			intent = new Intent(ManualInviteMemberController.this,
-					StartController.class);
+			intent = new Intent(ManualInviteMemberController.this, StartController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			startActivity(intent);
 			return true;
 		case R.id.ADD_EMAIL_FIELD:
-			Integer tmpCnt = Integer.valueOf(getIntent().getStringExtra("cnt")
-					.toString());
+			Integer tmpCnt = Integer.valueOf(getIntent().getStringExtra("cnt").toString());
 
 			EditText editText = new EditText(ManualInviteMemberController.this);
 			editText.setId(tmpCnt);
-			editText.setInputType(InputType.TYPE_CLASS_TEXT
-					| InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+			editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 			editText.setHint(R.string.EMAIL);
 
 			tmpCnt++;
 
-			ImageButton imageButton = new ImageButton(
-					ManualInviteMemberController.this);
+			ImageButton imageButton = new ImageButton(ManualInviteMemberController.this);
 			imageButton.setId(tmpCnt);
 			imageButton.setImageResource(R.drawable.ic_action_remove);
 
@@ -171,8 +163,7 @@ public class ManualInviteMemberController extends Activity {
 			getIntent().putExtra("cnt", tmpCnt.toString());
 
 			textLayout.addView(editText);
-			LayoutParams layoutParams = (GridLayout.LayoutParams) editText
-					.getLayoutParams();
+			LayoutParams layoutParams = (GridLayout.LayoutParams) editText.getLayoutParams();
 			layoutParams.columnSpec = GridLayout.spec(0, 3);
 			layoutParams.setGravity(Gravity.FILL);
 			editText.setLayoutParams(layoutParams);
@@ -240,8 +231,7 @@ public class ManualInviteMemberController extends Activity {
 			}
 			System.out.println("check 1 done");
 			for (int i = 0; i < editTextArray.length; i++) {
-				if (!editTextArray[i]
-						.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) {
+				if (InputValidator.isEmailValid(editTextArray[i]) == false) {
 					// Wrong Email format
 					return IMessages.INVALID_EMAIL;
 				}
@@ -250,8 +240,7 @@ public class ManualInviteMemberController extends Activity {
 			for (int i = 0; i < editTextArray.length; i++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				JSONObject json = jsonParser.makeHttpRequest(URL_EXIST_USER, "GET",
-						paramsCheck);
+				JSONObject json = jsonParser.makeHttpRequest(URL_EXIST_USER, "GET", paramsCheck);
 				int success;
 				try {
 					success = json.getInt(TAG_SUCCESS);
@@ -260,20 +249,16 @@ public class ManualInviteMemberController extends Activity {
 						return IMessages.EXIST_USER;
 					}
 				} catch (JSONException e) {
-					System.out
-							.println("Error in InviteMembers.doInBackground(String... arg0): "
-									+ e.getMessage());
+					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
 			System.out.println("check 3 done");
 			for (int i = 0; i < editTextArray.length; i++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-				paramsCheck.add(new BasicNameValuePair("groupId", getIntent()
-						.getStringExtra("GroupId")));
+				paramsCheck.add(new BasicNameValuePair("groupId", getIntent().getStringExtra("GroupId")));
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				JSONObject json = jsonParser.makeHttpRequest(URL_USER_INVITED, "GET",
-						paramsCheck);
+				JSONObject json = jsonParser.makeHttpRequest(URL_USER_INVITED, "GET", paramsCheck);
 				int success;
 				try {
 					success = json.getInt(TAG_SUCCESS);
@@ -282,42 +267,32 @@ public class ManualInviteMemberController extends Activity {
 						return IMessages.USER_INVITED;
 					}
 				} catch (JSONException e) {
-					System.out
-							.println("Error in InviteMembers.doInBackground(String... arg0): "
-									+ e.getMessage());
+					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
 			System.out.println("check 4 done");
 			// Everything okay
 			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
-			paramsInvite.add(new BasicNameValuePair("groupId", getIntent()
-					.getStringExtra("GroupId")));
+			paramsInvite.add(new BasicNameValuePair("groupId", getIntent().getStringExtra("GroupId")));
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			Date date = new Date();
-			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(
-					date).toString()));
+			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 			for (int i = 0; i < editTextArray.length; i++) {
 				paramsInvite.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				JSONObject json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET",
-						paramsInvite);
+				JSONObject json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET", paramsInvite);
 				int success;
 				try {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						// Send Notifications
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
-						paramsNotification.add(new BasicNameValuePair("eMail",
-								editTextArray[i]));
-						paramsNotification
-								.add(new BasicNameValuePair("classification", "0"));
-						String message = IMessages.MESSAGE_INVITE
-								+ getIntent().getStringExtra("GroupName");
+						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
+						paramsNotification.add(new BasicNameValuePair("classification", "0"));
+						String message = IMessages.MESSAGE_INVITE + getIntent().getStringExtra("GroupName");
 						paramsNotification.add(new BasicNameValuePair("message", message));
-						paramsNotification
-								.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET",
-								paramsNotification);
+						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
+						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET", paramsNotification);
 						json.getInt(TAG_SUCCESS);
 						if (success != 1) {
 							// unknown error
@@ -326,14 +301,11 @@ public class ManualInviteMemberController extends Activity {
 						// unknown error
 					}
 				} catch (JSONException e) {
-					System.out
-							.println("Error in InviteMembers.doInBackground(String... arg0): "
-									+ e.getMessage());
+					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
-			Intent intent = new Intent(ManualInviteMemberController.this,
-					SingleGroupController.class);
+			Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
 			intent.putExtra("UserId", personIdLoggedPerson);
 			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
 			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
@@ -345,8 +317,7 @@ public class ManualInviteMemberController extends Activity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 			if (message != null) {
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
 			}
 		}

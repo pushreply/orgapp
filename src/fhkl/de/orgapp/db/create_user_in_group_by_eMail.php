@@ -23,7 +23,7 @@ $result = mysql_query ( "INSERT INTO privilege(personId, groupId, memberSince,
 		eventCreating, eventEditing, eventDeleting, commentEditing,
 		commentDeleting)
 		VALUES((select personId from person where eMail = '$eMail'), '$groupId', '$memberSince',
-		false, true, false, true, false, false, false, false)" );
+		false, false, false, false, false, false, false, false)" );
 
 // check if row inserted or not
 if ($result) {

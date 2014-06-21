@@ -21,6 +21,7 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 
@@ -154,10 +155,10 @@ public class EditGroupController extends MenuActivity {
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
-			if (name.length() == 0 || name.length() > 255) {
+			if (InputValidator.isStringLengthInRange(String.valueOf(name.length()), 0, 255)) {
 				return IMessages.INVALID_NAME;
 			}
-			if (info.length() == 0 || info.length() > 1024) {
+			if (InputValidator.isStringLengthInRange(String.valueOf(info.length()), 0, 1024)) {
 				return IMessages.INVALID_INFO;
 			}
 
@@ -210,7 +211,7 @@ public class EditGroupController extends MenuActivity {
 							String message = new String();
 
 							if (!beforeName.equals(name)) {
-								message += "Group \"" + beforeName + "\" was renamed into \"" + name + "\"";
+								message += "Group \"" + beforeName + "\" was renamed to \"" + name + "\"";
 							}
 
 							if (!beforeInfo.equals(info)) {
