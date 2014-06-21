@@ -53,4 +53,5 @@ public interface IMessages {
 	public static final String INSUFFICIENT_PRIVILEGES = "Insufficient privileges";
 	public static final String REMOVING_ADMIN = "Admin can not be removed";
 	public static final String PRIVILEGE_ADMIN = "Admin privileges can not be altered";
+	public static final String MEMBERLIST_EMPTY = "Memberlist is empty";
 }

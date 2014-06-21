@@ -1,13 +1,24 @@
 package fhkl.de.orgapp.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
@@ -26,6 +37,12 @@ import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 import fhkl.de.orgapp.controller.start.StartController;
 
 public class MenuActivity extends Activity {
+
+	JSONParser jsonParser = new JSONParser();
+
+	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
+
+	private static final String TAG_SUCCESS = "success";
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -132,8 +149,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.SHOW_MEMBER_LIST:
-			intent = new Intent(MenuActivity.this, MemberListController.class);
-			startActivity(intent);
+			new MemberList().execute();
 			return true;
 
 		case R.id.BACK_TO_GROUP:
@@ -229,4 +245,41 @@ public class MenuActivity extends Activity {
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
 		startActivity(intent);
 	}
+
+	class MemberList extends AsyncTask<String, String, String> {
+
+		protected String doInBackground(String... args) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_MEMBER_LIST, "GET", params);
+
+			Log.d("Memberlist: ", json.toString());
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+				if (success == 1) {
+					Intent intent = new Intent(MenuActivity.this, MemberListController.class);
+					startActivity(intent);
+				} else {
+					return IMessages.MEMBERLIST_EMPTY;
+				}
+
+			} catch (JSONException e) {
+				System.out.println("Error in MemberList.doInBackground(String... args): " + e.getMessage());
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		protected void onPostExecute(String message) {
+
+			if (message != null) {
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
 }
