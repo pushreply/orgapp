@@ -90,10 +90,10 @@ public class NewGroupController extends MenuActivity {
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
-			if (InputValidator.isStringLengthInRange(String.valueOf(name.length()), 0, 255)) {
+			if (!InputValidator.isStringLengthInRange(name, 0, 255)) {
 				return IMessages.INVALID_NAME;
 			}
-			if (InputValidator.isStringLengthInRange(String.valueOf(info.length()), 0, 1024)) {
+			if (!InputValidator.isStringLengthInRange(info, 0, 1024)) {
 				return IMessages.INVALID_INFO;
 			}
 
