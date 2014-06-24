@@ -23,6 +23,8 @@ public interface IMessages {
 	public static final String INVALID_INFO = "Invalid Info";
 	public static final String DUPLICATE_GROUP = "Group already exists";
 	public static final String INVITING_MEMBER = "Inviting Members";
+	public static final String INVITING_MEMBERS = "Inviting Members...";
+	public static final String NO_MEMBER_SELECTED = "Please select at least one person";
 	public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 	public static final String EXIST_USER = "User does not exist: ";
 	public static final String USER_INVITED = "User already invited";

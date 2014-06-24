@@ -1,6 +1,9 @@
 package fhkl.de.orgapp.controller.groups;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +27,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -31,6 +36,8 @@ import fhkl.de.orgapp.util.UserData;
 public class ListInviteMemberController extends MenuActivity
 {
 	private static String URL_GET_INVITE_MEMBER_LIST = "http://pushrply.com/get_invite_member_list.php";
+	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
+	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
 
 	Button inviteButton, cancelButton;
 	View horizontalLine;
@@ -62,6 +69,44 @@ public class ListInviteMemberController extends MenuActivity
 		new PersonListGetter().execute();
 	}
 
+	public void invitePersons(View view)
+	{
+		if(!isAtLeastOnePersonSelected())
+		{
+			Toast.makeText(getApplicationContext(), IMessages.NO_MEMBER_SELECTED, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		new PersonListInvite().execute();
+	}
+	
+	public void cancelView(View view)
+	{
+		backToSingleGroupView();
+	}
+	
+	private boolean isAtLeastOnePersonSelected()
+	{
+		int p;
+		
+		for(p=0; p<personList.size(); p++)
+		{
+			if(((Boolean) personList.get(p).get(TAG_IS_SELECTED)).booleanValue())
+				return true;
+		}
+		
+		return false;
+	}
+	
+	private void backToSingleGroupView()
+	{
+		Intent intent = new Intent(ListInviteMemberController.this, SingleGroupController.class);
+		intent.putExtra("UserId", UserData.getPERSONID());
+		intent.putExtra("GroupId", GroupData.getGROUPID());
+		intent.putExtra("GroupName", GroupData.getGROUPNAME());
+		startActivity(intent);
+	}
+	
 	class PersonListGetter extends AsyncTask<String, String, String>
 	{
 		@Override
@@ -80,6 +125,7 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_INVITE_MEMBER_LIST, "GET", params);
 			int success;
 			
@@ -247,15 +293,68 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ListInviteMemberController.this);
-			pDialog.setMessage(IMessages.INVITING_MEMBER);
+			pDialog.setMessage(IMessages.INVITING_MEMBERS);
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 
 		protected String doInBackground(String... params)
 		{
-			return null;
+			JSONObject json;
+			List<NameValuePair> paramsInvite, paramsNotification;
+			String notification;
+			DateFormat dateFormat;
+			Date date;
+			int p, success;
+			
+			for(p=0; p<personList.size(); p++)
+			{
+				if(((Boolean) personList.get(p).get(TAG_IS_SELECTED)).booleanValue())
+				{
+					//invite person to group
+					paramsInvite = new ArrayList<NameValuePair>();					
+					dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					date = new Date();
+					
+					paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
+					paramsInvite.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
+					
+					json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET", paramsInvite);
+					
+					try
+					{
+						success = json.getInt(TAG_SUCCESS);
+						
+						if(success != 1)
+							return "Error";
+						
+						//send notification
+						paramsNotification = new ArrayList<NameValuePair>();
+						notification = IMessages.MESSAGE_INVITE + GroupData.getGROUPNAME();
+						
+						paramsNotification.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
+						paramsNotification.add(new BasicNameValuePair("message", notification));
+						paramsNotification.add(new BasicNameValuePair("classification", "0"));
+						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
+						
+						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", paramsNotification);
+						
+						success = json.getInt(TAG_SUCCESS);
+						
+						if(success != 1)
+							return "Error";
+					}
+					catch(JSONException e)
+					{
+						System.out.println("Error in ListInviteMemberController.PersonListInvite.doInBackground(String... params): " + e.getMessage());
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			return "Successful";
 		}
 
 		protected void onPostExecute(String message)
@@ -264,8 +363,11 @@ public class ListInviteMemberController extends MenuActivity
 			
 			if(message != null)
 			{
+				// TODO anstatt eines Toast eine Dialogbox mit den eingeladenen Personen
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
+			
+			backToSingleGroupView();
 		}
 	}
 }
