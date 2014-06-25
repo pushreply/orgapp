@@ -65,6 +65,7 @@
     <string name="TEXT_LAST_NAME">Last name</string>
     <string name="TEXT_EMAIL">Email</string>
     <string name="USER_SELECTED">User selected</string>
+    <string name="INVITE_MEMBER_LIST_USER_INFO">Please touch a person to invite them</string>
     
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>

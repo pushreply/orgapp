@@ -13,8 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +44,10 @@ public class ListInviteMemberController extends MenuActivity
 
 	Button inviteButton, cancelButton;
 	View horizontalLine;
+	TextView userInfo;
 	private ProgressDialog pDialog;
+	AlertDialog.Builder alertDialogBuilder;
+	AlertDialog alertDialog;
 	JSONParser jsonParser = new JSONParser();
 	List<HashMap<String, Object>> personList;
 	
@@ -124,7 +130,6 @@ public class ListInviteMemberController extends MenuActivity
 		protected String doInBackground(String... args)
 		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_INVITE_MEMBER_LIST, "GET", params);
 			int success;
@@ -269,6 +274,7 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			inviteButton = (Button) findViewById(R.id.INVITE_MEMBER_LIST_INVITE_BUTTON);
 			cancelButton = (Button) findViewById(R.id.INVITE_MEMBER_LIST_CANCEL_BUTTON);
+			userInfo = (TextView) findViewById(R.id.INVITE_MEMBER_LIST_USER_INFO);
 			horizontalLine = findViewById(R.id.INVITE_MEMBER_LIST_HORIZONTAL_LINE);
 		}
 		
@@ -276,6 +282,7 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			inviteButton.setText(getString(R.string.LIST_INVITE));
 			cancelButton.setText(getString(R.string.LIST_CANCEL));
+			userInfo.setText(getString(R.string.INVITE_MEMBER_LIST_USER_INFO));
 		}
 		
 		private void setBackgrounds()
@@ -328,7 +335,7 @@ public class ListInviteMemberController extends MenuActivity
 						success = json.getInt(TAG_SUCCESS);
 						
 						if(success != 1)
-							return "Error";
+							return null;
 						
 						//send notification
 						paramsNotification = new ArrayList<NameValuePair>();
@@ -344,7 +351,7 @@ public class ListInviteMemberController extends MenuActivity
 						success = json.getInt(TAG_SUCCESS);
 						
 						if(success != 1)
-							return "Error";
+							return null;
 					}
 					catch(JSONException e)
 					{
@@ -360,14 +367,56 @@ public class ListInviteMemberController extends MenuActivity
 		protected void onPostExecute(String message)
 		{
 			pDialog.dismiss();
-			
 			if(message != null)
+				showInvertedPersonsDialog();
+		}
+		
+		private void showInvertedPersonsDialog()
+		{
+			alertDialogBuilder = new AlertDialog.Builder(ListInviteMemberController.this);
+			alertDialogBuilder.setTitle(IMessages.MESSAGE_INVITED_PERSON);
+			CharSequence[] items = getSelectedPersonsAsArray();
+			alertDialogBuilder.setItems(items, null);
+			
+			alertDialogBuilder.setPositiveButton(IMessages.OK, new OnClickListener()
 			{
-				// TODO anstatt eines Toast eine Dialogbox mit den eingeladenen Personen
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					backToSingleGroupView();
+				}
+			});
+			
+			alertDialog = alertDialogBuilder.create();
+			
+			alertDialog.show();
+		}
+		
+		private CharSequence[] getSelectedPersonsAsArray()
+		{
+			int p;
+			List<String> selectedPersons = new ArrayList<String>();
+			String person;
+			CharSequence[] result;
+			
+			for(p=0; p<personList.size(); p++)
+			{
+				if(((Boolean) personList.get(p).get(TAG_IS_SELECTED)).booleanValue())
+				{
+					person = getString(R.string.FIRSTNAME) + ": " + personList.get(p).get(TAG_FIRST_NAME).toString() + "\n"
+							+ getString(R.string.LASTNAME) + ": " + personList.get(p).get(TAG_LAST_NAME).toString() + "\n"
+							+ getString(R.string.EMAIL) + ": " + personList.get(p).get(TAG_EMAIL).toString();
+					
+					selectedPersons.add(person);
+				}
 			}
 			
-			backToSingleGroupView();
+			result = new CharSequence[selectedPersons.size()];
+			
+			for(p=0; p<result.length; p++)
+				result[p] = selectedPersons.get(p);
+			
+			return result;
 		}
 	}
 }
