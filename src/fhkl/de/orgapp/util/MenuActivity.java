@@ -24,6 +24,7 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.event.CreateEventController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
+import fhkl.de.orgapp.controller.groups.LeaveGroupController;
 import fhkl.de.orgapp.controller.groups.ListInviteMemberController;
 import fhkl.de.orgapp.controller.groups.ManualInviteMemberController;
 import fhkl.de.orgapp.controller.groups.MemberListController;
@@ -153,6 +154,11 @@ public class MenuActivity extends Activity {
 
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
+			startActivity(intent);
+			return true;
+			
+		case R.id.LEAVE_GROUP:
+			intent = new Intent(MenuActivity.this, LeaveGroupController.class);
 			startActivity(intent);
 			return true;
 
