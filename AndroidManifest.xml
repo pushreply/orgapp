@@ -51,6 +51,10 @@
             android:label="@string/EDIT_GROUP" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.groups.LeaveGroupController"
+            android:label="@string/LEAVE_GROUP" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.groups.MemberListController"
             android:label="@string/MEMBER_LIST" >
         </activity>
