@@ -35,6 +35,19 @@
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
     <string name="GROUP_SETTINGS">Group settings</string>
+    <string name="EVENTNAME">Event name</string>
+    <string name="EVENTLOCATION">Event location</string>
+    <string name="EVENTDATE">Event date</string>
+    <string name="EVENTTIME">Event time</string>
+    <string name="REGULARITYDATE">Do you frequently want to host this event?</string>
+    <string-array name="SPINNER_REGULARITYDATE">
+        <item>daily</item>
+        <item>weekly</item>
+        <item>every 2 weeks</item>
+        <item>monthly</item>
+    </string-array>
+    <string name="REGULARITY_QUESTION">Insert ending date or number of recurring events</string>
+    <string name="REGULARITY_CHOSEN">Date/Number</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
     <string name="SAVE_GROUP">Save</string>

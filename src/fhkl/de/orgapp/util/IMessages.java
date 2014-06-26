@@ -58,4 +58,5 @@ public interface IMessages {
 	public static final String PRIVILEGE_ADMIN = "Admin privileges can not be altered";
 	public static final String MEMBERLIST_EMPTY = "Memberlist is empty";
 	public static final String MESSAGE_INVITED_PERSON = "You have been invited the following persons";
+	public static final String SAVING_EVENT = "Saving event";
 }

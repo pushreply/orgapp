@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/EVENTNAME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@+string/EVENTNAME"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/EVENTLOCATION"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@+string/EVENTLOCATION"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/EVENTDATE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@+string/EVENTDATE"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/EVENTTIME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@+string/EVENTTIME"
+        android:inputType="time" />
+
+    <CheckBox
+        android:id="@+id/REGULARITYDATE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/REGULARITYDATE" />
+
+    <Spinner
+        android:id="@+id/REGULARITYDATE_CHOSEN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView 
+        android:id="@+id/REGULARITY_QUESTION"
+        android:text="@string/REGULARITY_QUESTION"    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/REGULARITY_CHOSEN"
+        android:hint="@string/REGULARITY_CHOSEN"    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/SAVE"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/SAVE" />
+
+        <Button
+            android:id="@+id/CANCEL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/CANCEL" />
+    </LinearLayout>
+
+</LinearLayout>

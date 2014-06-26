@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.event.CreateEventController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
 import fhkl.de.orgapp.controller.groups.ListInviteMemberController;
@@ -99,8 +100,8 @@ public class MenuActivity extends Activity {
 			menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
-			
-			if(GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
+
+			if (GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
 				menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
@@ -142,6 +143,11 @@ public class MenuActivity extends Activity {
 
 		case R.id.NEW_GROUP:
 			intent = new Intent(MenuActivity.this, NewGroupController.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.CREATE_EVENT:
+			intent = new Intent(MenuActivity.this, CreateEventController.class);
 			startActivity(intent);
 			return true;
 

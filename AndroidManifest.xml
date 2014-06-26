@@ -43,6 +43,10 @@
         <activity android:name="fhkl.de.orgapp.controller.groups.SingleGroupController" >
         </activity>
         <activity
+            android:name="fhkl.de.orgapp.controller.event.CreateEventController"
+            android:label="@string/CREATE_EVENT" >
+        </activity>
+        <activity
             android:name="fhkl.de.orgapp.controller.groups.EditGroupController"
             android:label="@string/EDIT_GROUP" >
         </activity>
