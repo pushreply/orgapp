@@ -139,15 +139,14 @@ public class CalendarController extends MenuActivity {
 													R.id.EVENTDATE, R.id.EVENTTIME, R.id.EVENT });
 					// updating listview
 					ListView calenderList = (ListView) findViewById(android.R.id.list);
-					
+
 					calenderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							tv_eventId = (TextView)findViewById(R.id.EVENTID);
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							tv_eventId = (TextView) view.findViewById(R.id.EVENTID);
 							new SaveEvent().execute();
-							
+
 						}
 					});
 					calenderList.setAdapter(adapter);
@@ -155,16 +154,16 @@ public class CalendarController extends MenuActivity {
 			});
 		}
 	}
-	
+
 	class SaveEvent extends AsyncTask<String, String, String> {
-		
+
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
 			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
 
 			Log.d("Event: ", json.toString());
-			
+
 			System.out.println("eventId: " + tv_eventId.getText().toString());
 
 			try {
@@ -174,7 +173,7 @@ public class CalendarController extends MenuActivity {
 
 					for (int i = 0; i < event.length(); i++) {
 						JSONObject c = event.getJSONObject(i);
-						
+
 						EventData.setEVENTID(c.getString("eventId"));
 						EventData.setEVENTDATE(c.getString("eventDate"));
 						EventData.setEVENTTIME(c.getString("eventTime"));
@@ -185,7 +184,7 @@ public class CalendarController extends MenuActivity {
 
 						Intent intent = new Intent(CalendarController.this, EventController.class);
 						startActivity(intent);
-						
+
 					}
 				} else {
 
