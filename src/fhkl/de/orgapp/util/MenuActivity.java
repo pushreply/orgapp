@@ -99,7 +99,9 @@ public class MenuActivity extends Activity {
 			menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
-			menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
+			
+			if(GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
+				menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(MemberListController.class.getName())) {
