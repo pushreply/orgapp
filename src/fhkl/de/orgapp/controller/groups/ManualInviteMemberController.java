@@ -288,7 +288,7 @@ public class ManualInviteMemberController extends Activity {
 						// Send Notifications
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
-						paramsNotification.add(new BasicNameValuePair("classification", "0"));
+						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						String message = IMessages.MESSAGE_INVITE + getIntent().getStringExtra("GroupName");
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
