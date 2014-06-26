@@ -133,7 +133,6 @@ public class GroupsController extends MenuActivity {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-							Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
 
 							TextView tv_groupId = (TextView) view.findViewById(R.id.GROUPID);
 							TextView tv_personId = (TextView) view.findViewById(R.id.PERSONID);
@@ -149,9 +148,6 @@ public class GroupsController extends MenuActivity {
 
 							System.out.println("group admin: " + tv_personId.getText().toString());
 							new Privileges().execute();
-
-							startActivity(intent);
-
 						}
 
 					});
@@ -196,6 +192,15 @@ public class GroupsController extends MenuActivity {
 			}
 
 			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result)
+		{
+			super.onPostExecute(result);
+			
+			Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
+			startActivity(intent);
 		}
 	}
 }
