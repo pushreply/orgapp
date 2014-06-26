@@ -177,6 +177,7 @@ public class CalendarController extends MenuActivity {
 						EventData.setEVENTID(c.getString("eventId"));
 						EventData.setEVENTDATE(c.getString("eventDate"));
 						EventData.setEVENTTIME(c.getString("eventTime"));
+						EventData.setEVENTLOCATION(c.getString("eventLocation"));
 						EventData.setGROUPID(c.getString("groupId"));
 						EventData.setNAME(c.getString("name"));
 						EventData.setPERSONID(c.getString("personId"));

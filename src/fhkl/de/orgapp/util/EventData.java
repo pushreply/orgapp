@@ -7,6 +7,14 @@ public class EventData {
 	private static String NAME = "";
 	private static String EVENTDATE = "";
 	private static String EVENTTIME = "";
+	private static String EVENTLOCATION = "";
+	
+	public static String getEVENTLOCATION() {
+		return EVENTLOCATION;
+	}
+	public static void setEVENTLOCATION(String eVENTLOCATION) {
+		EVENTLOCATION = eVENTLOCATION;
+	}
 	private static String REGULARITY = "";
 	public static String getEVENTID() {
 		return EVENTID;

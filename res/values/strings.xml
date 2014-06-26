@@ -29,8 +29,8 @@
     <string name="PROFILE">Profile</string>
     <string name="LOGOUT">Logout</string>
     
-    <!-- Calendar -->
-    <string name="EVENT">Event</string>
+    <!-- Event -->
+    <string name="attendance">Decline</string>
     
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
