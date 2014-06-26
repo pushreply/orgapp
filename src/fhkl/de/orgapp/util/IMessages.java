@@ -59,4 +59,6 @@ public interface IMessages {
 	public static final String MEMBERLIST_EMPTY = "Memberlist is empty";
 	public static final String MESSAGE_INVITED_PERSON = "You have been invited the following persons";
 	public static final String SAVING_EVENT = "Saving event";
+	public static final String LEAVING_GROUP = "You are leaving this group";
+	public static final String NOTIFICATION_LEAVING_GROUP ="A member left a group";
 }
