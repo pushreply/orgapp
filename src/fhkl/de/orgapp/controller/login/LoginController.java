@@ -36,6 +36,7 @@ public class LoginController extends Activity
 	EditText inputEMail;
 	EditText inputPassword;
 	JSONArray person = null;
+	JSONObject e;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -102,47 +103,36 @@ public class LoginController extends Activity
 			{
 				int success = json.getInt("success");
 				
-				if (success == 1)
+				if(success == 1)
 				{
 					person = json.getJSONArray("person");
 					
-						JSONObject e = person.getJSONObject(0);
+					e = person.getJSONObject(0);
 						
-						String eMail = e.getString("eMail");
+					String eMail = e.getString("eMail");
 						
-						if (eMail.equals(inputEMail.getText().toString()))
-						{
-							String password = e.getString("password");
-							//verschlüsselung
+					if (eMail.equals(inputEMail.getText().toString()))
+					{
+						String password = e.getString("password");
+						//verschlüsselung
 							
-							if (password.equals(inputPassword.getText().toString()))
-							{
-								Intent intent = new Intent(getApplicationContext(), CalendarController.class);
-								intent.putExtra("UserId", e.getString("personId"));
-								intent.putExtra("UserFirstName", e.getString("firstName"));
-								intent.putExtra("UserLastName", e.getString("lastName"));
-								intent.putExtra("UserBirthday", e.getString("birthday"));
-								intent.putExtra("UserGender", e.getString("gender"));
-								intent.putExtra("UserEmail", e.getString("eMail"));
-								intent.putExtra("UserMemberSince", e.getString("created"));
-								startActivity(intent);
-								finish();
-								//invokes onPostExecute(String)
-								return null;
-							}
-							else
-							{
-								//invokes onPostExecute(String)
-								return IMessages.INVALID_PASSWORD;
-							}
+						if (password.equals(inputPassword.getText().toString()))
+						{
+							//invokes onPostExecute(String)
+							return null;
 						}
 						else
 						{
 							//invokes onPostExecute(String)
-							return IMessages.INVALID_USER;
+							return IMessages.INVALID_PASSWORD;
 						}
 					}
-				
+					else
+					{
+						//invokes onPostExecute(String)
+						return IMessages.INVALID_USER;
+					}
+				}				
 				else
 				{
 					//invokes onPostExecute(String)
@@ -162,11 +152,36 @@ public class LoginController extends Activity
 		@Override
 		protected void onPostExecute(String message)
 		{
-			super.onPostExecute(message);
 			pDialog.dismiss();
 			
+			//error message
 			if(message != null)
+			{
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+			}
+			//everything successful
+			else
+			{
+				try
+				{
+					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
+					
+					intent.putExtra("UserId", e.getString("personId"));
+					intent.putExtra("UserFirstName", e.getString("firstName"));
+					intent.putExtra("UserLastName", e.getString("lastName"));
+					intent.putExtra("UserBirthday", e.getString("birthday"));
+					intent.putExtra("UserGender", e.getString("gender"));
+					intent.putExtra("UserEmail", e.getString("eMail"));
+					intent.putExtra("UserMemberSince", e.getString("created"));
+					
+					startActivity(intent);
+				}
+				catch(JSONException e)
+				{
+					System.out.println("Error in Validator.onPostExecute(String message): " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
