@@ -343,7 +343,7 @@ public class ListInviteMemberController extends MenuActivity
 						
 						paramsNotification.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
 						paramsNotification.add(new BasicNameValuePair("message", notification));
-						paramsNotification.add(new BasicNameValuePair("classification", "0"));
+						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						
 						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", paramsNotification);
