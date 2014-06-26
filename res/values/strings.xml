@@ -30,6 +30,7 @@
     <string name="LOGOUT">Logout</string>
     
     <!-- Calendar -->
+    <string name="EVENT">Event</string>
     
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>

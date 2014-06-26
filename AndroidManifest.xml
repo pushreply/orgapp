@@ -90,6 +90,9 @@
             android:name="fhkl.de.orgapp.controller.profile.EventHistoryController"
             android:label="@string/EVENT_HISTORY" >
         </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.event.EventController">
+        </activity>
     </application>
 
 </manifest>
