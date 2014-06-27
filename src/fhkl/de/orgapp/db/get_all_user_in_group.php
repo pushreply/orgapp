@@ -5,6 +5,12 @@
  */
 $response = array ();
 
+if(!isset($_GET['groupId']))
+{
+	$response ["success"] = 0;
+	echo json_encode($response);
+}
+
 // include db connect class
 require_once __DIR__ . '/db_connect.php';
 
