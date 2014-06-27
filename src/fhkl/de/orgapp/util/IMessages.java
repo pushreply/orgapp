@@ -61,4 +61,11 @@ public interface IMessages {
 	public static final String SAVING_EVENT = "Saving event";
 	public static final String LEAVING_GROUP = "You are leaving this group";
 	public static final String NOTIFICATION_LEAVING_GROUP ="A member left a group";
+	public static final String MESSAGE_DELETE_GROUP = "Do you really want delete the group ";
+	public static final String GROUP_SUCCESSFUL_DELETED = "You have been deleted the group ";
+	public static final String GROUP_NOT_DELETED = "Group was not deleted";
+	public static final String QUESTION_MARK = "?";
+	public static final String DELETING_GROUP = "Deleting group...";
+	public static final String DELETE_GROUP_NOTIFICATION_1 = "Group ";
+	public static final String DELETE_GROUP_NOTIFICATION_2 = " has been deleted";
 }

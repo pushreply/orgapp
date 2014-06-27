@@ -36,6 +36,11 @@
             android:name="fhkl.de.orgapp.controller.calendar.CalendarController"
             android:label="@string/CALENDAR" >
         </activity>
+        
+        <activity
+            android:name="fhkl.de.orgapp.controller.groups.DeleteGroupController" >
+        </activity>
+        
         <activity
             android:name="fhkl.de.orgapp.controller.groups.GroupsController"
             android:label="@string/GROUPS" >

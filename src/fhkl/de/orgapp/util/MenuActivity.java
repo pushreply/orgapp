@@ -22,6 +22,7 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.event.CreateEventController;
+import fhkl.de.orgapp.controller.groups.DeleteGroupController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
 import fhkl.de.orgapp.controller.groups.LeaveGroupController;
@@ -98,7 +99,11 @@ public class MenuActivity extends Activity {
 			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.EDIT_GROUP).setVisible(true);
 			}
-			menu.findItem(R.id.DELETE_GROUP).setVisible(true);
+			
+			// only group admin may delete the group
+			if(GroupData.getPERSONID().equals(UserData.getPERSONID()))
+				menu.findItem(R.id.DELETE_GROUP).setVisible(true);
+			
 			menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
 
@@ -130,7 +135,8 @@ public class MenuActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-
+		AlertDialog.Builder builder;
+		
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -161,6 +167,36 @@ public class MenuActivity extends Activity {
 			intent = new Intent(MenuActivity.this, LeaveGroupController.class);
 			startActivity(intent);
 			return true;
+			
+		case R.id.DELETE_GROUP:
+			builder = new AlertDialog.Builder(MenuActivity.this);
+			AlertDialog dialog;
+			builder.setMessage(IMessages.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME() + IMessages.QUESTION_MARK);
+			
+			builder.setPositiveButton(IMessages.YES, new OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+					startActivity(new Intent(MenuActivity.this, DeleteGroupController.class));
+				}
+			});
+			
+			builder.setNegativeButton(IMessages.NO, new OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+				}
+			});
+			
+			dialog = builder.create();
+			
+			dialog.show();
+			
+			return true;
 
 		case R.id.SHOW_MEMBER_LIST:
 			new MemberList().execute();
@@ -172,7 +208,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.INVITE_MEMBER:
-			AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+			builder = new AlertDialog.Builder(MenuActivity.this);
 			builder.setMessage(IMessages.QUESTION_MEMBER);
 			builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
 
