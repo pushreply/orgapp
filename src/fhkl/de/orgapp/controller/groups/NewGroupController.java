@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
@@ -127,6 +128,9 @@ public class NewGroupController extends MenuActivity {
 				Integer success = json.getInt(TAG_SUCCESS);
 				if (success != 0) {
 					groupId = success.toString();
+					GroupData.setGROUPID(groupId);
+					GroupData.setGROUPNAME(name);
+					GroupData.setGROUPINFO(info);
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
 
 					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
@@ -160,6 +164,7 @@ public class NewGroupController extends MenuActivity {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
 			} else {
+				AlertDialog dialog;
 				AlertDialog.Builder builder = new AlertDialog.Builder(NewGroupController.this);
 				builder.setMessage(IMessages.QUESTION_MEMBER);
 				builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
@@ -167,6 +172,7 @@ public class NewGroupController extends MenuActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Intent i = new Intent(NewGroupController.this, ListInviteMemberController.class);
+						dialog.dismiss();
 						startActivity(i);
 					}
 
@@ -176,10 +182,13 @@ public class NewGroupController extends MenuActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(NewGroupController.this, ManualInviteMemberController.class);
+						dialog.dismiss();
 						startActivity(intent);
 					}
 				});
-				builder.create().show();
+				
+				dialog = builder.create();
+				dialog.show();
 			}
 		}
 	}

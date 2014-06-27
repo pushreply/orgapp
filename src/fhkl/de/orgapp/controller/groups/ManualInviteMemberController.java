@@ -37,6 +37,7 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.start.StartController;
+import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
@@ -205,9 +206,11 @@ public class ManualInviteMemberController extends Activity {
 
 		protected String doInBackground(String... params) {
 			int editTextLength = textLayout.getChildCount();
+			
 			if (editTextLength == 0) {
 				return IMessages.MISSING_EMAIL;
 			}
+			
 			String[] editTextArray = new String[editTextLength / 2];
 			for (int i = 0; i < editTextLength; i++) {
 				if (i % 2 == 0) {
@@ -256,7 +259,7 @@ public class ManualInviteMemberController extends Activity {
 			System.out.println("check 3 done");
 			for (int i = 0; i < editTextArray.length; i++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-				paramsCheck.add(new BasicNameValuePair("groupId", getIntent().getStringExtra("GroupId")));
+				paramsCheck.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
 				JSONObject json = jsonParser.makeHttpRequest(URL_USER_INVITED, "GET", paramsCheck);
 				int success;
@@ -274,7 +277,7 @@ public class ManualInviteMemberController extends Activity {
 			System.out.println("check 4 done");
 			// Everything okay
 			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
-			paramsInvite.add(new BasicNameValuePair("groupId", getIntent().getStringExtra("GroupId")));
+			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			Date date = new Date();
 			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
@@ -289,7 +292,7 @@ public class ManualInviteMemberController extends Activity {
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
-						String message = IMessages.MESSAGE_INVITE + getIntent().getStringExtra("GroupName");
+						String message = IMessages.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET", paramsNotification);
@@ -309,7 +312,6 @@ public class ManualInviteMemberController extends Activity {
 			intent.putExtra("UserId", personIdLoggedPerson);
 			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
 			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
-			startActivity(intent);
 			startActivity(intent);
 			return null;
 		}
