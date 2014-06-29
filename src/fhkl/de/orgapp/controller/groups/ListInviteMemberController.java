@@ -131,6 +131,7 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_INVITE_MEMBER_LIST, "GET", params);
 			int success;
 			
