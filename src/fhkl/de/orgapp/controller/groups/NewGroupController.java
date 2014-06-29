@@ -186,6 +186,16 @@ public class NewGroupController extends MenuActivity {
 						startActivity(intent);
 					}
 				});
+				builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						Intent intent = new Intent(NewGroupController.this, GroupsController.class);
+						dialog.dismiss();
+						startActivity(intent);
+					}
+				});
 				
 				dialog = builder.create();
 				dialog.show();

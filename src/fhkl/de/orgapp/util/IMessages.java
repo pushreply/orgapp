@@ -18,6 +18,7 @@ public interface IMessages {
 	public static final String QUESTION_MEMBER = "Do you want do insert member manually or by list?";
 	public static final String MANUALLY = "Manual";
 	public static final String LIST = "List";
+	public static final String NO_MEMBER_INVITE = "No member invite";
 	public static final String CREATING_GROUP = "Creating Group...";
 	public static final String INVALID_NAME = "Invalid Name";
 	public static final String INVALID_INFO = "Invalid Info";

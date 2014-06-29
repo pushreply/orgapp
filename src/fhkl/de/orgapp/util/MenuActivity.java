@@ -215,6 +215,7 @@ public class MenuActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this, ListInviteMemberController.class);
+					dialog.dismiss();
 					startActivity(intent);
 				}
 
@@ -224,7 +225,16 @@ public class MenuActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this, ManualInviteMemberController.class);
+					dialog.dismiss();
 					startActivity(intent);
+				}
+			});
+			builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
 				}
 			});
 			builder.create().show();
