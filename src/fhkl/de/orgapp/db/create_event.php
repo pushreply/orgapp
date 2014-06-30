@@ -15,11 +15,12 @@ $groupId = $_GET ['groupId'];
 $name = htmlentities ( $_GET ['name'] );
 $eventDate = $_GET ['eventDate'];
 $eventTime = $_GET ['eventTime'];
+$regularityDate = $_GET ['regularityDate'];
 $regularity = $_GET ['regularity'];
 $eventLocation = $_GET ['eventLocation'];
 
-$result = mysql_query ( "Insert into event(personId, groupId, name, eventDate, eventTime, regularity, eventLocation)
-		 values('$personId', '$groupId', $name', '$info')" ) or die ( mysql_error () );
+$result = mysql_query ( "Insert into event(personId, groupId, name, eventDate, eventTime, regularityDate, regularity, eventLocation)
+		 values('$personId', '$groupId', $name', '$eventDate', '$eventTime', '$regularityDate', '$regularity', '$eventLocation')" ) or die ( mysql_error () );
 if ($result) {
 	// successfully inserted into database
 	$response ["success"] = mysql_insert_id ();

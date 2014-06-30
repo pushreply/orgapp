@@ -22,10 +22,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
@@ -133,23 +135,56 @@ public class CreateEventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
-			paramsCreate.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			paramsCreate.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			paramsCreate.add(new BasicNameValuePair("name", name.getText().toString()));
-			paramsCreate.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
-			paramsCreate.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
-			paramsCreate.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
-			paramsCreate.add(new BasicNameValuePair("regularity", regularityDateChosen.getSelectedItem().toString()));
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-			System.out.println(regularityDateChosen.getSelectedItem().toString());
+			if (regularityDate.isChecked()) {
+				if (!(InputValidator.isDateValid(regularityChosen.getText().toString(), new String("yyyy-MM-dd"))
+								|| InputValidator.isDateValid(regularityChosen.getText().toString(), new String("yyyy.MM.dd"))
+								|| InputValidator.isDateValid(regularityChosen.getText().toString(), new String("yyyy/MM/dd"))
+								|| InputValidator.isDateValid(regularityChosen.getText().toString(), new String("dd-MM-yyyy"))
+								|| InputValidator.isDateValid(regularityChosen.getText().toString(), new String("dd.MM.yyyy"))
+								|| InputValidator.isDateValid(regularityChosen.getText().toString(), new String("dd/MM/yyyy")) || InputValidator
+									.isNumberValid(regularityChosen.getText().toString()))) {
+					return IMessages.INVALID_REGULARITY;
+				} else {
+					params.add(new BasicNameValuePair("regularityDate", regularityDateChosen.getSelectedItem().toString()));
+					params.add(new BasicNameValuePair("regularity", regularityChosen.getText().toString()));
+				}
+			}
 
-			JSONObject json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", paramsCreate);
+			if (name.getText().toString().isEmpty()) {
+				return IMessages.INVALID_NAME;
+			} else {
+				params.add(new BasicNameValuePair("name", name.getText().toString()));
+			}
+
+			if (eventDate.getText().toString().isEmpty()) {
+				return IMessages.INVALID_EVENTDATE;
+			} else {
+				params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
+			}
+
+			if (eventTime.getText().toString().isEmpty()) {
+				return IMessages.INVALID_EVENTTIME;
+			} else {
+				params.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
+			}
+
+			if (eventLocation.getText().toString().isEmpty()) {
+				return IMessages.INVALID_EVENTLOCATION;
+			} else {
+				params.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
+			}
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+
+			JSONObject json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				if (success != 0) {
+					List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
 
 				}
 
@@ -161,9 +196,12 @@ public class CreateEventController extends MenuActivity {
 			return null;
 		}
 
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
+			if (message != null) {
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 }

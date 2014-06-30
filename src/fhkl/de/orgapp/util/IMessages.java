@@ -62,7 +62,7 @@ public interface IMessages {
 	public static final String SAVING_EVENT = "Saving event";
 	public static final String LEAVING_GROUP = "You are leaving this group";
 	public static final String NOTIFICATION_ADMIN_LEAVING_GROUP = "You are the only admin in this group. Please set a member to be an admin, otherwise you may not leave.";
-	public static final String NOTIFICATION_LEAVING_GROUP ="A member left a group";
+	public static final String NOTIFICATION_LEAVING_GROUP = "A member left a group";
 	public static final String CONFIRM_LEAVING_GROUP = "Do you really want to leave this group ?";
 	public static final String MESSAGE_DELETE_GROUP = "Do you really want to delete the group ";
 	public static final String GROUP_SUCCESSFUL_DELETED = "You have been deleted the group ";
@@ -71,4 +71,8 @@ public interface IMessages {
 	public static final String DELETING_GROUP = "Deleting group...";
 	public static final String DELETE_GROUP_NOTIFICATION_1 = "Group ";
 	public static final String DELETE_GROUP_NOTIFICATION_2 = " has been deleted";
+	public static final String INVALID_REGULARITY = "Invalid date or number";
+	public static final String INVALID_EVENTDATE = "Invalid event date";
+	public static final String INVALID_EVENTTIME = "Invalid event time";
+	public static final String INVALID_EVENTLOCATION = "Invalid event location";
 }
