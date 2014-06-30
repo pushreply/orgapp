@@ -29,6 +29,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.MemberData;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
 
@@ -41,6 +42,8 @@ public class MemberListController extends MenuActivity {
 
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 	private static String URL_DELETE_MEMBER = "http://pushrply.com/delete_member.php";
+	private static String URL_GET_PERSON = "http://pushrply.com/get_person_by_personId.php";
+	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MEMBER_ID = "MEMBERID";
@@ -57,10 +60,10 @@ public class MemberListController extends MenuActivity {
 		setContentView(R.layout.member_list);
 		memberList = new ArrayList<HashMap<String, String>>();
 
-		new MemberList().execute();
+		new GetMemberList().execute();
 	}
 
-	class MemberList extends AsyncTask<String, String, String> {
+	class GetMemberList extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -103,7 +106,7 @@ public class MemberListController extends MenuActivity {
 
 				}
 			} catch (JSONException e) {
-				System.out.println("Error in MemberListData.doInBackground(String... args): " + e.getMessage());
+				System.out.println("Error in GetMemberList.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -123,13 +126,9 @@ public class MemberListController extends MenuActivity {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-							Intent intent = new Intent(MemberListController.this, MemberPrivilegeInfoController.class);
 							tv_memberId = (TextView) view.findViewById(R.id.MEMBERID);
-							intent.putExtra("MemberId", tv_memberId.getText().toString());
-							startActivity(intent);
-
+							new GetPrivilegesInfo().execute();
 						}
-
 					});
 
 					memberListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -218,5 +217,84 @@ public class MemberListController extends MenuActivity {
 
 			}
 		}
+	}
+
+	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(MemberListController.this);
+			pDialog.setMessage(IMessages.LOADING_INFO);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+		protected String doInBackground(String... args) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON, "GET", params);
+
+			Log.d("Member: ", json.toString());
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+				if (success == 1) {
+
+					member = json.getJSONArray("person");
+
+					for (int i = 0; i < member.length(); i++) {
+						JSONObject c = member.getJSONObject(i);
+
+						MemberData.setPERSONID(c.getString("personId"));
+						MemberData.setEMAIL(c.getString("eMail"));
+						MemberData.setFIRST_NAME(c.getString("firstName"));
+						MemberData.setLAST_NAME(c.getString("lastName"));
+						MemberData.setBIRTHDAY(c.getString("birthday"));
+						MemberData.setGENDER(c.getString("gender"));
+					}
+
+					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
+					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsPrivileges.add(new BasicNameValuePair("eMail", MemberData.getEMAIL()));
+
+					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges);
+
+					Log.d("Member: ", json.toString());
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+						member = json.getJSONArray("member");
+
+						for (int i = 0; i < member.length(); i++) {
+							JSONObject c = member.getJSONObject(i);
+
+							MemberData.setMEMBER_SINCE(c.getString("memberSince"));
+							MemberData.setPRIVILEGE_INVITE_MEMBER(c.getInt("memberInvitation") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_EDIT_MEMBERLIST(c.getInt("memberlistEditing") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_CREATE_EVENT(c.getInt("eventCreating") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_EDIT_EVENT(c.getInt("eventEditing") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_DELETE_EVENT(c.getInt("eventDeleting") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_EDIT_COMMENT(c.getInt("commentEditing") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_DELETE_COMMENT(c.getInt("commentDeleting") == 1 ? "true" : "false");
+							MemberData.setPRIVILEGE_MANAGEMENT(c.getInt("privilegeManagement") == 1 ? "true" : "false");
+
+							finish();
+							Intent intent = new Intent(MemberListController.this, MemberPrivilegeInfoController.class);
+							startActivity(intent);
+						}
+					}
+				}
+			} catch (JSONException e) {
+				System.out.println("Error in GetPrivilegesInfo.doInBackground(String... args): " + e.getMessage());
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		protected void onPostExecute(String message) {
+			pDialog.dismiss();
+		}
+
 	}
 }

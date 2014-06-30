@@ -24,6 +24,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.MemberData;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
 
@@ -33,7 +34,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 	JSONParser jsonParser = new JSONParser();
 
-	private static String URL_GET_PERSON = "http://pushrply.com/get_person_by_personId.php";
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	private static String URL_UPDATE_PRIVILEGES = "http://pushrply.com/update_privileges.php";
 	private static String URL_CREATE_NOTIFICATION = "http://pushrply.com/create_notification.php";
@@ -42,7 +42,8 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 	JSONArray member = null;
 
-	TextView tv_eMail, tv_firstName, tv_lastName, tv_birthday, tv_gender, tv_memberSince;
+	TextView tv_eMail, tv_firstName, tv_lastName, tv_birthday_text_view, tv_birthday, tv_gender_text_view, tv_gender,
+					tv_memberSince;
 	CheckBox privilegeInvitation, privilegeMemberlistEditing, privilegeEventCreating, privilegeEventEditing,
 					privilegeEventDeleting, privilegeCommentEditing, privilegeCommentDeleting, privilegeManagement;
 	Button bSave, bCancel;
@@ -65,14 +66,44 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			privilegeCommentEditing = (CheckBox) findViewById(R.id.PRIVILEGE_COMMENT_EDITING);
 			privilegeCommentDeleting = (CheckBox) findViewById(R.id.PRIVILEGE_COMMENT_DELETING);
 			privilegeManagement = (CheckBox) findViewById(R.id.PRIVILEGE_MANAGEMENT);
+
+			privilegeInvitation.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_INVITE_MEMBER()));
+			privilegeMemberlistEditing.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_EDIT_MEMBERLIST()));
+			privilegeEventCreating.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_CREATE_EVENT()));
+			privilegeEventEditing.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_EDIT_EVENT()));
+			privilegeEventDeleting.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_DELETE_EVENT()));
+			privilegeCommentEditing.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_EDIT_COMMENT()));
+			privilegeCommentDeleting.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_DELETE_COMMENT()));
+			privilegeManagement.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_MANAGEMENT()));
+
 		}
 
 		tv_eMail = (TextView) findViewById(R.id.MEMBER_EMAIL);
 		tv_firstName = (TextView) findViewById(R.id.MEMBER_FIRSTNAME);
 		tv_lastName = (TextView) findViewById(R.id.MEMBER_LASTNAME);
+		tv_birthday_text_view = (TextView) findViewById(R.id.MEMBER_BIRTHDAY_TEXT_VIEW);
 		tv_birthday = (TextView) findViewById(R.id.MEMBER_BIRTHDAY);
+		tv_gender_text_view = (TextView) findViewById(R.id.MEMBER_GENDER_TEXT_VIEW);
 		tv_gender = (TextView) findViewById(R.id.MEMBER_GENDER);
+
 		tv_memberSince = (TextView) findViewById(R.id.MEMBER_SINCE);
+
+		tv_eMail.setText(MemberData.getEMAIL());
+		tv_firstName.setText(MemberData.getFIRST_NAME());
+		tv_lastName.setText(MemberData.getLAST_NAME());
+		if (!MemberData.getBIRTHDAY().equals("null")) {
+			tv_birthday.setText(MemberData.getBIRTHDAY());
+		} else {
+			tv_birthday_text_view.setVisibility(View.GONE);
+			tv_birthday.setVisibility(View.GONE);
+		}
+		if (!MemberData.getGENDER().equals("null")) {
+			tv_gender.setText(MemberData.getGENDER());
+		} else {
+			tv_gender_text_view.setVisibility(View.GONE);
+			tv_gender.setVisibility(View.GONE);
+		}
+		tv_memberSince.setText(MemberData.getMEMBER_SINCE());
 
 		bSave = (Button) findViewById(R.id.SAVE_PRIVILEGES);
 		bCancel = (Button) findViewById(R.id.CANCEL);
@@ -91,116 +122,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 				startActivity(i);
 			}
 		});
-
-		new GetPrivilegesInfo().execute();
-	}
-
-	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			pDialog = new ProgressDialog(MemberPrivilegeInfoController.this);
-			pDialog.setMessage(IMessages.LOADING_INFO);
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();
-		}
-
-		protected String doInBackground(String... args) {
-			String result = null;
-			String eMail = null;
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", getIntent().getStringExtra("MemberId")));
-
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON, "GET", params);
-
-			Log.d("Member: ", json.toString());
-
-			try {
-				int success = json.getInt(TAG_SUCCESS);
-				if (success == 1) {
-
-					member = json.getJSONArray("person");
-
-					for (int i = 0; i < member.length(); i++) {
-						JSONObject c = member.getJSONObject(i);
-
-						result += c.getString("personId") + ", ";
-						result += c.getString("eMail") + ", ";
-						eMail = c.getString("eMail");
-						result += c.getString("firstName") + ", ";
-						result += c.getString("lastName") + ", ";
-						result += c.getString("birthday") + ", ";
-						result += c.getString("gender") + ", ";
-					}
-
-					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
-					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					paramsPrivileges.add(new BasicNameValuePair("eMail", eMail));
-
-					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges);
-
-					Log.d("Member: ", json.toString());
-					success = json.getInt(TAG_SUCCESS);
-					if (success == 1) {
-						member = json.getJSONArray("member");
-
-						for (int i = 0; i < member.length(); i++) {
-							JSONObject c = member.getJSONObject(i);
-
-							result += c.getString("memberSince") + ", ";
-							result += c.getInt("memberInvitation") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("memberlistEditing") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("eventCreating") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("eventEditing") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("eventDeleting") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("commentEditing") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("commentDeleting") == 1 ? "true" + ", " : "false" + ", ";
-							result += c.getInt("privilegeManagement") == 1 ? "true" : "false";
-						}
-					}
-				}
-				return result;
-			} catch (JSONException e) {
-				System.out.println("Error in GetPrivilegesInfo.doInBackground(String... args): " + e.getMessage());
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		protected void onPostExecute(String result) {
-			pDialog.dismiss();
-
-			if (result == null)
-				return;
-
-			String[] datas = result.split(", ");
-
-			setTexts(datas);
-		}
-	}
-
-	private void setTexts(String[] datas) {
-
-		tv_eMail.setText(datas[1]);
-		tv_firstName.setText(datas[2]);
-		tv_lastName.setText(datas[3]);
-		tv_birthday.setText(datas[4]);
-		tv_gender.setText(datas[5]);
-		tv_memberSince.setText(datas[6]);
-
-		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
-			privilegeInvitation.setChecked(Boolean.parseBoolean(datas[7]));
-			privilegeMemberlistEditing.setChecked(Boolean.parseBoolean(datas[8]));
-			privilegeEventCreating.setChecked(Boolean.parseBoolean(datas[9]));
-			privilegeEventEditing.setChecked(Boolean.parseBoolean(datas[10]));
-			privilegeEventDeleting.setChecked(Boolean.parseBoolean(datas[11]));
-			privilegeCommentEditing.setChecked(Boolean.parseBoolean(datas[12]));
-			privilegeCommentDeleting.setChecked(Boolean.parseBoolean(datas[13]));
-			privilegeManagement.setChecked(Boolean.parseBoolean(datas[14]));
-		}
 	}
 
 	class SavePrivileges extends AsyncTask<String, String, String> {

@@ -41,6 +41,7 @@
     <string name="EVENTTIME">Event time</string>
     <string name="REGULARITYDATE">Do you frequently want to host this event?</string>
     <string-array name="SPINNER_REGULARITYDATE">
+        <item>empty</item>
         <item>daily</item>
         <item>weekly</item>
         <item>every 2 weeks</item>

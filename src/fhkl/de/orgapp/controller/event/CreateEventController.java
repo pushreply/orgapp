@@ -82,16 +82,18 @@ public class CreateEventController extends MenuActivity {
 					regularityDateChosen.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-							regularityQuestion.setVisibility(View.VISIBLE);
-							regularityChosen.setVisibility(View.VISIBLE);
+							System.out.println(parent.getSelectedItem());
+							if (parent.getSelectedItem().toString().equals("empty")) {
+								regularityQuestion.setVisibility(View.GONE);
+								regularityChosen.setVisibility(View.GONE);
+							} else {
+								regularityQuestion.setVisibility(View.VISIBLE);
+								regularityChosen.setVisibility(View.VISIBLE);
+							}
 						}
 
 						@Override
 						public void onNothingSelected(AdapterView<?> parent) {
-
-							regularityQuestion.setVisibility(View.GONE);
-							regularityChosen.setVisibility(View.GONE);
 						}
 					});
 
