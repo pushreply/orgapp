@@ -55,7 +55,7 @@ public class LeaveGroupController extends MenuActivity
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(LeaveGroupController.this);
-			pDialog.setMessage(IMessages.REMOVING_MEMBER);
+			pDialog.setMessage(IMessages.LEAVING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -77,9 +77,7 @@ public class LeaveGroupController extends MenuActivity
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
-					Intent intent = new Intent(LeaveGroupController.this, GroupsController.class);
-					finish();
-					startActivity(intent);
+					return null;
 				}
 			} catch (JSONException e) {
 				System.out.println("Error in LeaveGroup.doInBackground(String... args): " + e.getMessage());
@@ -94,7 +92,10 @@ public class LeaveGroupController extends MenuActivity
 
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-
+				Intent intent = new Intent(LeaveGroupController.this, GroupsController.class);
+				tv_memberId =  (TextView) findViewById(R.id.MEMBERID);
+				intent.putExtra("MemberId", tv_memberId.getText().toString());
+				startActivity(intent);
 			}
 		}
 	}
