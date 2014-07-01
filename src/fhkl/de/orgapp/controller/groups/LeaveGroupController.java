@@ -22,6 +22,7 @@ import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
 //import fhkl.de.orgapp.controller.groups.GroupsController;
 
 public class LeaveGroupController extends MenuActivity
@@ -30,8 +31,9 @@ public class LeaveGroupController extends MenuActivity
 	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
 
 	private static final String TAG_SUCCESS = "success";
-
-
+	
+	List<NameValuePair> notificationParams;
+	String notification;
 	TextView tv_memberId;
 	private ProgressDialog pDialog;
 
@@ -61,15 +63,15 @@ public class LeaveGroupController extends MenuActivity
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) {
-			if (GroupData.getPERSONID().equals(tv_memberId.getText().toString())) {
-				return IMessages.REMOVING_ADMIN;
-			}
+		protected String doInBackground(String... args) 
+		{
+			//need parameters personId and groupId
+			tv_memberId = (TextView) findViewById(R.id.MEMBERID);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-
-			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-
+			
+			//send parameters to jsonParser
 			JSONObject json = jsonParser.makeHttpRequest(URL_LEAVE_GROUP, "GET", params);
 
 			Log.d("Response: ", json.toString());
@@ -79,6 +81,13 @@ public class LeaveGroupController extends MenuActivity
 				if (success == 1) {
 					return null;
 				}
+	
+				notificationParams = new ArrayList<NameValuePair>();
+				notification = IMessages.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
+				notificationParams.add(new BasicNameValuePair("message", notification));
+				notificationParams.add(new BasicNameValuePair("classification", "3"));
+				notificationParams.add(new BasicNameValuePair("syncInterval", null));
+				
 			} catch (JSONException e) {
 				System.out.println("Error in LeaveGroup.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
@@ -87,16 +96,12 @@ public class LeaveGroupController extends MenuActivity
 			return null;
 		}
 
-		protected void onPostExecute(String message) {
+		protected void onPostExecute(String message) 
+		{
+			super.onPostExecute(message);
 			pDialog.dismiss();
+			startActivity(new Intent(LeaveGroupController.this, GroupsController.class));
 
-			if (message != null) {
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(LeaveGroupController.this, GroupsController.class);
-				tv_memberId =  (TextView) findViewById(R.id.MEMBERID);
-				intent.putExtra("MemberId", tv_memberId.getText().toString());
-				startActivity(intent);
-			}
 		}
 	}
 }
