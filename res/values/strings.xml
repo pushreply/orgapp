@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">OrgApp</string>
-
+    <string name="SERVER_ADR">https://www.pushrply.com/</string>
+    <string name="CERT">customtruststore.bks</string>
+    <string name="CERT_PASSWORD">orgappss2014fhzw</string>
+    
     <!-- Allgemeine Buttons -->
     <string name="SUBMIT">Submit</string>
     <string name="SAVE">Save</string>
