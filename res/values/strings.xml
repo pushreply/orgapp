@@ -50,8 +50,9 @@
         <item>every 2 weeks</item>
         <item>monthly</item>
     </string-array>
-    <string name="REGULARITY_QUESTION">Insert ending date or number of recurring events</string>
-    <string name="REGULARITY_CHOSEN">Date/Number</string>
+    <string name="REGULARITY_QUESTION">Do you want to choose an ending date or number of events?</string>
+    <string name="REGULARITY_DATE">Date</string>
+    <string name="REGULARITY_NUMBER">Number</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
     <string name="SAVE_GROUP">Save</string>

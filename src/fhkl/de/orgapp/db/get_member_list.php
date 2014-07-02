@@ -7,7 +7,7 @@ $db = new DB_CONNECT();
 
 $personId = $_GET ['personId'];
 $groupId = $_GET ['groupId'];
-$result = mysql_query("SELECT pers.personId, pers.firstName, pers.lastName
+$result = mysql_query("SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName
 from person pers join privilege priv using(personId) where priv.groupId = '$groupId' and priv.personId not like '$personId'") or die(mysql_error());
 
 if (mysql_num_rows($result) > 0) {
@@ -16,6 +16,7 @@ if (mysql_num_rows($result) > 0) {
     while ($row = mysql_fetch_array($result)) {
         $member = array();
         $member["personId"] = $row["personId"];
+        $member["eMail"] = html_entity_decode($row["eMail"], ENT_QUOTES, 'UTF-8');
         $member["firstName"] = html_entity_decode($row["firstName"], ENT_QUOTES, 'UTF-8');
         $member["lastName"] = html_entity_decode($row["lastName"], ENT_QUOTES, 'UTF-8');
 

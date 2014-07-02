@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@+string/EVENTDATE"
+        android:focusableInTouchMode="false"
         android:inputType="date" />
 
     <EditText
@@ -35,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@+string/EVENTTIME"
-        android:inputType="time" />
+        android:focusableInTouchMode="false" />
 
     <CheckBox
         android:id="@+id/REGULARITYDATE"
@@ -49,20 +50,44 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <TextView 
+    <TextView
         android:id="@+id/REGULARITY_QUESTION"
-        android:text="@string/REGULARITY_QUESTION"    
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/REGULARITY_QUESTION"
         android:visibility="gone" />
+
+    <RadioGroup
+        android:id="@+id/RADIOGROUP_REGULARITY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+        <RadioButton
+            android:id="@+id/REGULARITY_DATE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/REGULARITY_DATE" />
+
+        <RadioButton
+            android:id="@+id/REGULARITY_NUMBER"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/REGULARITY_NUMBER" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/REGULARITY_CHOSEN"
-        android:hint="@string/REGULARITY_CHOSEN"    
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
-    
+        android:hint=""
+        android:visibility="gone" >
+
+        <requestFocus />
+    </EditText>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >

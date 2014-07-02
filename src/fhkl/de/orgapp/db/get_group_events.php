@@ -8,7 +8,7 @@ $db = new DB_CONNECT();
 $groupId = $_GET ['groupId'];
 $result = mysql_query("SELECT ev.eventId, ev.personId, ev.groupId, ev.name, ev.eventDate, ev.eventTime, ev.regularityDate,
 		ev.regularity, ev.eventLocation
-		FROM event ev join eventPerson ep using (eventId)
+		FROM event ev
 		WHERE ev.groupId = '$groupId' and ev.eventDate > (select CURDATE())") or die(mysql_error());
 
 if (mysql_num_rows($result) > 0) {
