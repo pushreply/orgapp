@@ -75,7 +75,7 @@ public class CreateEventController extends MenuActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-				if (isChecked == true) {
+				if (isChecked) {
 					regularityDateChosen.setVisibility(View.VISIBLE);
 					ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreateEventController.this,
 									R.array.SPINNER_REGULARITYDATE, android.R.layout.simple_spinner_item);
@@ -185,6 +185,20 @@ public class CreateEventController extends MenuActivity {
 
 				if (success != 0) {
 					List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("classification", "4"));
+					params.add(new BasicNameValuePair("syncInterval", "0"));
+					params.add(new BasicNameValuePair("message", IMessages.MESSAGE_CREATE_EVENT_1 + GroupData.getGROUPNAME()
+									+ IMessages.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
+
+					json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+
+						Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+						finish();
+						startActivity(intent);
+					}
 
 				}
 

@@ -75,4 +75,6 @@ public interface IMessages {
 	public static final String INVALID_EVENTDATE = "Invalid event date";
 	public static final String INVALID_EVENTTIME = "Invalid event time";
 	public static final String INVALID_EVENTLOCATION = "Invalid event location";
+	public static final String MESSAGE_CREATE_EVENT_1 = "In the group \"";
+	public static final String MESSAGE_CREATE_EVENT_2 = "\" the following new event was added: ";
 }

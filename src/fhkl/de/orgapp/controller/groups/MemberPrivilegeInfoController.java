@@ -375,7 +375,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						if (success == 1) {
 
 							Intent intent = new Intent(MemberPrivilegeInfoController.this, MemberPrivilegeInfoController.class);
-							intent.putExtra("MemberId", getIntent().getStringExtra("MemberId"));
 							finish();
 							startActivity(intent);
 						}
