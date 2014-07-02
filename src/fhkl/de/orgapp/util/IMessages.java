@@ -72,7 +72,7 @@ public interface IMessages {
 	public static final String DELETE_GROUP_NOTIFICATION_1 = "Group ";
 	public static final String DELETE_GROUP_NOTIFICATION_2 = " has been deleted";
 	public static final String INVALID_REGULARITY_DATE = "Invalid date. Choose a future date";
-	public static final String INVALID_REGULARITY_NUMBER = "Invalid number. Choose a number between 0 and 50";
+	public static final String INVALID_REGULARITY_NUMBER = "Invalid number. Choose a number between 2 and 50";
 	public static final String INVALID_EVENTDATE = "Invalid event date. Choose a future Date";
 	public static final String INVALID_EVENTTIME = "Invalid event time";
 	public static final String INVALID_EVENTLOCATION = "Invalid event location";

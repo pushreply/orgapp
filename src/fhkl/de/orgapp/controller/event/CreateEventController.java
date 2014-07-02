@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -296,7 +297,7 @@ public class CreateEventController extends MenuActivity {
 						}
 						try {
 							Integer chosenNumber = Integer.parseInt(regularityChosen.getText().toString());
-							if (chosenNumber > 50) {
+							if (chosenNumber > 50 || chosenNumber < 2) {
 								return IMessages.INVALID_REGULARITY_NUMBER;
 							}
 						} catch (NumberFormatException e) {
@@ -313,38 +314,105 @@ public class CreateEventController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-			JSONObject json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", params);
+			// Recurring events
+			if (regularityDate.isChecked()) {
+				Date chosenDate = null;
+				List<Calendar> dateList = new ArrayList<Calendar>();
+				SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+				sdfDate.setLenient(false);
 
-			try {
-				int success = json.getInt(TAG_SUCCESS);
+				try {
+					chosenDate = sdfDate.parse(eventDate.getText().toString());
+				} catch (ParseException e) {
+				}
 
-				if (success != 0) {
-					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
-					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
-					success = json.getInt(TAG_SUCCESS);
-					if (success == 1) {
+				System.out.println("chosenDate" + chosenDate.toString());
 
-						member = json.getJSONArray("member");
-
-						for (int i = 0; i < member.length(); i++) {
-							JSONObject c = member.getJSONObject(i);
-
-							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
-							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
-							paramsCreateNotification.add(new BasicNameValuePair("classification", "4"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
-							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.MESSAGE_CREATE_EVENT_1
-											+ GroupData.getGROUPNAME() + IMessages.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
-
-							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+				System.out.println("Spinner item: " + regularityDateChosen.getSelectedItem().toString());
+				if (regularityDateChosen.getSelectedItem().toString().equals("daily")) {
+					if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_DATE) {
+						Date chosenRegularityDate = null;
+						try {
+							chosenRegularityDate = sdfDate.parse(regularityChosen.getText().toString());
+						} catch (ParseException e) {
 						}
+						int cnt = 0;
+						Calendar tmp = Calendar.getInstance();
+						Calendar tmpRegularityDate = Calendar.getInstance();
+						tmp.setTime(chosenDate);
+						tmpRegularityDate.setTime(chosenRegularityDate);
+						while (tmp.before(tmpRegularityDate)) {
+							if (cnt == 50) {
+								break;
+							}
+							Calendar tmp2 = (Calendar) tmp.clone();
+							dateList.add(tmp2);
+							tmp.add(Calendar.DAY_OF_MONTH, 1);
+							cnt++;
+						}
+
+						// Test Sysout
+						Iterator<Calendar> dateListIterator = dateList.iterator();
+						for (int i = 0; i < dateList.size(); i++) {
+							Calendar tmpDateList = dateListIterator.next();
+							System.out.println(tmpDateList.getTime().toString());
+						}
+						// Test End
+					} else if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_NUMBER) {
+						Integer chosenNumber = Integer.parseInt(regularityChosen.getText().toString());
+						Calendar tmp = Calendar.getInstance();
+						tmp.setTime(chosenDate);
+						for (int i = 0; i < chosenNumber; i++) {
+							Calendar tmp2 = (Calendar) tmp.clone();
+							dateList.add(tmp2);
+							tmp.add(Calendar.DAY_OF_MONTH, 1);
+						}
+						// Test Sysout
+						Iterator<Calendar> dateListIterator = dateList.iterator();
+						for (int i = 0; i < dateList.size(); i++) {
+							Calendar tmpDateList = dateListIterator.next();
+							System.out.println(tmpDateList.getTime().toString());
+						}
+						// Test End
 					}
 				}
-			} catch (Exception e) {
-				System.out.println("Error in SaveEvent.doInBackground(String... args): " + e.getMessage());
-				e.printStackTrace();
+
+			}
+			// Non-recurring events
+			else {
+				JSONObject json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", params);
+
+				try {
+					int success = json.getInt(TAG_SUCCESS);
+
+					if (success != 0) {
+						List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
+						paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+						paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+						json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
+						success = json.getInt(TAG_SUCCESS);
+						if (success == 1) {
+
+							member = json.getJSONArray("member");
+
+							for (int i = 0; i < member.length(); i++) {
+								JSONObject c = member.getJSONObject(i);
+
+								List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+								paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
+								paramsCreateNotification.add(new BasicNameValuePair("classification", "4"));
+								paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
+								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.MESSAGE_CREATE_EVENT_1
+												+ GroupData.getGROUPNAME() + IMessages.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
+
+								json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+							}
+						}
+					}
+				} catch (Exception e) {
+					System.out.println("Error in SaveEvent.doInBackground(String... args): " + e.getMessage());
+					e.printStackTrace();
+				}
 			}
 			return null;
 		}
