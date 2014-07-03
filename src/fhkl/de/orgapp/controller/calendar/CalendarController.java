@@ -151,7 +151,7 @@ public class CalendarController extends MenuActivity {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							tv_eventId = (TextView) view.findViewById(R.id.EVENTID);
-							new SaveEvent().execute();
+							new GetEvent().execute();
 
 						}
 					});
@@ -161,7 +161,7 @@ public class CalendarController extends MenuActivity {
 		}
 	}
 
-	class SaveEvent extends AsyncTask<String, String, String> {
+	class GetEvent extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {

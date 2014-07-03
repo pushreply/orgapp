@@ -96,9 +96,14 @@ public class MenuActivity extends Activity {
 		if (nameCurrentController.equals(EventController.class.getName())) {
 			menu.findItem(R.id.EVENT_SETTINGS).setVisible(true);
 			menu.findItem(R.id.SHOW_ATTENDING_MEMBER).setVisible(true);
-			menu.findItem(R.id.EDIT_EVENT).setVisible(true);
-			menu.findItem(R.id.DELETE_EVENT).setVisible(true);
-
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_EDIT_EVENT().equals("1")
+							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
+				menu.findItem(R.id.EDIT_EVENT).setVisible(true);
+			}
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_DELETE_EVENT().equals("1")
+							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
+				menu.findItem(R.id.DELETE_EVENT).setVisible(true);
+			}
 		}
 
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
@@ -107,14 +112,13 @@ public class MenuActivity extends Activity {
 
 		if (nameCurrentController.equals(SingleGroupController.class.getName())) {
 			menu.findItem(R.id.GROUP_SETTINGS).setVisible(true);
-			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_CREATE_EVENT().equals("1")) {
 				menu.findItem(R.id.CREATE_EVENT).setVisible(true);
 			}
 			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.EDIT_GROUP).setVisible(true);
 			}
 
-			// only group admin may delete the group
 			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			}
