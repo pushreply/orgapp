@@ -83,6 +83,10 @@ public interface IMessages {
 	public static final String MESSAGE_CREATE_EVENT_3 = "\" the following recurring new event was added: ";
 	public static final String MESSAGE_CREATE_EVENT_4 = ". It expires on: ";
 	public static final String INVALID_RADIOGROUP_REGULARITY = "Choose an ending date or number of events";
-	public static final CharSequence LOADING_EVENT = "Loading event...";
+	public static final String LOADING_EVENT = "Loading event...";
+	public static final String DELETE_EVENT = "Do you really want to delete this event?";
+	public static final CharSequence DELETING_EVENT = "Deleting event...";
+	public static final String MESSAGE_DELETE_EVENT_1 = "The following event has been deleted: \"";
+	public static final String MESSAGE_DELETE_EVENT_2 = "\"";
 
 }

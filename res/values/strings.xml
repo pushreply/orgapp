@@ -60,6 +60,7 @@
     <string name="REGULARITY_NUMBER">Number</string>
     <string name="EVENT_SETTINGS">Event settings</string>
     <string name="SHOW_ATTENDING_MEMBER">Show attending member</string>
+    <string name="ATTENDING_MEMBER">Attending member</string>
     <string name="EDIT_EVENT">Edit event</string>
     <string name="DELETE_EVENT">Delete event</string>
     <string name="NAME">Group name</string>

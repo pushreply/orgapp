@@ -190,8 +190,27 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.DELETE_EVENT:
-			intent = new Intent(MenuActivity.this, DeleteEventController.class);
-			startActivity(intent);
+			builder = new AlertDialog.Builder(MenuActivity.this);
+			builder.setMessage(IMessages.DELETE_EVENT);
+			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(MenuActivity.this, DeleteEventController.class);
+					dialog.dismiss();
+					finish();
+					startActivity(intent);
+				}
+
+			});
+			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.create().show();
 			return true;
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
@@ -268,6 +287,7 @@ public class MenuActivity extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this, ListInviteMemberController.class);
 					dialog.dismiss();
+					finish();
 					startActivity(intent);
 				}
 
@@ -278,6 +298,7 @@ public class MenuActivity extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(MenuActivity.this, ManualInviteMemberController.class);
 					dialog.dismiss();
+					finish();
 					startActivity(intent);
 				}
 			});
