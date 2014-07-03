@@ -88,6 +88,8 @@ public class LeaveGroupController extends MenuActivity
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));
 				
+				json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", notificationParams);
+				
 			} catch (JSONException e) {
 				System.out.println("Error in LeaveGroup.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
