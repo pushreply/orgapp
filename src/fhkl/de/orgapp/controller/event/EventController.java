@@ -1,9 +1,12 @@
 package fhkl.de.orgapp.controller.event;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
@@ -49,5 +52,44 @@ public class EventController extends MenuActivity
 				
 			}
 		});
+	}
+	
+	private ShareActionProvider mShareAction;
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate menu resource file.
+	    getMenuInflater().inflate(R.menu.main_menu, menu);
+
+	    // Locate MenuItem with ShareActionProvider
+	    MenuItem item = menu.findItem(R.id.EVENT_SHARE).setVisible(true);
+	    
+	    // Fetch and store ShareActionProvider
+	    mShareAction = (ShareActionProvider) item.getActionProvider();
+
+	    Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, EventData.getNAME() + "; " + EventData.getEVENTDATE() );
+		sendIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
+		String shareBody = 
+				"New Event: " + EventData.getNAME() 
+				+ ", Date: " + EventData.getEVENTDATE() 
+				+ ", Time: " + EventData.getEVENTTIME() 
+				+ ", Location: " + EventData.getEVENTLOCATION();
+		sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+		sendIntent.setType("text/plain");
+		startActivity(Intent.createChooser(sendIntent, "Share via"));
+		
+	    // Return true to display menu
+	    return true;
+	}
+
+	// Call to update the share intent
+	private void setShareIntent(Intent shareIntent) {
+	    if (mShareAction != null) {
+	        mShareAction.setShareIntent(shareIntent);
+	    }
 	}
 }
