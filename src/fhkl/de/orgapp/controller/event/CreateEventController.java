@@ -68,8 +68,7 @@ public class CreateEventController extends MenuActivity {
 	RadioGroup radioGroupRegularity;
 	RadioButton radioButtonRegularityDate, radioButtonRegularityNumber;
 
-	private Button bSave;
-	private Button bCancel;
+	private Button bSave, bCancel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -39,7 +39,6 @@ public class NewGroupController extends MenuActivity {
 	EditText inputInfo;
 
 	JSONParser jsonParser = new JSONParser();
-	private static String url_check_group = "http://pushrply.com/get_group.php";
 	private static String url_create_group = "http://pushrply.com/create_group.php";
 	private static String url_create_user_in_group = "http://pushrply.com/create_user_in_group_by_personId.php";
 

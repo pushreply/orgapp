@@ -5,7 +5,7 @@
     <string name="SERVER_ADR">https://www.pushrply.com/</string>
     <string name="CERT">customtruststore.bks</string>
     <string name="CERT_PASSWORD">orgappss2014fhzw</string>
-    
+
     <!-- Allgemeine Buttons -->
     <string name="SUBMIT">Submit</string>
     <string name="SAVE">Save</string>
@@ -13,7 +13,7 @@
     <string name="REFRESH">Refresh</string>
     <string name="MALE">m</string>
     <string name="FEMALE">w</string>
-    
+
     <!-- Startbildschirm -->
     <string name="LOGIN">Login</string>
     <string name="REGISTER">Register</string>
@@ -24,20 +24,20 @@
     <string name="PASSWORD_CONFIRMATION">password (confirmation)</string>
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
-    
+
     <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
     <string name="GROUPS">My groups</string>
     <string name="NOTIFICATIONS">Notifications</string>
     <string name="PROFILE">Profile</string>
     <string name="LOGOUT">Logout</string>
-    
+
     <!-- Event -->
     <string name="DECLINED">Not Going</string>
     <string name="ATTENDING">Going</string>
     <string name="COMMENTSLABEL">Comments</string>
     <string name="ADDNEWCOMMENT">Add new comment</string>
-    
+
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
     <string name="GROUP_SETTINGS">Group settings</string>
@@ -46,6 +46,7 @@
     <string name="EVENTDATE">Event date</string>
     <string name="EVENTTIME">Event time</string>
     <string name="REGULARITYDATE">Do you frequently want to host this event?</string>
+
     <string-array name="SPINNER_REGULARITYDATE">
         <item>empty</item>
         <item>daily</item>
@@ -53,9 +54,14 @@
         <item>every 2 weeks</item>
         <item>monthly</item>
     </string-array>
+
     <string name="REGULARITY_QUESTION">Do you want to choose an ending date or number of events?</string>
     <string name="REGULARITY_DATE">Date</string>
     <string name="REGULARITY_NUMBER">Number</string>
+    <string name="EVENT_SETTINGS">Event settings</string>
+    <string name="SHOW_ATTENDING_MEMBER">Show attending member</string>
+    <string name="EDIT_EVENT">Edit event</string>
+    <string name="DELETE_EVENT">Delete event</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
     <string name="SAVE_GROUP">Save</string>
@@ -88,12 +94,12 @@
     <string name="TEXT_EMAIL">Email</string>
     <string name="USER_SELECTED">User selected</string>
     <string name="INVITE_MEMBER_LIST_USER_INFO">Please touch a person to invite them</string>
-    
+
     <!-- Notifications -->
     <string name="NOTIFICATION_SETTINGS">Settings</string>
-    
+
     <!-- Notifications Settings -->
-    
+
     <string name="RECEIVED_NOTIFICATIONS">When would you like to receive notifications?</string>
     <string name="GROUP_INVITES">Group invites</string>
     <string name="GROUP_EDITED">Group edited</string>
@@ -109,7 +115,7 @@
     <string name="NUMBER_ENTRIES">Number of entries</string>
     <string name="NOTIFICATION_SETTINGS_SAVE">Save</string>
     <string name="NOTIFICATION_SETTINGS_CANCEL">Cancel</string>
-    
+
     <!-- Profil -->
     <string name="PROFILE_SETTINGS">Settings</string>
     <string name="CHANGE_PRIVATE_INFORMATION">Change private information</string>
@@ -125,14 +131,14 @@
     <string name="GENERAL_INFORMATION">General information</string>
     <string name="EMAIL_MUST_HAVE">Email address *</string>
     <string name="EMAIL_CONFIRM_MUST_HAVE">Email address (confirmation) *</string>
-    
+
     <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>
     <string name="SET_NEW_BIRTHDAY">Set new birthday</string>
-    
+
     <!-- Security information -->
     <string name="SECURITY_INFORMATION">Security information</string>
-    
+
     <!-- Event history -->
     <string name="EVENT_HISTORY">Event history</string>
 

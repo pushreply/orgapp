@@ -5,8 +5,8 @@ require_once __DIR__ . '/db_connect.php';
 
 $db = new DB_CONNECT();
 
-$name = htmlentities($_GET ['name']);
-$result = mysql_query("SELECT * FROM groups where name = '$name'") or die(mysql_error());
+$groupId = $_GET ['groupId'];
+$result = mysql_query("SELECT * FROM groups where groupId = '$groupId'") or die(mysql_error());
 
 if (mysql_num_rows($result) > 0) {
 

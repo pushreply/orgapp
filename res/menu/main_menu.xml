@@ -22,6 +22,29 @@
         android:title="@string/NEW_GROUP"
         android:visible="false"/>
     <item
+        android:id="@+id/EVENT_SETTINGS"
+        android:icon="@drawable/ic_action_settings"
+        android:menuCategory="system"
+        android:orderInCategory="8"
+        android:showAsAction="ifRoom"
+        android:title="@string/EVENT_SETTINGS"
+        android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/SHOW_ATTENDING_MEMBER"
+                android:title="@string/SHOW_ATTENDING_MEMBER"
+                android:visible="false"/>
+            <item
+                android:id="@+id/EDIT_EVENT"
+                android:title="@string/EDIT_EVENT"
+                android:visible="false"/>
+            <item
+                android:id="@+id/DELETE_EVENT"
+                android:title="@string/DELETE_EVENT"
+                android:visible="false"/>
+        </menu>
+    </item>
+    <item
         android:id="@+id/GROUP_SETTINGS"
         android:icon="@drawable/ic_action_settings"
         android:menuCategory="system"
@@ -56,14 +79,12 @@
                 android:visible="false"/>
         </menu>
     </item>
-    
     <item
         android:id="@+id/BACK_TO_GROUP"
         android:icon="@drawable/ic_action_back"
         android:showAsAction="ifRoom"
         android:title="@string/BACK_TO_GROUP"
         android:visible="false"/>
-    
     <item
         android:id="@+id/NOTIFICATION_SETTINGS"
         android:icon="@drawable/ic_action_settings"

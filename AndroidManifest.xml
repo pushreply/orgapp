@@ -36,11 +36,10 @@
             android:name="fhkl.de.orgapp.controller.calendar.CalendarController"
             android:label="@string/CALENDAR" >
         </activity>
-        
-        <activity
-            android:name="fhkl.de.orgapp.controller.groups.DeleteGroupController" >
-        </activity>
-        
+         <activity
+            android:name="fhkl.de.orgapp.controller.event.EditEventController"
+            android:label="@string/EDIT_EVENT" >
+        </activity>       
         <activity
             android:name="fhkl.de.orgapp.controller.groups.GroupsController"
             android:label="@string/GROUPS" >
@@ -54,6 +53,9 @@
         <activity
             android:name="fhkl.de.orgapp.controller.groups.EditGroupController"
             android:label="@string/EDIT_GROUP" >
+        </activity>
+        <activity
+            android:name="fhkl.de.orgapp.controller.groups.DeleteGroupController" >
         </activity>
         <activity
             android:name="fhkl.de.orgapp.controller.groups.LeaveGroupController"

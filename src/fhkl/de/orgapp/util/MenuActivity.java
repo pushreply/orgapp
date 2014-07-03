@@ -21,7 +21,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.event.AttendingMemberController;
 import fhkl.de.orgapp.controller.event.CreateEventController;
+import fhkl.de.orgapp.controller.event.DeleteEventController;
+import fhkl.de.orgapp.controller.event.EditEventController;
+import fhkl.de.orgapp.controller.event.EventController;
 import fhkl.de.orgapp.controller.groups.DeleteGroupController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
@@ -87,6 +91,14 @@ public class MenuActivity extends Activity {
 
 		if (nameCurrentController.equals(CalendarController.class.getName())) {
 			menu.findItem(R.id.CALENDAR).setVisible(false);
+		}
+
+		if (nameCurrentController.equals(EventController.class.getName())) {
+			menu.findItem(R.id.EVENT_SETTINGS).setVisible(true);
+			menu.findItem(R.id.SHOW_ATTENDING_MEMBER).setVisible(true);
+			menu.findItem(R.id.EDIT_EVENT).setVisible(true);
+			menu.findItem(R.id.DELETE_EVENT).setVisible(true);
+
 		}
 
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
@@ -163,6 +175,20 @@ public class MenuActivity extends Activity {
 			startActivity(intent);
 			return true;
 
+		case R.id.SHOW_ATTENDING_MEMBER:
+			intent = new Intent(MenuActivity.this, AttendingMemberController.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.EDIT_EVENT:
+			intent = new Intent(MenuActivity.this, EditEventController.class);
+			startActivity(intent);
+			return true;
+
+		case R.id.DELETE_EVENT:
+			intent = new Intent(MenuActivity.this, DeleteEventController.class);
+			startActivity(intent);
+			return true;
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
 			startActivity(intent);

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
 import fhkl.de.orgapp.util.EventData;
+import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -37,6 +38,9 @@ public class CalendarController extends MenuActivity {
 
 	private static String url_get_calendar = "http://pushrply.com/get_person_events.php";
 	private static String url_get_event = "http://pushrply.com/get_event.php";
+	private static String url_get_group = "http://pushrply.com/get_group.php";
+	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
+
 	private static int START_ACTIVITY_COUNTER = 0;
 
 	TextView tv_eventId;
@@ -48,6 +52,8 @@ public class CalendarController extends MenuActivity {
 
 	JSONArray calendar = null;
 	JSONArray event = null;
+	JSONArray group = null;
+	JSONArray member = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -157,6 +163,16 @@ public class CalendarController extends MenuActivity {
 
 	class SaveEvent extends AsyncTask<String, String, String> {
 
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(CalendarController.this);
+			pDialog.setMessage(IMessages.LOADING_EVENT);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
@@ -182,10 +198,49 @@ public class CalendarController extends MenuActivity {
 						EventData.setNAME(c.getString("name"));
 						EventData.setPERSONID(c.getString("personId"));
 						EventData.setREGULARITY("regularity");
+					}
 
-						Intent intent = new Intent(CalendarController.this, EventController.class);
-						startActivity(intent);
+					List<NameValuePair> paramsGetGroup = new ArrayList<NameValuePair>();
+					paramsGetGroup.add(new BasicNameValuePair("groupId", EventData.getGROUPID()));
+					json = jsonParser.makeHttpRequest(url_get_group, "GET", paramsGetGroup);
 
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+						group = json.getJSONArray("groups");
+						for (int i = 0; i < group.length(); i++) {
+							JSONObject c = group.getJSONObject(i);
+
+							GroupData.setGROUPID(c.getString("groupId"));
+							GroupData.setPERSONID(c.getString("personId"));
+							GroupData.setGROUPNAME(c.getString("name"));
+							GroupData.setGROUPINFO(c.getString("info"));
+							GroupData.setPICTURE(c.getString("picture"));
+						}
+					}
+
+					List<NameValuePair> paramsGetMember = new ArrayList<NameValuePair>();
+					paramsGetMember.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsGetMember.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
+					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsGetMember);
+
+					Log.d("Member: ", json.toString());
+
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+						member = json.getJSONArray("member");
+
+						for (int i = 0; i < member.length(); i++) {
+							JSONObject c = member.getJSONObject(i);
+
+							GroupData.setPRIVILEGE_MANAGEMENT(c.getString("privilegeManagement"));
+							GroupData.setPRIVILEGE_INVITE_MEMBER(c.getString("memberInvitation"));
+							GroupData.setPRIVILEGE_EDIT_MEMBERLIST(c.getString("memberlistEditing"));
+							GroupData.setPRIVILEGE_CREATE_EVENT(c.getString("eventCreating"));
+							GroupData.setPRIVILEGE_EDIT_EVENT(c.getString("eventEditing"));
+							GroupData.setPRIVILEGE_DELETE_EVENT(c.getString("eventDeleting"));
+							GroupData.setPRIVILEGE_EDIT_COMMENT(c.getString("commentEditing"));
+							GroupData.setPRIVILEGE_DELETE_COMMENT(c.getString("commentDeleting"));
+						}
 					}
 				} else {
 
@@ -197,5 +252,12 @@ public class CalendarController extends MenuActivity {
 			return null;
 		}
 
+		protected void onPostExecute(String result) {
+			pDialog.dismiss();
+
+			finish();
+			Intent intent = new Intent(CalendarController.this, EventController.class);
+			startActivity(intent);
+		}
 	}
 }

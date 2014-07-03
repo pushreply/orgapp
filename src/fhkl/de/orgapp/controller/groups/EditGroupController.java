@@ -88,7 +88,7 @@ public class EditGroupController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("name", GroupData.getGROUPNAME()));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			JSONObject json = jsonParser.makeHttpRequest(url_check_group, "GET", params);
 
 			Log.d("Response", json.toString());
