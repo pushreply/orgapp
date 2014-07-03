@@ -20,7 +20,6 @@
         android:hint="@+string/EVENTLOCATION"
         android:inputType="text" >
 
-        <requestFocus />
     </EditText>
 
     <EditText
@@ -84,8 +83,7 @@
         android:layout_height="wrap_content"
         android:hint=""
         android:visibility="gone" >
-
-        <requestFocus />
+        
     </EditText>
 
     <LinearLayout

@@ -1,7 +1,10 @@
 package fhkl.de.orgapp.controller.profile;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -10,10 +13,12 @@ import org.json.JSONObject;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -32,12 +37,13 @@ public class PrivateInfoController extends MenuActivity
 	private static final int DATE_DIALOG_ID = 1;
 	
 	private ProgressDialog pDialog;
+	private Calendar calendar;
 	
-	TextView textFirstName, textLastName, textBirthday, textGender, birthdayNew;
+	TextView textFirstName, textLastName, textBirthday, textGender;
 	RadioButton textGenderMale, textGenderFemale;
-	EditText firstNameNew, lastNameNew;
+	EditText firstNameNew, lastNameNew, birthdayNew;
 	char genderNew;
-	Button selectBirthdayButton, changeButton, cancelButton;
+	Button changeButton, cancelButton;
 	int yearNew, monthNew, dayNew;
 	String[] birthdayArray;
 	
@@ -46,10 +52,34 @@ public class PrivateInfoController extends MenuActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.private_information);
-		
+		calendar = Calendar.getInstance();
 		getViews();
 		setTexts();
 		setTextSizes();
+		
+		birthdayNew.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				DatePickerDialog dateDialog = new DatePickerDialog(PrivateInfoController.this, setDateListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+				DatePicker datePicker = dateDialog.getDatePicker();
+				
+				datePicker.updateDate(yearNew, monthNew, dayNew);
+				dateDialog.setTitle(getString(R.string.SET_NEW_BIRTHDAY));
+				dateDialog.setButton(DatePickerDialog.BUTTON_POSITIVE, getString(R.string.SAVE), dateDialog);
+				dateDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, getString(R.string.CANCEL), new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						dialog.dismiss();
+					}
+				});
+				
+				dateDialog.show();
+			}
+		});
 		
 		birthdayArray = splitBirthday(UserData.getBIRTHDAY());
 		
@@ -58,34 +88,14 @@ public class PrivateInfoController extends MenuActivity
 		dayNew = Integer.parseInt(birthdayArray[2]);
 	}
 	
-	@Override
-	protected Dialog onCreateDialog(int id)
+	private DatePickerDialog.OnDateSetListener setDateListener = new DatePickerDialog.OnDateSetListener()
 	{
-		return new DatePickerDialog(this, dateSetListener, yearNew, monthNew, dayNew);
-	}
-
-	@Override
-	protected void onPrepareDialog(int id, Dialog dialog)
-	{
-		DatePickerDialog dateDialog = ((DatePickerDialog) dialog);
-		
-		dateDialog.updateDate(yearNew, monthNew, dayNew);
-		dateDialog.setTitle(getString(R.string.SET_NEW_BIRTHDAY));
-		Button saveButton = dateDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-		Button cancelButton = dateDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-		saveButton.setText(getString(R.string.SAVE));
-		cancelButton.setText(getString(R.string.CANCEL));
-		
-		//TODO set month to english
-	}
-	
-	private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-	{
-		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+		@Override
+		public void onDateSet(DatePicker view, int year, int month, int day)
         {
-			yearNew = year;
-            monthNew = monthOfYear;
-            dayNew = dayOfMonth;
+			calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
             updateBirthday();
         }
 	};
@@ -104,22 +114,9 @@ public class PrivateInfoController extends MenuActivity
 	
 	private void updateBirthday()
 	{
-		StringBuilder birthdayString = new StringBuilder();
-		birthdayString.append(yearNew);
-		birthdayString.append("-");
-		birthdayString.append(pad(monthNew + 1));
-		birthdayString.append("-");
-		birthdayString.append(pad(dayNew));
-		
-		birthdayNew.setText(birthdayString);
-	}
-	
-	private static String pad(int digit)
-	{
-		if (digit >= 10)
-            return String.valueOf(digit);
-        else
-            return "0" + String.valueOf(digit);
+		String format = "yyyy-MM-dd";
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+		birthdayNew.setText(dateFormat.format(calendar.getTime()));
 	}
 	
 	private void getViews()
@@ -133,9 +130,8 @@ public class PrivateInfoController extends MenuActivity
 		
 		firstNameNew = (EditText) findViewById(R.id.PRIVATE_INFO_USER_FIRST_NAME);
 		lastNameNew = (EditText) findViewById(R.id.PRIVATE_INFO_USER_LAST_NAME);
-		birthdayNew = (TextView) findViewById(R.id.PRIVATE_INFO_USER_BIRTHDAY);
+		birthdayNew = (EditText) findViewById(R.id.PRIVATE_INFO_USER_BIRTHDAY);
 		
-		selectBirthdayButton = (Button) findViewById(R.id.PRIVATE_INFO_PICK_BIRTHDAY_BUTTON);
 		changeButton = (Button) findViewById(R.id.CHANGE_PRIVATE_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_PRIVATE_INFO_VIEW);
 	}
@@ -144,21 +140,20 @@ public class PrivateInfoController extends MenuActivity
 	{
 		textFirstName.setText(getString(R.string.FIRSTNAME_MUST_HAVE) + ":");
 		textLastName.setText(getString(R.string.LASTNAME_MUST_HAVE) + ":");
-		textBirthday.setText(getString(R.string.BIRTHDAY_MUST_HAVE) + ":");
-		textGender.setText(getString(R.string.GENDER_MUST_HAVE) + ":");
+		textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
+		textGender.setText(getString(R.string.GENDER) + ":");
 		textGenderMale.setText(getString(R.string.MALE));
 		textGenderFemale.setText(getString(R.string.FEMALE));
 		
 		firstNameNew.setText(UserData.getFIRST_NAME());
 		lastNameNew.setText(UserData.getLAST_NAME());
-		birthdayNew.setText(UserData.getBIRTHDAY());
+		birthdayNew.setHint(UserData.getBIRTHDAY());
 		
 		if(UserData.getGENDER().equals("m"))
 			textGenderMale.setChecked(true);
-		else
+		else if(UserData.getGENDER().equals("w"))
 			textGenderFemale.setChecked(true);
 		
-		selectBirthdayButton.setText(getString(R.string.CHANGE_BIRTHDAY));
 		changeButton.setText(getString(R.string.CHANGE_INFO));
 		cancelButton.setText(getString(R.string.CANCEL));
 	}
@@ -177,11 +172,6 @@ public class PrivateInfoController extends MenuActivity
 		firstNameNew.setTextSize(userTextSize);
 		lastNameNew.setTextSize(userTextSize);
 		birthdayNew.setTextSize(userTextSize);
-	}
-	
-	public void selectBirthday(View v)
-	{
-		showDialog(DATE_DIALOG_ID);
 	}
 	
 	public void selectGender(View view)
