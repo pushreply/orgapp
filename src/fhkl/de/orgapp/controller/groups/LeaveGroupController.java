@@ -90,6 +90,9 @@ public class LeaveGroupController extends MenuActivity
 				
 				json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", notificationParams);
 				
+				if(json.getInt(TAG_SUCCESS) != 1)
+					return null;
+				
 			} catch (JSONException e) {
 				System.out.println("Error in LeaveGroup.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
