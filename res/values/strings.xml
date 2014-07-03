@@ -117,8 +117,6 @@
     <string name="CHANGE_SECURITY_INFORMATION">Change security information</string>
     <string name="FIRSTNAME_MUST_HAVE">First name *</string>
     <string name="LASTNAME_MUST_HAVE">Last name *</string>
-    <string name="BIRTHDAY_MUST_HAVE">Birthday *</string>
-    <string name="GENDER_MUST_HAVE">Gender *</string>
     <string name="BIRTHDAY">Birthday</string>
     <string name="GENDER">Gender</string>
     <string name="MEMBER_SINCE">Member since</string>
