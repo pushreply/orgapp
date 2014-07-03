@@ -7,7 +7,6 @@
         android:id="@+id/EMAIL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:hint="@+string/EMAIL"
         android:inputType="textEmailAddress" >
 
@@ -18,7 +17,6 @@
         android:id="@+id/PASSWORD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:hint="@+string/PASSWORD"
         android:inputType="textPassword" />
 

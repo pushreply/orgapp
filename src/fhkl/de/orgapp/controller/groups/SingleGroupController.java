@@ -48,13 +48,16 @@ public class SingleGroupController extends MenuActivity {
 	JSONArray calendar = null;
 	JSONArray event = null;
 
-	TextView tv_eventId;
+	TextView tv_eventId, groupInfo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlegroup);
 		this.setTitle(GroupData.getGROUPNAME());
+
+		groupInfo = (TextView) findViewById(R.id.GROUP_INFO);
+		groupInfo.setText(GroupData.getGROUPINFO());
 
 		eventList = new ArrayList<HashMap<String, String>>();
 		new GetGroupCalendar().execute();

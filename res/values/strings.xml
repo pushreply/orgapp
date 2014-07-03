@@ -40,6 +40,7 @@
 
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
+    <string name="GROUP_INFO">Group info: </string>
     <string name="GROUP_SETTINGS">Group settings</string>
     <string name="EVENTNAME">Event name</string>
     <string name="EVENTLOCATION">Event location</string>
