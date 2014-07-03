@@ -105,8 +105,7 @@ public class RegisterController extends Activity {
 		/**
 		 * Creating person
 		 * */
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
 			String passwordConfirm = inputPasswordConfirm.getText().toString();
@@ -115,23 +114,22 @@ public class RegisterController extends Activity {
 
 			if (!InputValidator.isEmailValid(eMail))
 				return IMessages.INVALID_EMAIL;
-			
+
 			if (!InputValidator.isStringLengthInRange(password, 0, 255))
 				return IMessages.INVALID_PASSWORD;
-			
-			if(!password.equals(passwordConfirm))
+
+			if (!password.equals(passwordConfirm))
 				return IMessages.PASSWORDS_DO_NOT_MATCH;
-			
-			if(!InputValidator.isStringLengthInRange(firstName, 0, 255))
+
+			if (!InputValidator.isStringLengthInRange(firstName, 0, 255))
 				return IMessages.INVALID_FIRSTNAME;
-			
-			if(InputValidator.isStringLengthInRange(lastName, 0, 255))
+
+			if (!InputValidator.isStringLengthInRange(lastName, 0, 255))
 				return IMessages.INVALID_LASTNAME;
 
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person,
-					"GET", paramsCheck);
+			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET", paramsCheck);
 
 			Log.d("Create Response", jsonCheck.toString());
 
@@ -157,13 +155,11 @@ public class RegisterController extends Activity {
 			paramsCreate.add(new BasicNameValuePair("lastName", lastName));
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			Date date = new Date();
-			paramsCreate.add(new BasicNameValuePair("created", dateFormat
-					.format(date).toString()));
+			paramsCreate.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// getting JSON Object
 			// Note that create person url accepts GET method
-			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET",
-					paramsCreate);
+			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET", paramsCreate);
 
 			// check log cat fro response
 			Log.d("Create Response", json.toString());
@@ -175,14 +171,11 @@ public class RegisterController extends Activity {
 				if (success != 0) {
 					// successfully created person
 					List<NameValuePair> paramsSettings = new ArrayList<NameValuePair>();
-					paramsSettings.add(new BasicNameValuePair("personId", success
-							.toString()));
-					json = jsonParser.makeHttpRequest(url_create_notification_settings,
-							"GET", paramsSettings);
+					paramsSettings.add(new BasicNameValuePair("personId", success.toString()));
+					json = jsonParser.makeHttpRequest(url_create_notification_settings, "GET", paramsSettings);
 					json.getInt(TAG_SUCCESS);
 					if (success == 1) {
-						Intent i = new Intent(getApplicationContext(),
-								LoginController.class);
+						Intent i = new Intent(getApplicationContext(), LoginController.class);
 						startActivity(i);
 					} else {
 						// failed to create notification settings
@@ -209,8 +202,7 @@ public class RegisterController extends Activity {
 			pDialog.dismiss();
 
 			if (message != null) {
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
 		}
 	}

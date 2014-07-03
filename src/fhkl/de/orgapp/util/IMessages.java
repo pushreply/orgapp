@@ -78,5 +78,8 @@ public interface IMessages {
 	public static final String INVALID_EVENTLOCATION = "Invalid event location";
 	public static final String MESSAGE_CREATE_EVENT_1 = "In the group \"";
 	public static final String MESSAGE_CREATE_EVENT_2 = "\" the following new event was added: ";
+	public static final String MESSAGE_CREATE_EVENT_3 = "\" the following recurring new event was added: ";
+	public static final String MESSAGE_CREATE_EVENT_4 = ". It expires on: ";
 	public static final String INVALID_RADIOGROUP_REGULARITY = "Choose an ending date or number of events";
+
 }
