@@ -104,8 +104,12 @@ public class MenuActivity extends Activity {
 			if(GroupData.getPERSONID().equals(UserData.getPERSONID()))
 			{
 				menu.findItem(R.id.DELETE_GROUP).setVisible(true);
-				menu.findItem(R.id.LEAVE_GROUP).setVisible(false);
 			}
+			if(!GroupData.getPERSONID().equals(UserData.getPERSONID()))
+			{
+				menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
+			}
+			
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
 
 			if (GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
