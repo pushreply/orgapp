@@ -98,22 +98,6 @@ public class NewGroupController extends MenuActivity {
 				return IMessages.INVALID_INFO;
 			}
 
-			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-			paramsCheck.add(new BasicNameValuePair("name", name));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_group, "GET", paramsCheck);
-
-			Log.d("Create Response", jsonCheck.toString());
-
-			try {
-				int success = jsonCheck.getInt(TAG_SUCCESS);
-
-				if (success == 1) {
-					return IMessages.DUPLICATE_GROUP;
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
 			List<NameValuePair> paramsCreateGroup = new ArrayList<NameValuePair>();
 
 			paramsCreateGroup.add(new BasicNameValuePair("personId", personId));
@@ -186,17 +170,15 @@ public class NewGroupController extends MenuActivity {
 						startActivity(intent);
 					}
 				});
-				builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener()
-				{
+				builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener() {
 					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
+					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(NewGroupController.this, GroupsController.class);
 						dialog.dismiss();
 						startActivity(intent);
 					}
 				});
-				
+
 				dialog = builder.create();
 				dialog.show();
 			}
