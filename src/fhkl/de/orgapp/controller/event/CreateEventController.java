@@ -255,18 +255,55 @@ public class CreateEventController extends MenuActivity {
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 						sdf.setLenient(false);
 
+						Date chosenDate = null;
+						Date chosenEventDate = null;
 						try {
-							Date chosenDate = sdf.parse(regularityChosen.getText().toString());
+							chosenDate = sdf.parse(regularityChosen.getText().toString());
+							chosenEventDate = sdf.parse(eventDate.getText().toString());
 							Date currentDate = new Date();
 							sdf.format(currentDate);
 							if (chosenDate.before(currentDate)) {
 								return IMessages.INVALID_REGULARITY_DATE;
 							}
+							if (chosenDate.before(chosenEventDate)) {
+								return IMessages.INVALID_REGULARITY_DATE_2;
+							}
 						} catch (ParseException e) {
 						}
-						// ToDo: Check SpinnerData versus DateData
-						// Checks ok, ToDo: add params
 
+						Calendar tmp = Calendar.getInstance();
+						tmp.setTime(chosenEventDate);
+						Calendar tmp2 = Calendar.getInstance();
+						tmp2.setTime(chosenDate);
+						if (regularityDateChosen.getSelectedItem().toString().equals("daily")) {
+							tmp.add(Calendar.DATE, 1);
+							System.out.println(tmp);
+							System.out.println(tmp2);
+							if (tmp.after(tmp2)) {
+								return IMessages.INVALID_REGULARITY_DATE_3;
+							}
+						} else if (regularityDateChosen.getSelectedItem().toString().equals("weekly")) {
+							tmp.add(Calendar.DATE, 7);
+							System.out.println(tmp);
+							System.out.println(tmp2);
+							if (tmp.after(tmp2)) {
+								return IMessages.INVALID_REGULARITY_DATE_3;
+							}
+						} else if (regularityDateChosen.getSelectedItem().toString().equals("every 2 weeks")) {
+							tmp.add(Calendar.DATE, 14);
+							System.out.println(tmp);
+							System.out.println(tmp2);
+							if (tmp.after(tmp2)) {
+								return IMessages.INVALID_REGULARITY_DATE_3;
+							}
+						} else if (regularityDateChosen.getSelectedItem().toString().equals("monthly")) {
+							tmp.add(Calendar.DATE, 28);
+							System.out.println(tmp);
+							System.out.println(tmp2);
+							if (tmp.after(tmp2)) {
+								return IMessages.INVALID_REGULARITY_DATE_3;
+							}
+						}
 					}
 					// Number RadioButton chosen?
 				} else if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_NUMBER) {
@@ -284,8 +321,6 @@ public class CreateEventController extends MenuActivity {
 							}
 						} catch (NumberFormatException e) {
 						}
-						// ToDo: Check SpinnerData versus DateData
-						// Checks ok, ToDo: add params
 					}
 					// No RadioButton checked
 				} else {

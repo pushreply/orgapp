@@ -95,21 +95,21 @@ public class MenuActivity extends Activity {
 
 		if (nameCurrentController.equals(SingleGroupController.class.getName())) {
 			menu.findItem(R.id.GROUP_SETTINGS).setVisible(true);
-			menu.findItem(R.id.CREATE_EVENT).setVisible(true);
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+				menu.findItem(R.id.CREATE_EVENT).setVisible(true);
+			}
 			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.EDIT_GROUP).setVisible(true);
 			}
-			
+
 			// only group admin may delete the group
-			if(GroupData.getPERSONID().equals(UserData.getPERSONID()))
-			{
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.DELETE_GROUP).setVisible(true);
 			}
-			if(!GroupData.getPERSONID().equals(UserData.getPERSONID()))
-			{
+			if (!GroupData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.LEAVE_GROUP).setVisible(true);
 			}
-			
+
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
 
 			if (GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
@@ -141,7 +141,7 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		AlertDialog.Builder builder;
-		
+
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -167,65 +167,57 @@ public class MenuActivity extends Activity {
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
 			startActivity(intent);
 			return true;
-			
+
 		case R.id.LEAVE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog dialog;
 			builder.setMessage(IMessages.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME() + IMessages.QUESTION_MARK);
-			
-			builder.setPositiveButton(IMessages.YES, new OnClickListener()
-			{
+
+			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 					startActivity(new Intent(MenuActivity.this, LeaveGroupController.class));
 				}
 			});
-			
-			builder.setNegativeButton(IMessages.NO, new OnClickListener()
-			{
+
+			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 				}
 			});
-			
+
 			dialog = builder.create();
-			
+
 			dialog.show();
-			
+
 			return true;
-			
+
 		case R.id.DELETE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog leavedialog;
 			builder.setMessage(IMessages.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME() + IMessages.QUESTION_MARK);
-			
-			builder.setPositiveButton(IMessages.YES, new OnClickListener()
-			{
+
+			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 					startActivity(new Intent(MenuActivity.this, DeleteGroupController.class));
 				}
 			});
-			
-			builder.setNegativeButton(IMessages.NO, new OnClickListener()
-			{
+
+			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 				}
 			});
-			
+
 			leavedialog = builder.create();
-			
+
 			leavedialog.show();
-			
+
 			return true;
 
 		case R.id.SHOW_MEMBER_LIST:
@@ -262,8 +254,7 @@ public class MenuActivity extends Activity {
 			builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener() {
 
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 				}
 			});
