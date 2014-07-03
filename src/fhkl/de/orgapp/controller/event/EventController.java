@@ -1,7 +1,11 @@
 package fhkl.de.orgapp.controller.event;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.EventData;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -11,6 +15,8 @@ public class EventController extends MenuActivity
 	TextView eventTime;
 	TextView eventDate;
 	TextView eventLocation;
+
+	ToggleButton buttonAttendance;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -26,5 +32,22 @@ public class EventController extends MenuActivity
 		eventTime.setText("Time: " + EventData.getEVENTTIME());
 		eventDate.setText("Date: " + EventData.getEVENTDATE());
 		eventLocation.setText("Location: " + EventData.getEVENTLOCATION());
+		buttonAttendance = (ToggleButton) findViewById(R.id.BUTTONATTENDANCE);
+		buttonAttendance.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				boolean on = ((ToggleButton) v).isChecked();
+				
+				if (on){
+					System.out.println("DŸrfte true sein:" + on);
+					
+				} else {
+					System.out.println("DŸrfte false sein:" + on);
+				}
+				
+			}
+		});
 	}
 }
