@@ -1,6 +1,7 @@
 package fhkl.de.orgapp.util;
 
 public interface IMessages {
+	public static final String NO_INTERNET_CONNECTION = "Please check your internet connection";
 	public static final String INVALID_USER = "Invalid user";
 	public static final String INVALID_EMAIL = "Invalid e-mail address";
 	public static final String INVALID_PASSWORD = "Invalid password";
