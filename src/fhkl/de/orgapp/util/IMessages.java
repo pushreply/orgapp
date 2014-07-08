@@ -89,5 +89,6 @@ public interface IMessages {
 	public static final CharSequence DELETING_EVENT = "Deleting event...";
 	public static final String MESSAGE_DELETE_EVENT_1 = "The following event has been deleted: \"";
 	public static final String MESSAGE_DELETE_EVENT_2 = "\"";
+	public static final String INSTALL_FACEBOOK_APP = "Please install the facebook app";
 
 }

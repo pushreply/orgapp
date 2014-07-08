@@ -1,10 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item
-		android:id="@+id/EVENT_SHARE"
-		android:title="Share"
-		android:showAsAction="ifRoom"
-		android:visible="false"
-		android:actionProviderClass="android.widget.ShareActionProvider" />
     <item
         android:id="@+id/ADD_EMAIL_FIELD"
         android:icon="@drawable/ic_action_new"
@@ -42,6 +36,10 @@
                 android:id="@+id/DELETE_EVENT"
                 android:title="@string/DELETE_EVENT"
                 android:visible="false"/>
+            <item
+				android:id="@+id/SHARE_EVENT_VIA_FACEBOOK"
+				android:title="@string/SHARE_EVENT_VIA_FACEBOOK"
+				android:visible="false" />
         </menu>
     </item>
     <item

@@ -10,9 +10,13 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Menu;
@@ -104,6 +108,8 @@ public class MenuActivity extends Activity {
 							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.DELETE_EVENT).setVisible(true);
 			}
+			if(EventData.getPERSONID().equals(UserData.getPERSONID()))
+				menu.findItem(R.id.SHARE_EVENT_VIA_FACEBOOK).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
@@ -212,6 +218,42 @@ public class MenuActivity extends Activity {
 			});
 			builder.create().show();
 			return true;
+			
+		case R.id.SHARE_EVENT_VIA_FACEBOOK:
+			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+			sharingIntent.setType("text/plain");
+			ComponentName component = null;
+			
+			PackageManager pManager = getPackageManager();
+			List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
+			
+			for(int a=0; a<activityList.size(); a++)
+				if((activityList.get(a).activityInfo.name).contains("facebook"))
+					component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName, activityList.get(a).activityInfo.name);
+			
+			// notify user, if the facebook app is not installed
+			if(component == null)
+			{
+				Toast.makeText(getApplicationContext(), IMessages.INSTALL_FACEBOOK_APP, Toast.LENGTH_LONG).show();
+				
+				return true;
+			}
+			
+			// consider the facbook app only
+			sharingIntent.setComponent(component);
+
+			sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
+			String shareBody =
+			"New Event: " + EventData.getNAME()
+			+ ", Date: " + EventData.getEVENTDATE()
+			+ ", Time: " + EventData.getEVENTTIME()
+			+ ", Location: " + EventData.getEVENTLOCATION();
+			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+			
+			startActivity(sharingIntent);
+			
+			return true;
+			
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
 			startActivity(intent);

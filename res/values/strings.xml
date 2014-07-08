@@ -37,6 +37,11 @@
     <string name="ATTENDING">Going</string>
     <string name="COMMENTSLABEL">Comments</string>
     <string name="ADDNEWCOMMENT">Add new comment</string>
+    <string name="ATTENDING_MEMBER">Attending member</string>
+    <string name="SHOW_ATTENDING_MEMBER">Show attending member</string>
+    <string name="EDIT_EVENT">Edit event</string>
+    <string name="DELETE_EVENT">Delete event</string>
+    <string name="SHARE_EVENT_VIA_FACEBOOK">Share event via facebook</string>
 
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
@@ -60,10 +65,6 @@
     <string name="REGULARITY_DATE">Date</string>
     <string name="REGULARITY_NUMBER">Number</string>
     <string name="EVENT_SETTINGS">Event settings</string>
-    <string name="SHOW_ATTENDING_MEMBER">Show attending member</string>
-    <string name="ATTENDING_MEMBER">Attending member</string>
-    <string name="EDIT_EVENT">Edit event</string>
-    <string name="DELETE_EVENT">Delete event</string>
     <string name="NAME">Group name</string>
     <string name="INFO">Info</string>
     <string name="SAVE_GROUP">Save</string>
