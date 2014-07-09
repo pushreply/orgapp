@@ -40,6 +40,10 @@
 				android:id="@+id/SHARE_EVENT_VIA_FACEBOOK"
 				android:title="@string/SHARE_EVENT_VIA_FACEBOOK"
 				android:visible="false" />
+            <item
+				android:id="@+id/SHARE_EVENT_VIA_TWITTER"
+				android:title="@string/SHARE_EVENT_VIA_TWITTER"
+				android:visible="false" />
         </menu>
     </item>
     <item
