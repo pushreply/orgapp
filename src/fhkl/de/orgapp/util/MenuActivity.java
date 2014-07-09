@@ -60,6 +60,7 @@ public class MenuActivity extends Activity {
 		inflater.inflate(R.menu.main_menu, menu);
 		String nameCurrentController = getIntent().getComponent().getClassName();
 
+		menu.findItem(R.id.LOGOUT).setTitle("Logout ( " + UserData.getEMAIL() + " )");
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
 			menu.findItem(R.id.NEW_GROUP).setVisible(true);
 		}

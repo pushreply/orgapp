@@ -148,7 +148,7 @@
     </item>
     <item
         android:id="@+id/LOGOUT"
-        android:title="@string/LOGOUT">
+        android:title="">
     </item>
 
 </menu>
