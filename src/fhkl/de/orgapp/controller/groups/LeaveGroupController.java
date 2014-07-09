@@ -16,22 +16,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
+
 //import fhkl.de.orgapp.controller.groups.GroupsController;
 
-public class LeaveGroupController extends MenuActivity
-{
+public class LeaveGroupController extends MenuActivity {
 	private static String URL_LEAVE_GROUP = "http://pushrply.com/leave_group.php";
 	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
 
 	private static final String TAG_SUCCESS = "success";
-	
+
 	List<NameValuePair> notificationParams;
 	String notification;
 	TextView tv_memberId;
@@ -63,15 +62,14 @@ public class LeaveGroupController extends MenuActivity
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) 
-		{
-			//need parameters personId and groupId
+		protected String doInBackground(String... args) {
+			// need parameters personId and groupId
 			tv_memberId = (TextView) findViewById(R.id.MEMBERID);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			
-			//send parameters to jsonParser
+
+			// send parameters to jsonParser
 			JSONObject json = jsonParser.makeHttpRequest(URL_LEAVE_GROUP, "GET", params);
 
 			Log.d("Response: ", json.toString());
@@ -81,18 +79,18 @@ public class LeaveGroupController extends MenuActivity
 				if (success == 1) {
 					return null;
 				}
-	
+
 				notificationParams = new ArrayList<NameValuePair>();
 				notification = IMessages.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));
-				
+
 				json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", notificationParams);
-				
-				if(json.getInt(TAG_SUCCESS) != 1)
+
+				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;
-				
+
 			} catch (JSONException e) {
 				System.out.println("Error in LeaveGroup.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
@@ -101,8 +99,7 @@ public class LeaveGroupController extends MenuActivity
 			return null;
 		}
 
-		protected void onPostExecute(String message) 
-		{
+		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();
 			startActivity(new Intent(LeaveGroupController.this, GroupsController.class));

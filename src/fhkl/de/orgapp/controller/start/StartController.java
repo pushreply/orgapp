@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.login.LoginController;
@@ -31,14 +30,14 @@ public class StartController extends Activity {
 	}
 
 	public void addListenerOnButton() {
-		
-		//check internet connection
+
+		// check internet connection
 		Context ctx = this;
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		isConnected = activeNetwork != null	&& activeNetwork.isConnectedOrConnecting();
-		
+		isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
 		bLogin = (Button) findViewById(R.id.LOGIN);
 		bRegister = (Button) findViewById(R.id.REGISTER);
 
@@ -46,12 +45,9 @@ public class StartController extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (isConnected == true) {
-					Intent i = new Intent(StartController.this,
-							LoginController.class);
+					Intent i = new Intent(StartController.this, LoginController.class);
 					startActivity(i);
-				} 
-				else 
-				{
+				} else {
 					Toast.makeText(getApplicationContext(), IMessages.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}
@@ -63,9 +59,7 @@ public class StartController extends Activity {
 				if (isConnected == true) {
 					Intent i = new Intent(StartController.this, RegisterController.class);
 					startActivity(i);
-				} 
-				else 
-				{
+				} else {
 					Toast.makeText(getApplicationContext(), IMessages.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}

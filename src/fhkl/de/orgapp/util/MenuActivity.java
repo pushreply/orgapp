@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -111,7 +110,7 @@ public class MenuActivity extends Activity {
 			}
 			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
 				menu.findItem(R.id.SHARE_EVENT_VIA_FACEBOOK).setVisible(true);
-			if(EventData.getPERSONID().equals(UserData.getPERSONID()))
+			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
 				menu.findItem(R.id.SHARE_EVENT_VIA_TWITTER).setVisible(true);
 		}
 
@@ -257,7 +256,7 @@ public class MenuActivity extends Activity {
 
 		case R.id.SHARE_EVENT_VIA_TWITTER:
 			return shareToSocialNetwork(Intent.ACTION_SEND);
-			
+
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
 			startActivity(intent);
@@ -465,45 +464,41 @@ public class MenuActivity extends Activity {
 			}
 		}
 	}
-	
-	private boolean shareToSocialNetwork(String sharedContent)
-	{
-//		Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+
+	private boolean shareToSocialNetwork(String sharedContent) {
+		// Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 		Intent sharingIntent = new Intent(sharedContent);
 		sharingIntent.setType("text/plain");
 		ComponentName component = null;
-		
+
 		PackageManager pManager = getPackageManager();
 		List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
-		
-		//Search twitter app
-		for(int a=0; a<activityList.size(); a++)
-			if((activityList.get(a).activityInfo.name).contains("twitter"))
-				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName, activityList.get(a).activityInfo.name);
-		
-		//prepare content as string "twit"
+
+		// Search twitter app
+		for (int a = 0; a < activityList.size(); a++)
+			if ((activityList.get(a).activityInfo.name).contains("twitter"))
+				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
+								activityList.get(a).activityInfo.name);
+
+		// prepare content as string "twit"
 		sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
-		String twit =
-		"New Event: " + EventData.getNAME()
-		+ ", Date: " + EventData.getEVENTDATE()
-		+ ", Time: " + EventData.getEVENTTIME()
-		+ ", Location: " + EventData.getEVENTLOCATION();
-		
-		//send intent to twitter app
+		String twit = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+						+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+
+		// send intent to twitter app
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, twit);
 		sharingIntent.setComponent(component);
-		
-		//if no twitter app found, send to browser and open twitter url
-		if(component == null)
-		{
+
+		// if no twitter app found, send to browser and open twitter url
+		if (component == null) {
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/intent/tweet?text=" + twit));
-			  startActivity(browserIntent);    
-			
+			startActivity(browserIntent);
+
 			return true;
 		}
-	
+
 		startActivity(sharingIntent);
-		
+
 		return true;
 	}
 
