@@ -41,6 +41,7 @@
     <string name="SHOW_ATTENDING_MEMBER">Show attending member</string>
     <string name="EDIT_EVENT">Edit event</string>
     <string name="DELETE_EVENT">Delete event</string>
+    <string name="SHARE">Share</string>
     <string name="SHARE_EVENT_VIA_FACEBOOK">Share event via Facebook</string>
     <string name="SHARE_EVENT_VIA_TWITTER">Post it in Twitter</string>
 

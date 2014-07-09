@@ -110,9 +110,11 @@ public class MenuActivity extends Activity {
 				menu.findItem(R.id.DELETE_EVENT).setVisible(true);
 			}
 			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
+			{
+				menu.findItem(R.id.EVENT_SHARE_SETTINGS).setVisible(true);
 				menu.findItem(R.id.SHARE_EVENT_VIA_FACEBOOK).setVisible(true);
-			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
 				menu.findItem(R.id.SHARE_EVENT_VIA_TWITTER).setVisible(true);
+			}
 		}
 
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
@@ -167,7 +169,8 @@ public class MenuActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		AlertDialog.Builder builder;
-
+		String sharingMessage;
+		
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -224,39 +227,22 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.SHARE_EVENT_VIA_FACEBOOK:
-			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			ComponentName component = null;
-
-			PackageManager pManager = getPackageManager();
-			List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
-
-			for (int a = 0; a < activityList.size(); a++)
-				if ((activityList.get(a).activityInfo.name).contains("facebook"))
-					component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
-									activityList.get(a).activityInfo.name);
-
-			// notify user, if the facebook app is not installed
-			if (component == null) {
-				Toast.makeText(getApplicationContext(), IMessages.INSTALL_FACEBOOK_APP, Toast.LENGTH_LONG).show();
-
-				return true;
-			}
-
-			// consider the facbook app only
-			sharingIntent.setComponent(component);
-
-			sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
-			String shareBody = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
-							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-
-			startActivity(sharingIntent);
-
-			return true;
+			sharingMessage =
+				"New Event: " + EventData.getNAME()
+				+ ", Date: " + EventData.getEVENTDATE()
+				+ ", Time: " + EventData.getEVENTTIME()
+				+ ", Location: " + EventData.getEVENTLOCATION();
+		
+		return shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
 
 		case R.id.SHARE_EVENT_VIA_TWITTER:
-			return shareToSocialNetwork(Intent.ACTION_SEND);
+			sharingMessage =
+				"New Event: " + EventData.getNAME()
+				+ ", Date: " + EventData.getEVENTDATE()
+				+ ", Time: " + EventData.getEVENTTIME()
+				+ ", Location: " + EventData.getEVENTLOCATION();
+			
+			return shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
 
 		case R.id.EDIT_GROUP:
 			intent = new Intent(MenuActivity.this, EditGroupController.class);
@@ -465,42 +451,48 @@ public class MenuActivity extends Activity {
 			}
 		}
 	}
-
-	private boolean shareToSocialNetwork(String sharedContent) {
-		// Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+	
+	protected boolean shareToSocialNetwork(String sharedContent, String socialNetworkName, String sharingMessage)
+	{
 		Intent sharingIntent = new Intent(sharedContent);
 		sharingIntent.setType("text/plain");
 		ComponentName component = null;
 
 		PackageManager pManager = getPackageManager();
 		List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
+		
+		//Search app
+		for(int a=0; a<activityList.size(); a++)
+			if((activityList.get(a).activityInfo.name).contains(socialNetworkName))
+				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName, activityList.get(a).activityInfo.name);
 
-		// Search twitter app
-		for (int a = 0; a < activityList.size(); a++)
-			if ((activityList.get(a).activityInfo.name).contains("twitter"))
-				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
-								activityList.get(a).activityInfo.name);
-
-		// prepare content as string "twit"
+		// prepare content as string
 		sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
-		String twit = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
-						+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+		
+		//send intent to app
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 
 		// send intent to twitter app
-		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, twit);
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 		sharingIntent.setComponent(component);
-
-		// if no twitter app found, send to browser and open twitter url
-		if (component == null) {
-			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/intent/tweet?text=" + twit));
+		
+		//if no appropriate app found, send to browser and open url
+		if (component == null)
+		{
+			String url;
+			
+			if(socialNetworkName.equalsIgnoreCase("facebook"))
+				url = "https://facebook.com/sharer/sharer.php?text=" + sharingMessage;
+			else
+				url = "https://twitter.com/intent/tweet?text=" + sharingMessage;
+			
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(browserIntent);
 
 			return true;
 		}
-
 		startActivity(sharingIntent);
 
 		return true;
 	}
-
 }

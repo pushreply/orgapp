@@ -66,7 +66,7 @@ public interface IMessages {
 	public static final String NOTIFICATION_LEAVING_GROUP = "A member left group ";
 	public static final String CONFIRM_LEAVING_GROUP = "Do you really want to leave group ";
 	public static final String MESSAGE_DELETE_GROUP = "Do you really want to delete the group ";
-	public static final String GROUP_SUCCESSFUL_DELETED = "You have been deleted the group ";
+	public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
 	public static final String GROUP_NOT_DELETED = "Group was not deleted";
 	public static final String QUESTION_MARK = "?";
 	public static final String DELETING_GROUP = "Deleting group...";
@@ -89,6 +89,8 @@ public interface IMessages {
 	public static final CharSequence DELETING_EVENT = "Deleting event...";
 	public static final String MESSAGE_DELETE_EVENT_1 = "The following event has been deleted: \"";
 	public static final String MESSAGE_DELETE_EVENT_2 = "\"";
-	public static final String INSTALL_FACEBOOK_APP = "Please install the facebook app";
-
+	public static final String SHARE_EDITED_EVENT = "Do you want to share the edited event?";
+	public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event via Facebook";
+	public static final String SHARE_EVENT_VIA_TWITTER = "Post it in Twitter";
+	public static final String NO_THANKS = "No, thanks";
 }
