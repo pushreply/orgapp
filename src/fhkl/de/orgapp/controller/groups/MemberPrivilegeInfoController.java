@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.event.AttendingMemberController;
+import fhkl.de.orgapp.util.EventData;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
@@ -118,8 +120,15 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent i = new Intent(MemberPrivilegeInfoController.this, MemberListController.class);
-				startActivity(i);
+				Intent intent;
+				if (EventData.isBACK()) {
+					EventData.setBACK(false);
+					intent = new Intent(MemberPrivilegeInfoController.this, AttendingMemberController.class);
+					startActivity(intent);
+				} else {
+					intent = new Intent(MemberPrivilegeInfoController.this, MemberListController.class);
+					startActivity(intent);
+				}
 			}
 		});
 	}
@@ -137,7 +146,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			if (GroupData.getPERSONID().equals(getIntent().getStringExtra("MemberId"))) {
+			if (GroupData.getPERSONID().equals(MemberData.getPERSONID())) {
 				return IMessages.PRIVILEGE_ADMIN;
 			}
 			String afterMemberInvitation = privilegeInvitation.isChecked() == true ? "1" : "0";
@@ -268,7 +277,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					}
 
 					List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
-					paramsUpdate.add(new BasicNameValuePair("personId", getIntent().getStringExtra("MemberId")));
+					paramsUpdate.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 					paramsUpdate.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsUpdate.add(new BasicNameValuePair("memberInvitation", afterMemberInvitation));
 					paramsUpdate.add(new BasicNameValuePair("memberlistEditing", afterMemberlistEditing));
@@ -373,10 +382,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {
-
-							Intent intent = new Intent(MemberPrivilegeInfoController.this, MemberPrivilegeInfoController.class);
-							finish();
-							startActivity(intent);
 						}
 					}
 				}
@@ -391,9 +396,19 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
-			if (message != null)
+			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-
+			} else {
+				Intent intent;
+				if (EventData.isBACK()) {
+					EventData.setBACK(false);
+					intent = new Intent(MemberPrivilegeInfoController.this, AttendingMemberController.class);
+					startActivity(intent);
+				} else {
+					intent = new Intent(MemberPrivilegeInfoController.this, MemberListController.class);
+					startActivity(intent);
+				}
+			}
 		}
 	}
 }

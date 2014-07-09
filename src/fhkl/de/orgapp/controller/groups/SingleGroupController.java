@@ -56,6 +56,8 @@ public class SingleGroupController extends MenuActivity {
 		setContentView(R.layout.singlegroup);
 		this.setTitle(GroupData.getGROUPNAME());
 
+		EventData.setBACK(false);
+
 		groupInfo = (TextView) findViewById(R.id.GROUP_INFO);
 		groupInfo.setText(GroupData.getGROUPINFO());
 

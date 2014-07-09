@@ -80,7 +80,7 @@
     <string name="LEAVE_GROUP">Leave group</string>
     <string name="SHOW_MEMBER_LIST">Show member list</string>
     <string name="MEMBER_LIST">Member list</string>
-    <string name="BACK_TO_GROUP">Back to group</string>
+    <string name="BACK">Back</string>
     <string name="MEMBER_INFO">Member information</string>
     <string name="CHOOSE_USER_PRIVILEGE">Which privileges would you grant this user?</string>
     <string name="PRIVILEGE_INVITATION">Able to invite member</string>

@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -110,7 +109,7 @@ public class MenuActivity extends Activity {
 							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.DELETE_EVENT).setVisible(true);
 			}
-			if(EventData.getPERSONID().equals(UserData.getPERSONID()))
+			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
 				menu.findItem(R.id.SHARE_EVENT_VIA_FACEBOOK).setVisible(true);
 			if(EventData.getPERSONID().equals(UserData.getPERSONID()))
 				menu.findItem(R.id.SHARE_EVENT_VIA_TWITTER).setVisible(true);
@@ -142,8 +141,9 @@ public class MenuActivity extends Activity {
 				menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
-		if (nameCurrentController.equals(MemberListController.class.getName())) {
-			menu.findItem(R.id.BACK_TO_GROUP).setVisible(true);
+		if (nameCurrentController.equals(MemberListController.class.getName())
+						|| nameCurrentController.equals(AttendingMemberController.class.getName())) {
+			menu.findItem(R.id.BACK).setVisible(true);
 		}
 
 		if (nameCurrentController.equals(NotificationController.class.getName())) {
@@ -222,42 +222,39 @@ public class MenuActivity extends Activity {
 			});
 			builder.create().show();
 			return true;
-			
+
 		case R.id.SHARE_EVENT_VIA_FACEBOOK:
 			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 			sharingIntent.setType("text/plain");
 			ComponentName component = null;
-			
+
 			PackageManager pManager = getPackageManager();
 			List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
-			
-			for(int a=0; a<activityList.size(); a++)
-				if((activityList.get(a).activityInfo.name).contains("facebook"))
-					component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName, activityList.get(a).activityInfo.name);
-			
+
+			for (int a = 0; a < activityList.size(); a++)
+				if ((activityList.get(a).activityInfo.name).contains("facebook"))
+					component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
+									activityList.get(a).activityInfo.name);
+
 			// notify user, if the facebook app is not installed
-			if(component == null)
-			{
+			if (component == null) {
 				Toast.makeText(getApplicationContext(), IMessages.INSTALL_FACEBOOK_APP, Toast.LENGTH_LONG).show();
-				
+
 				return true;
 			}
-			
+
 			// consider the facbook app only
 			sharingIntent.setComponent(component);
 
 			sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
-			String shareBody =
-			"New Event: " + EventData.getNAME()
-			+ ", Date: " + EventData.getEVENTDATE()
-			+ ", Time: " + EventData.getEVENTTIME()
-			+ ", Location: " + EventData.getEVENTLOCATION();
+			String shareBody = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
 			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-			
+
 			startActivity(sharingIntent);
-			
+
 			return true;
-			
+
 		case R.id.SHARE_EVENT_VIA_TWITTER:
 			return shareToSocialNetwork(Intent.ACTION_SEND);
 			
@@ -322,9 +319,15 @@ public class MenuActivity extends Activity {
 			new MemberList().execute();
 			return true;
 
-		case R.id.BACK_TO_GROUP:
-			intent = new Intent(MenuActivity.this, SingleGroupController.class);
-			startActivity(intent);
+		case R.id.BACK:
+			if (EventData.isBACK()) {
+				EventData.setBACK(false);
+				intent = new Intent(MenuActivity.this, EventController.class);
+				startActivity(intent);
+			} else {
+				intent = new Intent(MenuActivity.this, SingleGroupController.class);
+				startActivity(intent);
+			}
 			return true;
 
 		case R.id.INVITE_MEMBER:
