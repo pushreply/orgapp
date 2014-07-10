@@ -90,6 +90,8 @@ public interface IMessages {
 	public static final String MESSAGE_DELETE_EVENT_1 = "The following event has been deleted: \"";
 	public static final String MESSAGE_DELETE_EVENT_2 = "\"";
 	public static final String SHARE_EDITED_EVENT = "Do you want to share the edited event?";
+	public static final String SHARE_DELETED_EVENT = "Do you want to share the deleted event?";
+	public static final String SHARE_CREATED_EVENT = "Do you want to share the created event?";
 	public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event via Facebook";
 	public static final String SHARE_EVENT_VIA_TWITTER = "Post it in Twitter";
 	public static final String NO_THANKS = "No, thanks";
