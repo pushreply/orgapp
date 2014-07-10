@@ -185,8 +185,8 @@ public class NotificationController extends MenuActivity {
 
 							final TextView message = (TextView) view.findViewById(R.id.MESSAGE);
 
-							final Animation slideDown = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_down);
-							final Animation slideUp = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_up);
+							Animation slideDown = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_down);
+							Animation slideUp = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_up);
 
 							slideDown.setAnimationListener(new AnimationListener() {
 
@@ -229,7 +229,6 @@ public class NotificationController extends MenuActivity {
 									message.startAnimation(slideUp);
 								}
 							}
-
 						}
 					});
 					notificationList.setAdapter(adapter);

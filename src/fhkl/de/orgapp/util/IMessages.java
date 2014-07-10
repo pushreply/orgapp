@@ -93,4 +93,5 @@ public interface IMessages {
 	public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event via Facebook";
 	public static final String SHARE_EVENT_VIA_TWITTER = "Post it in Twitter";
 	public static final String NO_THANKS = "No, thanks";
+	public static final String CHANGING_STATUS = "Changing status";
 }
