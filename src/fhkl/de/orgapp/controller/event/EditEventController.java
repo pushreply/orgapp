@@ -13,9 +13,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -272,10 +274,76 @@ public class EditEventController extends MenuActivity {
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
-				Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
-				finish();
-				startActivity(intent);
+				showDialog();
+//				Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+//				finish();
+//				startActivity(intent);
 			}
+		}
+		
+		private void showDialog()
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(EditEventController.this);
+			
+			builder.setMessage(IMessages.SHARE_EDITED_EVENT);
+			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			
+			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					String sharingMessage =
+							"Event"
+							+ EventData.getNAME() + " "
+							+ "was edited by "
+							+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
+							+ ", new Date -> " + EventData.getEVENTDATE()
+							+ ", new Time -> " + EventData.getEVENTTIME()
+							+ ", new Location -> " + EventData.getEVENTLOCATION();
+					
+					shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
+					
+					dialog.dismiss();
+					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					String sharingMessage =
+							"Event "
+							+ EventData.getNAME() + " "
+							+ "was edited by "
+							+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
+							+ ", new Date -> " + EventData.getEVENTDATE()
+							+ ", new Time -> " + EventData.getEVENTTIME()
+							+ ", new Location -> " + EventData.getEVENTLOCATION();
+					
+					shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
+					
+					dialog.dismiss();
+					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			
+			builder.create().show();
 		}
 	}
 
