@@ -274,14 +274,11 @@ public class EditEventController extends MenuActivity {
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
-				showDialog();
-//				Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
-//				finish();
-//				startActivity(intent);
+				showDialogAndGoToSingleGroupController();
 			}
 		}
 		
-		private void showDialog()
+		private void showDialogAndGoToSingleGroupController()
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(EditEventController.this);
 			
@@ -303,16 +300,7 @@ public class EditEventController extends MenuActivity {
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					String sharingMessage =
-							"Event"
-							+ EventData.getNAME() + " "
-							+ "was edited by "
-							+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
-							+ ", new Date -> " + EventData.getEVENTDATE()
-							+ ", new Time -> " + EventData.getEVENTTIME()
-							+ ", new Location -> " + EventData.getEVENTLOCATION();
-					
-					shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
+					new SocialNetworkSharer().execute("twitter");
 					
 					dialog.dismiss();
 					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
@@ -325,16 +313,7 @@ public class EditEventController extends MenuActivity {
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					String sharingMessage =
-							"Event "
-							+ EventData.getNAME() + " "
-							+ "was edited by "
-							+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
-							+ ", new Date -> " + EventData.getEVENTDATE()
-							+ ", new Time -> " + EventData.getEVENTTIME()
-							+ ", new Location -> " + EventData.getEVENTLOCATION();
-					
-					shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
+					new SocialNetworkSharer().execute("facebook");
 					
 					dialog.dismiss();
 					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
@@ -344,6 +323,31 @@ public class EditEventController extends MenuActivity {
 			});
 			
 			builder.create().show();
+		}
+	}
+	
+	class SocialNetworkSharer extends AsyncTask<String, String, String>
+	{
+		@Override
+		protected String doInBackground(String... socialNetworkName)
+		{
+			return socialNetworkName[0];
+		}
+
+		@Override
+		protected void onPostExecute(String socialNetworkName)
+		{
+			super.onPostExecute(socialNetworkName);
+			String sharingMessage =
+					"Event "
+					+ name.getText().toString() + " "
+					+ "was edited by "
+					+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
+					+ ", new Date -> " + eventDate.getText().toString()
+					+ ", new Time -> " + eventTime.getText().toString()
+					+ ", new Location -> " + eventLocation.getText().toString();
+			
+			shareToSocialNetwork(Intent.ACTION_SEND, socialNetworkName, sharingMessage);
 		}
 	}
 
@@ -357,7 +361,7 @@ public class EditEventController extends MenuActivity {
 			updateEventDate();
 		}
 	};
-
+	
 	private void updateEventDate() {
 
 		String format = "yyyy-MM-dd";
