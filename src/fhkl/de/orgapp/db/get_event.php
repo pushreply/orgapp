@@ -20,8 +20,6 @@ if (mysql_num_rows($result) > 0) {
         $event["eventDate"] = $row["eventDate"];
         $event["eventTime"] = $row["eventTime"];
         $event["eventLocation"] = $row["eventLocation"];
-        $event["regularityDate"] = $row["regularityDate"];
-        $event["regularity"] = $row["regularity"];
 
         array_push($response["event"], $event);
     }
