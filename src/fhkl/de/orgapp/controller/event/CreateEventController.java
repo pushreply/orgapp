@@ -14,9 +14,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.event.EditEventController.SocialNetworkSharer;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
@@ -491,10 +494,83 @@ public class CreateEventController extends MenuActivity {
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
-				Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
-				finish();
-				startActivity(intent);
+				showDialogAndGoToSingleGroupController();
+//				Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+//				finish();
+//				startActivity(intent);
 			}
+		}
+		
+		private void showDialogAndGoToSingleGroupController()
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventController.this);
+			
+			builder.setMessage(IMessages.SHARE_CREATED_EVENT);
+			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			
+			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					new SocialNetworkSharer().execute("twitter");
+					
+					dialog.dismiss();
+					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK, new android.content.DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					new SocialNetworkSharer().execute("facebook");
+					
+					dialog.dismiss();
+					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+					finish();
+					startActivity(intent);
+				}
+			});
+			
+			builder.create().show();
+		}
+	}
+	
+	class SocialNetworkSharer extends AsyncTask<String, String, String>
+	{
+		@Override
+		protected String doInBackground(String... socialNetworkName)
+		{
+			return socialNetworkName[0];
+		}
+
+		@Override
+		protected void onPostExecute(String socialNetworkName)
+		{
+			super.onPostExecute(socialNetworkName);
+			String sharingMessage =
+					"New event "
+					+ name.getText().toString() + " "
+					+ "was created by "
+					+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
+					+ ", Date -> " + eventDate.getText().toString()
+					+ ", Time -> " + eventTime.getText().toString()
+					+ ", Location -> " + eventLocation.getText().toString();
+			
+			shareToSocialNetwork(Intent.ACTION_SEND, socialNetworkName, sharingMessage);
 		}
 	}
 
