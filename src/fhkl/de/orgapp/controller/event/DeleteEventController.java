@@ -104,9 +104,6 @@ public class DeleteEventController extends MenuActivity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 			showDialogAndGoToSingleGroupController();
-//			Intent intent = new Intent(DeleteEventController.this, SingleGroupController.class);
-//			finish();
-//			startActivity(intent);
 		}
 		
 		private void showDialogAndGoToSingleGroupController()

@@ -495,9 +495,6 @@ public class CreateEventController extends MenuActivity {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
 				showDialogAndGoToSingleGroupController();
-//				Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
-//				finish();
-//				startActivity(intent);
 			}
 		}
 		
