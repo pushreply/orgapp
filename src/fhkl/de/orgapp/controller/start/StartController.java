@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
@@ -23,8 +25,13 @@ public class StartController extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//go full screen, but show status bar
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, 
+        		WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		setContentView(R.layout.start);
-
+		
 		addListenerOnButton();
 
 	}
