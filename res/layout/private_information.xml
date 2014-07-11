@@ -58,26 +58,35 @@
    <TableRow
    		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" >
+        
+        <CheckBox
+            android:id="@+id/PRIVATE_INFO_CHECKBOX_CLEAR_BIRTHDAY"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="clearBirthday" />
+       	
+   </TableRow>
+   
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
    		
         <TextView
             android:id="@+id/PRIVATE_INFO_TEXT_GENDER"
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
-        
-        <RadioGroup
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-    		android:orientation="horizontal">
     		    		
-		    <RadioButton android:id="@+id/PRIVATE_INFO_USER_GENDER_MALE"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:onClick="selectGender"/>
-		    <RadioButton android:id="@+id/PRIVATE_INFO_USER_GENDER_FEMALE"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:onClick="selectGender"/>
-		</RadioGroup>
+		<CheckBox
+		    android:id="@+id/PRIVATE_INFO_USER_GENDER_MALE"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="selectGender"/>
+		
+		<CheckBox
+		    android:id="@+id/PRIVATE_INFO_USER_GENDER_FEMALE"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="selectGender"/>
        
    </TableRow>
    

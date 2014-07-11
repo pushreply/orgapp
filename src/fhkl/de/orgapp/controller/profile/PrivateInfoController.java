@@ -19,9 +19,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
@@ -37,7 +37,7 @@ public class PrivateInfoController extends MenuActivity {
 	private Calendar calendar;
 
 	TextView textFirstName, textLastName, textBirthday, textGender;
-	RadioButton textGenderMale, textGenderFemale;
+	CheckBox textClearBirthday, textGenderMale, textGenderFemale;
 	EditText firstNameNew, lastNameNew, birthdayNew;
 	char genderNew;
 	Button changeButton, cancelButton;
@@ -52,7 +52,7 @@ public class PrivateInfoController extends MenuActivity {
 		getViews();
 		setTexts();
 		setTextSizes();
-
+		
 		birthdayNew.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -74,12 +74,15 @@ public class PrivateInfoController extends MenuActivity {
 				dateDialog.show();
 			}
 		});
-
+		
 		birthdayArray = splitBirthday(UserData.getBIRTHDAY());
-
-		yearNew = Integer.parseInt(birthdayArray[0]);
-		monthNew = Integer.parseInt(birthdayArray[1]) - 1;
-		dayNew = Integer.parseInt(birthdayArray[2]);
+		
+		if(birthdayArray != null)
+		{
+			yearNew = Integer.parseInt(birthdayArray[0]);
+			monthNew = Integer.parseInt(birthdayArray[1]) - 1;
+			dayNew = Integer.parseInt(birthdayArray[2]);
+		}
 	}
 
 	private DatePickerDialog.OnDateSetListener setDateListener = new DatePickerDialog.OnDateSetListener() {
@@ -89,14 +92,16 @@ public class PrivateInfoController extends MenuActivity {
 			calendar.set(Calendar.MONTH, month);
 			calendar.set(Calendar.DAY_OF_MONTH, day);
 			updateBirthday();
+			textClearBirthday.setVisibility(View.VISIBLE);
+			textClearBirthday.setChecked(false);
 		}
 	};
 
 	private String[] splitBirthday(String birthdayString) {
 		String[] result = new String[3];
-
-		if (birthdayString == null)
-			return result;
+		
+		if(birthdayString.equals(""))
+			return null;
 
 		result = birthdayString.split("-");
 
@@ -114,8 +119,9 @@ public class PrivateInfoController extends MenuActivity {
 		textLastName = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_LAST_NAME);
 		textBirthday = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_BIRTHDAY);
 		textGender = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_GENDER);
-		textGenderMale = (RadioButton) findViewById(R.id.PRIVATE_INFO_USER_GENDER_MALE);
-		textGenderFemale = (RadioButton) findViewById(R.id.PRIVATE_INFO_USER_GENDER_FEMALE);
+		textGenderMale = (CheckBox) findViewById(R.id.PRIVATE_INFO_USER_GENDER_MALE);
+		textGenderFemale = (CheckBox) findViewById(R.id.PRIVATE_INFO_USER_GENDER_FEMALE);
+		textClearBirthday = (CheckBox) findViewById(R.id.PRIVATE_INFO_CHECKBOX_CLEAR_BIRTHDAY);
 
 		firstNameNew = (EditText) findViewById(R.id.PRIVATE_INFO_USER_FIRST_NAME);
 		lastNameNew = (EditText) findViewById(R.id.PRIVATE_INFO_USER_LAST_NAME);
@@ -132,15 +138,22 @@ public class PrivateInfoController extends MenuActivity {
 		textGender.setText(getString(R.string.GENDER) + ":");
 		textGenderMale.setText(getString(R.string.MALE));
 		textGenderFemale.setText(getString(R.string.FEMALE));
-
+		textClearBirthday.setText(getString(R.string.CLEAR_BIRTHDAY));
+		
 		firstNameNew.setText(UserData.getFIRST_NAME());
 		lastNameNew.setText(UserData.getLAST_NAME());
-		birthdayNew.setHint(UserData.getBIRTHDAY());
+		
+		if(!UserData.getBIRTHDAY().equals(""))
+			birthdayNew.setHint(UserData.getBIRTHDAY());
+		else
+			birthdayNew.setHint(getString(R.string.SET_NEW_BIRTHDAY));
 
 		if (UserData.getGENDER().equals("m"))
 			textGenderMale.setChecked(true);
 		else if (UserData.getGENDER().equals("w"))
 			textGenderFemale.setChecked(true);
+		else
+			genderNew = '-';
 
 		changeButton.setText(getString(R.string.CHANGE_INFO));
 		cancelButton.setText(getString(R.string.CANCEL));
@@ -155,26 +168,44 @@ public class PrivateInfoController extends MenuActivity {
 		textGender.setTextSize(userTextSize);
 		textGenderMale.setTextSize(userTextSize);
 		textGenderFemale.setTextSize(userTextSize);
-
+		textClearBirthday.setTextSize(userTextSize);
+		
 		firstNameNew.setTextSize(userTextSize);
 		lastNameNew.setTextSize(userTextSize);
 		birthdayNew.setTextSize(userTextSize);
 	}
 
-	public void selectGender(View view) {
-		switch (view.getId()) {
-		case R.id.PRIVATE_INFO_USER_GENDER_MALE:
-			genderNew = 'm';
-			break;
-
-		case R.id.PRIVATE_INFO_USER_GENDER_FEMALE:
-			genderNew = 'w';
-			break;
+	public void selectGender(View view)
+	{
+		if(!textGenderMale.isChecked() && !textGenderFemale.isChecked())
+		{
+			genderNew = '-';
+			return;
 		}
+		
+		switch (view.getId())
+		{
+			case R.id.PRIVATE_INFO_USER_GENDER_MALE:
+				if(textGenderMale.isChecked())
+					genderNew = 'm';
+				break;
+	
+			case R.id.PRIVATE_INFO_USER_GENDER_FEMALE:
+				if(textGenderFemale.isChecked())
+					genderNew = 'w';
+				break;
+		}
+	}
+	
+	public void clearBirthday(View view)
+	{
+		birthdayNew.setText("");
+		birthdayNew.setHint(getString(R.string.SET_NEW_BIRTHDAY));
+		textClearBirthday.setVisibility(View.INVISIBLE);
 	}
 
 	public void changePrivateInfo(View view) {
-		if (!isPrivateInfoComplete()) {
+		if (!areRequiredFieldsComplete()) {
 			Toast.makeText(getApplicationContext(), IMessages.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
 			return;
 		}
@@ -183,7 +214,13 @@ public class PrivateInfoController extends MenuActivity {
 			Toast.makeText(getApplicationContext(), IMessages.PRIVATE_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
 			return;
 		}
-
+		
+		if(hasTooManyGenera())
+		{
+			Toast.makeText(getApplicationContext(), IMessages.TOO_MANY_GENERA, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		new PrivateInfoUpdater().execute();
 	}
 
@@ -196,7 +233,7 @@ public class PrivateInfoController extends MenuActivity {
 		startActivity(intent);
 	}
 
-	private boolean isPrivateInfoComplete() {
+	private boolean areRequiredFieldsComplete() {
 		if (firstNameNew.getText().toString().equals("") || lastNameNew.getText().toString().equals(""))
 			return false;
 
@@ -211,6 +248,14 @@ public class PrivateInfoController extends MenuActivity {
 			return false;
 
 		return true;
+	}
+	
+	private boolean hasTooManyGenera()
+	{
+		if(textGenderMale.isChecked() && textGenderFemale.isChecked())
+			return true;
+		
+		return false;
 	}
 
 	class PrivateInfoUpdater extends AsyncTask<String, String, String> {

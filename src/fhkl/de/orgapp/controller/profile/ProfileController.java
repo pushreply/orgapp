@@ -64,7 +64,12 @@ public class ProfileController extends MenuActivity
 		firstName.setText(UserData.getFIRST_NAME());
 		lastName.setText(UserData.getLAST_NAME());
 		birthday.setText(UserData.getBIRTHDAY());
-		gender.setText(UserData.getGENDER());
+		
+		if(!UserData.getGENDER().equalsIgnoreCase("m") && !UserData.getGENDER().equalsIgnoreCase("w"))
+			gender.setText("");
+		else
+			gender.setText(UserData.getGENDER());
+		
 		email.setText(UserData.getEMAIL());
 		memberSince.setText(UserData.getMEMBER_SINCE());
 	}

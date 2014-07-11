@@ -136,6 +136,7 @@
     <string name="GENERAL_INFORMATION">General information</string>
     <string name="EMAIL_MUST_HAVE">Email address *</string>
     <string name="EMAIL_CONFIRM_MUST_HAVE">Email address (confirmation) *</string>
+    <string name="CLEAR_BIRTHDAY">Clear birthday</string>
 
     <!-- Private information -->
     <string name="PRIVATE_INFORMATION">Private information</string>
