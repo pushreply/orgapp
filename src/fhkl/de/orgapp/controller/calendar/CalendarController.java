@@ -83,6 +83,13 @@ public class CalendarController extends MenuActivity {
 		new Calendar().execute();
 
 	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		logout();
+	}
 
 	public static void resetSTART_ACTIVITY_COUNTER() {
 		START_ACTIVITY_COUNTER = 0;
