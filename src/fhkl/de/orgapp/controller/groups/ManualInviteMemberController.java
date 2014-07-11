@@ -39,8 +39,8 @@ import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
-import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class ManualInviteMemberController extends Activity {
 

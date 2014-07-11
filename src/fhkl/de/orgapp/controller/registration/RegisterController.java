@@ -25,8 +25,8 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.login.LoginController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
-import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class RegisterController extends Activity {
 	// Progress Dialog

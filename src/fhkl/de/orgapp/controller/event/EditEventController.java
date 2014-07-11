@@ -34,10 +34,10 @@ import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.EventData;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
-import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditEventController extends MenuActivity {
 

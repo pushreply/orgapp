@@ -29,6 +29,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.validator.OutputValidator;
 
 public class CalendarController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -67,7 +68,12 @@ public class CalendarController extends MenuActivity {
 			UserData.setPERSONID(getIntent().getStringExtra("UserId"));
 			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
 			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
-			UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
+			
+			if(OutputValidator.isUserBirthdaySet(getIntent().getStringExtra("UserBirthday")))
+				UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
+			else
+				UserData.setBIRTHDAY("");
+			
 			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
 			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
 			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));

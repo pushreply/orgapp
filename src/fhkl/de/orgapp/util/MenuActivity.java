@@ -367,11 +367,6 @@ public class MenuActivity extends Activity {
 
 		case R.id.CHANGE_PRIVATE_INFORMATION:
 			intent = new Intent(MenuActivity.this, PrivateInfoController.class);
-			intent.putExtra("UserId", UserData.getPERSONID());
-			intent.putExtra("FirstName", UserData.getFIRST_NAME());
-			intent.putExtra("LastName", UserData.getLAST_NAME());
-			intent.putExtra("Birthday", UserData.getBIRTHDAY());
-			intent.putExtra("Gender", UserData.getGENDER());
 			startActivity(intent);
 			return true;
 

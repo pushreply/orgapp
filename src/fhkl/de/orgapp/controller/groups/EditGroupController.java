@@ -21,9 +21,9 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
-import fhkl.de.orgapp.util.InputValidator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditGroupController extends MenuActivity {
 
