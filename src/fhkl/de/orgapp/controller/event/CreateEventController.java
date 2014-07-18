@@ -41,7 +41,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.controller.event.EditEventController.SocialNetworkSharer;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
@@ -254,7 +253,7 @@ public class CreateEventController extends MenuActivity {
 						return IMessages.INVALID_REGULARITY_DATE;
 					} else {
 						// Date > Current Date?
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 						sdf.setLenient(false);
 
 						Date chosenDate = null;
@@ -335,7 +334,7 @@ public class CreateEventController extends MenuActivity {
 
 			JSONObject json = null;
 			Date notificationDate = null;
-			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 			sdfDate.setLenient(false);
 
 			// Recurring events
@@ -428,7 +427,7 @@ public class CreateEventController extends MenuActivity {
 				if (eventDate.getText().toString().isEmpty()) {
 					return IMessages.INVALID_EVENTDATE;
 				} else {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 					sdf.setLenient(false);
 
 					try {
@@ -497,76 +496,64 @@ public class CreateEventController extends MenuActivity {
 				showDialogAndGoToSingleGroupController();
 			}
 		}
-		
-		private void showDialogAndGoToSingleGroupController()
-		{
+
+		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventController.this);
-			
+
 			builder.setMessage(IMessages.SHARE_CREATED_EVENT);
-			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener()
-			{
+			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
 					finish();
 					startActivity(intent);
 				}
 			});
-			
-			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER, new android.content.DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					new SocialNetworkSharer().execute("twitter");
-					
-					dialog.dismiss();
-					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
-					finish();
-					startActivity(intent);
-				}
-			});
-			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK, new android.content.DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					new SocialNetworkSharer().execute("facebook");
-					
-					dialog.dismiss();
-					Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
-					finish();
-					startActivity(intent);
-				}
-			});
-			
+
+			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER,
+							new android.content.DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									new SocialNetworkSharer().execute("twitter");
+
+									dialog.dismiss();
+									Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+									finish();
+									startActivity(intent);
+								}
+							});
+			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK,
+							new android.content.DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									new SocialNetworkSharer().execute("facebook");
+
+									dialog.dismiss();
+									Intent intent = new Intent(CreateEventController.this, SingleGroupController.class);
+									finish();
+									startActivity(intent);
+								}
+							});
+
 			builder.create().show();
 		}
 	}
-	
-	class SocialNetworkSharer extends AsyncTask<String, String, String>
-	{
+
+	class SocialNetworkSharer extends AsyncTask<String, String, String> {
 		@Override
-		protected String doInBackground(String... socialNetworkName)
-		{
+		protected String doInBackground(String... socialNetworkName) {
 			return socialNetworkName[0];
 		}
 
 		@Override
-		protected void onPostExecute(String socialNetworkName)
-		{
+		protected void onPostExecute(String socialNetworkName) {
 			super.onPostExecute(socialNetworkName);
-			String sharingMessage =
-					"New event "
-					+ name.getText().toString() + " "
-					+ "was created by "
-					+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
-					+ ", Date -> " + eventDate.getText().toString()
-					+ ", Time -> " + eventTime.getText().toString()
-					+ ", Location -> " + eventLocation.getText().toString();
-			
+			String sharingMessage = "New event " + name.getText().toString() + " " + "was created by "
+							+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": " + ", Date -> "
+							+ eventDate.getText().toString() + ", Time -> " + eventTime.getText().toString() + ", Location -> "
+							+ eventLocation.getText().toString();
+
 			shareToSocialNetwork(Intent.ACTION_SEND, socialNetworkName, sharingMessage);
 		}
 	}
