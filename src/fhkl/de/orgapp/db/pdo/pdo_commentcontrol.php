@@ -161,7 +161,6 @@ if ($_GET['deletecomment']==1
 		$sth->bindValue(':personid', $personid, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 		
-		//check deletion status
 		if ($confirm==true) {
 			$response ["success"] = 1;
 			$response ["message"] = "Message is successfully deleted.";
