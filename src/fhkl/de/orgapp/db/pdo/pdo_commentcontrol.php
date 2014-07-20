@@ -8,9 +8,11 @@ $dbpath = 'pdo_db_connect.inc.php';
  * if button add comment '+' clicked, set addcomment = 1
  */
 
-if ($_GET['addcomment']==1 && isset($_GET['message'])) 
+if ($_GET['addcomment']==1 
+		&& isset($_GET['eventid']) 
+		&& isset($_GET['personid'])
+		&& isset($_GET['message'])) 
 {
-
 	/*
 	 * pass the get values to some variables
 	 */
@@ -24,8 +26,7 @@ if ($_GET['addcomment']==1 && isset($_GET['message']))
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
 	
 	try {
-		$sql='INSERT INTO comment 
-				SET 
+		$sql='INSERT INTO comment SET 
 				eventid = :eventid, 
 				personid = :personid, 
 				message = :message, 
@@ -61,6 +62,66 @@ if ($_GET['addcomment']==1 && isset($_GET['message']))
 	    exit();
 	}
 }
+
+/*------------------------------------------------------------
+ * UPDATE COMMENT
+* check the user input
+* if button edit comment clicked, set updatecomment = 1
+*/
+
+if ($_GET['updatecomment']==1 
+		&& isset($_GET['commentid'])
+		&& isset($_GET['eventid']) 
+		&& isset($_GET['personid'])
+		&& isset($_GET['message']))
+{
+	$commentid = $_GET['commentid'];
+	$eventid = $_GET['eventid'];
+	$personid= $_GET['personid'];
+	$message = htmlspecialchars($_GET['message']); /*escape every '<tag>' (not only HTML) */
+	$classification = $_GET['classification'];
+
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try {
+		$sql='UPDATE comment SET
+				message = :message,
+				classification = :classification
+				WHERE commentid = :commentid
+				AND eventid = :eventid
+				AND personid = :personid';
+
+		$sth = $pdo->prepare($sql);
+
+		/* bind the values, in the same order as the $sql statement. */
+		$sth->bindValue(':commentid', $commentid, PDO::PARAM_INT);
+		$sth->bindValue(':eventid', $eventid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$sth->bindValue(':personid', $personid, PDO::PARAM_INT);
+		$sth->bindValue(':message', $message);
+		$sth->bindValue(':classification', $classification, PDO::PARAM_INT);
+		$confirm = $sth->execute();
+
+		if ($confirm==true) {
+			$response ["success"] = 1;
+			$response ["message"] = "Message is successfully updated.";
+			echo json_encode ($response);
+		}
+		else {
+			$response ["success"] = 0;
+			$response ["message"] = "Message update failed.";
+			echo json_encode ($response);
+		}
+	}
+	catch (PDOException $e) {
+		$response ["success"] = 0;
+		$response ["message"] = "Message update failed.";
+		echo 'ERROR: ' . $e->getMessage();
+		exit();
+	}
+}
+
 
 /*------------------------------------------------------------
  * DELETE 1 COMMENT
