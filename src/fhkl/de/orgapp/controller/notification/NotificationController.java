@@ -11,10 +11,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -48,12 +51,17 @@ public class NotificationController extends MenuActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
+		
 		setContentView(R.layout.notification);
 		notificationList = new ArrayList<HashMap<String, String>>();
 		new Notification().execute();
 
-		TextView message = (TextView) findViewById(R.id.MESSAGE);
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View notificationItemView = inflater.inflate(R.layout.notification_item, null);
+		TextView message = (TextView) notificationItemView.findViewById(R.id.MESSAGE);
+
 		if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16) {
 			message.setMaxLines(Integer.MAX_VALUE);
 		}
@@ -176,7 +184,7 @@ public class NotificationController extends MenuActivity {
 					ListAdapter adapter = new SimpleAdapter(NotificationController.this, notificationList,
 									R.layout.notification_item, new String[] { TAG_MESSAGE }, new int[] { R.id.MESSAGE });
 					ListView notificationList = (ListView) findViewById(android.R.id.list);
-
+					
 					notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 						@SuppressLint("NewApi")

@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -18,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +57,8 @@ public class MenuActivity extends Activity {
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 
 	private static final String TAG_SUCCESS = "success";
-
+	protected int newNotificationNotificationId = 1;
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
@@ -384,7 +388,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.LOGOUT:
-			logout();
+			logout(newNotificationNotificationId);
 			return true;
 
 		case R.id.REFRESH:
@@ -396,7 +400,7 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	protected void logout() {
+	protected void logout(int notificationId) {
 		CalendarController.resetSTART_ACTIVITY_COUNTER();
 
 		UserData.setPERSONID("");
@@ -407,6 +411,8 @@ public class MenuActivity extends Activity {
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
 
+		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(notificationId);
+		
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
 		startActivity(intent);
 	}
@@ -489,5 +495,29 @@ public class MenuActivity extends Activity {
 		startActivity(sharingIntent);
 
 		return true;
+	}
+	
+	protected void createNotification(int notificationId, String title, String text)
+	{
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+			.setSmallIcon(R.drawable.ic_action_unread)
+			.setContentTitle(title)
+			.setContentText(text)
+			.setAutoCancel(true);
+		
+		Intent resultIntent = new Intent(this, NotificationController.class);
+		
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(
+												this,
+												0,
+												resultIntent,
+												PendingIntent.FLAG_UPDATE_CURRENT
+												);
+		
+		builder.setContentIntent(resultPendingIntent);
+		
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+		notificationManager.notify(notificationId, builder.build());
 	}
 }

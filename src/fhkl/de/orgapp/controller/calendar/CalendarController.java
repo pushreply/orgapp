@@ -28,6 +28,7 @@ import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.NewNotifications;
 import fhkl.de.orgapp.util.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
 
@@ -60,7 +61,7 @@ public class CalendarController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
-
+		
 		START_ACTIVITY_COUNTER++;
 
 		// set user data after login
@@ -78,17 +79,33 @@ public class CalendarController extends MenuActivity {
 			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
 			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
 		}
+		
+		NewNotifications newNotifications = new NewNotifications();
+		
+		if(newNotifications.hasNewNotifications())
+		{
+			String numberNewNotifications = newNotifications.getNumberNewNotifications();
+			
+			String title = IMessages.NEW_NOTIFICATION;
+			title += numberNewNotifications.equals("1") ? "" : "s";
+			
+			String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
+			text += numberNewNotifications;
+			text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
+			text += numberNewNotifications.equals("1") ? "" : "s";
+			
+			createNotification(newNotificationNotificationId, title, text);
+		}
 
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
-
 	}
 	
 	@Override
 	public void onBackPressed()
 	{
 		super.onBackPressed();
-		logout();
+		logout(newNotificationNotificationId);
 	}
 
 	public static void resetSTART_ACTIVITY_COUNTER() {

@@ -34,6 +34,7 @@ if (isset ( $_GET ['shownEntries'] )) {
 			$notification ["classification"] = $row ["classification"];
 			$notification ["message"] = html_entity_decode ( $row ["message"], ENT_QUOTES, 'UTF-8' );
 			$notification ["syncinterval"] = $row ["syncinterval"];
+			$notification ["isRead"] = $row ["isRead"];
 			array_push ( $response ["notification"], $notification );
 		}
 

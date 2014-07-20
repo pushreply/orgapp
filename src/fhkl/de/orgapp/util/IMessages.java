@@ -97,4 +97,7 @@ public interface IMessages {
 	public static final String SHARE_EVENT_VIA_TWITTER = "Post it in Twitter";
 	public static final String NO_THANKS = "No, thanks";
 	public static final String CHANGING_STATUS = "Changing status";
+	public static final String NEW_NOTIFICATION = "New notification";
+	public static final String YOU_HAVE_UNREAD_NOTIFICATION_1 = "You have ";
+	public static final String YOU_HAVE_UNREAD_NOTIFICATION_2 = " unread notification";
 }
