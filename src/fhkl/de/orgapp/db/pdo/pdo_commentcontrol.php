@@ -132,14 +132,16 @@ if ($_GET['updatecomment']==1
  * and how we control them?
  */
 
-if ($_GET['deletecomment']==1 && isset($_GET['commentid']) && isset($_GET['eventid']) && isset($_GET['personid'])) 
+if ($_GET['deletecomment']==1 
+		&& isset($_GET['commentid']) 
+		&& isset($_GET['eventid']) 
+		&& isset($_GET['personid'])) 
 {
 	
 	$commentid = $_GET['commentid'];
 	$eventid = $_GET['eventid'];
 	$personid= $_GET['personid'];
 	$classification = $_GET['classification'];
-	$groupid = $_GET['groupid'];
 	
 	$response = array ();
 	
@@ -147,11 +149,16 @@ if ($_GET['deletecomment']==1 && isset($_GET['commentid']) && isset($_GET['event
 	
 	try {
 		
-		$sql = 'DELETE FROM comment WHERE commentid = :commentid AND eventid = :eventid AND personid = :personid';
+		$sql = 'DELETE FROM comment 
+				WHERE commentid = :commentid 
+				AND eventid = :eventid
+				AND personid = :personid';
+		
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':commentid', $commentid, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		
 		$sth->bindValue(':eventid', $eventid, PDO::PARAM_INT);
-		$sth->bindValue(':personid', $groupid, PDO::PARAM_INT);
+		$sth->bindValue(':personid', $personid, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 		
 		//check deletion status
@@ -161,11 +168,12 @@ if ($_GET['deletecomment']==1 && isset($_GET['commentid']) && isset($_GET['event
 			echo json_encode ($response);
 		}
 		else {
-			$response ["success"] = 0;
+			
 			$response ["message"] = "Message is not deleted.";
 			echo json_encode ($response);
 		}
 	} catch (Exception $e) {
+		$response ["success"] = 0;
 		echo 'ERROR: delete message failed.';
 		exit();
 	}
