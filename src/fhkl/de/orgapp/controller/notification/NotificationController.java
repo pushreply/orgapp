@@ -1,6 +1,7 @@
 package fhkl.de.orgapp.controller.notification;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,15 +15,19 @@ import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -41,9 +46,12 @@ public class NotificationController extends MenuActivity {
 
 	private static String url_get_notification_settings = "http://pushrply.com/get_notification_settings.php";
 	private static String url_get_notification = "http://pushrply.com/get_notifications.php";
+	private static String url_update_notification_read_status = "http://pushrply.com/update_notification_read_status.php";
 
 	private static final String TAG_SUCCESS = "success";
+	private static final String TAG_ID = "ID";
 	private static final String TAG_MESSAGE = "MESSAGE";
+	private static final String TAG_IS_READ = "IS READ";
 
 	JSONArray notification = null;
 	JSONArray notificationSettings = null;
@@ -151,16 +159,21 @@ public class NotificationController extends MenuActivity {
 					}
 
 					json = jsonParser.makeHttpRequest(url_get_notification, "GET", paramsNotifications);
+					
 					if (success == 1) {
 						notification = json.getJSONArray("notification");
-
+						
 						for (int i = 0; i < notification.length(); i++) {
 							JSONObject c = notification.getJSONObject(i);
-
+							
+							String id = c.getString("notificationsId");
 							String message = c.getString("message");
-
+							String isRead = c.getString("isRead");
+							
 							HashMap<String, String> map = new HashMap<String, String>();
+							map.put(TAG_ID, id);
 							map.put(TAG_MESSAGE, message);
+							map.put(TAG_IS_READ, isRead);
 
 							notificationList.add(map);
 						}
@@ -181,18 +194,64 @@ public class NotificationController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					ListAdapter adapter = new SimpleAdapter(NotificationController.this, notificationList,
-									R.layout.notification_item, new String[] { TAG_MESSAGE }, new int[] { R.id.MESSAGE });
-					ListView notificationList = (ListView) findViewById(android.R.id.list);
 					
-					notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					ListView notificationListView = (ListView) findViewById(android.R.id.list);
+					
+					class NotificationListAdapter extends BaseAdapter
+					{
+				        private ArrayList<HashMap<String, String>> notificationList;
+				        
+				        public NotificationListAdapter(ArrayList<HashMap<String, String>> notificationList)
+				        {
+				            this.notificationList = notificationList;
+				        }
+
+				        public int getCount()
+				        {
+				            return notificationList.size();
+				        }
+
+				        public Object getItem(int arg0)
+				        {
+				            return null;
+				        }
+
+				        public long getItemId(int position)
+				        {
+				            return position;
+				        }
+
+				        public View getView(int position, View convertView, ViewGroup parent)
+				        {
+				            LayoutInflater inflater = getLayoutInflater();
+				            View row;
+				            row = inflater.inflate(R.layout.notification_item, parent, false);
+				            TextView message;
+				            message = (TextView) row.findViewById(R.id.MESSAGE);
+				            message.setText(notificationList.get(position).get(TAG_MESSAGE).toString());
+				            
+				            if(notificationList.get(position).get(TAG_IS_READ).equals("0"))
+				            	message.setTypeface(Typeface.DEFAULT_BOLD);
+				            
+				            return (row);
+				        }
+				    }
+					
+					notificationListView.setAdapter(new NotificationListAdapter(notificationList));
+					notificationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 						@SuppressLint("NewApi")
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 							final TextView message = (TextView) view.findViewById(R.id.MESSAGE);
-
+							
+							if(message.getTypeface().isBold())
+							{
+								message.setTypeface(Typeface.DEFAULT);
+								new NotificationReadStatusUpdater().execute(position);
+							}
+							
 							Animation slideDown = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_down);
 							Animation slideUp = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_up);
 
@@ -238,8 +297,20 @@ public class NotificationController extends MenuActivity {
 								}
 							}
 						}
+						
+						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String>
+						{
+							@Override
+							protected String doInBackground(Integer... arg)
+							{
+								List<NameValuePair> params = new ArrayList<NameValuePair>();
+								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
+								jsonParser.makeHttpRequest(url_update_notification_read_status, "GET", params);
+								
+								return null;
+							}
+						}
 					});
-					notificationList.setAdapter(adapter);
 				}
 			});
 		}
