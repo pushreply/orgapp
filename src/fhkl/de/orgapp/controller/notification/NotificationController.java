@@ -1,7 +1,6 @@
 package fhkl.de.orgapp.controller.notification;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,10 +26,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
@@ -246,7 +242,7 @@ public class NotificationController extends MenuActivity {
 
 							final TextView message = (TextView) view.findViewById(R.id.MESSAGE);
 							
-							if(message.getTypeface().isBold())
+							if(message.getTypeface() != null && message.getTypeface().isBold())
 							{
 								message.setTypeface(Typeface.DEFAULT);
 								new NotificationReadStatusUpdater().execute(position);
