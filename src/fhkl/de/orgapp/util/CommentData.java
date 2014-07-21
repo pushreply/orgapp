@@ -7,24 +7,37 @@ public class CommentData {
 	private static String COMMENT = "";
 	private static String CLASSIFICATION = "";
 	private static boolean BACK = false;
-	private static int SHOWCOMMENT = 1;
-	private static int ADDCOMMENT = 1;
-	private static int UPDATECOMMENT = 1;
-	private static int DELETECOMMENT = 1;
+	private static String SHOWCOMMENT = "";
+	private static String ADDCOMMENT = "";
+	private static String UPDATECOMMENT = "";
+	private static String DELETECOMMENT = "";
 	
 	
-	//etwas uebertreiben :-D
-	public static int getSHOWCOMMENT() {
+	
+
+	public static String getSHOWCOMMENT() {
 		return SHOWCOMMENT;
 	}
-	public static int getADDCOMMENT() {
+	public static void setSHOWCOMMENT(String sHOWCOMMENT) {
+		SHOWCOMMENT = sHOWCOMMENT;
+	}
+	public static String getADDCOMMENT() {
 		return ADDCOMMENT;
 	}
-	public static int getUPDATECOMMENT() {
+	public static void setADDCOMMENT(String aDDCOMMENT) {
+		ADDCOMMENT = aDDCOMMENT;
+	}
+	public static String getUPDATECOMMENT() {
 		return UPDATECOMMENT;
 	}
-	public static int getDELETECOMMENT() {
+	public static void setUPDATECOMMENT(String uPDATECOMMENT) {
+		UPDATECOMMENT = uPDATECOMMENT;
+	}
+	public static String getDELETECOMMENT() {
 		return DELETECOMMENT;
+	}
+	public static void setDELETECOMMENT(String dELETECOMMENT) {
+		DELETECOMMENT = dELETECOMMENT;
 	}
 	public static String getCOMMENTID() {
 		return COMMENTID;
