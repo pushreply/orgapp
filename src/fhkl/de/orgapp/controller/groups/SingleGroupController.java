@@ -1,7 +1,6 @@
 package fhkl.de.orgapp.controller.groups;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -10,16 +9,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
@@ -27,27 +34,31 @@ import fhkl.de.orgapp.util.EventData;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.ListModel;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.check.Check;
 
 public class SingleGroupController extends MenuActivity {
 
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
-	ArrayList<HashMap<String, String>> eventList;
+
+	public ArrayList<ListModel> customAdapterValues = new ArrayList<ListModel>();
 
 	private static String url_get_calendar = "http://pushrply.com/get_group_events.php";
 	private static String url_get_event = "http://pushrply.com/get_event.php";
+	private static String URL_CREATE_PERSON_IN_EVENT = "http://pushrply.com/create_person_in_event.php";
+	private static String URL_DELETE_PERSON_IN_EVENT = "http://pushrply.com/delete_person_in_event.php";
 
 	private static final String TAG_SUCCESS = "success";
-	private static final String TAG_EVENTID = "SINGLEGROUP_EVENTID";
-	private static final String TAG_EVENTDATE = "SINGLEGROUP_EVENTDATE";
-	private static final String TAG_EVENTTIME = "SINGLEGROUP_EVENTTIME";
-	private static final String TAG_EVENT = "SINGLEGROUP_EVENTNAME";
 
+	String eventId = null;
 	JSONArray calendar = null;
 	JSONArray event = null;
 
+	Boolean toggleButtonChecked;
 	TextView tv_eventId, groupInfo;
 
 	@Override
@@ -61,7 +72,6 @@ public class SingleGroupController extends MenuActivity {
 		groupInfo = (TextView) findViewById(R.id.GROUP_INFO);
 		groupInfo.setText(GroupData.getGROUPINFO());
 
-		eventList = new ArrayList<HashMap<String, String>>();
 		new GetGroupCalendar().execute();
 	}
 
@@ -92,17 +102,23 @@ public class SingleGroupController extends MenuActivity {
 						JSONObject c = calendar.getJSONObject(i);
 
 						String eventId = c.getString("eventId");
-						String event = c.getString("name");
-						String date = c.getString("eventDate");
-						String time = c.getString("eventTime");
+						String eventName = c.getString("name");
+						String eventDate = c.getString("eventDate");
+						String eventTime = c.getString("eventTime");
 
-						HashMap<String, String> map = new HashMap<String, String>();
-						map.put(TAG_EVENTID, eventId);
-						map.put(TAG_EVENTDATE, date);
-						map.put(TAG_EVENTTIME, time);
-						map.put(TAG_EVENT, event);
+						final ListModel listModel = new ListModel();
 
-						eventList.add(map);
+						listModel.setEventId(eventId);
+						listModel.setEventName(eventName);
+						listModel.setEventDate(eventDate);
+						listModel.setEventTime(eventTime);
+						if (Check.attendingMember(eventId)) {
+							listModel.setAttending(R.drawable.ic_action_good);
+						} else {
+							listModel.setAttending(R.drawable.ic_action_bad);
+						}
+						customAdapterValues.add(listModel);
+
 					}
 				} else {
 
@@ -118,19 +134,18 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					ListAdapter adapter = new SimpleAdapter(SingleGroupController.this, eventList, R.layout.singlegroup_item,
-									new String[] { TAG_EVENTID, TAG_EVENTDATE, TAG_EVENTTIME, TAG_EVENT }, new int[] {
-													R.id.SINGLEGROUP_EVENTID, R.id.SINGLEGROUP_EVENTDATE, R.id.SINGLEGROUP_EVENTTIME,
-													R.id.SINGLEGROUP_EVENTNAME });
+
+					CustomAdapter adapter = new CustomAdapter(SingleGroupController.this, customAdapterValues, getResources());
+
 					ListView calenderList = (ListView) findViewById(android.R.id.list);
 
-					calenderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					calenderList.setOnItemClickListener(new OnItemClickListener() {
 
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-							tv_eventId = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
-							new GetEvent().execute();
+							TextView tv = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
+							eventId = tv.getText().toString();
 						}
 					});
 					calenderList.setAdapter(adapter);
@@ -157,8 +172,6 @@ public class SingleGroupController extends MenuActivity {
 			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
 
 			Log.d("Event: ", json.toString());
-
-			System.out.println("eventId: " + tv_eventId.getText().toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -194,4 +207,149 @@ public class SingleGroupController extends MenuActivity {
 		}
 	}
 
+	@SuppressWarnings("unused")
+	private class CustomAdapter extends BaseAdapter {
+
+		private ArrayList<ListModel> data;
+		private Resources res;
+		private final Activity context;
+		private LayoutInflater inflater = null;
+
+		public CustomAdapter(Activity context, ArrayList<ListModel> data, Resources res) {
+
+			this.context = context;
+			this.data = data;
+			this.res = res;
+
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		public class ViewHolder {
+
+			public TextView eventId;
+			public TextView eventName;
+			public TextView eventDate;
+			public TextView eventTime;
+			public ImageView attending;
+
+		}
+
+		@SuppressLint({ "InflateParams", "ViewHolder" })
+		@Override
+		public View getView(int position, View view, ViewGroup parent) {
+			ViewHolder holder = new ViewHolder();
+
+			view = inflater.inflate(R.layout.singlegroup_item, null);
+
+			holder.eventId = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
+			holder.eventName = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTNAME);
+			holder.eventDate = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTDATE);
+			holder.eventTime = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTTIME);
+			holder.attending = (ImageView) view.findViewById(R.id.SINGLEGROUP_ATTENDING);
+
+			view.setTag(holder);
+
+			if (data.size() > 0) {
+
+				ListModel tempValues = null;
+				tempValues = (ListModel) data.get(position);
+
+				holder.eventId.setText(tempValues.getEventId());
+				holder.eventName.setText(tempValues.getEventName());
+				holder.eventDate.setText(tempValues.getEventDate());
+				holder.eventTime.setText(tempValues.getEventTime());
+				holder.attending.setImageResource(tempValues.getAttending());
+
+				holder.eventName.setOnClickListener(onEventListener);
+				holder.eventDate.setOnClickListener(onEventListener);
+				holder.eventTime.setOnClickListener(onEventListener);
+				holder.attending.setOnClickListener(onAttendingListener);
+			}
+			return view;
+		}
+
+		private OnClickListener onEventListener = new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				tv_eventId = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
+				new GetEvent().execute();
+			}
+		};
+
+		private OnClickListener onAttendingListener = new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ImageView iv = (ImageView) view.findViewById(R.id.SINGLEGROUP_ATTENDING);
+
+				if (iv.getDrawable().equals((R.drawable.ic_action_good))) {
+					toggleButtonChecked = true;
+				} else {
+					toggleButtonChecked = false;
+				}
+
+				System.out.println(toggleButtonChecked);
+				new ChangeAttendingStatus().execute();
+			}
+		};
+
+		@Override
+		public int getCount() {
+			if (data.size() <= 0)
+				return 1;
+			return data.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return data.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+	}
+
+	class ChangeAttendingStatus extends AsyncTask<String, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(SingleGroupController.this);
+			pDialog.setMessage(IMessages.CHANGING_STATUS);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+		protected String doInBackground(String... args) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			params.add(new BasicNameValuePair("eventId", eventId));
+			JSONObject json;
+			if (toggleButtonChecked) {
+				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params);
+			} else {
+				json = jsonParser.makeHttpRequest(URL_DELETE_PERSON_IN_EVENT, "GET", params);
+			}
+
+			Log.d("EventPerson: ", json.toString());
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+				if (success == 1) {
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		protected void onPostExecute(String message) {
+			pDialog.dismiss();
+		}
+	}
 }

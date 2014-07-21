@@ -37,9 +37,17 @@
             android:id="@+id/SINGLEGROUP_EVENTNAME"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.75"
+            android:layout_weight="0.50"
             android:gravity="center_horizontal"
             android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/SINGLEGROUP_ATTENDING"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:contentDescription="@string/ATTENDING"
+            android:gravity="center_horizontal" />
     </LinearLayout>
 
 </LinearLayout>
