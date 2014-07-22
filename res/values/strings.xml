@@ -151,4 +151,6 @@
     <!-- Event history -->
     <string name="EVENT_HISTORY">Event history</string>
 
+    <!--  Comments  -->
+    <string name="COMMENTS">CommentController</string>
 </resources>
