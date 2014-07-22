@@ -14,10 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.Menu;
@@ -40,12 +43,14 @@ import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.NewNotifications;
+import fhkl.de.orgapp.util.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class ManualInviteMemberController extends Activity {
 
 	private ProgressDialog pDialog;
-
+	private int newNotificationNotificationId = 1;
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> groupList;
 
@@ -67,7 +72,7 @@ public class ManualInviteMemberController extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.invite_member_manual);
-
+		checkNewNotificationAndCreateIcon();
 		getIntent().putExtra("cnt", "0");
 
 		personIdLoggedPerson = getIntent().getStringExtra("UserId");
@@ -112,6 +117,7 @@ public class ManualInviteMemberController extends Activity {
 		menu.findItem(R.id.GROUPS).setVisible(true);
 		menu.findItem(R.id.NOTIFICATIONS).setVisible(true);
 		menu.findItem(R.id.PROFILE).setVisible(true);
+		menu.findItem(R.id.LOGOUT).setTitle("Logout ( " + UserData.getEMAIL() + " )");
 		menu.findItem(R.id.LOGOUT).setVisible(true);
 		return true;
 	}
@@ -323,5 +329,44 @@ public class ManualInviteMemberController extends Activity {
 
 			}
 		}
+	}
+	
+	private void checkNewNotificationAndCreateIcon()
+	{
+		NewNotifications newNotifications = new NewNotifications();
+		
+		if(!newNotifications.hasNewNotifications())
+			return;
+		
+		String numberNewNotifications = newNotifications.getNumberNewNotifications();
+			
+		String title = IMessages.NEW_NOTIFICATION;
+		title += numberNewNotifications.equals("1") ? "" : "s";
+			
+		String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
+		text += numberNewNotifications;
+		text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
+		text += numberNewNotifications.equals("1") ? "" : "s";
+		
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+			.setSmallIcon(R.drawable.ic_action_unread)
+			.setContentTitle(title)
+			.setContentText(text)
+			.setAutoCancel(true);
+		
+		Intent resultIntent = new Intent(this, NotificationController.class);
+		
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(
+												this,
+												0,
+												resultIntent,
+												PendingIntent.FLAG_UPDATE_CURRENT
+												);
+		
+		builder.setContentIntent(resultPendingIntent);
+		
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+		notificationManager.notify(newNotificationNotificationId, builder.build());
 	}
 }

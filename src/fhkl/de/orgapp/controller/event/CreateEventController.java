@@ -76,7 +76,7 @@ public class CreateEventController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_edit_event);
-
+		checkNewNotificationAndCreateIcon();
 		calendar = Calendar.getInstance();
 
 		name = (EditText) findViewById(R.id.EVENTNAME);

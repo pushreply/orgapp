@@ -79,23 +79,8 @@ public class CalendarController extends MenuActivity {
 			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
 			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
 		}
-		
-		NewNotifications newNotifications = new NewNotifications();
-		
-		if(newNotifications.hasNewNotifications())
-		{
-			String numberNewNotifications = newNotifications.getNumberNewNotifications();
-			
-			String title = IMessages.NEW_NOTIFICATION;
-			title += numberNewNotifications.equals("1") ? "" : "s";
-			
-			String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
-			text += numberNewNotifications;
-			text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
-			text += numberNewNotifications.equals("1") ? "" : "s";
-			
-			createNotification(newNotificationNotificationId, title, text);
-		}
+					
+		checkNewNotificationAndCreateIcon();
 
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
@@ -105,7 +90,7 @@ public class CalendarController extends MenuActivity {
 	public void onBackPressed()
 	{
 		super.onBackPressed();
-		logout(newNotificationNotificationId);
+		logout();
 	}
 
 	public static void resetSTART_ACTIVITY_COUNTER() {

@@ -57,7 +57,7 @@ public class MenuActivity extends Activity {
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 
 	private static final String TAG_SUCCESS = "success";
-	protected int newNotificationNotificationId = 1;
+	private int newNotificationNotificationId = 1;
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -388,7 +388,7 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.LOGOUT:
-			logout(newNotificationNotificationId);
+			logout();
 			return true;
 
 		case R.id.REFRESH:
@@ -400,7 +400,7 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	protected void logout(int notificationId) {
+	protected void logout() {
 		CalendarController.resetSTART_ACTIVITY_COUNTER();
 
 		UserData.setPERSONID("");
@@ -411,7 +411,7 @@ public class MenuActivity extends Activity {
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
 
-		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(notificationId);
+		deleteIcon();
 		
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
 		startActivity(intent);
@@ -497,8 +497,23 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 	
-	protected void createNotification(int notificationId, String title, String text)
+	protected void checkNewNotificationAndCreateIcon()
 	{
+		NewNotifications newNotifications = new NewNotifications();
+		
+		if(!newNotifications.hasNewNotifications())
+			return;
+		
+		String numberNewNotifications = newNotifications.getNumberNewNotifications();
+			
+		String title = IMessages.NEW_NOTIFICATION;
+		title += numberNewNotifications.equals("1") ? "" : "s";
+			
+		String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
+		text += numberNewNotifications;
+		text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
+		text += numberNewNotifications.equals("1") ? "" : "s";
+		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 			.setSmallIcon(R.drawable.ic_action_unread)
 			.setContentTitle(title)
@@ -518,6 +533,11 @@ public class MenuActivity extends Activity {
 		
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-		notificationManager.notify(notificationId, builder.build());
+		notificationManager.notify(newNotificationNotificationId, builder.build());
+	}
+	
+	protected void deleteIcon()
+	{
+		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
 	}
 }

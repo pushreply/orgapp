@@ -40,6 +40,7 @@ public class EventHistoryController extends MenuActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_history);
+		checkNewNotificationAndCreateIcon();
 		
 		eventHistoryList = new ArrayList<HashMap<String, String>>();
 		

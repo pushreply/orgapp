@@ -54,7 +54,7 @@ public class GroupsController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.groups);
-
+		checkNewNotificationAndCreateIcon();
 		groupList = new ArrayList<HashMap<String, String>>();
 		new Groups().execute();
 	}

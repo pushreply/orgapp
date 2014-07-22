@@ -1,124 +1,214 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+    	android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+		<Button
+        	android:id="@+id/NOTIFICATION_SETTINGS_SAVE"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/NOTIFICATION_SETTINGS_SAVE" />
+
+		<Button
+        	android:id="@+id/NOTIFICATION_SETTINGS_CANCEL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/NOTIFICATION_SETTINGS_CANCEL" />
+    </LinearLayout>
+    
+	<CheckBox
+		android:id="@+id/RECEIVED_ENTRIES"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/RECEIVED_ENTRIES" />
+  
+	<EditText
+		android:id="@+id/NUMBER_ENTRIES"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/NUMBER_ENTRIES"
+		android:inputType="number"
+		android:visibility="gone" >
+	</EditText>
+	
+	<TextView
+    	android:id="@+id/NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS"
+    	android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/VIBRATION_AT_NEW_NOTIFICATIONS" />
+	
+	<RadioGroup
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+    	android:orientation="horizontal">
+    		
+		<RadioButton android:id="@+id/NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES"
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/YES"
+		    android:onClick="selectVibrationAtNewNotifications"/>
+
+		<RadioButton android:id="@+id/NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/NO"
+			android:onClick="selectVibrationAtNewNotifications"/>
+
+	</RadioGroup>
+    
+    <LinearLayout
+    	android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:layout_marginBottom="10dip"
+        android:background="#000000"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+    
+    <TextView
+		android:id="@+id/RECEIVED_NOTIFICATIONS"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/RECEIVED_NOTIFICATIONS" />
+    
+	<ScrollView
+    	android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+       	
+		<TableLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/RECEIVED_NOTIFICATIONS"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/RECEIVED_NOTIFICATIONS" />
+         	<TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/GROUP_INVITES"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/GROUP_INVITES" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/GROUP_INVITES"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/GROUP_INVITES" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/GROUP_EDITED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/GROUP_EDITED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/GROUP_EDITED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/GROUP_EDITED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/GROUP_REMOVED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/GROUP_REMOVED" />
+        	
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/GROUP_REMOVED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/GROUP_REMOVED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/EVENTS_ADDED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/EVENTS_ADDED" />
+       
+			</TableRow>
 
-        <CheckBox
-            android:id="@+id/EVENTS_ADDED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/EVENTS_ADDED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+		        
+		        <CheckBox
+		            android:id="@+id/EVENTS_EDITED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/EVENTS_EDITED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/EVENTS_EDITED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/EVENTS_EDITED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/EVENTS_REMOVED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/EVENTS_REMOVED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/EVENTS_REMOVED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/EVENTS_REMOVED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+			
+		        <CheckBox
+		            android:id="@+id/COMMENTS_ADDED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/COMMENTS_ADDED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/COMMENTS_ADDED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/COMMENTS_ADDED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+		        
+		        <CheckBox
+		            android:id="@+id/COMMENTS_REMOVED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/COMMENTS_REMOVED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/COMMENTS_REMOVED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/COMMENTS_REMOVED" />
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+        
+		        <CheckBox
+		            android:id="@+id/COMMENTS_EDITED"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/COMMENTS_EDITED" />
+        
+        	</TableRow>
 
-        <CheckBox
-            android:id="@+id/COMMENTS_EDITED"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/COMMENTS_EDITED" />
-
-        <CheckBox
-            android:id="@+id/PRIVILEGES_GIVEN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/PRIVILEGES_GIVEN" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:layout_marginBottom="10dip"
-            android:background="#000000"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
-
-        <CheckBox
-            android:id="@+id/RECEIVED_ENTRIES"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/RECEIVED_ENTRIES" />
-
-        <EditText
-            android:id="@+id/NUMBER_ENTRIES"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/NUMBER_ENTRIES"
-            android:inputType="number"
-            android:visibility="gone" >
-
-           
-        </EditText>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/NOTIFICATION_SETTINGS_SAVE"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/NOTIFICATION_SETTINGS_SAVE" />
-
-            <Button
-                android:id="@+id/NOTIFICATION_SETTINGS_CANCEL"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/NOTIFICATION_SETTINGS_CANCEL" />
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+	        <TableRow
+	            android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+		        
+		        <CheckBox
+		            android:id="@+id/PRIVILEGES_GIVEN"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/PRIVILEGES_GIVEN" />
+        
+        	</TableRow>
+        	
+        </TableLayout>
+        
+    </ScrollView>
+    
+</LinearLayout>

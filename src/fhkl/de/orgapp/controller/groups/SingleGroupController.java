@@ -65,6 +65,7 @@ public class SingleGroupController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlegroup);
+		checkNewNotificationAndCreateIcon();
 		this.setTitle(GroupData.getGROUPNAME());
 
 		EventData.setBACK(false);

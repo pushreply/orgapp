@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
@@ -41,6 +42,8 @@ public class NotificationSettingsController extends MenuActivity {
 			privilegeGiven, received_entries;
 	EditText numberEntries;
 	Button bSave, bCancel;
+	RadioButton textVibrationYes, textVibrationNo;
+	boolean vibration;
 
 	JSONArray notification = null;
 
@@ -48,6 +51,7 @@ public class NotificationSettingsController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notification_settings);
+		checkNewNotificationAndCreateIcon();
 
 		groupInvites = (CheckBox) findViewById(R.id.GROUP_INVITES);
 		groupEdited = (CheckBox) findViewById(R.id.GROUP_EDITED);
@@ -65,6 +69,9 @@ public class NotificationSettingsController extends MenuActivity {
 
 		bSave = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_SAVE);
 		bCancel = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_CANCEL);
+		
+		textVibrationYes = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES);
+		textVibrationNo = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO);
 
 		received_entries
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -99,6 +106,20 @@ public class NotificationSettingsController extends MenuActivity {
 				startActivity(intent);
 			}
 		});
+	}
+	
+	public void selectVibrationAtNewNotifications(View view)
+	{
+		switch (view.getId())
+		{
+			case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES:
+				vibration =	true;
+				break;
+	
+			case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO:
+				vibration = false;
+				break;
+		}
 	}
 
 	class GetSettings extends AsyncTask<String, String, String> {
@@ -151,6 +172,9 @@ public class NotificationSettingsController extends MenuActivity {
 					result += notificationSettings.getInt("privilegeGiven") == 1 ? "true"
 							+ ", " : "false" + ", ";
 
+					result += notificationSettings.getInt("vibration") == 1 ? "true"
+							+ ", " : "false" + ", ";
+					
 					try {
 						result += notificationSettings.getInt("shownEntries");
 					} catch (Exception e) {
@@ -179,7 +203,7 @@ public class NotificationSettingsController extends MenuActivity {
 
 			String[] datas = result.split(", ");
 
-			if (datas.length != 11)
+			if (datas.length != 12)
 				return;
 
 			setTexts(datas);
@@ -187,7 +211,7 @@ public class NotificationSettingsController extends MenuActivity {
 		}
 
 		private void setTexts(String[] datas) {
-
+			
 			groupInvites.setChecked(Boolean.parseBoolean(datas[0]));
 			groupEdited.setChecked(Boolean.parseBoolean(datas[1]));
 			groupRemoved.setChecked(Boolean.parseBoolean(datas[2]));
@@ -199,9 +223,20 @@ public class NotificationSettingsController extends MenuActivity {
 			commentsRemoved.setChecked(Boolean.parseBoolean(datas[8]));
 			privilegeGiven.setChecked(Boolean.parseBoolean(datas[9]));
 
-			if (!datas[10].equals("null")) {
+			if(Boolean.parseBoolean(datas[10]))
+			{
+				textVibrationYes.setChecked(true);
+				vibration = true;
+			}
+			else
+			{
+				textVibrationNo.setChecked(true);
+				vibration = false;
+			}
+			
+			if (!datas[11].equals("null")) {
 				received_entries.setChecked(true);
-				numberEntries.setText(datas[10]);
+				numberEntries.setText(datas[11]);
 				numberEntries.setVisibility(View.VISIBLE);
 			} else {
 				numberEntries.setVisibility(View.GONE);
@@ -264,6 +299,8 @@ public class NotificationSettingsController extends MenuActivity {
 			params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven
 					.isChecked() == true ? "1" : "0"));
 
+			params.add(new BasicNameValuePair("vibration", vibration ? "1" : "0"));
+			
 			try {
 				JSONObject json = new JSONParser().makeHttpRequest(
 						URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);

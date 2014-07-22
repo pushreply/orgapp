@@ -13,6 +13,8 @@
     <string name="REFRESH">Refresh</string>
     <string name="MALE">m</string>
     <string name="FEMALE">w</string>
+    <string name="YES">Yes</string>
+    <string name="NO">No</string>
 
     <!-- Startbildschirm -->
     <string name="LOGIN">Login</string>
@@ -130,6 +132,7 @@
     <string name="LASTNAME_MUST_HAVE">Last name *</string>
     <string name="BIRTHDAY">Birthday</string>
     <string name="GENDER">Gender</string>
+    <string name="VIBRATION_AT_NEW_NOTIFICATIONS">Do you want vibration at new notifications?</string>
     <string name="MEMBER_SINCE">Member since</string>
     <string name="CHANGE_INFO">Change information</string>
     <string name="CHANGE_BIRTHDAY">Change birthday</string>

@@ -56,7 +56,7 @@ public class NotificationController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
+		deleteIcon();
 		
 		setContentView(R.layout.notification);
 		notificationList = new ArrayList<HashMap<String, String>>();

@@ -30,6 +30,7 @@ if (mysql_num_rows($result) > 0) {
         $notificationSettings["commentsEdited"] = $row["commentsEdited"];
         $notificationSettings["commentsRemoved"] = $row["commentsRemoved"];
         $notificationSettings["privilegeGiven"] = $row["privilegeGiven"];
+        $notificationSettings["vibration"] = $row["vibration"];
 
         array_push($response["notificationSettings"], $notificationSettings);
     }

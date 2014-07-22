@@ -48,6 +48,7 @@ public class NewGroupController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_edit_group);
+		checkNewNotificationAndCreateIcon();
 
 		inputName = (EditText) findViewById(R.id.NAME);
 		inputInfo = (EditText) findViewById(R.id.INFO);

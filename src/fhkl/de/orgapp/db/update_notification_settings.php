@@ -22,6 +22,7 @@ $commentsAdded = $_GET ["commentsAdded"];
 $commentsEdited = $_GET ["commentsEdited"];
 $commentsRemoved = $_GET ["commentsRemoved"];
 $privilegeGiven = $_GET ["privilegeGiven"];
+$vibration = $_GET ["vibration"];
 
 if (isset ( $_GET ['shownEntries'] )) {
 	$shownEntries = $_GET ['shownEntries'];
@@ -29,8 +30,8 @@ if (isset ( $_GET ['shownEntries'] )) {
 			SET shownEntries = '$shownEntries', groupInvites= '$groupInvites',
 			groupEdited = '$groupEdited', groupRemoved = '$groupRemoved', eventsAdded = '$eventsAdded',
 			eventsEdited = '$eventsEdited', eventsRemoved = '$eventsRemoved', commentsAdded = '$commentsAdded',
-			commentsEdited = '$commentsEdited', commentsRemoved = '$commentsRemoved', privilegeGiven = '$privilegeGiven'
-			WHERE personId = '$personId'" ) or die ( mysql_error () );
+			commentsEdited = '$commentsEdited', commentsRemoved = '$commentsRemoved', privilegeGiven = '$privilegeGiven',
+			vibration = '$vibration' WHERE personId = '$personId'" ) or die ( mysql_error () );
 
 	$response ["success"] = 1;
 
@@ -40,8 +41,8 @@ if (isset ( $_GET ['shownEntries'] )) {
 		SET shownEntries = null, groupInvites= '$groupInvites',
 		groupEdited = '$groupEdited', groupRemoved = '$groupRemoved', eventsAdded = '$eventsAdded',
 		eventsEdited = '$eventsEdited', eventsRemoved = '$eventsRemoved', commentsAdded = '$commentsAdded',
-		commentsEdited = '$commentsEdited', commentsRemoved = '$commentsRemoved', privilegeGiven = '$privilegeGiven'
-		WHERE personId = '$personId'" ) or die ( mysql_error () );
+		commentsEdited = '$commentsEdited', commentsRemoved = '$commentsRemoved', privilegeGiven = '$privilegeGiven',
+		vibration = '$vibration' WHERE personId = '$personId'" ) or die ( mysql_error () );
 	$response ["success"] = 1;
 
 	echo json_encode ( $response );

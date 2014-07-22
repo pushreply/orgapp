@@ -37,6 +37,7 @@ public class SecurityInfoController extends MenuActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.security_information);
+		checkNewNotificationAndCreateIcon();
 		
 		getViews();
 		setTexts();

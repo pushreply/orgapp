@@ -45,6 +45,7 @@ public class LeaveGroupController extends MenuActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_list);
+		checkNewNotificationAndCreateIcon();
 		memberList = new ArrayList<HashMap<String, String>>();
 
 		new LeaveGroup().execute();
