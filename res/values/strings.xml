@@ -152,9 +152,9 @@
     <string name="EVENT_HISTORY">Event history</string>
 
     <!-- Comments -->
-    <string name="COMMENTS">CommentController</string>
-    <string name="title_activity_comment_control">CommentControl</string>
-    <string name="COMMENTTEXT">Comment:</string>
+    <string name="COMMENT">Insert a comment</string>
+    <string name="COMMENTTEXT">Comment</string>
+    <string name="COMMENTLABEL">Comment:</string>
     <string name="action_settings">Settings</string>
     
 
