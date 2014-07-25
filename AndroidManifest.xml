@@ -6,10 +6,10 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="fhkl.de.orgapp.controller.start.StartController"
+            android:name=".controller.start.StartController"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,94 +26,98 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.registration.RegisterController"
+            android:name=".controller.registration.RegisterController"
             android:label="@string/REGISTER" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.login.LoginController"
+            android:name=".controller.login.LoginController"
             android:label="@string/LOGIN" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.calendar.CalendarController"
+            android:name=".controller.calendar.CalendarController"
             android:label="@string/CALENDAR" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.event.AttendingMemberController"
+            android:name=".controller.event.AttendingMemberController"
             android:label="@string/ATTENDING_MEMBER" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.event.EditEventController"
+            android:name=".controller.event.EditEventController"
             android:label="@string/EDIT_EVENT" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.event.DeleteEventController"
+            android:name=".controller.event.DeleteEventController"
             android:label="@string/DELETE_EVENT" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.GroupsController"
+            android:name=".controller.groups.GroupsController"
             android:label="@string/GROUPS" >
         </activity>
-        <activity android:name="fhkl.de.orgapp.controller.groups.SingleGroupController" >
+        <activity android:name=".controller.groups.SingleGroupController" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.event.CreateEventController"
+            android:name=".controller.event.CreateEventController"
             android:label="@string/CREATE_EVENT" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.EditGroupController"
+            android:name=".controller.groups.EditGroupController"
             android:label="@string/EDIT_GROUP" >
         </activity>
-        <activity android:name="fhkl.de.orgapp.controller.groups.DeleteGroupController" >
+        <activity android:name=".controller.groups.DeleteGroupController" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.LeaveGroupController"
+            android:name=".controller.groups.LeaveGroupController"
             android:label="@string/LEAVE_GROUP" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.MemberListController"
+            android:name=".controller.groups.MemberListController"
             android:label="@string/MEMBER_LIST" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.MemberPrivilegeInfoController"
+            android:name=".controller.groups.MemberPrivilegeInfoController"
             android:label="@string/MEMBER_INFO" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.ManualInviteMemberController"
+            android:name=".controller.groups.ManualInviteMemberController"
             android:label="@string/INVITE_MEMBER" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.ListInviteMemberController"
+            android:name=".controller.groups.ListInviteMemberController"
             android:label="@string/INVITE_MEMBER" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.groups.NewGroupController"
+            android:name=".controller.groups.NewGroupController"
             android:label="@string/NEW_GROUP" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.notification.NotificationController"
+            android:name=".controller.notification.NotificationController"
             android:label="@string/NOTIFICATIONS" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.notification.NotificationSettingsController"
+            android:name=".controller.notification.NotificationSettingsController"
             android:label="@string/NOTIFICATION_SETTINGS" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.profile.ProfileController"
+            android:name=".controller.profile.ProfileController"
             android:label="@string/PROFILE" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.profile.PrivateInfoController"
+            android:name=".controller.profile.PrivateInfoController"
             android:label="@string/PRIVATE_INFORMATION" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.profile.SecurityInfoController"
+            android:name=".controller.profile.SecurityInfoController"
             android:label="@string/SECURITY_INFORMATION" >
         </activity>
         <activity
-            android:name="fhkl.de.orgapp.controller.profile.EventHistoryController"
+            android:name=".controller.profile.EventHistoryController"
             android:label="@string/EVENT_HISTORY" >
         </activity>
-        <activity android:name="fhkl.de.orgapp.controller.event.EventController" >
+        <activity android:name=".controller.event.EventController" >
+        </activity>
+        <activity
+            android:name=".controller.comment.CommentController"
+            android:label="@string/COMMENT" >
         </activity>
     </application>
 
