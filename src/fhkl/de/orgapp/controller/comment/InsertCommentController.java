@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class CommentController extends Activity {
+public class InsertCommentController extends Activity {
 	
 	/**
 	 * CommentController: 
