@@ -22,8 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -139,16 +137,6 @@ public class SingleGroupController extends MenuActivity {
 					CustomAdapter adapter = new CustomAdapter(SingleGroupController.this, customAdapterValues, getResources());
 
 					ListView calenderList = (ListView) findViewById(android.R.id.list);
-
-					calenderList.setOnItemClickListener(new OnItemClickListener() {
-
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-							TextView tv = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
-							eventId = tv.getText().toString();
-						}
-					});
 					calenderList.setAdapter(adapter);
 				}
 			});
@@ -169,7 +157,7 @@ public class SingleGroupController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
+			params.add(new BasicNameValuePair("eventId", eventId));
 			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
 
 			Log.d("Event: ", json.toString());
@@ -202,17 +190,17 @@ public class SingleGroupController extends MenuActivity {
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 
-			finish();
 			Intent intent = new Intent(SingleGroupController.this, EventController.class);
 			startActivity(intent);
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private class CustomAdapter extends BaseAdapter {
 
 		private ArrayList<ListModel> data;
+		@SuppressWarnings("unused")
 		private Resources res;
+		@SuppressWarnings("unused")
 		private final Activity context;
 		private LayoutInflater inflater = null;
 
@@ -232,7 +220,6 @@ public class SingleGroupController extends MenuActivity {
 			public TextView eventDate;
 			public TextView eventTime;
 			public ImageView attending;
-
 		}
 
 		@SuppressLint({ "InflateParams", "ViewHolder" })
@@ -257,9 +244,19 @@ public class SingleGroupController extends MenuActivity {
 
 				holder.eventId.setText(tempValues.getEventId());
 				holder.eventName.setText(tempValues.getEventName());
+				holder.eventName.setTag(tempValues.getEventId());
+
 				holder.eventDate.setText(tempValues.getEventDate());
+				holder.eventDate.setTag(tempValues.getEventId());
+
 				holder.eventTime.setText(tempValues.getEventTime());
+				holder.eventTime.setTag(tempValues.getEventId());
+
 				holder.attending.setImageResource(tempValues.getAttending());
+				String[] tagAttending = new String[2];
+				tagAttending[0] = tempValues.getEventId();
+				tagAttending[1] = tempValues.getAttending().toString();
+				holder.attending.setTag(tagAttending);
 
 				holder.eventName.setOnClickListener(onEventListener);
 				holder.eventDate.setOnClickListener(onEventListener);
@@ -274,7 +271,7 @@ public class SingleGroupController extends MenuActivity {
 			@Override
 			public void onClick(View view) {
 
-				tv_eventId = (TextView) view.findViewById(R.id.SINGLEGROUP_EVENTID);
+				eventId = view.getTag().toString();
 				new GetEvent().execute();
 			}
 		};
@@ -286,13 +283,16 @@ public class SingleGroupController extends MenuActivity {
 
 				ImageView iv = (ImageView) view.findViewById(R.id.SINGLEGROUP_ATTENDING);
 
-				if (iv.getDrawable().equals((R.drawable.ic_action_good))) {
+				String[] tag = (String[]) iv.getTag();
+				eventId = tag[0];
+
+				Integer ivId = Integer.valueOf(tag[1]);
+				if (ivId.equals(R.drawable.ic_action_good)) {
 					toggleButtonChecked = true;
 				} else {
 					toggleButtonChecked = false;
 				}
 
-				System.out.println(toggleButtonChecked);
 				new ChangeAttendingStatus().execute();
 			}
 		};
@@ -332,9 +332,9 @@ public class SingleGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", eventId));
 			JSONObject json;
 			if (toggleButtonChecked) {
-				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params);
-			} else {
 				json = jsonParser.makeHttpRequest(URL_DELETE_PERSON_IN_EVENT, "GET", params);
+			} else {
+				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params);
 			}
 
 			Log.d("EventPerson: ", json.toString());
@@ -351,6 +351,10 @@ public class SingleGroupController extends MenuActivity {
 
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
+
+			finish();
+			Intent intent = new Intent(SingleGroupController.this, SingleGroupController.class);
+			startActivity(intent);
 		}
 	}
 }
