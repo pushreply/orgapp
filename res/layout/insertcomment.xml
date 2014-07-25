@@ -18,9 +18,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/COMMENTSLABEL"
-        android:inputType="textMultiLine" >
+        android:gravity="left"
+        android:inputType="textMultiLine" 
+        android:maxLines="8"
+    	android:lines="7"
+        >
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/OKBUTTON"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/COMMENTTEXT"
+        android:layout_below="@+id/COMMENTTEXT"
+        android:layout_marginTop="80dp"
+        android:text="@string/SUBMIT" />
+
+    <Button
+        android:id="@+id/CANCELBUTTON"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/OKBUTTON"
+        android:layout_alignBottom="@+id/OKBUTTON"
+        android:layout_alignLeft="@+id/COMMENTTEXT"
+        android:text="@string/CANCEL" />
 
 </RelativeLayout>
