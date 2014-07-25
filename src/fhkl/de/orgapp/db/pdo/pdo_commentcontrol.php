@@ -27,8 +27,8 @@ if ($_GET['do']=="addcomment"
 	
 	try {
 		$sql='INSERT INTO comment SET 
-				eventid = :eventid, 
-				personid = :personid, 
+				eventId = :eventid, 
+				personId = :personid, 
 				message = :message, 
 				classification = :classification';
 		
@@ -89,9 +89,9 @@ if ($_GET['do']=="updatecomment"
 		$sql='UPDATE comment SET
 				message = :message,
 				classification = :classification
-				WHERE commentid = :commentid
-				AND eventid = :eventid
-				AND personid = :personid';
+				WHERE commentId = :commentid
+				AND eventId = :eventid
+				AND personId = :personid';
 
 		$sth = $pdo->prepare($sql);
 
@@ -150,9 +150,9 @@ if ($_GET['do']=="deletecomment"
 	try {
 		
 		$sql = 'DELETE FROM comment 
-				WHERE commentid = :commentid 
-				AND eventid = :eventid
-				AND personid = :personid';
+				WHERE commentId = :commentid 
+				AND eventId = :eventid
+				AND personId = :personid';
 		
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':commentid', $commentid, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
@@ -194,10 +194,10 @@ if ($_GET['do']=="showcomment" && isset($_GET['eventid']))
 
 	try {
 
-		$sql = 'SELECT c.commentid, c.commentDateTime, c.personid, p.firstName, p.lastName, c.message 
+		$sql = 'SELECT c.commentId, c.commentDateTime, c.personId, p.firstName, p.lastName, c.message 
 				FROM comment c, person p 
-				WHERE c.personid = p.personid
-				AND c.eventid = :eventid';
+				WHERE c.personId = p.personId
+				AND c.eventId = :eventid';
 		
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':eventid', $eventid, PDO::PARAM_INT);
@@ -212,9 +212,9 @@ if ($_GET['do']=="showcomment" && isset($_GET['eventid']))
 			
 			foreach ($result as $row)
 			{
-				$comment['commentid'] = $row['commentid'];
+				$comment['commentid'] = $row['commentId'];
 				$comment['commentdatetime'] = $row['commentDateTime'];
-				$comment['personid'] = $row['personid'];
+				$comment['personid'] = $row['personId'];
 				$comment['firstname'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
 				$comment['lastname'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
 				$comment['message'] = html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8');
