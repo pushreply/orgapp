@@ -185,9 +185,9 @@ if ($_GET['do']=="deletecomment"
 * 
 */
 
-if ($_GET['do']=="showcomment" && isset($_GET['eventid']))
+if ($_GET['do']=="showcomment" && isset($_GET['eventId']))
 {
-	$eventid = $_GET['eventid'];
+	$eventid = $_GET['eventId'];
 	$response = array ();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
@@ -197,10 +197,10 @@ if ($_GET['do']=="showcomment" && isset($_GET['eventid']))
 		$sql = 'SELECT c.commentId, c.commentDateTime, c.personId, p.firstName, p.lastName, c.message 
 				FROM comment c, person p 
 				WHERE c.personId = p.personId
-				AND c.eventId = :eventid';
+				AND c.eventId = :eventId';
 		
 		$sth = $pdo->prepare($sql);
-		$sth->bindValue(':eventid', $eventid, PDO::PARAM_INT);
+		$sth->bindValue(':eventId', $eventid, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 		$result = $sth->fetchAll();
 		
