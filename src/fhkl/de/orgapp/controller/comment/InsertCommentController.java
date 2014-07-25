@@ -64,24 +64,6 @@ public class InsertCommentController extends Activity {
 	TextView messageDateTime;
 
 	
-	/**
-	 * Insert a comment
-	 * 
-	 */
-	
-	
-	
-	
-	/**
-	 * Update a comment
-	 * 
-	 */
-	
-	/**
-	 * Delete a comment
-	 * 
-	 */
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
