@@ -160,7 +160,7 @@ public class EditEventController extends MenuActivity {
 				if (eventDate.getText().toString().isEmpty()) {
 					return IMessages.INVALID_EVENTDATE;
 				} else {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
 					sdf.setLenient(false);
 
 					try {
@@ -174,13 +174,58 @@ public class EditEventController extends MenuActivity {
 					}
 					params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
 				}
-
 			}
 
 			if (eventTime.getText().toString().isEmpty()) {
 				return IMessages.INVALID_EVENTTIME;
 			} else {
 				params.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
+			}
+
+			String message = new String();
+			boolean eventChanged = false;
+			if (!name.getText().toString().equals(EventData.getNAME())) {
+				message += "Event name was changed from \"" + EventData.getNAME() + "\" to \"" + name.getText().toString()
+								+ "\"";
+				eventChanged = true;
+			}
+
+			if (!eventLocation.getText().toString().equals(EventData.getEVENTLOCATION())) {
+				if (eventChanged) {
+					message += "and event location was changed from \"" + EventData.getEVENTLOCATION() + "\" to \""
+									+ eventLocation.getText().toString() + "\"";
+				} else {
+					message += "Event \"" + EventData.getNAME() + "\" location was changed from \""
+									+ EventData.getEVENTLOCATION() + "\" to \"" + eventLocation.getText().toString() + "\"";
+					eventChanged = true;
+				}
+			}
+
+			if (!eventDate.getText().toString().equals(EventData.getEVENTDATE())) {
+				if (eventChanged) {
+					message += "and event date was changed from \"" + EventData.getEVENTDATE() + "\" to \""
+									+ eventDate.getText().toString() + "\"";
+				} else {
+					message += "Event \"" + EventData.getNAME() + "\" date was changed from \"" + EventData.getEVENTDATE()
+									+ "\" to \"" + eventDate.getText().toString() + "\"";
+					eventChanged = true;
+				}
+			}
+			String tmp = eventTime.getText().toString();
+			tmp += ":00";
+			if (!tmp.equals(EventData.getEVENTTIME())) {
+				if (eventChanged) {
+					message += "and event time was changed from \"" + EventData.getEVENTTIME().substring(0, 5) + "\" to \""
+									+ eventTime.getText().toString() + "\"";
+				} else {
+					message += "Event \"" + EventData.getNAME() + "\" time was changed from \""
+									+ EventData.getEVENTTIME().substring(0, 5) + "\" to \"" + eventTime.getText().toString() + "\"";
+					eventChanged = true;
+				}
+			}
+
+			if (!eventChanged) {
+				return IMessages.NO_CHANGES_MADE;
 			}
 
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
@@ -191,75 +236,30 @@ public class EditEventController extends MenuActivity {
 
 				if (success != 0) {
 
-					String message = new String();
-					boolean eventChanged = false;
-					if (!name.getText().toString().equals(EventData.getNAME())) {
-						message += "Event name was changed from \"" + EventData.getNAME() + "\" to \"" + name.getText().toString()
-										+ "\"";
-						eventChanged = true;
-					}
+					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
+					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
 
-					if (!eventLocation.getText().toString().equals(EventData.getEVENTLOCATION())) {
-						if (eventChanged) {
-							message += "and event location was changed from \"" + EventData.getEVENTLOCATION() + "\" to \""
-											+ eventLocation.getText().toString() + "\"";
-						} else {
-							message += "Event \"" + EventData.getNAME() + "\" location was changed from \""
-											+ EventData.getEVENTLOCATION() + "\" to \"" + eventLocation.getText().toString() + "\"";
-							eventChanged = true;
-						}
-					}
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
 
-					if (!eventDate.getText().toString().equals(EventData.getEVENTDATE())) {
-						if (eventChanged) {
-							message += "and event date was changed from \"" + EventData.getEVENTDATE() + "\" to \""
-											+ eventDate.getText().toString() + "\"";
-						} else {
-							message += "Event \"" + EventData.getNAME() + "\" date was changed from \"" + EventData.getEVENTDATE()
-											+ "\" to \"" + eventDate.getText().toString() + "\"";
-							eventChanged = true;
-						}
-					}
-					String tmp = eventTime.getText().toString();
-					tmp += ":00";
-					if (!tmp.equals(EventData.getEVENTTIME())) {
-						if (eventChanged) {
-							message += "and event time was changed from \"" + EventData.getEVENTTIME().substring(0, 5) + "\" to \""
-											+ eventTime.getText().toString() + "\"";
-						} else {
-							message += "Event \"" + EventData.getNAME() + "\" time was changed from \""
-											+ EventData.getEVENTTIME().substring(0, 5) + "\" to \"" + eventTime.getText().toString() + "\"";
-							eventChanged = true;
-						}
-					}
+						member = json.getJSONArray("member");
 
-					if (eventChanged) {
+						for (int i = 0; i < member.length(); i++) {
+							JSONObject c = member.getJSONObject(i);
 
-						System.out.println("changed event");
-						List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
-						paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-						paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-						json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
+							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
+							paramsCreateNotification.add(new BasicNameValuePair("classification", "5"));
+							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
+							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
-						success = json.getInt(TAG_SUCCESS);
-						if (success == 1) {
-
-							member = json.getJSONArray("member");
-
-							for (int i = 0; i < member.length(); i++) {
-								JSONObject c = member.getJSONObject(i);
-
-								List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
-								paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
-								paramsCreateNotification.add(new BasicNameValuePair("classification", "5"));
-								paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
-								paramsCreateNotification.add(new BasicNameValuePair("message", message));
-
-								json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
-							}
+							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
 						}
 					}
 				}
+
 			} catch (Exception e) {
 				System.out.println("Error in EditEvent.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
@@ -277,76 +277,64 @@ public class EditEventController extends MenuActivity {
 				showDialogAndGoToSingleGroupController();
 			}
 		}
-		
-		private void showDialogAndGoToSingleGroupController()
-		{
+
+		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(EditEventController.this);
-			
+
 			builder.setMessage(IMessages.SHARE_EDITED_EVENT);
-			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener()
-			{
+			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
 				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
+				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
 					finish();
 					startActivity(intent);
 				}
 			});
-			
-			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER, new android.content.DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					new SocialNetworkSharer().execute("twitter");
-					
-					dialog.dismiss();
-					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
-					finish();
-					startActivity(intent);
-				}
-			});
-			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK, new android.content.DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					new SocialNetworkSharer().execute("facebook");
-					
-					dialog.dismiss();
-					Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
-					finish();
-					startActivity(intent);
-				}
-			});
-			
+
+			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER,
+							new android.content.DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									new SocialNetworkSharer().execute("twitter");
+
+									dialog.dismiss();
+									Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+									finish();
+									startActivity(intent);
+								}
+							});
+			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK,
+							new android.content.DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									new SocialNetworkSharer().execute("facebook");
+
+									dialog.dismiss();
+									Intent intent = new Intent(EditEventController.this, SingleGroupController.class);
+									finish();
+									startActivity(intent);
+								}
+							});
+
 			builder.create().show();
 		}
 	}
-	
-	class SocialNetworkSharer extends AsyncTask<String, String, String>
-	{
+
+	class SocialNetworkSharer extends AsyncTask<String, String, String> {
 		@Override
-		protected String doInBackground(String... socialNetworkName)
-		{
+		protected String doInBackground(String... socialNetworkName) {
 			return socialNetworkName[0];
 		}
 
 		@Override
-		protected void onPostExecute(String socialNetworkName)
-		{
+		protected void onPostExecute(String socialNetworkName) {
 			super.onPostExecute(socialNetworkName);
-			String sharingMessage =
-					"Event "
-					+ name.getText().toString() + " "
-					+ "was edited by "
-					+ UserData.getFIRST_NAME() + " " + UserData.getLAST_NAME() + ": "
-					+ ", new Date -> " + eventDate.getText().toString()
-					+ ", new Time -> " + eventTime.getText().toString()
-					+ ", new Location -> " + eventLocation.getText().toString();
-			
+			String sharingMessage = "Event " + name.getText().toString() + " " + "was edited by " + UserData.getFIRST_NAME()
+							+ " " + UserData.getLAST_NAME() + ": " + ", new Date -> " + eventDate.getText().toString()
+							+ ", new Time -> " + eventTime.getText().toString() + ", new Location -> "
+							+ eventLocation.getText().toString();
+
 			shareToSocialNetwork(Intent.ACTION_SEND, socialNetworkName, sharingMessage);
 		}
 	}
@@ -361,7 +349,7 @@ public class EditEventController extends MenuActivity {
 			updateEventDate();
 		}
 	};
-	
+
 	private void updateEventDate() {
 
 		String format = "yyyy-MM-dd";

@@ -162,6 +162,10 @@ public class EditGroupController extends MenuActivity {
 				return IMessages.INVALID_INFO;
 			}
 
+			if (beforeName.equals(name) && beforeInfo.equals(info)) {
+				return IMessages.NO_CHANGES_MADE;
+			}
+
 			List<NameValuePair> paramsUpdateGroup = new ArrayList<NameValuePair>();
 
 			paramsUpdateGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
