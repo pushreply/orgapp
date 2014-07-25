@@ -38,7 +38,6 @@ public class EventController extends MenuActivity {
 	private static String URL_CREATE_PERSON_IN_EVENT = "http://pushrply.com/create_person_in_event.php";
 	private static String URL_DELETE_PERSON_IN_EVENT = "http://pushrply.com/delete_person_in_event.php";
 
-
 	private static final String TAG_SUCCESS = "success";
 
 	TextView eventTime;
@@ -48,21 +47,21 @@ public class EventController extends MenuActivity {
 	ToggleButton buttonAttendance;
 	boolean toggleButtonChecked;
 
-	//commentcontrol
+	// commentcontrol
 	private static String URL_COMMENTCONTROL = "http://pushrply.com/pdo_commentcontrol.php";
-	
+
 	private static final String TAG_COMMENT_ID = "COMMENTID";
 	private static final String TAG_PERSON_ID = "PERSONID";
 	private static final String TAG_FIRSTNAME = "FIRSTNAME";
 	private static final String TAG_LASTNAME = "LASTNAME";
 	private static final String TAG_MESSAGE = "MESSAGE";
 	private static final String TAG_COMMENTDATETIME = "COMMENTDATETIME";
-	
+
 	TextView messageContent;
 	TextView messageDateTime;
 	TextView firstname;
 	TextView lastname;
-	
+
 	ArrayList<HashMap<String, String>> commentList;
 	JSONArray comment = null;
 
@@ -79,7 +78,7 @@ public class EventController extends MenuActivity {
 		eventTime.setText("Time: " + EventData.getEVENTTIME());
 		eventDate.setText("Date: " + EventData.getEVENTDATE());
 		eventLocation.setText("Location: " + EventData.getEVENTLOCATION());
-		
+
 		buttonAttendance = (ToggleButton) findViewById(R.id.BUTTONATTENDANCE);
 		buttonAttendance.setOnClickListener(new OnClickListener() {
 
@@ -178,35 +177,20 @@ public class EventController extends MenuActivity {
 			pDialog.dismiss();
 		}
 	}
-	
-	//Show comments
-	class ShowComments extends AsyncTask<String, String, String>
-	{
-		protected void onPreExecute() {
-			super.onPreExecute();
-			pDialog = new ProgressDialog(EventController.this);
 
-			if (getIntent().getStringExtra("Refresh") != null)
-				pDialog.setMessage(IMessages.UPDATING);
-			else
-				pDialog.setMessage(IMessages.LOADING_COMMENTS);
-
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();
-		}
-
+	// Show comments
+	class ShowComments extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
-			
+
 			CommentData.setACTION("showcomment");
 			vp.add(new BasicNameValuePair("do", CommentData.getACTION()));
 			vp.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-			
+
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
-			
+
 			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", vp);
 
 			Log.d("Comments: ", json.toString());
@@ -217,7 +201,7 @@ public class EventController extends MenuActivity {
 					comment = json.getJSONArray("comment");
 
 					for (int i = 0; i < comment.length(); i++) {
-						
+
 						JSONObject c = comment.getJSONObject(i);
 
 						String commentId = c.getString("commentId");
@@ -234,7 +218,7 @@ public class EventController extends MenuActivity {
 						map.put(TAG_FIRSTNAME, firstname);
 						map.put(TAG_LASTNAME, lastname);
 						map.put(TAG_COMMENTDATETIME, commentdatetime);
-						
+
 						commentList.add(map);
 					}
 				} else {
@@ -247,21 +231,13 @@ public class EventController extends MenuActivity {
 
 			return null;
 		}
+
 		protected void onPostExecute(String file_url) {
-			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListAdapter adapter = new SimpleAdapter(EventController.this, commentList, R.layout.comment_item,
-									new String[] {TAG_MESSAGE, 
-													TAG_FIRSTNAME, 
-													TAG_LASTNAME, 
-													TAG_COMMENTDATETIME}, 
-													new int[] { 
-															R.id.MESSAGE, 
-															R.id.FIRSTNAME, 
-															R.id.LASTNAME, 
-															R.id.COMMENTDATETIME}
-									);
+									new String[] { TAG_MESSAGE, TAG_FIRSTNAME, TAG_LASTNAME, TAG_COMMENTDATETIME }, new int[] {
+													R.id.MESSAGE, R.id.FIRSTNAME, R.id.LASTNAME, R.id.COMMENTDATETIME });
 					// updating listview
 					ListView commentList = (ListView) findViewById(android.R.id.list);
 					commentList.setAdapter(adapter);
