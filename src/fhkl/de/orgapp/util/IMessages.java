@@ -101,4 +101,7 @@ public interface IMessages {
 	public static final String YOU_HAVE_UNREAD_NOTIFICATION_1 = "You have ";
 	public static final String YOU_HAVE_UNREAD_NOTIFICATION_2 = " unread notification";
 	public static final String LOADING_COMMENTS = "Loading comments..";
+	public static final String EDIT_GENERIC = "Edit";
+	public static final String DELETE_GENERIC = "Delete";
+	public static final String REPORT_GENERIC = "Report inappropriate";
 }
