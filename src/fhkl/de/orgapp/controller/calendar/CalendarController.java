@@ -28,7 +28,6 @@ import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.NewNotifications;
 import fhkl.de.orgapp.util.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
 
@@ -61,7 +60,7 @@ public class CalendarController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
-		
+
 		START_ACTIVITY_COUNTER++;
 
 		// set user data after login
@@ -69,26 +68,25 @@ public class CalendarController extends MenuActivity {
 			UserData.setPERSONID(getIntent().getStringExtra("UserId"));
 			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
 			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
-			
-			if(OutputValidator.isUserBirthdaySet(getIntent().getStringExtra("UserBirthday")))
+
+			if (OutputValidator.isUserBirthdaySet(getIntent().getStringExtra("UserBirthday")))
 				UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
 			else
 				UserData.setBIRTHDAY("");
-			
+
 			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
 			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
 			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
 		}
-					
+
 		checkNewNotificationAndCreateIcon();
 
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
 	}
-	
+
 	@Override
-	public void onBackPressed()
-	{
+	public void onBackPressed() {
 		super.onBackPressed();
 		logout();
 	}
@@ -270,7 +268,6 @@ public class CalendarController extends MenuActivity {
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 
-			finish();
 			Intent intent = new Intent(CalendarController.this, EventController.class);
 			startActivity(intent);
 		}
