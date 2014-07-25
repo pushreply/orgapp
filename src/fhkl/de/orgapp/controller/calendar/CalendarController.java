@@ -28,8 +28,8 @@ import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.NotificationSettingsData;
 import fhkl.de.orgapp.util.UserData;
-import fhkl.de.orgapp.util.validator.OutputValidator;
 
 public class CalendarController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -41,8 +41,6 @@ public class CalendarController extends MenuActivity {
 	private static String url_get_event = "http://pushrply.com/get_event.php";
 	private static String url_get_group = "http://pushrply.com/get_group.php";
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
-
-	private static int START_ACTIVITY_COUNTER = 0;
 
 	TextView tv_eventId;
 	private static final String TAG_SUCCESS = "success";
@@ -61,26 +59,8 @@ public class CalendarController extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
-		START_ACTIVITY_COUNTER++;
-
-		// set user data after login
-		if (START_ACTIVITY_COUNTER == 1) {
-			UserData.setPERSONID(getIntent().getStringExtra("UserId"));
-			UserData.setFIRST_NAME(getIntent().getStringExtra("UserFirstName"));
-			UserData.setLAST_NAME(getIntent().getStringExtra("UserLastName"));
-
-			if (OutputValidator.isUserBirthdaySet(getIntent().getStringExtra("UserBirthday")))
-				UserData.setBIRTHDAY(getIntent().getStringExtra("UserBirthday"));
-			else
-				UserData.setBIRTHDAY("");
-
-			UserData.setGENDER(getIntent().getStringExtra("UserGender"));
-			UserData.setEMAIL(getIntent().getStringExtra("UserEmail"));
-			UserData.setMEMBER_SINCE(getIntent().getStringExtra("UserMemberSince"));
-		}
-
 		checkNewNotificationAndCreateIcon();
-
+		
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
 	}
@@ -89,10 +69,6 @@ public class CalendarController extends MenuActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		logout();
-	}
-
-	public static void resetSTART_ACTIVITY_COUNTER() {
-		START_ACTIVITY_COUNTER = 0;
 	}
 
 	class Calendar extends AsyncTask<String, String, String> {

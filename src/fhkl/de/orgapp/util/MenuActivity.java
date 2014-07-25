@@ -401,7 +401,6 @@ public class MenuActivity extends Activity {
 	}
 
 	protected void logout() {
-		CalendarController.resetSTART_ACTIVITY_COUNTER();
 
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");

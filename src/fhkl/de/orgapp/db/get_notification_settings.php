@@ -18,6 +18,7 @@ if (mysql_num_rows($result) > 0) {
     $response["notificationSettings"] = array();
     while ($row = mysql_fetch_array($result)) {
         $notificationSettings = array();
+        $notificationSettings["notificationSettingsId"] = $row["notificationSettingsId"];
         $notificationSettings["personId"] = $row["personId"];
         $notificationSettings["shownEntries"] = $row["shownEntries"];
         $notificationSettings["groupInvites"] = $row["groupInvites"];

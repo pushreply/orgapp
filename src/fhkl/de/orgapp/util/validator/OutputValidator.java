@@ -9,4 +9,12 @@ public class OutputValidator
 		
 		return true;
 	}
+	
+	public static boolean isNotificationSettingsShownEntriesSet(String shownEntries)
+	{
+		if(shownEntries == null || shownEntries.equals("") || shownEntries.equalsIgnoreCase("null"))
+			return false;
+		
+		return true;
+	}
 }

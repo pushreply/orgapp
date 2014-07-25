@@ -24,16 +24,15 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.NotificationSettingsData;
 import fhkl.de.orgapp.util.UserData;
 
 public class NotificationSettingsController extends MenuActivity {
 
 	JSONParser jsonParser = new JSONParser();
-	private JSONObject notificationSettings = null;
 
 	private ProgressDialog pDialog;
 
-	private static String URL_SELECT_NOTIFICATION_SETTINGS = "http://pushrply.com/get_notification_settings.php";
 	private static String URL_UPDATE_NOTIFICATION_SETTINGS = "http://pushrply.com/update_notification_settings.php";
 	private static final String TAG_SUCCESS = "success";
 
@@ -73,6 +72,8 @@ public class NotificationSettingsController extends MenuActivity {
 		textVibrationYes = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES);
 		textVibrationNo = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO);
 
+		setTexts();
+		
 		received_entries
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -80,15 +81,13 @@ public class NotificationSettingsController extends MenuActivity {
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
 
-						if (isChecked == true) {
+						if (isChecked) {
 							numberEntries.setVisibility(View.VISIBLE);
 						} else {
 							numberEntries.setVisibility(View.GONE);
 						}
 					}
 				});
-
-		new GetSettings().execute();
 
 		bSave.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -108,6 +107,42 @@ public class NotificationSettingsController extends MenuActivity {
 		});
 	}
 	
+	private void setTexts()
+	{
+		groupInvites.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_INVITES()));
+		groupEdited.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_EDITED()));
+		groupRemoved.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_REMOVED()));
+		eventsAdded.setChecked(Boolean.parseBoolean(NotificationSettingsData.getEVENTS_ADDED()));
+		eventsEdited.setChecked(Boolean.parseBoolean(NotificationSettingsData.getEVENTS_EDITED()));
+		eventsRemoved.setChecked(Boolean.parseBoolean(NotificationSettingsData.getEVENTS_REMOVED()));
+		commentsAdded.setChecked(Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_ADDED()));
+		commentsEdited.setChecked(Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_EDITED()));
+		commentsRemoved.setChecked(Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_REMOVED()));
+		privilegeGiven.setChecked(Boolean.parseBoolean(NotificationSettingsData.getPRIVILEGE_GIVEN()));
+
+		if(Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
+		{
+			textVibrationYes.setChecked(true);
+			vibration = true;
+		}
+		else
+		{
+			textVibrationNo.setChecked(true);
+			vibration = false;
+		}
+		
+		if (NotificationSettingsData.getSHOW_ENTRIES() != null && !NotificationSettingsData.getSHOW_ENTRIES().equals(""))
+		{
+			received_entries.setChecked(true);
+			numberEntries.setText(NotificationSettingsData.getSHOW_ENTRIES());
+			numberEntries.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			numberEntries.setVisibility(View.GONE);
+		}
+	}
+	
 	public void selectVibrationAtNewNotifications(View view)
 	{
 		switch (view.getId())
@@ -119,129 +154,6 @@ public class NotificationSettingsController extends MenuActivity {
 			case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO:
 				vibration = false;
 				break;
-		}
-	}
-
-	class GetSettings extends AsyncTask<String, String, String> {
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			pDialog = new ProgressDialog(NotificationSettingsController.this);
-			pDialog.setMessage(IMessages.LOADING_NOTIFICATION_SETTINGS);
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();
-		}
-
-		protected String doInBackground(String... args) {
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-
-			JSONObject json = new JSONParser().makeHttpRequest(
-					URL_SELECT_NOTIFICATION_SETTINGS, "GET", params);
-
-			try {
-				int success = json.getInt(TAG_SUCCESS);
-
-				if (success == 1) {
-
-					String result = new String();
-					notificationSettings = json.getJSONArray("notificationSettings")
-							.getJSONObject(0);
-
-					result += notificationSettings.getInt("groupInvites") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("groupEdited") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("groupRemoved") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("eventsAdded") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("eventsEdited") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("eventsRemoved") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("commentsAdded") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("commentsEdited") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					result += notificationSettings.getInt("commentsRemoved") == 1 ? "true"
-							+ ", "
-							: "false" + ", ";
-					result += notificationSettings.getInt("privilegeGiven") == 1 ? "true"
-							+ ", " : "false" + ", ";
-
-					result += notificationSettings.getInt("vibration") == 1 ? "true"
-							+ ", " : "false" + ", ";
-					
-					try {
-						result += notificationSettings.getInt("shownEntries");
-					} catch (Exception e) {
-						result += "null";
-					}
-
-					return result;
-				} else {
-					// unknown error
-				}
-			} catch (Exception e) {
-				System.out
-						.println("Error in SaveSettings.doInBackground(String... args): "
-								+ e.getMessage());
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		protected void onPostExecute(String result) {
-			pDialog.dismiss();
-
-			if (result == null)
-				return;
-
-			String[] datas = result.split(", ");
-
-			if (datas.length != 12)
-				return;
-
-			setTexts(datas);
-
-		}
-
-		private void setTexts(String[] datas) {
-			
-			groupInvites.setChecked(Boolean.parseBoolean(datas[0]));
-			groupEdited.setChecked(Boolean.parseBoolean(datas[1]));
-			groupRemoved.setChecked(Boolean.parseBoolean(datas[2]));
-			eventsAdded.setChecked(Boolean.parseBoolean(datas[3]));
-			eventsEdited.setChecked(Boolean.parseBoolean(datas[4]));
-			eventsRemoved.setChecked(Boolean.parseBoolean(datas[5]));
-			commentsAdded.setChecked(Boolean.parseBoolean(datas[6]));
-			commentsEdited.setChecked(Boolean.parseBoolean(datas[7]));
-			commentsRemoved.setChecked(Boolean.parseBoolean(datas[8]));
-			privilegeGiven.setChecked(Boolean.parseBoolean(datas[9]));
-
-			if(Boolean.parseBoolean(datas[10]))
-			{
-				textVibrationYes.setChecked(true);
-				vibration = true;
-			}
-			else
-			{
-				textVibrationNo.setChecked(true);
-				vibration = false;
-			}
-			
-			if (!datas[11].equals("null")) {
-				received_entries.setChecked(true);
-				numberEntries.setText(datas[11]);
-				numberEntries.setVisibility(View.VISIBLE);
-			} else {
-				numberEntries.setVisibility(View.GONE);
-			}
-
 		}
 	}
 
@@ -333,5 +245,4 @@ public class NotificationSettingsController extends MenuActivity {
 			}
 		}
 	}
-
 }

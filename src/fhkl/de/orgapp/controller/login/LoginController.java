@@ -24,6 +24,9 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.NotificationSettingsData;
+import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.validator.OutputValidator;
 
 public class LoginController extends Activity
 {
@@ -35,8 +38,10 @@ public class LoginController extends Activity
 
 	EditText inputEMail;
 	EditText inputPassword;
-	JSONArray person = null;
-	JSONObject e;
+	List<NameValuePair> params;
+	JSONObject json, e, notificationSettings;
+	JSONArray person = null, notificationSettingsArray;
+	int success;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -94,14 +99,14 @@ public class LoginController extends Activity
 		{
 			// url to select a person
 			String urlSelectPerson = "http://pushrply.com/select_person_by_email.php";
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 			
-			JSONObject json = new JSONParser().makeHttpRequest(urlSelectPerson, "GET", params);
+			json = new JSONParser().makeHttpRequest(urlSelectPerson, "GET", params);
 
 			try
 			{
-				int success = json.getInt("success");
+				success = json.getInt("success");
 				
 				if(success == 1)
 				{
@@ -118,6 +123,25 @@ public class LoginController extends Activity
 							
 						if (password.equals(inputPassword.getText().toString()))
 						{
+							//fetch notification settings of the user
+							String urlSelectNotificationSettings = "http://pushrply.com/get_notification_settings.php";
+							params = new ArrayList<NameValuePair>();
+							params.add(new BasicNameValuePair("personId", e.getString("personId")));
+
+							json = new JSONParser().makeHttpRequest(urlSelectNotificationSettings, "GET", params);
+							
+							success = json.getInt("success");
+							
+							if(success == 1)
+							{
+								notificationSettingsArray = json.getJSONArray("notificationSettings");
+								notificationSettings = notificationSettingsArray.getJSONObject(0);
+							}
+							else
+							{
+								System.out.println("No notificationSettings loaded");
+							}
+							
 							//invokes onPostExecute(String)
 							return null;
 						}
@@ -166,13 +190,34 @@ public class LoginController extends Activity
 				{
 					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 					
-					intent.putExtra("UserId", e.getString("personId"));
-					intent.putExtra("UserFirstName", e.getString("firstName"));
-					intent.putExtra("UserLastName", e.getString("lastName"));
-					intent.putExtra("UserBirthday", e.getString("birthday"));
-					intent.putExtra("UserGender", e.getString("gender"));
-					intent.putExtra("UserEmail", e.getString("eMail"));
-					intent.putExtra("UserMemberSince", e.getString("created"));
+					// set user data
+					UserData.setPERSONID(e.getString("personId"));
+					UserData.setFIRST_NAME(e.getString("firstName"));
+					UserData.setLAST_NAME(e.getString("lastName"));
+
+					if (OutputValidator.isUserBirthdaySet(e.getString("birthday")))
+						UserData.setBIRTHDAY(e.getString("birthday"));
+					else
+						UserData.setBIRTHDAY("");
+
+					UserData.setGENDER(e.getString("gender"));
+					UserData.setEMAIL(e.getString("eMail"));
+					UserData.setMEMBER_SINCE(e.getString("created"));
+					
+					// set notification settings of the user
+					NotificationSettingsData.setNOTIFICATION_SETTINGS_ID(notificationSettings.getString("notificationSettingsId"));
+					NotificationSettingsData.setSHOW_ENTRIES(OutputValidator.isNotificationSettingsShownEntriesSet(notificationSettings.getString("shownEntries")) ? notificationSettings.getString("shownEntries") : "");
+					NotificationSettingsData.setGROUP_INVITES(notificationSettings.getInt("groupInvites") == 1 ? "true": "false");
+					NotificationSettingsData.setGROUP_EDITED(notificationSettings.getInt("groupEdited") == 1 ? "true": "false");
+					NotificationSettingsData.setGROUP_REMOVED(notificationSettings.getInt("groupRemoved") == 1 ? "true": "false");
+					NotificationSettingsData.setEVENTS_ADDED(notificationSettings.getInt("eventsAdded") == 1 ? "true": "false");
+					NotificationSettingsData.setEVENTS_EDITED(notificationSettings.getInt("eventsEdited") == 1 ? "true": "false");
+					NotificationSettingsData.setEVENTS_REMOVED(notificationSettings.getInt("eventsRemoved") == 1 ? "true": "false");
+					NotificationSettingsData.setCOMMENTS_ADDED(notificationSettings.getInt("commentsAdded") == 1 ? "true": "false");
+					NotificationSettingsData.setCOMMENTS_EDITED(notificationSettings.getInt("commentsEdited") == 1 ? "true": "false");
+					NotificationSettingsData.setCOMMENTS_REMOVED(notificationSettings.getInt("commentsRemoved") == 1 ? "true": "false");
+					NotificationSettingsData.setPRIVILEGE_GIVEN(notificationSettings.getInt("privilegeGiven") == 1 ? "true": "false");
+					NotificationSettingsData.setVIBRATION(notificationSettings.getInt("vibration") == 1 ? "true": "false");
 					
 					startActivity(intent);
 				}
