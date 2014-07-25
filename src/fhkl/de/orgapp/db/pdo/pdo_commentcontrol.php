@@ -8,7 +8,7 @@ $dbpath = 'pdo_db_connect.inc.php';
  * if button add comment '+' clicked, set addcomment = 1
  */
 
-if ($_GET['addcomment']==1 
+if ($_GET['do']=="addcomment" 
 		&& isset($_GET['eventid']) 
 		&& isset($_GET['personid'])
 		&& isset($_GET['message'])) 
@@ -69,7 +69,7 @@ if ($_GET['addcomment']==1
 * if button edit comment clicked, set updatecomment = 1
 */
 
-if ($_GET['updatecomment']==1 
+if ($_GET['do']=="updatecomment"
 		&& isset($_GET['commentid'])
 		&& isset($_GET['eventid']) 
 		&& isset($_GET['personid'])
@@ -132,7 +132,7 @@ if ($_GET['updatecomment']==1
  * and how we control them?
  */
 
-if ($_GET['deletecomment']==1 
+if ($_GET['do']=="deletecomment"
 		&& isset($_GET['commentid']) 
 		&& isset($_GET['eventid']) 
 		&& isset($_GET['personid'])) 
@@ -185,7 +185,7 @@ if ($_GET['deletecomment']==1
 * 
 */
 
-if ($_GET['showcomment']==1 && isset($_GET['eventid']))
+if ($_GET['do']=="showcomment" && isset($_GET['eventid']))
 {
 	$eventid = $_GET['eventid'];
 	$response = array ();
@@ -209,11 +209,6 @@ if ($_GET['showcomment']==1 && isset($_GET['eventid']))
 			 * need a container for json
 			 */
 			$response["comment"] = array();
-			
-			/*
-			 * must be placed outside foreach loop, otherwise create a weird array index.
-			 */
-			$comment[] = array();
 			
 			foreach ($result as $row)
 			{

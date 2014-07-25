@@ -9,6 +9,5 @@ try
 	echo 'DB: FAILED';
     exit();
 }
-echo 'DB: OK. ';
 
 ?>

@@ -2,24 +2,26 @@ package fhkl.de.orgapp.util;
 
 public class CommentData {
 	private static String COMMENTID = "";
-	private static String PERSONID = "";
-	private static String EVENTID = "";
+
 	private static String COMMENT = "";
 	private static String CLASSIFICATION = "";
 	private static boolean BACK = false;
-	private static String SHOWCOMMENT = "";
+	private static String ACTION = "";
 	private static String ADDCOMMENT = "";
 	private static String UPDATECOMMENT = "";
 	private static String DELETECOMMENT = "";
-	
+	private static String COMMENTDATETIME ="";
 	
 	
 
-	public static String getSHOWCOMMENT() {
-		return SHOWCOMMENT;
+	public static String getCOMMENTDATETIME() {
+		return COMMENTDATETIME;
 	}
-	public static void setSHOWCOMMENT(String sHOWCOMMENT) {
-		SHOWCOMMENT = sHOWCOMMENT;
+	public static String getACTION() {
+		return ACTION;
+	}
+	public static void setACTION(String sACTION) {
+		ACTION = sACTION;
 	}
 	public static String getADDCOMMENT() {
 		return ADDCOMMENT;
@@ -44,18 +46,6 @@ public class CommentData {
 	}
 	public static void setCOMMENTID(String cOMMENTID) {
 		COMMENTID = cOMMENTID;
-	}
-	public static String getPERSONID() {
-		return PERSONID;
-	}
-	public static void setPERSONID(String pERSONID) {
-		PERSONID = pERSONID;
-	}
-	public static String getEVENTID() {
-		return EVENTID;
-	}
-	public static void setEVENTID(String eVENTID) {
-		EVENTID = eVENTID;
 	}
 	public static String getCOMMENT() {
 		return COMMENT;
