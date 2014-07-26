@@ -55,7 +55,7 @@ public class AttendingMemberController extends MenuActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_list);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		memberList = new ArrayList<HashMap<String, String>>();
 
 		EventData.setBACK(true);

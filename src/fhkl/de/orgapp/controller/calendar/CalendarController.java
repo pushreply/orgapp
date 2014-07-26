@@ -59,7 +59,7 @@ public class CalendarController extends MenuActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
 
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();

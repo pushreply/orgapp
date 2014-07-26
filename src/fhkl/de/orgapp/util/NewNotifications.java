@@ -72,6 +72,58 @@ public class NewNotifications
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			
+			// TODO own method
+			String groupInvites = Boolean.parseBoolean(NotificationSettingsData.getGROUP_INVITES()) ? "1" : null;
+			if (groupInvites != null)
+			{
+				params.add(new BasicNameValuePair("groupInvites", groupInvites));
+			}
+			String groupEdited = Boolean.parseBoolean(NotificationSettingsData.getGROUP_EDITED()) ? "2" : null;
+			if (groupEdited != null)
+			{
+				params.add(new BasicNameValuePair("groupEdited", groupEdited));
+			}
+			String groupRemoved = Boolean.parseBoolean(NotificationSettingsData.getGROUP_REMOVED()) ? "3" : null;
+			if (groupRemoved != null)
+			{
+				params.add(new BasicNameValuePair("groupRemoved", groupRemoved));
+			}
+			String eventsAdded = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_ADDED()) ? "4" : null;
+			if (eventsAdded != null)
+			{
+				params.add(new BasicNameValuePair("eventsAdded", eventsAdded));
+			}
+			String eventsEdited = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_EDITED()) ? "5" : null;
+			if (eventsEdited != null)
+			{
+				params.add(new BasicNameValuePair("eventsEdited", eventsEdited));
+			}
+			String eventsRemoved = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_REMOVED()) ? "6" : null;
+			if (eventsRemoved != null)
+			{
+				params.add(new BasicNameValuePair("eventsRemoved", eventsRemoved));
+			}
+			String commentsAdded = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_ADDED()) ? "7" : null;
+			if (commentsAdded != null)
+			{
+				params.add(new BasicNameValuePair("commentsAdded", commentsAdded));
+			}
+			String commentsEdited = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_EDITED()) ? "8" : null;
+			if (commentsEdited != null)
+			{
+				params.add(new BasicNameValuePair("commentsEdited", commentsEdited));
+			}
+			String commentsRemoved = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_REMOVED()) ? "9" : null;
+			if (commentsRemoved != null)
+			{
+				params.add(new BasicNameValuePair("commentsRemoved", commentsRemoved));
+			}
+			String privilegeGiven = Boolean.parseBoolean(NotificationSettingsData.getPRIVILEGE_GIVEN()) ? "10" : null;
+			if (privilegeGiven != null)
+			{
+				params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven));
+			}
+			
 			json = new JSONParser().makeHttpRequest(URL_CHECK_FOR_NEW_NOTIFICATIONS, "GET", params);
 			
 			try
@@ -109,6 +161,57 @@ public class NewNotifications
 		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			
+			String groupInvites = Boolean.parseBoolean(NotificationSettingsData.getGROUP_INVITES()) ? "1" : null;
+			if (groupInvites != null)
+			{
+				params.add(new BasicNameValuePair("groupInvites", groupInvites));
+			}
+			String groupEdited = Boolean.parseBoolean(NotificationSettingsData.getGROUP_EDITED()) ? "2" : null;
+			if (groupEdited != null)
+			{
+				params.add(new BasicNameValuePair("groupEdited", groupEdited));
+			}
+			String groupRemoved = Boolean.parseBoolean(NotificationSettingsData.getGROUP_REMOVED()) ? "3" : null;
+			if (groupRemoved != null)
+			{
+				params.add(new BasicNameValuePair("groupRemoved", groupRemoved));
+			}
+			String eventsAdded = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_ADDED()) ? "4" : null;
+			if (eventsAdded != null)
+			{
+				params.add(new BasicNameValuePair("eventsAdded", eventsAdded));
+			}
+			String eventsEdited = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_EDITED()) ? "5" : null;
+			if (eventsEdited != null)
+			{
+				params.add(new BasicNameValuePair("eventsEdited", eventsEdited));
+			}
+			String eventsRemoved = Boolean.parseBoolean(NotificationSettingsData.getEVENTS_REMOVED()) ? "6" : null;
+			if (eventsRemoved != null)
+			{
+				params.add(new BasicNameValuePair("eventsRemoved", eventsRemoved));
+			}
+			String commentsAdded = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_ADDED()) ? "7" : null;
+			if (commentsAdded != null)
+			{
+				params.add(new BasicNameValuePair("commentsAdded", commentsAdded));
+			}
+			String commentsEdited = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_EDITED()) ? "8" : null;
+			if (commentsEdited != null)
+			{
+				params.add(new BasicNameValuePair("commentsEdited", commentsEdited));
+			}
+			String commentsRemoved = Boolean.parseBoolean(NotificationSettingsData.getCOMMENTS_REMOVED()) ? "9" : null;
+			if (commentsRemoved != null)
+			{
+				params.add(new BasicNameValuePair("commentsRemoved", commentsRemoved));
+			}
+			String privilegeGiven = Boolean.parseBoolean(NotificationSettingsData.getPRIVILEGE_GIVEN()) ? "10" : null;
+			if (privilegeGiven != null)
+			{
+				params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven));
+			}
 			
 			json = new JSONParser().makeHttpRequest(URL_GET_NUMBER_OF_NEW_NOTIFICATIONS, "GET", params);
 			

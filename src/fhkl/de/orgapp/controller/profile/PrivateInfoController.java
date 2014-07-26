@@ -48,7 +48,7 @@ public class PrivateInfoController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.private_information);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		calendar = Calendar.getInstance();
 		getViews();
 		setTexts();

@@ -76,7 +76,7 @@ public class CreateEventController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_edit_event);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		calendar = Calendar.getInstance();
 
 		name = (EditText) findViewById(R.id.EVENTNAME);
@@ -116,7 +116,7 @@ public class CreateEventController extends MenuActivity {
 
 		bSave = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
-
+		
 		regularityDate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override

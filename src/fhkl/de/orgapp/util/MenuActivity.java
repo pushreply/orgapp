@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -400,8 +402,19 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	protected void logout() {
+	protected void logout()
+	{
+		resetUserData();
+		resetNotificationSettingsData();
 
+		deleteIcon();
+		
+		Intent intent = new Intent(MenuActivity.this, StartController.class);
+		startActivity(intent);
+	}
+	
+	private void resetUserData()
+	{
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -409,11 +422,23 @@ public class MenuActivity extends Activity {
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
-
-		deleteIcon();
-		
-		Intent intent = new Intent(MenuActivity.this, StartController.class);
-		startActivity(intent);
+	}
+	
+	private void resetNotificationSettingsData()
+	{
+		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
+		NotificationSettingsData.setSHOW_ENTRIES("");
+		NotificationSettingsData.setGROUP_INVITES("");
+		NotificationSettingsData.setGROUP_EDITED("");
+		NotificationSettingsData.setGROUP_REMOVED("");
+		NotificationSettingsData.setEVENTS_ADDED("");
+		NotificationSettingsData.setEVENTS_EDITED("");
+		NotificationSettingsData.setEVENTS_REMOVED("");
+		NotificationSettingsData.setCOMMENTS_ADDED("");
+		NotificationSettingsData.setCOMMENTS_EDITED("");
+		NotificationSettingsData.setCOMMENTS_REMOVED("");
+		NotificationSettingsData.setPRIVILEGE_GIVEN("");
+		NotificationSettingsData.setVIBRATION("");
 	}
 
 	class MemberList extends AsyncTask<String, String, String> {
@@ -496,23 +521,26 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 	
-	protected void checkNewNotificationAndCreateIcon()
+	protected void checkOnNewNotificationsAndNotifyUser()
 	{
 		NewNotifications newNotifications = new NewNotifications();
 		
+		// check on new notifications
 		if(!newNotifications.hasNewNotifications())
 			return;
 		
+		// create title and text for icon
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
-			
+		
 		String title = IMessages.NEW_NOTIFICATION;
 		title += numberNewNotifications.equals("1") ? "" : "s";
-			
+		
 		String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
 		text += numberNewNotifications;
 		text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
 		
+		// create icon for action bar
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 			.setSmallIcon(R.drawable.ic_action_unread)
 			.setContentTitle(title)
@@ -521,6 +549,7 @@ public class MenuActivity extends Activity {
 		
 		Intent resultIntent = new Intent(this, NotificationController.class);
 		
+		// pending intent for using own permissions
 		PendingIntent resultPendingIntent = PendingIntent.getActivity(
 												this,
 												0,
@@ -532,7 +561,12 @@ public class MenuActivity extends Activity {
 		
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+		// notify user by icon
 		notificationManager.notify(newNotificationNotificationId, builder.build());
+		
+		// notify user by vibration, if this set
+		if(Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
+			((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(2000);
 	}
 	
 	protected void deleteIcon()

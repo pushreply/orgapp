@@ -18,7 +18,7 @@ public class ProfileController extends MenuActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profil);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		
 		getViews();
 		setTexts();

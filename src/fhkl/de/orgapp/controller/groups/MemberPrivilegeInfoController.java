@@ -55,7 +55,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_privilege_info);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 
 		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
 			LinearLayout privilege_options = (LinearLayout) findViewById(R.id.PRIVILEGE_OPTIONS);

@@ -69,7 +69,7 @@ public class ListInviteMemberController extends MenuActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.invite_member_list);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		personList = new ArrayList<HashMap<String, Object>>();
 		
 		new PersonListGetter().execute();

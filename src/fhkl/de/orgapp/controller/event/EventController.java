@@ -69,7 +69,7 @@ public class EventController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 		this.setTitle(EventData.getNAME());
 		eventTime = (TextView) findViewById(R.id.EVENTTIME);
 		eventDate = (TextView) findViewById(R.id.EVENTDATE);

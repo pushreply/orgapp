@@ -27,10 +27,11 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.NotificationSettingsData;
 import fhkl.de.orgapp.util.UserData;
 
-public class NotificationSettingsController extends MenuActivity {
-
+public class NotificationSettingsController extends MenuActivity
+{
 	JSONParser jsonParser = new JSONParser();
-
+	List<NameValuePair> params;
+	
 	private ProgressDialog pDialog;
 
 	private static String URL_UPDATE_NOTIFICATION_SETTINGS = "http://pushrply.com/update_notification_settings.php";
@@ -43,14 +44,31 @@ public class NotificationSettingsController extends MenuActivity {
 	Button bSave, bCancel;
 	RadioButton textVibrationYes, textVibrationNo;
 	boolean vibration;
+	Integer shownEntries;
 
 	JSONArray notification = null;
+	
+	// tags for data access
+	private final String TAG_SHOWN_ENTRIES = "shownEntries";
+	private final String TAG_GROUP_INVITES = "groupInvites";
+	private final String TAG_GROUP_EDITED = "groupEdited";
+	private final String TAG_GROUP_REMOVED = "groupRemoved";
+	private final String TAG_EVENTS_ADDED = "eventsAdded";
+	private final String TAG_EVENTS_EDITED = "eventsEdited";
+	private final String TAG_EVENTS_REMOVED = "eventsRemoved";
+	private final String TAG_COMMENTS_ADDED = "commentsAdded";
+	private final String TAG_COMMENTS_EDITED = "commentsEdited";
+	private final String TAG_COMMENTS_REMOVED = "commentsRemoved";
+	private final String TAG_PRIVILEGE_GIVEN = "privilegeGiven";
+	private final String TAG_VIBRATION = "vibration";
+	private final String TAG_TRUE = "true";
+	private final String TAG_FALSE = "false";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notification_settings);
-		checkNewNotificationAndCreateIcon();
+		checkOnNewNotificationsAndNotifyUser();
 
 		groupInvites = (CheckBox) findViewById(R.id.GROUP_INVITES);
 		groupEdited = (CheckBox) findViewById(R.id.GROUP_EDITED);
@@ -157,10 +175,11 @@ public class NotificationSettingsController extends MenuActivity {
 		}
 	}
 
-	class SaveSettings extends AsyncTask<String, String, String> {
-
+	class SaveSettings extends AsyncTask<String, String, String>
+	{
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NotificationSettingsController.this);
 			pDialog.setMessage(IMessages.SAVING_SETTINGS);
@@ -169,80 +188,92 @@ public class NotificationSettingsController extends MenuActivity {
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) {
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
+		protected String doInBackground(String... args)
+		{
+			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
-			if (received_entries.isChecked() == true) {
-				Integer shownEntries;
-				try {
+			if (received_entries.isChecked())
+			{
+				try
+				{
 					shownEntries = Integer.valueOf(numberEntries.getText().toString());
-					if (shownEntries > Integer.MAX_VALUE) {
+					if (shownEntries > Integer.MAX_VALUE)
+					{
 						return IMessages.INVALID_NUMBER;
 					}
-				} catch (NumberFormatException e) {
+				}
+				catch (NumberFormatException e)
+				{
 					return IMessages.INVALID_NUMBER;
 				}
-				params.add(new BasicNameValuePair("shownEntries", numberEntries
-						.getText().toString()));
+				params.add(new BasicNameValuePair(TAG_SHOWN_ENTRIES, numberEntries.getText().toString()));
 			}
 
-			params.add(new BasicNameValuePair("groupInvites", groupInvites
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("groupEdited",
-					groupEdited.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("groupRemoved", groupRemoved
-					.isChecked() == true ? "1" : "0"));
-
-			params.add(new BasicNameValuePair("eventsAdded",
-					eventsAdded.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("eventsEdited", eventsEdited
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("eventsRemoved", eventsRemoved
-					.isChecked() == true ? "1" : "0"));
-
-			params.add(new BasicNameValuePair("commentsAdded", commentsAdded
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("commentsEdited", commentsEdited
-					.isChecked() == true ? "1" : "0"));
-			params.add(new BasicNameValuePair("commentsRemoved", commentsRemoved
-					.isChecked() == true ? "1" : "0"));
-
-			params.add(new BasicNameValuePair("privilegeGiven", privilegeGiven
-					.isChecked() == true ? "1" : "0"));
-
-			params.add(new BasicNameValuePair("vibration", vibration ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_GROUP_INVITES, groupInvites.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_GROUP_EDITED, groupEdited.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_GROUP_REMOVED, groupRemoved.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_EVENTS_ADDED, eventsAdded.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_EVENTS_EDITED, eventsEdited.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_EVENTS_REMOVED, eventsRemoved.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_COMMENTS_ADDED, commentsAdded.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_COMMENTS_EDITED, commentsEdited.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_COMMENTS_REMOVED, commentsRemoved.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_PRIVILEGE_GIVEN, privilegeGiven.isChecked() ? "1" : "0"));
+			params.add(new BasicNameValuePair(TAG_VIBRATION, vibration ? "1" : "0"));
 			
-			try {
-				JSONObject json = new JSONParser().makeHttpRequest(
-						URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
+			try
+			{
+				JSONObject json = new JSONParser().makeHttpRequest(URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1) {
-					Intent intent = new Intent(NotificationSettingsController.this,
-							NotificationController.class);
+				if (success == 1)
+				{
+					updateNotificationSettingsData();
+					Intent intent = new Intent(NotificationSettingsController.this, NotificationController.class);
 					startActivity(intent);
-				} else {
+				}
+				else
+				{
 					// unknown error
 				}
-			} catch (JSONException e) {
-				System.out
-						.println("Error in SaveSettings.doInBackground(String... args): "
-								+ e.getMessage());
+			}
+			catch (JSONException e)
+			{
+				System.out.println("Error in SaveSettings.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
 			}
 
 			return null;
 		}
 
-		protected void onPostExecute(String message) {
+		protected void onPostExecute(String message)
+		{
 			pDialog.dismiss();
 
-			if (message != null) {
-				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
-						.show();
-
+			if (message != null)
+			{
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
+		}
+		
+		/**
+		 * updates the notification settings of the user
+		 */
+		private void updateNotificationSettingsData()
+		{
+			NotificationSettingsData.setSHOW_ENTRIES(received_entries.isChecked() ? numberEntries.getText().toString() : "");
+			NotificationSettingsData.setGROUP_INVITES(groupInvites.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setGROUP_EDITED(groupEdited.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setGROUP_REMOVED(groupRemoved.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setEVENTS_ADDED(eventsAdded.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setEVENTS_EDITED(eventsEdited.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setEVENTS_REMOVED(eventsRemoved.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setCOMMENTS_ADDED(commentsAdded.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setCOMMENTS_EDITED(commentsEdited.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setCOMMENTS_REMOVED(commentsRemoved.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setPRIVILEGE_GIVEN(privilegeGiven.isChecked() ? TAG_TRUE : TAG_FALSE);
+			NotificationSettingsData.setVIBRATION(vibration ? TAG_TRUE : TAG_FALSE);
 		}
 	}
 }
