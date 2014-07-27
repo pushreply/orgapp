@@ -22,12 +22,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.CommentData;
-import fhkl.de.orgapp.util.EventData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.CommentData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class EventController extends MenuActivity {
 
@@ -100,7 +100,7 @@ public class EventController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EventController.this);
-			pDialog.setMessage(IMessages.LOADING_EVENT);
+			pDialog.setMessage(IMessages.Status.LOADING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -144,7 +144,7 @@ public class EventController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EventController.this);
-			pDialog.setMessage(IMessages.CHANGING_STATUS);
+			pDialog.setMessage(IMessages.Status.CHANGING_STATUS);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();

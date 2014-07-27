@@ -20,7 +20,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class SecurityInfoController extends MenuActivity
 {
@@ -78,25 +78,25 @@ public class SecurityInfoController extends MenuActivity
 	{
 		if(!isSecurityInfoComplete())
 		{
-			Toast.makeText(getApplicationContext(), IMessages.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		if(!isEmailValid())
 		{
-			Toast.makeText(getApplicationContext(), IMessages.INVALID_EMAIL, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.INVALID_EMAIL, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		if(!emailNew.getText().toString().equals(emailConfirmNew.getText().toString()))
 		{
-			Toast.makeText(getApplicationContext(), IMessages.EMAIL_ADDRESSES_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.EMAIL_ADDRESSES_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		if(!hasSecurityInfoChanged())
 		{
-			Toast.makeText(getApplicationContext(), IMessages.SECURITY_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.SECURITY_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -150,7 +150,7 @@ public class SecurityInfoController extends MenuActivity
 			super.onPreExecute();
 			
 			pDialog = new ProgressDialog(SecurityInfoController.this);
-			pDialog.setMessage(IMessages.UPDATING_SECURITY_INFO);
+			pDialog.setMessage(IMessages.Status.UPDATING_SECURITY_INFO);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -171,11 +171,11 @@ public class SecurityInfoController extends MenuActivity
 				
 				if(success == 1)
 				{
-					return IMessages.UPDATE_WAS_SUCCESSFUL;
+					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
 				else
 				{
-					return IMessages.UPDATE_WAS_NOT_SUCCESSFUL;
+					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			}
 			catch(Exception e)

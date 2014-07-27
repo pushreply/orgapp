@@ -40,11 +40,11 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.start.StartController;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.NewNotifications;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.check.NewNotificationsChecker;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class ManualInviteMemberController extends Activity {
@@ -203,7 +203,7 @@ public class ManualInviteMemberController extends Activity {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ManualInviteMemberController.this);
 
-			pDialog.setMessage(IMessages.INVITING_MEMBER);
+			pDialog.setMessage(IMessages.Status.INVITING_MEMBERS);
 
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
@@ -214,7 +214,7 @@ public class ManualInviteMemberController extends Activity {
 			int editTextLength = textLayout.getChildCount();
 			
 			if (editTextLength == 0) {
-				return IMessages.MISSING_EMAIL;
+				return IMessages.Error.MISSING_EMAIL;
 			}
 			
 			String[] editTextArray = new String[editTextLength / 2];
@@ -228,7 +228,7 @@ public class ManualInviteMemberController extends Activity {
 						if (Arrays.asList(editTextArray).contains(tmp.getText().toString())) {
 							// Duplicate Input
 							System.out.println("duplicate");
-							return IMessages.DUPLICATE_EMAIL;
+							return IMessages.Error.DUPLICATE_EMAIL;
 						} else {
 							editTextArray[i / 2] = tmp.getText().toString();
 						}
@@ -242,7 +242,7 @@ public class ManualInviteMemberController extends Activity {
 			for (int i = 0; i < editTextArray.length; i++) {
 				if (InputValidator.isEmailValid(editTextArray[i]) == false) {
 					// Wrong Email format
-					return IMessages.INVALID_EMAIL;
+					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
 			System.out.println("check 2 done");
@@ -255,7 +255,7 @@ public class ManualInviteMemberController extends Activity {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 0) {
 						// User is not registered
-						return IMessages.EXIST_USER;
+						return IMessages.Error.EXIST_USER;
 					}
 				} catch (JSONException e) {
 					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
@@ -273,7 +273,7 @@ public class ManualInviteMemberController extends Activity {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						// User already invited
-						return IMessages.USER_INVITED;
+						return IMessages.Error.USER_INVITED;
 					}
 				} catch (JSONException e) {
 					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
@@ -298,7 +298,7 @@ public class ManualInviteMemberController extends Activity {
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
-						String message = IMessages.MESSAGE_INVITE + GroupData.getGROUPNAME();
+						String message = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET", paramsNotification);
@@ -333,19 +333,19 @@ public class ManualInviteMemberController extends Activity {
 	
 	private void checkNewNotificationAndCreateIcon()
 	{
-		NewNotifications newNotifications = new NewNotifications();
+		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
 		
 		if(!newNotifications.hasNewNotifications())
 			return;
 		
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
 			
-		String title = IMessages.NEW_NOTIFICATION;
+		String title = IMessages.Notification.NEW_NOTIFICATION;
 		title += numberNewNotifications.equals("1") ? "" : "s";
 			
-		String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
+		String text = IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_1;
 		text += numberNewNotifications;
-		text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
+		text += IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)

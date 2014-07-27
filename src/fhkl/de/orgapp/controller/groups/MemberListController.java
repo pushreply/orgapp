@@ -26,12 +26,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.MemberData;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.MemberData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class MemberListController extends MenuActivity {
 
@@ -70,7 +70,7 @@ public class MemberListController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MemberListController.this);
-			pDialog.setMessage(IMessages.LOADING_MEMBER_LIST);
+			pDialog.setMessage(IMessages.Status.LOADING_MEMBER_LIST);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -139,8 +139,8 @@ public class MemberListController extends MenuActivity {
 											|| GroupData.getPRIVILEGE_EDIT_MEMBERLIST().equals("1")) {
 								tv_memberId = (TextView) view.findViewById(R.id.MEMBERID);
 								AlertDialog.Builder builder = new AlertDialog.Builder(MemberListController.this);
-								builder.setMessage(IMessages.QUESTION_DELETE_MEMBER);
-								builder.setPositiveButton(IMessages.YES, new OnClickListener() {
+								builder.setMessage(IMessages.SecurityIssue.QUESTION_DELETE_MEMBER);
+								builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
@@ -148,7 +148,7 @@ public class MemberListController extends MenuActivity {
 									}
 
 								});
-								builder.setNegativeButton(IMessages.NO, new OnClickListener() {
+								builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
@@ -158,7 +158,7 @@ public class MemberListController extends MenuActivity {
 								return true;
 
 							} else {
-								Toast.makeText(getApplicationContext(), IMessages.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG).show();
+								Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG).show();
 								return false;
 							}
 						}
@@ -176,7 +176,7 @@ public class MemberListController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MemberListController.this);
-			pDialog.setMessage(IMessages.REMOVING_MEMBER);
+			pDialog.setMessage(IMessages.Status.REMOVING_MEMBER);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -184,7 +184,7 @@ public class MemberListController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			if (GroupData.getPERSONID().equals(tv_memberId.getText().toString())) {
-				return IMessages.REMOVING_ADMIN;
+				return IMessages.Error.REMOVING_ADMIN;
 			}
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -226,7 +226,7 @@ public class MemberListController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MemberListController.this);
-			pDialog.setMessage(IMessages.LOADING_INFO);
+			pDialog.setMessage(IMessages.Status.LOADING_INFO);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();

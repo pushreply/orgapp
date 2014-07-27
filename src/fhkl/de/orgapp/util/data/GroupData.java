@@ -1,14 +1,12 @@
-package fhkl.de.orgapp.util;
+package fhkl.de.orgapp.util.data;
 
-public class MemberData {
+public class GroupData {
 
+	private static String GROUPID = "";
 	private static String PERSONID = "";
-	private static String FIRST_NAME = "";
-	private static String LAST_NAME = "";
-	private static String BIRTHDAY = "";
-	private static String GENDER = "";
-	private static String EMAIL = "";
-	private static String MEMBER_SINCE = "";
+	private static String GROUPNAME = "";
+	private static String GROUPINFO = "";
+	private static String PICTURE = "";
 
 	private static String PRIVILEGE_INVITE_MEMBER = "";
 	private static String PRIVILEGE_EDIT_MEMBERLIST = "";
@@ -19,6 +17,14 @@ public class MemberData {
 	private static String PRIVILEGE_DELETE_COMMENT = "";
 	private static String PRIVILEGE_MANAGEMENT = "";
 
+	public static String getGROUPID() {
+		return GROUPID;
+	}
+
+	public static void setGROUPID(String gROUPID) {
+		GROUPID = gROUPID;
+	}
+
 	public static String getPERSONID() {
 		return PERSONID;
 	}
@@ -27,52 +33,28 @@ public class MemberData {
 		PERSONID = pERSONID;
 	}
 
-	public static String getFIRST_NAME() {
-		return FIRST_NAME;
+	public static String getGROUPNAME() {
+		return GROUPNAME;
 	}
 
-	public static void setFIRST_NAME(String fIRST_NAME) {
-		FIRST_NAME = fIRST_NAME;
+	public static void setGROUPNAME(String gROUPNAME) {
+		GROUPNAME = gROUPNAME;
 	}
 
-	public static String getLAST_NAME() {
-		return LAST_NAME;
+	public static String getGROUPINFO() {
+		return GROUPINFO;
 	}
 
-	public static void setLAST_NAME(String lAST_NAME) {
-		LAST_NAME = lAST_NAME;
+	public static void setGROUPINFO(String gROUPINFO) {
+		GROUPINFO = gROUPINFO;
 	}
 
-	public static String getBIRTHDAY() {
-		return BIRTHDAY;
+	public static String getPICTURE() {
+		return PICTURE;
 	}
 
-	public static void setBIRTHDAY(String bIRTHDAY) {
-		BIRTHDAY = bIRTHDAY;
-	}
-
-	public static String getGENDER() {
-		return GENDER;
-	}
-
-	public static void setGENDER(String gENDER) {
-		GENDER = gENDER;
-	}
-
-	public static String getEMAIL() {
-		return EMAIL;
-	}
-
-	public static void setEMAIL(String eMAIL) {
-		EMAIL = eMAIL;
-	}
-
-	public static String getMEMBER_SINCE() {
-		return MEMBER_SINCE;
-	}
-
-	public static void setMEMBER_SINCE(String mEMBER_SINCE) {
-		MEMBER_SINCE = mEMBER_SINCE;
+	public static void setPICTURE(String pICTURE) {
+		PICTURE = pICTURE;
 	}
 
 	public static String getPRIVILEGE_INVITE_MEMBER() {
@@ -87,7 +69,8 @@ public class MemberData {
 		return PRIVILEGE_EDIT_MEMBERLIST;
 	}
 
-	public static void setPRIVILEGE_EDIT_MEMBERLIST(String pRIVILEGE_EDIT_MEMBERLIST) {
+	public static void setPRIVILEGE_EDIT_MEMBERLIST(
+			String pRIVILEGE_EDIT_MEMBERLIST) {
 		PRIVILEGE_EDIT_MEMBERLIST = pRIVILEGE_EDIT_MEMBERLIST;
 	}
 

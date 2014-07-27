@@ -19,10 +19,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditGroupController extends MenuActivity {
@@ -80,7 +80,7 @@ public class EditGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EditGroupController.this);
-			pDialog.setMessage(IMessages.LOADING_GROUP);
+			pDialog.setMessage(IMessages.Status.LOADING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -145,7 +145,7 @@ public class EditGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EditGroupController.this);
-			pDialog.setMessage(IMessages.SAVING_GROUP);
+			pDialog.setMessage(IMessages.Status.SAVING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -156,14 +156,14 @@ public class EditGroupController extends MenuActivity {
 			String info = inputInfo.getText().toString();
 
 			if (!InputValidator.isStringLengthInRange(name, 0, 255)) {
-				return IMessages.INVALID_NAME;
+				return IMessages.Error.INVALID_NAME;
 			}
 			if (!InputValidator.isStringLengthInRange(info, 0, 1024)) {
-				return IMessages.INVALID_INFO;
+				return IMessages.Error.INVALID_INFO;
 			}
 
 			if (beforeName.equals(name) && beforeInfo.equals(info)) {
-				return IMessages.NO_CHANGES_MADE;
+				return IMessages.Error.NO_CHANGES_MADE;
 			}
 
 			List<NameValuePair> paramsUpdateGroup = new ArrayList<NameValuePair>();

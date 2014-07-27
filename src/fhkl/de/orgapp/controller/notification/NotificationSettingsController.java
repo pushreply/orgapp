@@ -24,8 +24,8 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.NotificationSettingsData;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.NotificationSettingsData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class NotificationSettingsController extends MenuActivity
 {
@@ -182,7 +182,7 @@ public class NotificationSettingsController extends MenuActivity
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NotificationSettingsController.this);
-			pDialog.setMessage(IMessages.SAVING_SETTINGS);
+			pDialog.setMessage(IMessages.Status.SAVING_SETTINGS);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -200,12 +200,12 @@ public class NotificationSettingsController extends MenuActivity
 					shownEntries = Integer.valueOf(numberEntries.getText().toString());
 					if (shownEntries > Integer.MAX_VALUE)
 					{
-						return IMessages.INVALID_NUMBER;
+						return IMessages.Error.INVALID_NUMBER;
 					}
 				}
 				catch (NumberFormatException e)
 				{
-					return IMessages.INVALID_NUMBER;
+					return IMessages.Error.INVALID_NUMBER;
 				}
 				params.add(new BasicNameValuePair(TAG_SHOWN_ENTRIES, numberEntries.getText().toString()));
 			}

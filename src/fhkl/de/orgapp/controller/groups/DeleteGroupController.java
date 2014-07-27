@@ -15,9 +15,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.data.GroupData;
 
 public class DeleteGroupController extends Activity
 {
@@ -50,7 +50,7 @@ public class DeleteGroupController extends Activity
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(DeleteGroupController.this);
-			pDialog.setMessage(IMessages.DELETING_GROUP);
+			pDialog.setMessage(IMessages.Status.DELETING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -86,7 +86,7 @@ public class DeleteGroupController extends Activity
 				
 				notificationParams = new ArrayList<NameValuePair>();
 				
-				notification = IMessages.DELETE_GROUP_NOTIFICATION_1 + GroupData.getGROUPNAME() + IMessages.DELETE_GROUP_NOTIFICATION_2;
+				notification = IMessages.Notification.DELETE_GROUP_NOTIFICATION_1 + GroupData.getGROUPNAME() + IMessages.Notification.DELETE_GROUP_NOTIFICATION_2;
 				
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
@@ -102,7 +102,7 @@ public class DeleteGroupController extends Activity
 						return null;
 				}
 				
-				return (IMessages.GROUP_SUCCESSFUL_DELETED + GroupData.getGROUPNAME());
+				return (IMessages.Success.GROUP_SUCCESSFUL_DELETED + GroupData.getGROUPNAME());
 			}
 			catch(JSONException e)
 			{
@@ -125,7 +125,7 @@ public class DeleteGroupController extends Activity
 			}
 			else
 			{
-				Toast.makeText(getApplicationContext(), IMessages.GROUP_NOT_DELETED, Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), IMessages.Error.GROUP_NOT_DELETED, Toast.LENGTH_LONG).show();
 			}
 		}
 	}

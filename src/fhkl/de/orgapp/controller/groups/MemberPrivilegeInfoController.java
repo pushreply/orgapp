@@ -22,13 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.AttendingMemberController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.MemberData;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.MemberData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class MemberPrivilegeInfoController extends MenuActivity {
 
@@ -140,7 +140,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MemberPrivilegeInfoController.this);
-			pDialog.setMessage(IMessages.SAVING_PRIVILEGES);
+			pDialog.setMessage(IMessages.Status.SAVING_PRIVILEGES);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -148,7 +148,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			if (GroupData.getPERSONID().equals(MemberData.getPERSONID())) {
-				return IMessages.PRIVILEGE_ADMIN;
+				return IMessages.Error.PRIVILEGE_ADMIN;
 			}
 			String afterMemberInvitation = privilegeInvitation.isChecked() == true ? "1" : "0";
 			String afterMemberlistEditing = privilegeMemberlistEditing.isChecked() == true ? "1" : "0";
@@ -273,7 +273,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						}
 
 						if (privilegeChanged == false) {
-							return IMessages.NO_CHANGES_MADE;
+							return IMessages.Error.NO_CHANGES_MADE;
 						}
 					}
 

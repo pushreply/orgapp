@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class ProfileController extends MenuActivity
 {

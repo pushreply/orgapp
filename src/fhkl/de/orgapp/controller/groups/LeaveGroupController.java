@@ -17,11 +17,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 
 //import fhkl.de.orgapp.controller.groups.GroupsController;
 
@@ -57,7 +57,7 @@ public class LeaveGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(LeaveGroupController.this);
-			pDialog.setMessage(IMessages.LEAVING_GROUP);
+			pDialog.setMessage(IMessages.Status.LEAVING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -82,7 +82,7 @@ public class LeaveGroupController extends MenuActivity {
 				}
 
 				notificationParams = new ArrayList<NameValuePair>();
-				notification = IMessages.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
+				notification = IMessages.Notification.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));

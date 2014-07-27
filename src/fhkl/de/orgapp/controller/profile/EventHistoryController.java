@@ -55,7 +55,7 @@ public class EventHistoryController extends MenuActivity
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EventHistoryController.this);
 			
-			pDialog.setMessage(IMessages.LOADING_EVENT_HISTORY);
+			pDialog.setMessage(IMessages.Status.LOADING_EVENT_HISTORY);
 
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);

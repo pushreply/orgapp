@@ -30,8 +30,8 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.NotificationSettingsData;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.NotificationSettingsData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class NotificationController extends MenuActivity
 {
@@ -76,9 +76,9 @@ public class NotificationController extends MenuActivity
 			pDialog = new ProgressDialog(NotificationController.this);
 
 			if (getIntent().getStringExtra("Refresh") != null)
-				pDialog.setMessage(IMessages.UPDATING);
+				pDialog.setMessage(IMessages.Status.UPDATING);
 			else
-				pDialog.setMessage(IMessages.LOADING_NOTIFICATIONS);
+				pDialog.setMessage(IMessages.Status.LOADING_NOTIFICATIONS);
 
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);

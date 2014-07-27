@@ -30,11 +30,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class ListInviteMemberController extends MenuActivity
 {
@@ -79,7 +79,7 @@ public class ListInviteMemberController extends MenuActivity
 	{
 		if(!isAtLeastOnePersonSelected())
 		{
-			Toast.makeText(getApplicationContext(), IMessages.NO_MEMBER_SELECTED, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.NO_MEMBER_SELECTED, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -121,7 +121,7 @@ public class ListInviteMemberController extends MenuActivity
 			super.onPreExecute();
 			
 			pDialog = new ProgressDialog(ListInviteMemberController.this);
-			pDialog.setMessage(IMessages.LOADING_LIST);
+			pDialog.setMessage(IMessages.Status.LOADING_LIST);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -301,7 +301,7 @@ public class ListInviteMemberController extends MenuActivity
 		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ListInviteMemberController.this);
-			pDialog.setMessage(IMessages.INVITING_MEMBERS);
+			pDialog.setMessage(IMessages.Status.INVITING_MEMBERS);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -340,7 +340,7 @@ public class ListInviteMemberController extends MenuActivity
 						
 						//send notification
 						paramsNotification = new ArrayList<NameValuePair>();
-						notification = IMessages.MESSAGE_INVITE + GroupData.getGROUPNAME();
+						notification = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						
 						paramsNotification.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
 						paramsNotification.add(new BasicNameValuePair("message", notification));
@@ -375,11 +375,11 @@ public class ListInviteMemberController extends MenuActivity
 		private void showInvertedPersonsDialog()
 		{
 			alertDialogBuilder = new AlertDialog.Builder(ListInviteMemberController.this);
-			alertDialogBuilder.setTitle(IMessages.MESSAGE_INVITED_PERSON);
+			alertDialogBuilder.setTitle(IMessages.Status.MESSAGE_INVITED_PERSON);
 			CharSequence[] items = getSelectedPersonsAsArray();
 			alertDialogBuilder.setItems(items, null);
 			
-			alertDialogBuilder.setPositiveButton(IMessages.OK, new OnClickListener()
+			alertDialogBuilder.setPositiveButton(IMessages.DialogButton.OK, new OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which)

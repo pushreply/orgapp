@@ -42,11 +42,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class CreateEventController extends MenuActivity {
@@ -217,7 +217,7 @@ public class CreateEventController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CreateEventController.this);
-			pDialog.setMessage(IMessages.SAVING_EVENT);
+			pDialog.setMessage(IMessages.Status.SAVING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -227,19 +227,19 @@ public class CreateEventController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 			if (!InputValidator.isStringLengthInRange(name.getText().toString(), 0, 255)) {
-				return IMessages.INVALID_NAME;
+				return IMessages.Error.INVALID_NAME;
 			} else {
 				params.add(new BasicNameValuePair("name", name.getText().toString()));
 			}
 
 			if (!InputValidator.isStringLengthInRange(eventLocation.getText().toString(), 0, 255)) {
-				return IMessages.INVALID_EVENTLOCATION;
+				return IMessages.Error.INVALID_EVENTLOCATION;
 			} else {
 				params.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
 			}
 
 			if (eventTime.getText().toString().isEmpty()) {
-				return IMessages.INVALID_EVENTTIME;
+				return IMessages.Error.INVALID_EVENTTIME;
 			} else {
 				params.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
 			}
@@ -250,7 +250,7 @@ public class CreateEventController extends MenuActivity {
 				if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_DATE) {
 					// Date chosen?
 					if (regularityChosen.getText().toString().isEmpty()) {
-						return IMessages.INVALID_REGULARITY_DATE;
+						return IMessages.Error.INVALID_REGULARITY_DATE;
 					} else {
 						// Date > Current Date?
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
@@ -264,10 +264,10 @@ public class CreateEventController extends MenuActivity {
 							Date currentDate = new Date();
 							sdf.format(currentDate);
 							if (chosenDate.before(currentDate)) {
-								return IMessages.INVALID_REGULARITY_DATE;
+								return IMessages.Error.INVALID_REGULARITY_DATE;
 							}
 							if (chosenDate.before(chosenEventDate)) {
-								return IMessages.INVALID_REGULARITY_DATE_2;
+								return IMessages.Error.INVALID_REGULARITY_DATE_2;
 							}
 						} catch (ParseException e) {
 						}
@@ -281,28 +281,28 @@ public class CreateEventController extends MenuActivity {
 							System.out.println(tmp);
 							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
-								return IMessages.INVALID_REGULARITY_DATE_3;
+								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("weekly")) {
 							tmp.add(Calendar.DATE, 7);
 							System.out.println(tmp);
 							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
-								return IMessages.INVALID_REGULARITY_DATE_3;
+								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("every 2 weeks")) {
 							tmp.add(Calendar.DATE, 14);
 							System.out.println(tmp);
 							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
-								return IMessages.INVALID_REGULARITY_DATE_3;
+								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("monthly")) {
 							tmp.add(Calendar.DATE, 28);
 							System.out.println(tmp);
 							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
-								return IMessages.INVALID_REGULARITY_DATE_3;
+								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						}
 					}
@@ -310,22 +310,22 @@ public class CreateEventController extends MenuActivity {
 				} else if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_NUMBER) {
 					// Date chosen?
 					if (regularityChosen.getText().toString().isEmpty()) {
-						return IMessages.INVALID_REGULARITY_NUMBER;
+						return IMessages.Error.INVALID_REGULARITY_NUMBER;
 					} else {
 						if (!InputValidator.isStringLengthInRange(regularityChosen.getText().toString(), 0, 2)) {
-							return IMessages.INVALID_REGULARITY_NUMBER;
+							return IMessages.Error.INVALID_REGULARITY_NUMBER;
 						}
 						try {
 							Integer chosenNumber = Integer.parseInt(regularityChosen.getText().toString());
 							if (chosenNumber > 50 || chosenNumber < 2) {
-								return IMessages.INVALID_REGULARITY_NUMBER;
+								return IMessages.Error.INVALID_REGULARITY_NUMBER;
 							}
 						} catch (NumberFormatException e) {
 						}
 					}
 					// No RadioButton checked
 				} else {
-					return IMessages.INVALID_RADIOGROUP_REGULARITY;
+					return IMessages.Error.INVALID_RADIOGROUP_REGULARITY;
 				}
 			}
 
@@ -425,7 +425,7 @@ public class CreateEventController extends MenuActivity {
 			// Non-recurring events
 			else {
 				if (eventDate.getText().toString().isEmpty()) {
-					return IMessages.INVALID_EVENTDATE;
+					return IMessages.Error.INVALID_EVENTDATE;
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 					sdf.setLenient(false);
@@ -435,7 +435,7 @@ public class CreateEventController extends MenuActivity {
 						Date currentDate = new Date();
 						sdf.format(currentDate);
 						if (chosenDate.before(currentDate)) {
-							return IMessages.INVALID_EVENTDATE;
+							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
 					}
@@ -467,12 +467,12 @@ public class CreateEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
 							if (!regularityDate.isChecked()) {
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.MESSAGE_CREATE_EVENT_1
-												+ GroupData.getGROUPNAME() + IMessages.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
+								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_CREATE_EVENT_1
+												+ GroupData.getGROUPNAME() + IMessages.Notification.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
 							} else {
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.MESSAGE_CREATE_EVENT_1
-												+ GroupData.getGROUPNAME() + IMessages.MESSAGE_CREATE_EVENT_3 + name.getText().toString()
-												+ IMessages.MESSAGE_CREATE_EVENT_4 + notificationDate.toString()));
+								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_CREATE_EVENT_1
+												+ GroupData.getGROUPNAME() + IMessages.Notification.MESSAGE_CREATE_EVENT_3 + name.getText().toString()
+												+ IMessages.Notification.MESSAGE_CREATE_EVENT_4 + notificationDate.toString()));
 							}
 
 							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
@@ -500,8 +500,8 @@ public class CreateEventController extends MenuActivity {
 		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventController.this);
 
-			builder.setMessage(IMessages.SHARE_CREATED_EVENT);
-			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
+			builder.setMessage(IMessages.SecurityIssue.SHARE_CREATED_EVENT);
+			builder.setPositiveButton(IMessages.DialogButton.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -511,7 +511,7 @@ public class CreateEventController extends MenuActivity {
 				}
 			});
 
-			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER,
+			builder.setNeutralButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -523,7 +523,7 @@ public class CreateEventController extends MenuActivity {
 									startActivity(intent);
 								}
 							});
-			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK,
+			builder.setNegativeButton(IMessages.DialogButton.SHARE_EVENT_VIA_FACEBOOK,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {

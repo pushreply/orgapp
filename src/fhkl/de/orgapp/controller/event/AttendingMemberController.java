@@ -23,13 +23,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.MemberPrivilegeInfoController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.MemberData;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.MemberData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class AttendingMemberController extends MenuActivity {
 
@@ -69,7 +69,7 @@ public class AttendingMemberController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(AttendingMemberController.this);
-			pDialog.setMessage(IMessages.LOADING_MEMBER_LIST);
+			pDialog.setMessage(IMessages.Status.LOADING_MEMBER_LIST);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -143,7 +143,7 @@ public class AttendingMemberController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(AttendingMemberController.this);
-			pDialog.setMessage(IMessages.LOADING_INFO);
+			pDialog.setMessage(IMessages.Status.LOADING_INFO);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();

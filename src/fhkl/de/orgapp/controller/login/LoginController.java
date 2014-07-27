@@ -24,8 +24,8 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.NotificationSettingsData;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.NotificationSettingsData;
+import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
 
 public class LoginController extends Activity
@@ -88,7 +88,7 @@ public class LoginController extends Activity
 			super.onPreExecute();
 			
 			pDialog = new ProgressDialog(LoginController.this);
-			pDialog.setMessage(IMessages.CHECKING_DATA);
+			pDialog.setMessage(IMessages.Status.CHECKING_DATA);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -148,19 +148,19 @@ public class LoginController extends Activity
 						else
 						{
 							//invokes onPostExecute(String)
-							return IMessages.INVALID_PASSWORD;
+							return IMessages.Error.INVALID_PASSWORD;
 						}
 					}
 					else
 					{
 						//invokes onPostExecute(String)
-						return IMessages.INVALID_USER;
+						return IMessages.Error.INVALID_USER;
 					}
 				}				
 				else
 				{
 					//invokes onPostExecute(String)
-					return IMessages.INVALID_USER;
+					return IMessages.Error.INVALID_USER;
 				}
 			}
 			catch (JSONException e)

@@ -24,11 +24,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class NewGroupController extends MenuActivity {
@@ -80,7 +80,7 @@ public class NewGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(NewGroupController.this);
-			pDialog.setMessage(IMessages.CREATING_GROUP);
+			pDialog.setMessage(IMessages.Status.CREATING_GROUP);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -92,10 +92,10 @@ public class NewGroupController extends MenuActivity {
 			String info = inputInfo.getText().toString();
 
 			if (!InputValidator.isStringLengthInRange(name, 0, 255)) {
-				return IMessages.INVALID_NAME;
+				return IMessages.Error.INVALID_NAME;
 			}
 			if (!InputValidator.isStringLengthInRange(info, 0, 1024)) {
-				return IMessages.INVALID_INFO;
+				return IMessages.Error.INVALID_INFO;
 			}
 
 			List<NameValuePair> paramsCreateGroup = new ArrayList<NameValuePair>();
@@ -150,8 +150,8 @@ public class NewGroupController extends MenuActivity {
 			} else {
 				AlertDialog dialog;
 				AlertDialog.Builder builder = new AlertDialog.Builder(NewGroupController.this);
-				builder.setMessage(IMessages.QUESTION_MEMBER);
-				builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
+				builder.setMessage(IMessages.SecurityIssue.QUESTION_MEMBER);
+				builder.setPositiveButton(IMessages.DialogButton.LIST, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -161,7 +161,7 @@ public class NewGroupController extends MenuActivity {
 					}
 
 				});
-				builder.setNegativeButton(IMessages.MANUALLY, new OnClickListener() {
+				builder.setNegativeButton(IMessages.DialogButton.MANUALLY, new OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -170,7 +170,7 @@ public class NewGroupController extends MenuActivity {
 						startActivity(intent);
 					}
 				});
-				builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener() {
+				builder.setNeutralButton(IMessages.DialogButton.NO_MEMBER_INVITE, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(NewGroupController.this, GroupsController.class);

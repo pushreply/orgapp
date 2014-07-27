@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.util;
+package fhkl.de.orgapp.util.data;
 
 public class EventData {
 	private static String EVENTID = "";

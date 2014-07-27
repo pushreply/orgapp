@@ -51,6 +51,11 @@ import fhkl.de.orgapp.controller.profile.PrivateInfoController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 import fhkl.de.orgapp.controller.start.StartController;
+import fhkl.de.orgapp.util.check.NewNotificationsChecker;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.NotificationSettingsData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class MenuActivity extends Activity {
 
@@ -210,8 +215,8 @@ public class MenuActivity extends Activity {
 
 		case R.id.DELETE_EVENT:
 			builder = new AlertDialog.Builder(MenuActivity.this);
-			builder.setMessage(IMessages.DELETE_EVENT);
-			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
+			builder.setMessage(IMessages.SecurityIssue.DELETE_EVENT);
+			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -222,7 +227,7 @@ public class MenuActivity extends Activity {
 				}
 
 			});
-			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
+			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -258,9 +263,9 @@ public class MenuActivity extends Activity {
 		case R.id.LEAVE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog dialog;
-			builder.setMessage(IMessages.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME() + IMessages.QUESTION_MARK);
+			builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME() + IMessages.SecurityIssue.QUESTION_MARK);
 
-			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
+			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -268,7 +273,7 @@ public class MenuActivity extends Activity {
 				}
 			});
 
-			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
+			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -284,9 +289,9 @@ public class MenuActivity extends Activity {
 		case R.id.DELETE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog leavedialog;
-			builder.setMessage(IMessages.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME() + IMessages.QUESTION_MARK);
+			builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME() + IMessages.SecurityIssue.QUESTION_MARK);
 
-			builder.setPositiveButton(IMessages.YES, new OnClickListener() {
+			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -294,7 +299,7 @@ public class MenuActivity extends Activity {
 				}
 			});
 
-			builder.setNegativeButton(IMessages.NO, new OnClickListener() {
+			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -324,8 +329,8 @@ public class MenuActivity extends Activity {
 
 		case R.id.INVITE_MEMBER:
 			builder = new AlertDialog.Builder(MenuActivity.this);
-			builder.setMessage(IMessages.QUESTION_MEMBER);
-			builder.setPositiveButton(IMessages.LIST, new OnClickListener() {
+			builder.setMessage(IMessages.SecurityIssue.QUESTION_MEMBER);
+			builder.setPositiveButton(IMessages.DialogButton.LIST, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -336,7 +341,7 @@ public class MenuActivity extends Activity {
 				}
 
 			});
-			builder.setNegativeButton(IMessages.MANUALLY, new OnClickListener() {
+			builder.setNegativeButton(IMessages.DialogButton.MANUALLY, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -346,7 +351,7 @@ public class MenuActivity extends Activity {
 					startActivity(intent);
 				}
 			});
-			builder.setNeutralButton(IMessages.NO_MEMBER_INVITE, new OnClickListener() {
+			builder.setNeutralButton(IMessages.DialogButton.NO_MEMBER_INVITE, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -458,7 +463,7 @@ public class MenuActivity extends Activity {
 					Intent intent = new Intent(MenuActivity.this, MemberListController.class);
 					startActivity(intent);
 				} else {
-					return IMessages.MEMBERLIST_EMPTY;
+					return IMessages.Status.MEMBERLIST_EMPTY;
 				}
 
 			} catch (JSONException e) {
@@ -523,7 +528,7 @@ public class MenuActivity extends Activity {
 	
 	protected void checkOnNewNotificationsAndNotifyUser()
 	{
-		NewNotifications newNotifications = new NewNotifications();
+		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
 		
 		// check on new notifications
 		if(!newNotifications.hasNewNotifications())
@@ -532,12 +537,12 @@ public class MenuActivity extends Activity {
 		// create title and text for icon
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
 		
-		String title = IMessages.NEW_NOTIFICATION;
+		String title = IMessages.Notification.NEW_NOTIFICATION;
 		title += numberNewNotifications.equals("1") ? "" : "s";
 		
-		String text = IMessages.YOU_HAVE_UNREAD_NOTIFICATION_1;
+		String text = IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_1;
 		text += numberNewNotifications;
-		text += IMessages.YOU_HAVE_UNREAD_NOTIFICATION_2;
+		text += IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
 		
 		// create icon for action bar

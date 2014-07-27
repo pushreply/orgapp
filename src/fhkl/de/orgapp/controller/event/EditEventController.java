@@ -31,12 +31,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditEventController extends MenuActivity {
@@ -133,7 +133,7 @@ public class EditEventController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EditEventController.this);
-			pDialog.setMessage(IMessages.SAVING_EVENT);
+			pDialog.setMessage(IMessages.Status.SAVING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -143,22 +143,22 @@ public class EditEventController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 			if (!InputValidator.isStringLengthInRange(name.getText().toString(), 0, 255)) {
-				return IMessages.INVALID_NAME;
+				return IMessages.Error.INVALID_NAME;
 			} else {
 				params.add(new BasicNameValuePair("name", name.getText().toString()));
 			}
 
 			if (!InputValidator.isStringLengthInRange(eventLocation.getText().toString(), 0, 255)) {
-				return IMessages.INVALID_EVENTLOCATION;
+				return IMessages.Error.INVALID_EVENTLOCATION;
 			} else {
 				params.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
 			}
 
 			if (eventDate.getText().toString().isEmpty()) {
-				return IMessages.INVALID_EVENTDATE;
+				return IMessages.Error.INVALID_EVENTDATE;
 			} else {
 				if (eventDate.getText().toString().isEmpty()) {
-					return IMessages.INVALID_EVENTDATE;
+					return IMessages.Error.INVALID_EVENTDATE;
 				} else {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMANY);
 					sdf.setLenient(false);
@@ -168,7 +168,7 @@ public class EditEventController extends MenuActivity {
 						Date currentDate = new Date();
 						sdf.format(currentDate);
 						if (chosenDate.before(currentDate)) {
-							return IMessages.INVALID_EVENTDATE;
+							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
 					}
@@ -177,7 +177,7 @@ public class EditEventController extends MenuActivity {
 			}
 
 			if (eventTime.getText().toString().isEmpty()) {
-				return IMessages.INVALID_EVENTTIME;
+				return IMessages.Error.INVALID_EVENTTIME;
 			} else {
 				params.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
 			}
@@ -225,7 +225,7 @@ public class EditEventController extends MenuActivity {
 			}
 
 			if (!eventChanged) {
-				return IMessages.NO_CHANGES_MADE;
+				return IMessages.Error.NO_CHANGES_MADE;
 			}
 
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
@@ -281,8 +281,8 @@ public class EditEventController extends MenuActivity {
 		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(EditEventController.this);
 
-			builder.setMessage(IMessages.SHARE_EDITED_EVENT);
-			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
+			builder.setMessage(IMessages.SecurityIssue.SHARE_EDITED_EVENT);
+			builder.setPositiveButton(IMessages.DialogButton.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -292,7 +292,7 @@ public class EditEventController extends MenuActivity {
 				}
 			});
 
-			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER,
+			builder.setNeutralButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -304,7 +304,7 @@ public class EditEventController extends MenuActivity {
 									startActivity(intent);
 								}
 							});
-			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK,
+			builder.setNegativeButton(IMessages.DialogButton.SHARE_EVENT_VIA_FACEBOOK,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {

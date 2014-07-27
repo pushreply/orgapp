@@ -10,9 +10,9 @@ import org.json.JSONObject;
 
 import android.util.Log;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.UserData;
 
-public class Check {
+public class UserJoinEventChecker {
 
 	static JSONParser jsonParser = new JSONParser();
 

@@ -28,7 +28,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class PrivateInfoController extends MenuActivity {
 	private static String URL_UPDATE_PERSON_PRIVATE_INFO = "http://pushrply.com/update_person_private_info.php";
@@ -207,18 +207,18 @@ public class PrivateInfoController extends MenuActivity {
 
 	public void changePrivateInfo(View view) {
 		if (!areRequiredFieldsComplete()) {
-			Toast.makeText(getApplicationContext(), IMessages.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
 			return;
 		}
 
 		if (!hasPrivateInfoChanged()) {
-			Toast.makeText(getApplicationContext(), IMessages.PRIVATE_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.PRIVATE_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		if(hasTooManyGenera())
 		{
-			Toast.makeText(getApplicationContext(), IMessages.TOO_MANY_GENERA, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.TOO_MANY_GENERA, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -265,7 +265,7 @@ public class PrivateInfoController extends MenuActivity {
 			super.onPreExecute();
 
 			pDialog = new ProgressDialog(PrivateInfoController.this);
-			pDialog.setMessage(IMessages.UPDATING_PRIVATE_INFO);
+			pDialog.setMessage(IMessages.Status.UPDATING_PRIVATE_INFO);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -286,9 +286,9 @@ public class PrivateInfoController extends MenuActivity {
 				int success = json.getInt("success");
 
 				if (success == 1) {
-					return IMessages.UPDATE_WAS_SUCCESSFUL;
+					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				} else {
-					return IMessages.UPDATE_WAS_NOT_SUCCESSFUL;
+					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			} catch (Exception e) {
 				System.out.println("Error in PrivateInfoUpdater.doInBackground(String... arg0): " + e.getMessage());

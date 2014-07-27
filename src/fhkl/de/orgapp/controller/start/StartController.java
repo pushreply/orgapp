@@ -51,11 +51,11 @@ public class StartController extends Activity {
 		bLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (isConnected == true) {
+				if (isConnected) {
 					Intent i = new Intent(StartController.this, LoginController.class);
 					startActivity(i);
 				} else {
-					Toast.makeText(getApplicationContext(), IMessages.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), IMessages.Error.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}
 		});
@@ -63,11 +63,11 @@ public class StartController extends Activity {
 		bRegister.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (isConnected == true) {
+				if (isConnected) {
 					Intent i = new Intent(StartController.this, RegisterController.class);
 					startActivity(i);
 				} else {
-					Toast.makeText(getApplicationContext(), IMessages.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), IMessages.Error.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}
 		});

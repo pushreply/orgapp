@@ -28,14 +28,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
-import fhkl.de.orgapp.util.ListModel;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
-import fhkl.de.orgapp.util.check.Check;
+import fhkl.de.orgapp.util.check.UserJoinEventChecker;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.ListModel;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class SingleGroupController extends MenuActivity {
 
@@ -79,7 +79,7 @@ public class SingleGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(SingleGroupController.this);
-			pDialog.setMessage(IMessages.LOADING_CALENDAR);
+			pDialog.setMessage(IMessages.Status.LOADING_CALENDAR);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -111,7 +111,7 @@ public class SingleGroupController extends MenuActivity {
 						listModel.setEventName(eventName);
 						listModel.setEventDate(eventDate);
 						listModel.setEventTime(eventTime);
-						if (Check.attendingMember(eventId)) {
+						if (UserJoinEventChecker.attendingMember(eventId)) {
 							listModel.setAttending(R.drawable.ic_action_good);
 						} else {
 							listModel.setAttending(R.drawable.ic_action_bad);
@@ -149,7 +149,7 @@ public class SingleGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(SingleGroupController.this);
-			pDialog.setMessage(IMessages.LOADING_EVENT);
+			pDialog.setMessage(IMessages.Status.LOADING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -320,7 +320,7 @@ public class SingleGroupController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(SingleGroupController.this);
-			pDialog.setMessage(IMessages.CHANGING_STATUS);
+			pDialog.setMessage(IMessages.Status.CHANGING_STATUS);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();

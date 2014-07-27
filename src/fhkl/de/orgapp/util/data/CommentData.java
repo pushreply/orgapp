@@ -1,4 +1,4 @@
-package fhkl.de.orgapp.util;
+package fhkl.de.orgapp.util.data;
 
 public class CommentData {
 	private static String COMMENTID = "";

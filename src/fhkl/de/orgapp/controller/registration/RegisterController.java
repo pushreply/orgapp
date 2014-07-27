@@ -96,7 +96,7 @@ public class RegisterController extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(RegisterController.this);
-			pDialog.setMessage(IMessages.CREATING_PERSON);
+			pDialog.setMessage(IMessages.Status.CREATING_PERSON);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -113,19 +113,19 @@ public class RegisterController extends Activity {
 			String lastName = inputLastName.getText().toString();
 
 			if (!InputValidator.isEmailValid(eMail))
-				return IMessages.INVALID_EMAIL;
+				return IMessages.Error.INVALID_EMAIL;
 
 			if (!InputValidator.isStringLengthInRange(password, 0, 255))
-				return IMessages.INVALID_PASSWORD;
+				return IMessages.Error.INVALID_PASSWORD;
 
 			if (!password.equals(passwordConfirm))
-				return IMessages.PASSWORDS_DO_NOT_MATCH;
+				return IMessages.Error.PASSWORDS_DO_NOT_MATCH;
 
 			if (!InputValidator.isStringLengthInRange(firstName, 0, 255))
-				return IMessages.INVALID_FIRSTNAME;
+				return IMessages.Error.INVALID_FIRSTNAME;
 
 			if (!InputValidator.isStringLengthInRange(lastName, 0, 255))
-				return IMessages.INVALID_LASTNAME;
+				return IMessages.Error.INVALID_LASTNAME;
 
 			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
@@ -138,7 +138,7 @@ public class RegisterController extends Activity {
 				int success = jsonCheck.getInt(TAG_SUCCESS);
 
 				if (success == 1) {
-					return IMessages.DUPLICATE_PERSON;
+					return IMessages.Error.DUPLICATE_PERSON;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

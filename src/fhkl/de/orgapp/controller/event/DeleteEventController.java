@@ -16,12 +16,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class DeleteEventController extends MenuActivity {
 
@@ -47,7 +47,7 @@ public class DeleteEventController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(DeleteEventController.this);
-			pDialog.setMessage(IMessages.DELETING_EVENT);
+			pDialog.setMessage(IMessages.Status.DELETING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -81,8 +81,8 @@ public class DeleteEventController extends MenuActivity {
 								paramsCreateNotification.add(new BasicNameValuePair("classification", "6"));
 								paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.MESSAGE_DELETE_EVENT_1
-												+ EventData.getNAME() + IMessages.MESSAGE_DELETE_EVENT_2));
+								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_DELETE_EVENT_1
+												+ EventData.getNAME() + IMessages.Notification.MESSAGE_DELETE_EVENT_2));
 
 								json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
 								if (json.getInt(TAG_SUCCESS) != 1) {
@@ -108,8 +108,8 @@ public class DeleteEventController extends MenuActivity {
 		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(DeleteEventController.this);
 
-			builder.setMessage(IMessages.SHARE_DELETED_EVENT);
-			builder.setPositiveButton(IMessages.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
+			builder.setMessage(IMessages.SecurityIssue.SHARE_DELETED_EVENT);
+			builder.setPositiveButton(IMessages.DialogButton.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -119,7 +119,7 @@ public class DeleteEventController extends MenuActivity {
 				}
 			});
 
-			builder.setNeutralButton(IMessages.SHARE_EVENT_VIA_TWITTER,
+			builder.setNeutralButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -131,7 +131,7 @@ public class DeleteEventController extends MenuActivity {
 									startActivity(intent);
 								}
 							});
-			builder.setNegativeButton(IMessages.SHARE_EVENT_VIA_FACEBOOK,
+			builder.setNegativeButton(IMessages.DialogButton.SHARE_EVENT_VIA_FACEBOOK,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {

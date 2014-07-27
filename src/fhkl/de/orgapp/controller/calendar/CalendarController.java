@@ -23,13 +23,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
-import fhkl.de.orgapp.util.EventData;
-import fhkl.de.orgapp.util.GroupData;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.NotificationSettingsData;
-import fhkl.de.orgapp.util.UserData;
+import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.UserData;
 
 public class CalendarController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -78,9 +77,9 @@ public class CalendarController extends MenuActivity {
 			pDialog = new ProgressDialog(CalendarController.this);
 
 			if (getIntent().getStringExtra("Refresh") != null)
-				pDialog.setMessage(IMessages.UPDATING);
+				pDialog.setMessage(IMessages.Status.UPDATING);
 			else
-				pDialog.setMessage(IMessages.LOADING_CALENDAR);
+				pDialog.setMessage(IMessages.Status.LOADING_CALENDAR);
 
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
@@ -156,7 +155,7 @@ public class CalendarController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CalendarController.this);
-			pDialog.setMessage(IMessages.LOADING_EVENT);
+			pDialog.setMessage(IMessages.Status.LOADING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
