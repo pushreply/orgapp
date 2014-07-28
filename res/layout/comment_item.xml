@@ -28,7 +28,7 @@
 			    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 			<TextView
-			    android:paddingLeft="5px"
+			    android:paddingLeft="5dp"
 			    android:id="@+id/LASTNAME"
 			    android:layout_width="wrap_content"
 			    android:layout_height="match_parent"
