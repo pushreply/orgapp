@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.comment.InsertCommentController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -52,6 +53,7 @@ public class EventController extends MenuActivity {
 
 	String message, changedMessage, commentId;
 
+	TextView eventName;
 	TextView eventTime;
 	TextView eventDate;
 	TextView eventLocation;
@@ -81,10 +83,12 @@ public class EventController extends MenuActivity {
 		setContentView(R.layout.event);
 		checkOnNewNotificationsAndNotifyUser();
 		this.setTitle(EventData.getNAME());
+		eventName = (TextView) findViewById(R.id.EVENTNAME);
 		eventTime = (TextView) findViewById(R.id.EVENTTIME);
 		eventDate = (TextView) findViewById(R.id.EVENTDATE);
 		eventLocation = (TextView) findViewById(R.id.EVENTLOCATION);
 
+		eventName.setText("Event: " + EventData.getNAME());
 		eventTime.setText("Time: " + EventData.getEVENTTIME());
 		eventDate.setText("Date: " + EventData.getEVENTDATE());
 		eventLocation.setText("Location: " + EventData.getEVENTLOCATION());
@@ -104,13 +108,22 @@ public class EventController extends MenuActivity {
 		commentList = new ArrayList<HashMap<String, String>>();
 		new ShowComments().execute();
 	}
+	
+	public void addComment(View v)
+	{
+		Intent intent = new Intent(EventController.this, InsertCommentController.class);
+		startActivity(intent);
+	}
 
 	class GetEvent extends AsyncTask<String, String, String> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EventController.this);
-			pDialog.setMessage(IMessages.Status.LOADING_EVENT);
+			if (getIntent().getStringExtra("Refresh") != null)
+				pDialog.setMessage(IMessages.Status.UPDATING);
+			else
+				pDialog.setMessage(IMessages.Status.LOADING_EVENT);
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
