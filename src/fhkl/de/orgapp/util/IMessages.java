@@ -33,6 +33,7 @@ public interface IMessages {
 	 */
 
 	public static final class Error {
+		public static final String EMPTY_COMMENT = "You don't write any comment yet.";
 		public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 		public static final String DUPLICATE_PERSON = "Person already exists";
 		public static final String EMAIL_ADDRESSES_DO_NOT_MATCH = "Email addresses do not match";
