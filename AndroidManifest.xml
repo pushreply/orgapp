@@ -114,6 +114,8 @@
             android:name=".controller.profile.EventHistoryController"
             android:label="@string/EVENT_HISTORY" >
         </activity>
+        <activity android:name=".controller.event.OldEventController" >
+        </activity>
         <activity android:name=".controller.event.EventController" >
         </activity>
         <activity

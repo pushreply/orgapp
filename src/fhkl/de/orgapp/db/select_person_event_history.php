@@ -17,7 +17,7 @@ $db = new DB_CONNECT ();
 $personId = $_GET['personId'];
 $currentDate = date("Y-m-d");
 
-$result = mysql_query("SELECT * FROM event WHERE personId = '$personId' AND regularity = '0'") or die(mysql_error());
+$result = mysql_query("SELECT * FROM event WHERE personId = '$personId'") or die(mysql_error());
 
 if(mysql_num_rows($result) > 0)
 {
@@ -29,6 +29,7 @@ if(mysql_num_rows($result) > 0)
 		if(strtotime($row["eventDate"]) < strtotime($currentDate))
 		{
 			$previousEvent = array();
+			$previousEvent["eventId"] = $row["eventId"];
 			$previousEvent["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
 			$previousEvent["eventDate"] = $row["eventDate"];
 			array_push($response["previousEvents"], $previousEvent);
