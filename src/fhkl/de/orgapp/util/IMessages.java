@@ -1,22 +1,19 @@
 package fhkl.de.orgapp.util;
 
 /**
- * IMessages - defines all constants to display them.
- * Grouped by message type
+ * IMessages - defines all constants to display them. Grouped by message type
  * 
  * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
  * @version 5.1
- *
+ * 
  */
 
-public interface IMessages
-{
+public interface IMessages {
 	/**
 	 * messages for buttons
 	 */
-	
-	public static final class DialogButton
-	{
+
+	public static final class DialogButton {
 		public static final String DELETE_GENERIC = "Delete";
 		public static final String EDIT_GENERIC = "Edit";
 		public static final String LIST = "List";
@@ -28,14 +25,14 @@ public interface IMessages
 		public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event on Facebook";
 		public static final String SHARE_EVENT_VIA_TWITTER = "Share event on Twitter";
 		public static final String YES = "Yes";
+		public static final String CANCEL = "Cancel";
 	}
-	
+
 	/**
 	 * messages for errors
 	 */
-	
-	public static final class Error
-	{
+
+	public static final class Error {
 		public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 		public static final String DUPLICATE_PERSON = "Person already exists";
 		public static final String EMAIL_ADDRESSES_DO_NOT_MATCH = "Email addresses do not match";
@@ -73,13 +70,12 @@ public interface IMessages
 		public static final String UPDATE_WAS_NOT_SUCCESSFUL = "Update was not successful";
 		public static final String USER_INVITED = "User was already invited";
 	}
-	
+
 	/**
 	 * messages for user notifications
 	 */
-	
-	public static final class Notification
-	{
+
+	public static final class Notification {
 		public static final String DELETE_GROUP_NOTIFICATION_1 = "Group ";
 		public static final String DELETE_GROUP_NOTIFICATION_2 = " has been deleted";
 		public static final String MESSAGE_CREATE_EVENT_1 = "In the group \"";
@@ -95,14 +91,19 @@ public interface IMessages
 		public static final String NOTIFICATION_LEFT_GROUP = "You left the group ";
 		public static final String YOU_HAVE_UNREAD_NOTIFICATION_1 = "You have ";
 		public static final String YOU_HAVE_UNREAD_NOTIFICATION_2 = " unread notification";
+		public static final String DELETE_COMMENT_1 = "The following comment has been deleted: \"";
+		public static final String DELETE_COMMENT_2 = "\"";
+		public static final String EDIT_COMMENT_1 = "The following comment was changed from \"";
+		public static final String EDIT_COMMENT_2 = "\" to \"";
+		public static final String EDIT_COMMENT_3 = "\"";
+
 	}
-	
+
 	/**
 	 * messages for security issue
 	 */
-	
-	public static final class SecurityIssue
-	{
+
+	public static final class SecurityIssue {
 		public static final String CONFIRM_LEAVING_GROUP = "Do you really want to leave group ";
 		public static final String DELETE_EVENT = "Do you really want to delete this event?";
 		public static final String MESSAGE_DELETE_GROUP = "Do you really want to delete the group ";
@@ -112,19 +113,23 @@ public interface IMessages
 		public static final String SHARE_CREATED_EVENT = "Do you want to share the created event?";
 		public static final String SHARE_DELETED_EVENT = "Do you want to share the deleted event?";
 		public static final String SHARE_EDITED_EVENT = "Do you want to share the edited event?";
-		
+		public static final String COMMENT = "Comment management menu";
+		public static final String EDIT_COMMENT = "Edit comment";
+		public static final String DELETE_COMMENT = "Delete comment";
+		public static final String QUESTION_DELETE_COMMENT = "Do you really want to delete this comment?";
+
 	}
-	
+
 	/**
 	 * messages for status
 	 */
-	
-	public static final class Status
-	{
+
+	public static final class Status {
 		public static final String CHANGING_STATUS = "Changing status...";
 		public static final String CHECKING_DATA = "Checking data...";
 		public static final String CREATING_GROUP = "Creating group...";
 		public static final String CREATING_PERSON = "Creating person...";
+		public static final String DELETING_COMMENT = "Deleting comment...";
 		public static final String DELETING_EVENT = "Deleting event...";
 		public static final String DELETING_GROUP = "Deleting group...";
 		public static final String INVITING_MEMBERS = "Inviting members...";
@@ -142,6 +147,7 @@ public interface IMessages
 		public static final String MEMBERLIST_EMPTY = "Memberlist is empty";
 		public static final String MESSAGE_INVITED_PERSON = "You have been invited the following persons";
 		public static final String REMOVING_MEMBER = "Removing member...";
+		public static final String SAVING_COMMENT = "Saving comment...";
 		public static final String SAVING_EVENT = "Saving event...";
 		public static final String SAVING_GROUP = "Saving group...";
 		public static final String SAVING_PRIVILEGES = "Saving privileges...";
@@ -150,14 +156,13 @@ public interface IMessages
 		public static final String UPDATING_PRIVATE_INFO = "Updating private information...";
 		public static final String UPDATING_SECURITY_INFO = "Updating security information...";
 	}
-	
+
 	/**
 	 * messages for success
 	 */
-	
-	public static final class Success
-	{
-		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";	
+
+	public static final class Success {
+		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
 		public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
 	}
 }
