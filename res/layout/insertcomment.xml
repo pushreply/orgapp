@@ -1,13 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fhkl.de.orgapp.controller.comment.CommentController" >
+	android:orientation="vertical"
+    tools:context="fhkl.de.orgapp.controller.comment.InsertCommentController" >
+    
+    <TextView
+        android:id="@+id/EVENTNAME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/EVENTTIME"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/EVENTDATE"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/COMMENTSLABEL" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/EVENTLOCATION"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <EditText
         android:id="@+id/COMMENTTEXT"
@@ -17,28 +37,29 @@
         android:gravity="left"
         android:inputType="textMultiLine" 
         android:maxLines="8"
-    	android:lines="7"
-        >
+    	android:lines="6" >
 
         <requestFocus />
     </EditText>
 
-    <Button
-        android:id="@+id/OKBUTTON"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/COMMENTTEXT"
-        android:layout_below="@+id/COMMENTTEXT"
-        android:layout_marginTop="80dp"
-        android:text="@string/SUBMIT" />
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/CANCELBUTTON"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/OKBUTTON"
-        android:layout_alignBottom="@+id/OKBUTTON"
-        android:layout_alignLeft="@+id/COMMENTTEXT"
-        android:text="@string/CANCEL" />
+        <Button
+            android:id="@+id/SUBMITBUTTON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/SUBMIT" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/CANCELBUTTON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/CANCEL" />
+
+    </LinearLayout>
+
+</LinearLayout>
