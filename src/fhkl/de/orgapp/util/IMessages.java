@@ -25,8 +25,8 @@ public interface IMessages
 		public static final String NO_MEMBER_INVITE = "No member invite";
 		public static final String NO_THANKS = "No, thanks";
 		public static final String OK = "Ok";
-		public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event via Facebook";
-		public static final String SHARE_EVENT_VIA_TWITTER = "Post it in Twitter";
+		public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event on Facebook";
+		public static final String SHARE_EVENT_VIA_TWITTER = "Share event on Twitter";
 		public static final String YES = "Yes";
 	}
 	
@@ -43,12 +43,12 @@ public interface IMessages
 		public static final String GROUP_NOT_DELETED = "Group was not deleted";
 		public static final String INSUFFICIENT_PRIVILEGES = "Insufficient privileges";
 		public static final String INVALID_EMAIL = "Invalid e-mail address";
-		public static final String INVALID_EVENTDATE = "Invalid event date. Choose a future Date";
+		public static final String INVALID_EVENTDATE = "Invalid event date. Choose a future date";
 		public static final String INVALID_EVENTLOCATION = "Invalid event location";
 		public static final String INVALID_EVENTTIME = "Invalid event time";
-		public static final String INVALID_FIRSTNAME = "Invalid firstname";
+		public static final String INVALID_FIRSTNAME = "Invalid first name";
 		public static final String INVALID_INFO = "Invalid Info";
-		public static final String INVALID_LASTNAME = "Invalid lastname";
+		public static final String INVALID_LASTNAME = "Invalid last name";
 		public static final String INVALID_NAME = "Invalid Name";
 		public static final String INVALID_NUMBER = "Invalid number";
 		public static final String INVALID_PASSWORD = "Invalid password";
@@ -64,14 +64,14 @@ public interface IMessages
 		public static final String NO_MEMBER_SELECTED = "Please select at least one person";
 		public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
 		public static final String PRIVATE_INFO_NOT_UPDATED = "You have to update your private information";
-		public static final String PRIVILEGE_ADMIN = "Admin privileges can not be altered";
-		public static final String REMOVING_ADMIN = "Admin can not be removed";
+		public static final String PRIVILEGE_ADMIN = "Admin privileges cannot be altered";
+		public static final String REMOVING_ADMIN = "Admin cannot be removed";
 		public static final String REPORT_GENERIC = "Report inappropriate";
 		public static final String REQUIRED_FIELDS_NOT_COMPLETE = "You have to fill out the required fields";
 		public static final String SECURITY_INFO_NOT_UPDATED = "You have to update your security information";
 		public static final String TOO_MANY_GENERA = "Please select at most one gender";
 		public static final String UPDATE_WAS_NOT_SUCCESSFUL = "Update was not successful";
-		public static final String USER_INVITED = "User already invited";
+		public static final String USER_INVITED = "User was already invited";
 	}
 	
 	/**
