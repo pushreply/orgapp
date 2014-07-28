@@ -11,7 +11,8 @@ $dbpath = 'pdo_db_connect.inc.php';
 if ($_GET['do']=="addcomment"
 		&& isset($_GET['eventId'])
 		&& isset($_GET['personId'])
-		&& isset($_GET['message']))
+		&& isset($_GET['message']) 
+		&& htmlspecialchars($_GET['message']) != null)
 {
 	/*
 	 * pass the get values to some variables
