@@ -7,23 +7,44 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * ProfileController - Handles the data for display the profile of the user
+ * 
+ * @author Oliver Neubauer
+ * @version ?
+ *
+ */
+
 public class ProfileController extends MenuActivity
 {
 	TextView textFirstName, textLastName, textBirthday, textGender, textEmail, textMemberSince;
 	TextView textPrivateInformation, textSecurityInformation, textGeneralInformation;
 	TextView firstName, lastName, birthday, gender, email, memberSince;
 	
+	/**
+	 * Sets the content view.
+	 * Calls the required methods
+	 *
+	 * @param savedInstanceState contains the data
+	 */
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profil);
+		
+		// check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 		
 		getViews();
 		setTexts();
 		setTextSizes();
 	}
+	
+	/**
+	 * Fetches the views by id
+	 */
 	
 	private void getViews()
 	{
@@ -44,6 +65,10 @@ public class ProfileController extends MenuActivity
 		email = (TextView) findViewById(R.id.USER_EMAIL_PROFIL);
 		memberSince = (TextView) findViewById(R.id.USER_MEMBER_SINCE);
 	}
+	
+	/**
+	 * Sets the texts of views
+	 */
 	
 	private void setTexts()
 	{
@@ -74,6 +99,10 @@ public class ProfileController extends MenuActivity
 		email.setText(UserData.getEMAIL());
 		memberSince.setText(UserData.getMEMBER_SINCE());
 	}
+	
+	/**
+	 * Sets text sizes
+	 */
 	
 	private void setTextSizes()
 	{

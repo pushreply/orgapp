@@ -30,6 +30,14 @@ import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * PrivateInfoController - Handles the data for edit the private information of the user
+ * 
+ * @author Oliver Neubauer
+ * @version ?
+ *
+ */
+
 public class PrivateInfoController extends MenuActivity {
 	private static String URL_UPDATE_PERSON_PRIVATE_INFO = "http://pushrply.com/update_person_private_info.php";
 
@@ -44,6 +52,13 @@ public class PrivateInfoController extends MenuActivity {
 	int yearNew, monthNew, dayNew;
 	String[] birthdayArray;
 
+	/**
+	 * Initializes all necessary variables.
+	 * Sets onClickListener for birthday calendar
+	 * 
+	 * @param savedInstanceState
+	 */
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,7 +101,22 @@ public class PrivateInfoController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Defines the dialog for birthday
+	 */
+	
 	private DatePickerDialog.OnDateSetListener setDateListener = new DatePickerDialog.OnDateSetListener() {
+		
+		/**
+		 * Sets the birthday in the dialog selected by the user.
+		 * Call updateBirthday()
+		 *
+		 * @param view the view of the dialog
+		 * @param year the year to set
+		 * @param month the month to set
+		 * @param day the day to set
+		 */
+		
 		@Override
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			calendar.set(Calendar.YEAR, year);
@@ -98,6 +128,13 @@ public class PrivateInfoController extends MenuActivity {
 		}
 	};
 
+	/**
+	 * Splits the birthday for preferred format
+	 * 
+	 * @param birthdayString the birthday
+	 * @return birthday as array
+	 */
+	
 	private String[] splitBirthday(String birthdayString) {
 		String[] result = new String[3];
 		
@@ -109,12 +146,20 @@ public class PrivateInfoController extends MenuActivity {
 		return result;
 	}
 
+	/**
+	 * Updates the birthday to be displayed
+	 */
+	
 	private void updateBirthday() {
 		String format = "yyyy-MM-dd";
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
 		birthdayNew.setText(dateFormat.format(calendar.getTime()));
 	}
 
+	/**
+	 * Fetches the views by id
+	 */
+	
 	private void getViews() {
 		textFirstName = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_FIRST_NAME);
 		textLastName = (TextView) findViewById(R.id.PRIVATE_INFO_TEXT_LAST_NAME);
@@ -132,6 +177,10 @@ public class PrivateInfoController extends MenuActivity {
 		cancelButton = (Button) findViewById(R.id.CANCEL_PRIVATE_INFO_VIEW);
 	}
 
+	/**
+	 * Sets the texts to be displayed
+	 */
+	
 	private void setTexts() {
 		textFirstName.setText(getString(R.string.FIRSTNAME_MUST_HAVE) + ":");
 		textLastName.setText(getString(R.string.LASTNAME_MUST_HAVE) + ":");
@@ -144,11 +193,14 @@ public class PrivateInfoController extends MenuActivity {
 		firstNameNew.setText(UserData.getFIRST_NAME());
 		lastNameNew.setText(UserData.getLAST_NAME());
 		
+		// If birthday contains data, set the field as hint
 		if(!UserData.getBIRTHDAY().equals(""))
 			birthdayNew.setHint(UserData.getBIRTHDAY());
+		// Otherwise set a text
 		else
 			birthdayNew.setHint(getString(R.string.SET_NEW_BIRTHDAY));
 
+		// Set the checkbox according the gender of user
 		if (UserData.getGENDER().equals("m"))
 			textGenderMale.setChecked(true);
 		else if (UserData.getGENDER().equals("w"))
@@ -160,6 +212,10 @@ public class PrivateInfoController extends MenuActivity {
 		cancelButton.setText(getString(R.string.CANCEL));
 	}
 
+	/**
+	 * Sets the text size
+	 */
+	
 	private void setTextSizes() {
 		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
 
@@ -176,6 +232,12 @@ public class PrivateInfoController extends MenuActivity {
 		birthdayNew.setTextSize(userTextSize);
 	}
 
+	/**
+	 * Select a gender
+	 * 
+	 * @param view the associated view
+	 */
+	
 	public void selectGender(View view)
 	{
 		if(!textGenderMale.isChecked() && !textGenderFemale.isChecked())
@@ -198,6 +260,12 @@ public class PrivateInfoController extends MenuActivity {
 		}
 	}
 	
+	/**
+	 * Clears the selected birthday
+	 * 
+	 * @param view the associated view
+	 */
+	
 	public void clearBirthday(View view)
 	{
 		birthdayNew.setText("");
@@ -205,6 +273,12 @@ public class PrivateInfoController extends MenuActivity {
 		textClearBirthday.setVisibility(View.INVISIBLE);
 	}
 
+	/**
+	 * Checks the data and calls the updater
+	 * 
+	 * @param view the associated view
+	 */
+	
 	public void changePrivateInfo(View view) {
 		if (!areRequiredFieldsComplete()) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
@@ -225,15 +299,31 @@ public class PrivateInfoController extends MenuActivity {
 		new PrivateInfoUpdater().execute();
 	}
 
+	/**
+	 * Goes back to the profile layout
+	 * 
+	 * @param view the associated view
+	 */
+	
 	public void cancelPrivateInfoView(View view) {
 		backToProfile();
 	}
 
+	/**
+	 * Starts the ProfileController 
+	 */
+	
 	private void backToProfile() {
 		Intent intent = new Intent(this, ProfileController.class);
 		startActivity(intent);
 	}
 
+	/**
+	 * Checks, whether all required fields are complete
+	 * 
+	 * @return false, if one field is missing. True otherwise
+	 */
+	
 	private boolean areRequiredFieldsComplete() {
 		if (firstNameNew.getText().toString().equals("") || lastNameNew.getText().toString().equals(""))
 			return false;
@@ -241,6 +331,12 @@ public class PrivateInfoController extends MenuActivity {
 		return true;
 	}
 
+	/**
+	 * Checks, whether changes were done
+	 * 
+	 * @return false, if one field contains the same data as previous. True otherwise
+	 */
+	
 	private boolean hasPrivateInfoChanged() {
 		if (firstNameNew.getText().toString().equals(UserData.getFIRST_NAME())
 						&& lastNameNew.getText().toString().equals(UserData.getLAST_NAME())
@@ -251,6 +347,12 @@ public class PrivateInfoController extends MenuActivity {
 		return true;
 	}
 	
+	/**
+	 * Checks, whether male and female are selected
+	 * 
+	 * @return true, if male and female selected. False otherwise
+	 */
+	
 	private boolean hasTooManyGenera()
 	{
 		if(textGenderMale.isChecked() && textGenderFemale.isChecked())
@@ -259,7 +361,20 @@ public class PrivateInfoController extends MenuActivity {
 		return false;
 	}
 
+	/**
+	 * PrivateInfoUpdater - Updates the private information
+	 * 
+	 * @author Oliver Neubauer
+	 * @version ?
+	 *
+	 */
+	
 	class PrivateInfoUpdater extends AsyncTask<String, String, String> {
+		
+		/**
+		 * Defines a progress dialog within the main thread
+		 */
+		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -271,6 +386,11 @@ public class PrivateInfoController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Prepares and makes a http-request within the background thread
+		 * 
+		 * @param arg0 the arguments as String array
+		 */
 		@Override
 		protected String doInBackground(String... arg0) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -298,6 +418,13 @@ public class PrivateInfoController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Displays an user message within main thread.
+		 * Sets the updated user data
+		 *
+		 * @param message the message to be displayed
+		 */
+		
 		@Override
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
@@ -306,6 +433,7 @@ public class PrivateInfoController extends MenuActivity {
 			if (message != null)
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
+			// Set the updated data to the POJO
 			UserData.setFIRST_NAME(firstNameNew.getText().toString());
 			UserData.setLAST_NAME(lastNameNew.getText().toString());
 			UserData.setBIRTHDAY(birthdayNew.getText().toString());
