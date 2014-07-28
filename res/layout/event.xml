@@ -55,6 +55,7 @@
             android:id="@+id/ADDNEWCOMMENT"
             android:layout_column="4"
             android:layout_row="0"
+            android:onClick="addComment"
             android:contentDescription="@string/ADDNEWCOMMENT"
             android:src="@drawable/ic_action_new" />
     </GridLayout>
