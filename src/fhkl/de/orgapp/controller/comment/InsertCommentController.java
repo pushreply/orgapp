@@ -19,9 +19,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.data.CommentData;
 import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.UserData;
 
@@ -141,10 +143,14 @@ public class InsertCommentController extends Activity {
 			super.onPostExecute(result);
 			
 			//check if the message not empty
-			if(result != null) {
+			if(inputMessage.getText().toString() == "") {
+				Toast.makeText(getApplicationContext(), "Comment is empty", Toast.LENGTH_LONG);
+			}
+			else
+			{
 				Intent i = new Intent(InsertCommentController.this, EventController.class);
 				startActivity(i);
-				finish();
+				finish();				
 			}
 		}
 	}
