@@ -12,34 +12,36 @@
         <requestFocus />
     </TextView>
 
-    <TextView
-        android:id="@+id/EVENTDATE"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingBottom="6dip"
-        android:paddingTop="6dip"
-        android:textSize="17sp" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/EVENTDATE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+        <TextView
+            android:id="@+id/EVENTTIME"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/EVENTTIME"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:gravity="center_horizontal"
-            android:textSize="17sp" />
-
-        <TextView
             android:id="@+id/EVENT"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textSize="17sp" />
+            android:textAppearance="?android:attr/textAppearanceListItem" />
     </LinearLayout>
 
 </LinearLayout>

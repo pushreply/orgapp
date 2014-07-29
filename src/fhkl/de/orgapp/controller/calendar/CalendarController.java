@@ -106,6 +106,8 @@ public class CalendarController extends MenuActivity {
 						String date = c.getString("eventDate");
 						String time = c.getString("eventTime");
 
+						time = time.substring(0, 5);
+
 						HashMap<String, String> map = new HashMap<String, String>();
 						map.put(TAG_EVENTID, eventId);
 						map.put(TAG_EVENTDATE, date);
@@ -119,6 +121,7 @@ public class CalendarController extends MenuActivity {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -234,6 +237,7 @@ public class CalendarController extends MenuActivity {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
