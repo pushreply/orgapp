@@ -56,13 +56,15 @@ public class PrivateInfoController extends MenuActivity {
 	 * Initializes all necessary variables.
 	 * Sets onClickListener for birthday calendar
 	 * 
-	 * @param savedInstanceState
+	 * @param savedInstanceState contains the data
 	 */
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.private_information);
+		
+		// check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 		calendar = Calendar.getInstance();
 		getViews();

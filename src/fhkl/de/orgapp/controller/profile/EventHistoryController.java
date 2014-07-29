@@ -27,6 +27,15 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.UserData;
+
+/**
+ * EventHistoryController - Handles the data for display the previous events the user joined
+ * 
+ * @author Jochen Jung, Oliver Neubauer
+ * @version ?
+ *
+ */
 
 public class EventHistoryController extends MenuActivity {
 	private static String URL_SELECT_EVENT_HISTORY = "http://pushrply.com/select_person_event_history.php";
@@ -47,9 +56,18 @@ public class EventHistoryController extends MenuActivity {
 
 	TextView tv_eventId;
 
+	/**
+	 * Initializes all necessary variables.
+	 * Calls the required methods
+	 * 
+	 * @param savedInstanceState contains the data
+	 */
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_history);
+		
+		// check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 
 		eventHistoryList = new ArrayList<HashMap<String, String>>();
@@ -57,9 +75,23 @@ public class EventHistoryController extends MenuActivity {
 		new EventHistoryGetter().execute();
 	}
 
-	class EventHistoryGetter extends AsyncTask<String, String, String> {
+	/**
+	 * EventHistoryGetter - Fetches the previous events of the user from the database
+	 * 
+	 * @author Oliver Neubauer
+	 * @version ?
+	 *
+	 */
+	
+	class EventHistoryGetter extends AsyncTask<String, String, String>
+	{
+		/**
+		 * Defines a progress dialog within the main thread
+		 */
+		
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(EventHistoryController.this);
 
@@ -70,10 +102,17 @@ public class EventHistoryController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Prepares and makes a http-request within the background thread to fetches the previous events.
+		 * Put the events in a list
+		 * 
+		 * @param params the arguments as String array
+		 */
+		
 		@Override
 		protected String doInBackground(String... params) {
 			List<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-			requestParams.add(new BasicNameValuePair("personId", getIntent().getStringExtra("UserId")));
+			requestParams.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_EVENT_HISTORY, "GET", requestParams);
 
@@ -112,23 +151,36 @@ public class EventHistoryController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Prepares the data for the display with help of an adapter
+		 *
+		 * @param result null or an error message
+		 */
+		
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
 			pDialog.dismiss();
 
+			// Prepare the data
 			runOnUiThread(new Runnable() {
+				
+				// Put the data in an adapter
 				public void run() {
+					
+					// Initialize the adapter and assign the fetched data to the layout fields
 					ListAdapter adapter = new SimpleAdapter(EventHistoryController.this, eventHistoryList,
 									R.layout.event_history_item, new String[] { TAG_EVENT_ID, TAG_EVENT_NAME, TAG_EVENT_DATE }, new int[] {
 													R.id.EVENTID, R.id.PREVIOUS_EVENT_NAME, R.id.PREVIOUS_EVENT_DATE });
 
-					// update listview
+					// Update listview
 					final ListView eventList = (ListView) findViewById(android.R.id.list);
 
+					// Make the list clickable
 					eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+						
+						// Define the action in case of an item click
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							tv_eventId = (TextView) view.findViewById(R.id.EVENTID);
@@ -136,14 +188,28 @@ public class EventHistoryController extends MenuActivity {
 
 						}
 					});
+					
+					// Set the adapter
 					eventList.setAdapter(adapter);
 				}
 			});
 		}
 	}
 
+	/**
+	 * GetEvent - Fetches the details of the selected, previous event
+	 * 
+	 * @author Jochen Jung
+	 * @version ?
+	 *
+	 */
+	
 	class GetEvent extends AsyncTask<String, String, String> {
 
+		/**
+		 * Defines a progress dialog within the main thread 
+		 */
+		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -154,6 +220,12 @@ public class EventHistoryController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Prepares and makes a http-request within the background thread
+		 * 
+		 * @param args the arguments as String array
+		 */
+		
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
@@ -188,6 +260,12 @@ public class EventHistoryController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Calls the OldEventController
+		 *
+		 * @param result is null
+		 */
+		
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 

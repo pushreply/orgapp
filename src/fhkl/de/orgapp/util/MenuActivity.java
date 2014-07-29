@@ -384,14 +384,11 @@ public class MenuActivity extends Activity {
 
 		case R.id.LIST_EVENT_HISTORY:
 			intent = new Intent(MenuActivity.this, EventHistoryController.class);
-			intent.putExtra("UserId", UserData.getPERSONID());
 			startActivity(intent);
 			return true;
 
 		case R.id.CHANGE_SECURITY_INFORMATION:
 			intent = new Intent(MenuActivity.this, SecurityInfoController.class);
-			intent.putExtra("UserId", UserData.getPERSONID());
-			intent.putExtra("Email", UserData.getEMAIL());
 			startActivity(intent);
 			return true;
 
