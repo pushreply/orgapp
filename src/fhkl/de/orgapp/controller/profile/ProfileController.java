@@ -1,6 +1,7 @@
 package fhkl.de.orgapp.controller.profile;
 
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
@@ -106,25 +107,22 @@ public class ProfileController extends MenuActivity
 	
 	private void setTextSizes()
 	{
-		int sectionTextSize = (int) getResources().getDimension(R.dimen.PROFIL_SECTION_TEXT_SIZE);
-		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
+		textPrivateInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textSecurityInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textGeneralInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		
-		textPrivateInformation.setTextSize(sectionTextSize);
-		textSecurityInformation.setTextSize(sectionTextSize);
-		textGeneralInformation.setTextSize(sectionTextSize);
+		textFirstName.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textLastName.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textBirthday.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textGender.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textMemberSince.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		
-		textFirstName.setTextSize(userTextSize);
-		textLastName.setTextSize(userTextSize);
-		textBirthday.setTextSize(userTextSize);
-		textGender.setTextSize(userTextSize);
-		textEmail.setTextSize(userTextSize);
-		textMemberSince.setTextSize(userTextSize);
-		
-		firstName.setTextSize(userTextSize);
-		lastName.setTextSize(userTextSize);
-		birthday.setTextSize(userTextSize);
-		gender.setTextSize(userTextSize);
-		email.setTextSize(userTextSize);
-		memberSince.setTextSize(userTextSize);
+		firstName.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		lastName.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		birthday.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		gender.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		email.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		memberSince.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
 }

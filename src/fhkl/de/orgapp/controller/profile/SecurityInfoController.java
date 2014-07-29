@@ -93,12 +93,10 @@ public class SecurityInfoController extends MenuActivity
 	
 	private void setTextSizes()
 	{
-		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
-		
-		textEmail.setTextSize(userTextSize);
-		emailNew.setTextSize(userTextSize);
-		textEmailConfirm.setTextSize(userTextSize);
-		emailConfirmNew.setTextSize(userTextSize);
+		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		emailNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		textEmailConfirm.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		emailConfirmNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
 	
 	/**

@@ -218,20 +218,19 @@ public class PrivateInfoController extends MenuActivity {
 	 * Sets the text size
 	 */
 	
-	private void setTextSizes() {
-		int userTextSize = (int) getResources().getDimension(R.dimen.PROFIL_USER_TEXT_SIZE);
-
-		textFirstName.setTextSize(userTextSize);
-		textLastName.setTextSize(userTextSize);
-		textBirthday.setTextSize(userTextSize);
-		textGender.setTextSize(userTextSize);
-		textGenderMale.setTextSize(userTextSize);
-		textGenderFemale.setTextSize(userTextSize);
-		textClearBirthday.setTextSize(userTextSize);
+	private void setTextSizes()
+	{
+		textFirstName.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textLastName.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textBirthday.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textGender.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textGenderMale.setTextAppearance(this, android.R.style.TextAppearance_Small);
+		textGenderFemale.setTextAppearance(this, android.R.style.TextAppearance_Small);
+		textClearBirthday.setTextAppearance(this, android.R.style.TextAppearance_Small);
 		
-		firstNameNew.setTextSize(userTextSize);
-		lastNameNew.setTextSize(userTextSize);
-		birthdayNew.setTextSize(userTextSize);
+		firstNameNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		lastNameNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		birthdayNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
 
 	/**
