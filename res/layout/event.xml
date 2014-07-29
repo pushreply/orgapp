@@ -1,33 +1,83 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/EventLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    
-    <TextView
-        android:id="@+id/EVENTNAME"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/EVENTTIME"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/EVENTDATE"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTNAME_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/EVENTLOCATION"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/EVENTNAME"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTTIME_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/EVENTTIME"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTDATE_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/EVENTDATE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTLOCATION_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/EVENTLOCATION"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
     <ToggleButton
         android:id="@+id/BUTTONATTENDANCE"
@@ -55,8 +105,8 @@
             android:id="@+id/ADDNEWCOMMENT"
             android:layout_column="4"
             android:layout_row="0"
-            android:onClick="addComment"
             android:contentDescription="@string/ADDNEWCOMMENT"
+            android:onClick="addComment"
             android:src="@drawable/ic_action_new" />
     </GridLayout>
 
@@ -66,4 +116,4 @@
         android:layout_height="match_parent" >
     </ListView>
 
-</LinearLayout>
+</GridLayout>
