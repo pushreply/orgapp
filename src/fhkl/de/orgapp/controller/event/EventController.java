@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,10 +89,10 @@ public class EventController extends MenuActivity {
 		eventDate = (TextView) findViewById(R.id.EVENTDATE);
 		eventLocation = (TextView) findViewById(R.id.EVENTLOCATION);
 
-		eventName.setText("Event: " + EventData.getNAME());
-		eventTime.setText("Time: " + EventData.getEVENTTIME());
-		eventDate.setText("Date: " + EventData.getEVENTDATE());
-		eventLocation.setText("Location: " + EventData.getEVENTLOCATION());
+		eventName.setText(EventData.getNAME());
+		eventTime.setText(EventData.getEVENTTIME());
+		eventDate.setText(EventData.getEVENTDATE());
+		eventLocation.setText(EventData.getEVENTLOCATION());
 
 		buttonAttendance = (ToggleButton) findViewById(R.id.BUTTONATTENDANCE);
 		buttonAttendance.setOnClickListener(new OnClickListener() {
