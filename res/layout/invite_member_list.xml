@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="invitePersons"
+            android:textAppearance="?android:attr/textAppearanceButton"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="cancelView"
+            android:textAppearance="?android:attr/textAppearanceButton"
             style="?android:attr/buttonBarButtonStyle" />
     
     </LinearLayout>

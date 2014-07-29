@@ -59,7 +59,7 @@ public class CalendarController extends MenuActivity {
 		setContentView(R.layout.calendar);
 
 		checkOnNewNotificationsAndNotifyUser();
-		
+
 		eventList = new ArrayList<HashMap<String, String>>();
 		new Calendar().execute();
 	}
@@ -202,7 +202,6 @@ public class CalendarController extends MenuActivity {
 							GroupData.setPERSONID(c.getString("personId"));
 							GroupData.setGROUPNAME(c.getString("name"));
 							GroupData.setGROUPINFO(c.getString("info"));
-							GroupData.setPICTURE(c.getString("picture"));
 						}
 					}
 

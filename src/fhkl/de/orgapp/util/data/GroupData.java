@@ -6,7 +6,6 @@ public class GroupData {
 	private static String PERSONID = "";
 	private static String GROUPNAME = "";
 	private static String GROUPINFO = "";
-	private static String PICTURE = "";
 
 	private static String PRIVILEGE_INVITE_MEMBER = "";
 	private static String PRIVILEGE_EDIT_MEMBERLIST = "";
@@ -49,14 +48,6 @@ public class GroupData {
 		GROUPINFO = gROUPINFO;
 	}
 
-	public static String getPICTURE() {
-		return PICTURE;
-	}
-
-	public static void setPICTURE(String pICTURE) {
-		PICTURE = pICTURE;
-	}
-
 	public static String getPRIVILEGE_INVITE_MEMBER() {
 		return PRIVILEGE_INVITE_MEMBER;
 	}
@@ -69,8 +60,7 @@ public class GroupData {
 		return PRIVILEGE_EDIT_MEMBERLIST;
 	}
 
-	public static void setPRIVILEGE_EDIT_MEMBERLIST(
-			String pRIVILEGE_EDIT_MEMBERLIST) {
+	public static void setPRIVILEGE_EDIT_MEMBERLIST(String pRIVILEGE_EDIT_MEMBERLIST) {
 		PRIVILEGE_EDIT_MEMBERLIST = pRIVILEGE_EDIT_MEMBERLIST;
 	}
 

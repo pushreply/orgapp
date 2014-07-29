@@ -7,13 +7,15 @@
         android:id="@+id/NAME"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/NAME" />
+        android:hint="@string/NAME"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:id="@+id/INFO"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/INFO" >
+        android:hint="@string/INFO"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
 
         <requestFocus />
     </EditText>
@@ -28,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/SAVE_GROUP" />
+            android:text="@string/SAVE_GROUP"
+            android:textAppearance="?android:attr/textAppearanceButton" />
 
         <Button
             android:id="@+id/CANCEL"
@@ -36,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/CANCEL" />
+            android:text="@string/CANCEL"
+            android:textAppearance="?android:attr/textAppearanceButton" />
     </LinearLayout>
 
 </LinearLayout>

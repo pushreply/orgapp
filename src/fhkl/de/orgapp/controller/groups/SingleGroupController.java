@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
@@ -57,7 +58,8 @@ public class SingleGroupController extends MenuActivity {
 	JSONArray event = null;
 
 	Boolean toggleButtonChecked;
-	TextView tv_eventId, groupInfo;
+	TextView tv_eventId, tvGroupInfo, groupInfo;
+	LinearLayout hr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +70,10 @@ public class SingleGroupController extends MenuActivity {
 
 		EventData.setBACK(false);
 
+		tvGroupInfo = (TextView) findViewById(R.id.TV_GROUP_INFO);
 		groupInfo = (TextView) findViewById(R.id.GROUP_INFO);
-		groupInfo.setText(GroupData.getGROUPINFO());
 
+		hr = (LinearLayout) findViewById(R.id.HR);
 		new GetGroupCalendar().execute();
 	}
 
@@ -105,6 +108,7 @@ public class SingleGroupController extends MenuActivity {
 						String eventDate = c.getString("eventDate");
 						String eventTime = c.getString("eventTime");
 
+						eventTime = eventTime.substring(0, 5);
 						final ListModel listModel = new ListModel();
 
 						listModel.setEventId(eventId);
@@ -138,6 +142,9 @@ public class SingleGroupController extends MenuActivity {
 
 					ListView calenderList = (ListView) findViewById(android.R.id.list);
 					calenderList.setAdapter(adapter);
+					tvGroupInfo.setVisibility(View.VISIBLE);
+					groupInfo.setText(GroupData.getGROUPINFO());
+					hr.setVisibility(View.VISIBLE);
 				}
 			});
 		}

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/EMAIL"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:inputType="textEmailAddress" >
 
         <requestFocus />
@@ -20,12 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/PASSWORD"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:inputType="textPassword" />
     
     <EditText
         android:id="@+id/PASSWORD_CONFIRMATION"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:hint="@string/PASSWORD_CONFIRMATION"
         android:inputType="textPassword" />
 
@@ -33,12 +36,14 @@
         android:id="@+id/FIRSTNAME"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:hint="@string/FIRSTNAME" />
 
     <EditText
         android:id="@+id/LASTNAME"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:hint="@string/LASTNAME" />
 
     <LinearLayout
@@ -51,6 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceButton"
             android:background="?android:attr/selectableItemBackground"
             android:text="@+string/SUBMIT" />
 
@@ -59,6 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceButton"
             android:background="?android:attr/selectableItemBackground"
             android:text="@+string/CANCEL" />
     </LinearLayout>

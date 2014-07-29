@@ -18,6 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
+                android:textAppearance="?android:attr/textAppearanceButton"
                 android:text="@string/MANUAL_INVITE" />
 
             <Button
@@ -26,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
+                android:textAppearance="?android:attr/textAppearanceButton"
                 android:text="@string/MANUAL_CANCEL" />
         </LinearLayout>
         <LinearLayout
