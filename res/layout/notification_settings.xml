@@ -28,13 +28,15 @@
 		android:id="@+id/RECEIVED_ENTRIES"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/RECEIVED_ENTRIES" />
+		android:text="@string/RECEIVED_ENTRIES"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
   
 	<EditText
 		android:id="@+id/NUMBER_ENTRIES"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/NUMBER_ENTRIES"
+		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:inputType="number"
 		android:visibility="gone" >
 	</EditText>
@@ -43,6 +45,7 @@
     	android:id="@+id/NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS"
     	android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="@string/VIBRATION_AT_NEW_NOTIFICATIONS" />
 	
 	<RadioGroup
@@ -54,12 +57,14 @@
 			android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="@string/YES"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
 		    android:onClick="selectVibrationAtNewNotifications"/>
 
 		<RadioButton android:id="@+id/NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/NO"
+			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:onClick="selectVibrationAtNewNotifications"/>
 
 	</RadioGroup>
@@ -76,7 +81,8 @@
 		android:id="@+id/RECEIVED_NOTIFICATIONS"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/RECEIVED_NOTIFICATIONS" />
+		android:text="@string/RECEIVED_NOTIFICATIONS"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
     
 	<ScrollView
     	android:layout_width="match_parent"
@@ -95,7 +101,8 @@
 		            android:id="@+id/GROUP_INVITES"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/GROUP_INVITES" />
+		            android:text="@string/GROUP_INVITES"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -107,7 +114,8 @@
 		            android:id="@+id/GROUP_EDITED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/GROUP_EDITED" />
+		            android:text="@string/GROUP_EDITED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -119,7 +127,8 @@
 		            android:id="@+id/GROUP_REMOVED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/GROUP_REMOVED" />
+		            android:text="@string/GROUP_REMOVED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         	
         	</TableRow>
 
@@ -131,7 +140,8 @@
 		            android:id="@+id/EVENTS_ADDED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/EVENTS_ADDED" />
+		            android:text="@string/EVENTS_ADDED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
        
 			</TableRow>
 
@@ -143,7 +153,8 @@
 		            android:id="@+id/EVENTS_EDITED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/EVENTS_EDITED" />
+		            android:text="@string/EVENTS_EDITED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -155,7 +166,8 @@
 		            android:id="@+id/EVENTS_REMOVED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/EVENTS_REMOVED" />
+		            android:text="@string/EVENTS_REMOVED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -167,7 +179,8 @@
 		            android:id="@+id/COMMENTS_ADDED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/COMMENTS_ADDED" />
+		            android:text="@string/COMMENTS_ADDED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -179,7 +192,8 @@
 		            android:id="@+id/COMMENTS_REMOVED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/COMMENTS_REMOVED" />
+		            android:text="@string/COMMENTS_REMOVED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -191,7 +205,8 @@
 		            android:id="@+id/COMMENTS_EDITED"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/COMMENTS_EDITED" />
+		            android:text="@string/COMMENTS_EDITED"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
 
@@ -203,7 +218,8 @@
 		            android:id="@+id/PRIVILEGES_GIVEN"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="@string/PRIVILEGES_GIVEN" />
+		            android:text="@string/PRIVILEGES_GIVEN"
+		            android:textAppearance="?android:attr/textAppearanceMedium" />
         
         	</TableRow>
         	

@@ -171,8 +171,9 @@ public class EventHistoryController extends MenuActivity {
 					
 					// Initialize the adapter and assign the fetched data to the layout fields
 					ListAdapter adapter = new SimpleAdapter(EventHistoryController.this, eventHistoryList,
-									R.layout.event_history_item, new String[] { TAG_EVENT_ID, TAG_EVENT_NAME, TAG_EVENT_DATE }, new int[] {
-													R.id.EVENTID, R.id.PREVIOUS_EVENT_NAME, R.id.PREVIOUS_EVENT_DATE });
+									R.layout.event_history_item,
+									new String[] {TAG_EVENT_ID, TAG_EVENT_DATE, TAG_EVENT_NAME},
+									new int[] {R.id.EVENTID, R.id.PREVIOUS_EVENT_DATE,  R.id.PREVIOUS_EVENT_NAME});
 
 					// Update listview
 					final ListView eventList = (ListView) findViewById(android.R.id.list);

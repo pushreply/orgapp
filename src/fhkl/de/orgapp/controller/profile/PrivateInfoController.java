@@ -127,6 +127,7 @@ public class PrivateInfoController extends MenuActivity {
 			updateBirthday();
 			textClearBirthday.setVisibility(View.VISIBLE);
 			textClearBirthday.setChecked(false);
+			textClearBirthday.setText(getString(R.string.CLEAR_BIRTHDAY));
 		}
 	};
 
@@ -190,17 +191,24 @@ public class PrivateInfoController extends MenuActivity {
 		textGender.setText(getString(R.string.GENDER) + ":");
 		textGenderMale.setText(getString(R.string.MALE));
 		textGenderFemale.setText(getString(R.string.FEMALE));
-		textClearBirthday.setText(getString(R.string.CLEAR_BIRTHDAY));
 		
 		firstNameNew.setText(UserData.getFIRST_NAME());
 		lastNameNew.setText(UserData.getLAST_NAME());
 		
 		// If birthday contains data, set the field as hint
 		if(!UserData.getBIRTHDAY().equals(""))
+		{
 			birthdayNew.setHint(UserData.getBIRTHDAY());
-		// Otherwise set a text
+			textClearBirthday.setVisibility(View.VISIBLE);
+			textClearBirthday.setChecked(false);
+			textClearBirthday.setText(getString(R.string.CLEAR_BIRTHDAY));
+		}
+		// Otherwise set a text as hint
 		else
+		{
 			birthdayNew.setHint(getString(R.string.SET_NEW_BIRTHDAY));
+			textClearBirthday.setVisibility(View.INVISIBLE);
+		}
 
 		// Set the checkbox according the gender of user
 		if (UserData.getGENDER().equals("m"))

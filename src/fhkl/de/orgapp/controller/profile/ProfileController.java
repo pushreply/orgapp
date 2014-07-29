@@ -1,7 +1,6 @@
 package fhkl.de.orgapp.controller.profile;
 
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
