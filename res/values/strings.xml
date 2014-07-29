@@ -35,6 +35,10 @@
     <string name="LOGOUT">Logout</string>
 
     <!-- Event -->
+    <string name="EVENTNAME_LABEL">Event: </string>
+    <string name="EVENTTIME_LABEL">Time: </string>
+    <string name="EVENTDATE_LABEL">Date: </string>
+    <string name="EVENTLOCATION_LABEL">Location: </string>
     <string name="DECLINED">Currently not going</string>
     <string name="ATTENDING">Currently going</string>
     <string name="COMMENTSLABEL">Comments</string>
