@@ -140,12 +140,12 @@ public class EventHistoryController extends MenuActivity {
 
 						eventHistoryList.add(eventMap);
 					}
-				} else {
-					// TODO error message
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in EventHistoryGetter.doInBackground(String...): " + e.getMessage());
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -254,8 +254,9 @@ public class EventHistoryController extends MenuActivity {
 						EventData.setREGULARITY("regularity");
 					}
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;

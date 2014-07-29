@@ -420,8 +420,8 @@ public class PrivateInfoController extends MenuActivity {
 					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			} catch (Exception e) {
-				System.out.println("Error in PrivateInfoUpdater.doInBackground(String... arg0): " + e.getMessage());
 				e.getStackTrace();
+				logout();
 			}
 
 			return null;

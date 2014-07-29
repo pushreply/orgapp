@@ -257,8 +257,9 @@ public class SecurityInfoController extends MenuActivity
 			}
 			catch(Exception e)
 			{
-				System.out.println("Error in SecurityInfoUpdater.doInBackground(String... arg0): " + e.getMessage());
 				e.getStackTrace();
+				// logout in case of error
+				logout();
 			}
 			
 			return null;

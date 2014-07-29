@@ -230,18 +230,14 @@ public class NotificationSettingsController extends MenuActivity
 				if (success == 1)
 				{
 					updateNotificationSettingsData();
-					Intent intent = new Intent(NotificationSettingsController.this, NotificationController.class);
-					startActivity(intent);
-				}
-				else
-				{
-					// unknown error
+					
+					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
 			}
-			catch (JSONException e)
+			catch (Exception e)
 			{
-				System.out.println("Error in SaveSettings.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -254,6 +250,9 @@ public class NotificationSettingsController extends MenuActivity
 			if (message != null)
 			{
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+				
+				Intent intent = new Intent(NotificationSettingsController.this, NotificationController.class);
+				startActivity(intent);
 			}
 		}
 		
