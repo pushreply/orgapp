@@ -75,7 +75,7 @@ public class ManualInviteMemberController extends Activity {
 		checkNewNotificationAndCreateIcon();
 		getIntent().putExtra("cnt", "0");
 
-		personIdLoggedPerson = getIntent().getStringExtra("UserId");
+		personIdLoggedPerson = UserData.getPERSONID();
 		containerLayout = (LinearLayout) findViewById(R.id.LinearLayout);
 		textLayout = new GridLayout(ManualInviteMemberController.this);
 		LayoutParams params = new LayoutParams();
@@ -101,8 +101,8 @@ public class ManualInviteMemberController extends Activity {
 			public void onClick(View view) {
 				Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
 				intent.putExtra("UserId", personIdLoggedPerson);
-				intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-				intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
+				intent.putExtra("GroupId", GroupData.getGROUPID());
+				intent.putExtra("GroupName", GroupData.getGROUPNAME());
 				startActivity(intent);
 			}
 		});
@@ -315,9 +315,6 @@ public class ManualInviteMemberController extends Activity {
 				}
 			}
 			Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
-			intent.putExtra("UserId", personIdLoggedPerson);
-			intent.putExtra("GroupId", getIntent().getStringExtra("GroupId"));
-			intent.putExtra("GroupName", getIntent().getStringExtra("GroupName"));
 			startActivity(intent);
 			return null;
 		}
