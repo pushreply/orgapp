@@ -501,7 +501,7 @@ public class CreateEventController extends MenuActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventController.this);
 
 			builder.setMessage(IMessages.SecurityIssue.SHARE_CREATED_EVENT);
-			builder.setPositiveButton(IMessages.DialogButton.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
+			builder.setNeutralButton(IMessages.DialogButton.NO, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -511,7 +511,7 @@ public class CreateEventController extends MenuActivity {
 				}
 			});
 
-			builder.setNeutralButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
+			builder.setPositiveButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
