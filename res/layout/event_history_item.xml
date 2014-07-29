@@ -13,13 +13,11 @@
     <TextView
         android:id="@+id/PREVIOUS_EVENT_NAME"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/PROFIL_PREVIOUS_EVENT_NAME_SIZE" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/PREVIOUS_EVENT_DATE"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/PROFIL_PREVIOUS_EVENT_DATE_SIZE" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
