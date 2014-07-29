@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -118,7 +119,7 @@ public class NewGroupController extends MenuActivity {
 
 					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
-					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					Date date = new Date();
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 

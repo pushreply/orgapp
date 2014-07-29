@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -266,7 +267,7 @@ public class ListInviteMemberController extends MenuActivity {
 				if (((Boolean) personList.get(p).get(TAG_IS_SELECTED)).booleanValue()) {
 					// invite person to group
 					paramsInvite = new ArrayList<NameValuePair>();
-					dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+					dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					date = new Date();
 
 					paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
