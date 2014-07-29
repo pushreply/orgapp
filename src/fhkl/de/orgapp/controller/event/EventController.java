@@ -14,7 +14,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
-import fhkl.de.orgapp.controller.comment.InsertCommentController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -37,6 +35,7 @@ import fhkl.de.orgapp.util.data.CommentData;
 import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
+import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EventController extends MenuActivity {
 
@@ -109,11 +108,30 @@ public class EventController extends MenuActivity {
 		commentList = new ArrayList<HashMap<String, String>>();
 		new ShowComments().execute();
 	}
-	
-	public void addComment(View v)
-	{
-		Intent intent = new Intent(EventController.this, InsertCommentController.class);
-		startActivity(intent);
+
+	public void addComment(View v) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(EventController.this);
+		builder.setTitle(IMessages.SecurityIssue.NEW_COMMENT);
+		final EditText addComment = new EditText(EventController.this);
+		builder.setView(addComment);
+		builder.setNegativeButton(IMessages.DialogButton.NEW_GENERIC, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				message = addComment.getText().toString();
+				new AddComment().execute();
+			}
+		});
+
+		builder.setPositiveButton(IMessages.DialogButton.CANCEL, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				return;
+			}
+		});
+		builder.create().show();
 	}
 
 	class GetEvent extends AsyncTask<String, String, String> {
@@ -277,8 +295,6 @@ public class EventController extends MenuActivity {
 								message = tv.getText().toString();
 								tv = (TextView) view.findViewById(R.id.COMMENTID);
 								commentId = tv.getText().toString();
-								System.out.println("message: " + message);
-								System.out.println("commentId: " + commentId);
 								AlertDialog.Builder builder = new AlertDialog.Builder(EventController.this);
 								builder.setTitle(IMessages.SecurityIssue.COMMENT);
 
@@ -561,6 +577,91 @@ public class EventController extends MenuActivity {
 			if (result != null) {
 				Intent intent = new Intent(EventController.this, EventController.class);
 				startActivity(intent);
+			}
+		}
+	}
+
+	class AddComment extends AsyncTask<String, String, String> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pDialog = new ProgressDialog(EventController.this);
+			pDialog.setMessage(IMessages.Status.SAVING_COMMENT);
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			pDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+
+			if (!InputValidator.isStringLengthInRange(message, 0, 2048)) {
+				return IMessages.Error.INVALID_COMMENT;
+			}
+
+			String eventId = EventData.getEVENTID();
+			String personId = UserData.getPERSONID();
+
+			List<NameValuePair> paramsInsertComment = new ArrayList<NameValuePair>();
+
+			paramsInsertComment.add(new BasicNameValuePair("do", "addcomment"));
+			paramsInsertComment.add(new BasicNameValuePair("eventId", eventId));
+			paramsInsertComment.add(new BasicNameValuePair("personId", personId));
+			paramsInsertComment.add(new BasicNameValuePair("message", message));
+
+			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", paramsInsertComment);
+
+			Log.d("comment: ", json.toString());
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+				System.out.println(success);
+				if (success == 1) {
+
+					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
+					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
+					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember);
+
+					success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
+
+						member = json.getJSONArray("member");
+
+						for (int i = 0; i < member.length(); i++) {
+							JSONObject c = member.getJSONObject(i);
+
+							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
+							paramsCreateNotification.add(new BasicNameValuePair("classification", "7"));
+							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
+							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.CREATE_COMMENT_1
+											+ EventData.getNAME() + IMessages.Notification.CREATE_COMMENT_2));
+
+							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+						}
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String message) {
+			super.onPostExecute(message);
+			pDialog.dismiss();
+
+			if (message != null) {
+				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+			} else {
+				finish();
+				Intent i = new Intent(EventController.this, EventController.class);
+				startActivity(i);
+
 			}
 		}
 	}

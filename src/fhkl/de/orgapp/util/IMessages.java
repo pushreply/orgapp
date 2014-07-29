@@ -14,6 +14,7 @@ public interface IMessages {
 	 */
 
 	public static final class DialogButton {
+		public static final String NEW_GENERIC = "New";
 		public static final String DELETE_GENERIC = "Delete";
 		public static final String EDIT_GENERIC = "Edit";
 		public static final String LIST = "List";
@@ -40,6 +41,7 @@ public interface IMessages {
 		public static final String EXIST_USER = "User does not exist: ";
 		public static final String GROUP_NOT_DELETED = "Group was not deleted";
 		public static final String INSUFFICIENT_PRIVILEGES = "Insufficient privileges";
+		public static final String INVALID_COMMENT = "Invalid comment";
 		public static final String INVALID_EMAIL = "Invalid e-mail address";
 		public static final String INVALID_EVENTDATE = "Invalid event date. Choose a future date";
 		public static final String INVALID_EVENTLOCATION = "Invalid event location";
@@ -97,6 +99,8 @@ public interface IMessages {
 		public static final String EDIT_COMMENT_1 = "The following comment was changed from \"";
 		public static final String EDIT_COMMENT_2 = "\" to \"";
 		public static final String EDIT_COMMENT_3 = "\"";
+		public static final String CREATE_COMMENT_1 = "A new comment in the event \"";
+		public static final String CREATE_COMMENT_2 = "\" was added.";
 
 	}
 
@@ -115,10 +119,10 @@ public interface IMessages {
 		public static final String SHARE_DELETED_EVENT = "Do you want to share the deleted event?";
 		public static final String SHARE_EDITED_EVENT = "Do you want to share the edited event?";
 		public static final String COMMENT = "Comment management menu";
+		public static final String NEW_COMMENT = "New comment";
 		public static final String EDIT_COMMENT = "Edit comment";
 		public static final String DELETE_COMMENT = "Delete comment";
 		public static final String QUESTION_DELETE_COMMENT = "Do you really want to delete this comment?";
-
 	}
 
 	/**
