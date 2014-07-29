@@ -123,6 +123,7 @@ public interface IMessages {
 		public static final String EDIT_COMMENT = "Edit comment";
 		public static final String DELETE_COMMENT = "Delete comment";
 		public static final String QUESTION_DELETE_COMMENT = "Do you really want to delete this comment?";
+		public static final String NOTIFICATION = "Notification";
 	}
 
 	/**

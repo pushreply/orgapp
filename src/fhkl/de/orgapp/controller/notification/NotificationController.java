@@ -10,17 +10,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -220,51 +219,68 @@ public class NotificationController extends MenuActivity {
 								new NotificationReadStatusUpdater().execute(position);
 							}
 
-							Animation slideDown = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_down);
-							Animation slideUp = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_up);
+							if (message.getLineCount() > 2) {
+								AlertDialog.Builder builder = new AlertDialog.Builder(NotificationController.this);
+								builder.setTitle(IMessages.SecurityIssue.NOTIFICATION);
 
-							slideDown.setAnimationListener(new AnimationListener() {
+								TextView tv = new TextView(NotificationController.this);
+								tv.setText(message.getText().toString());
+								builder.setView(tv);
 
-								@Override
-								public void onAnimationStart(Animation animation) {
+								builder.setNeutralButton(IMessages.DialogButton.OK, new DialogInterface.OnClickListener() {
 
-									message.setMaxLines(Integer.MAX_VALUE);
-								}
-
-								@Override
-								public void onAnimationRepeat(Animation animation) {
-								}
-
-								@Override
-								public void onAnimationEnd(Animation animation) {
-								}
-							});
-
-							slideUp.setAnimationListener(new AnimationListener() {
-
-								@Override
-								public void onAnimationStart(Animation animation) {
-								}
-
-								@Override
-								public void onAnimationRepeat(Animation animation) {
-								}
-
-								@Override
-								public void onAnimationEnd(Animation animation) {
-									message.setMaxLines(2);
-									notificationListView.invalidate();
-								}
-
-							});
-
-							if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= 16) {
-								if (message.getMaxLines() == 2) {
-									message.startAnimation(slideDown);
-								} else {
-									message.startAnimation(slideUp);
-								}
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										return;
+									}
+								});
+								builder.create().show();
 							}
+//							Animation slideDown = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_down);
+//							Animation slideUp = AnimationUtils.loadAnimation(NotificationController.this, R.anim.slide_up);
+//
+//							slideDown.setAnimationListener(new AnimationListener() {
+//
+//								@Override
+//								public void onAnimationStart(Animation animation) {
+//
+//									message.setMaxLines(Integer.MAX_VALUE);
+//								}
+//
+//								@Override
+//								public void onAnimationRepeat(Animation animation) {
+//								}
+//
+//								@Override
+//								public void onAnimationEnd(Animation animation) {
+//								}
+//							});
+//
+//							slideUp.setAnimationListener(new AnimationListener() {
+//
+//								@Override
+//								public void onAnimationStart(Animation animation) {
+//								}
+//
+//								@Override
+//								public void onAnimationRepeat(Animation animation) {
+//								}
+//
+//								@Override
+//								public void onAnimationEnd(Animation animation) {
+//									message.setMaxLines(2);
+//									notificationListView.invalidate();
+//								}
+//
+//							});
+//
+//							if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= 16) {
+//								if (message.getMaxLines() == 2) {
+//									message.startAnimation(slideDown);
+//								} else {
+//									message.startAnimation(slideUp);
+//								}
+//							}
 						}
 
 						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String> {
