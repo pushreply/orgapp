@@ -20,7 +20,7 @@
         android:id="@+id/GROUPNAME"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+        android:textAppearance="?android:attr/textAppearanceListItem"/>
 
     <TextView
         android:id="@+id/GROUPINFO"
