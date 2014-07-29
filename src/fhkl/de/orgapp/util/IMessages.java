@@ -23,8 +23,8 @@ public interface IMessages {
 		public static final String NO_MEMBER_INVITE = "No member invite";
 		public static final String NO_THANKS = "No, thanks";
 		public static final String OK = "Ok";
-		public static final String SHARE_EVENT_VIA_FACEBOOK = "Share event on Facebook";
-		public static final String SHARE_EVENT_VIA_TWITTER = "Share event on Twitter";
+		public static final String SHARE_EVENT_VIA_FACEBOOK = "On Facebook";
+		public static final String SHARE_EVENT_VIA_TWITTER = "On Twitter";
 		public static final String YES = "Yes";
 		public static final String CANCEL = "Cancel";
 	}

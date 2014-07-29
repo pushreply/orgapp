@@ -81,8 +81,9 @@ public class DeleteEventController extends MenuActivity {
 								paramsCreateNotification.add(new BasicNameValuePair("classification", "6"));
 								paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_DELETE_EVENT_1
-												+ EventData.getNAME() + IMessages.Notification.MESSAGE_DELETE_EVENT_2));
+								paramsCreateNotification.add(new BasicNameValuePair("message",
+												IMessages.Notification.MESSAGE_DELETE_EVENT_1 + EventData.getNAME()
+																+ IMessages.Notification.MESSAGE_DELETE_EVENT_2));
 
 								json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
 								if (json.getInt(TAG_SUCCESS) != 1) {
@@ -109,7 +110,7 @@ public class DeleteEventController extends MenuActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(DeleteEventController.this);
 
 			builder.setMessage(IMessages.SecurityIssue.SHARE_DELETED_EVENT);
-			builder.setPositiveButton(IMessages.DialogButton.NO_THANKS, new android.content.DialogInterface.OnClickListener() {
+			builder.setNeutralButton(IMessages.DialogButton.NO, new android.content.DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -119,7 +120,7 @@ public class DeleteEventController extends MenuActivity {
 				}
 			});
 
-			builder.setNeutralButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
+			builder.setPositiveButton(IMessages.DialogButton.SHARE_EVENT_VIA_TWITTER,
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
