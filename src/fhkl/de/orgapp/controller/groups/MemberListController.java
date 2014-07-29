@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -106,9 +105,9 @@ public class MemberListController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GetMemberList.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -158,7 +157,8 @@ public class MemberListController extends MenuActivity {
 								return true;
 
 							} else {
-								Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG).show();
+								Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG)
+												.show();
 								return false;
 							}
 						}
@@ -202,9 +202,9 @@ public class MemberListController extends MenuActivity {
 					finish();
 					startActivity(intent);
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in DeleteMember.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -286,9 +286,9 @@ public class MemberListController extends MenuActivity {
 						}
 					}
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GetPrivilegesInfo.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 			return null;
 		}

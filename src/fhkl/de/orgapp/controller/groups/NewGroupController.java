@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -133,8 +132,9 @@ public class NewGroupController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;

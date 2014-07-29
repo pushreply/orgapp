@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -126,8 +125,9 @@ public class SingleGroupController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -187,8 +187,9 @@ public class SingleGroupController extends MenuActivity {
 						EventData.setREGULARITY("regularity");
 					}
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -350,8 +351,9 @@ public class SingleGroupController extends MenuActivity {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
 				}
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 			return null;
 		}

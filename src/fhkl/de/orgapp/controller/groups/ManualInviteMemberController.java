@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -44,6 +44,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.check.NewNotificationsChecker;
 import fhkl.de.orgapp.util.data.GroupData;
+import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
@@ -212,11 +213,11 @@ public class ManualInviteMemberController extends Activity {
 
 		protected String doInBackground(String... params) {
 			int editTextLength = textLayout.getChildCount();
-			
+
 			if (editTextLength == 0) {
 				return IMessages.Error.MISSING_EMAIL;
 			}
-			
+
 			String[] editTextArray = new String[editTextLength / 2];
 			for (int i = 0; i < editTextLength; i++) {
 				if (i % 2 == 0) {
@@ -257,9 +258,9 @@ public class ManualInviteMemberController extends Activity {
 						// User is not registered
 						return IMessages.Error.EXIST_USER;
 					}
-				} catch (JSONException e) {
-					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
+				} catch (Exception e) {
 					e.printStackTrace();
+					logout();
 				}
 			}
 			System.out.println("check 3 done");
@@ -275,16 +276,16 @@ public class ManualInviteMemberController extends Activity {
 						// User already invited
 						return IMessages.Error.USER_INVITED;
 					}
-				} catch (JSONException e) {
-					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
+				} catch (Exception e) {
 					e.printStackTrace();
+					logout();
 				}
 			}
 			System.out.println("check 4 done");
 			// Everything okay
 			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
 			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 			Date date = new Date();
 			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 			for (int i = 0; i < editTextArray.length; i++) {
@@ -303,15 +304,11 @@ public class ManualInviteMemberController extends Activity {
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET", paramsNotification);
 						json.getInt(TAG_SUCCESS);
-						if (success != 1) {
-							// unknown error
-						}
-					} else {
-						// unknown error
+
 					}
-				} catch (JSONException e) {
-					System.out.println("Error in InviteMembers.doInBackground(String... arg0): " + e.getMessage());
+				} catch (Exception e) {
 					e.printStackTrace();
+					logout();
 				}
 			}
 			Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
@@ -327,43 +324,75 @@ public class ManualInviteMemberController extends Activity {
 			}
 		}
 	}
-	
-	private void checkNewNotificationAndCreateIcon()
-	{
+
+	private void checkNewNotificationAndCreateIcon() {
 		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
-		
-		if(!newNotifications.hasNewNotifications())
+
+		if (!newNotifications.hasNewNotifications())
 			return;
-		
+
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
-			
+
 		String title = IMessages.Notification.NEW_NOTIFICATION;
 		title += numberNewNotifications.equals("1") ? "" : "s";
-			
+
 		String text = IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_1;
 		text += numberNewNotifications;
 		text += IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
-		
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-			.setSmallIcon(R.drawable.ic_action_unread)
-			.setContentTitle(title)
-			.setContentText(text)
-			.setAutoCancel(true);
-		
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_action_unread)
+						.setContentTitle(title).setContentText(text).setAutoCancel(true);
+
 		Intent resultIntent = new Intent(this, NotificationController.class);
-		
-		PendingIntent resultPendingIntent = PendingIntent.getActivity(
-												this,
-												0,
-												resultIntent,
-												PendingIntent.FLAG_UPDATE_CURRENT
-												);
-		
+
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
+
 		builder.setContentIntent(resultPendingIntent);
-		
+
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		notificationManager.notify(newNotificationNotificationId, builder.build());
+	}
+
+	protected void logout() {
+		resetUserData();
+		resetNotificationSettingsData();
+
+		deleteIcon();
+
+		Intent intent = new Intent(ManualInviteMemberController.this, StartController.class);
+		startActivity(intent);
+	}
+
+	private void resetUserData() {
+		UserData.setPERSONID("");
+		UserData.setFIRST_NAME("");
+		UserData.setLAST_NAME("");
+		UserData.setBIRTHDAY("");
+		UserData.setGENDER("");
+		UserData.setEMAIL("");
+		UserData.setMEMBER_SINCE("");
+	}
+
+	private void resetNotificationSettingsData() {
+		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
+		NotificationSettingsData.setSHOW_ENTRIES("");
+		NotificationSettingsData.setGROUP_INVITES("");
+		NotificationSettingsData.setGROUP_EDITED("");
+		NotificationSettingsData.setGROUP_REMOVED("");
+		NotificationSettingsData.setEVENTS_ADDED("");
+		NotificationSettingsData.setEVENTS_EDITED("");
+		NotificationSettingsData.setEVENTS_REMOVED("");
+		NotificationSettingsData.setCOMMENTS_ADDED("");
+		NotificationSettingsData.setCOMMENTS_EDITED("");
+		NotificationSettingsData.setCOMMENTS_REMOVED("");
+		NotificationSettingsData.setPRIVILEGE_GIVEN("");
+		NotificationSettingsData.setVIBRATION("");
+	}
+
+	protected void deleteIcon() {
+		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
 	}
 }

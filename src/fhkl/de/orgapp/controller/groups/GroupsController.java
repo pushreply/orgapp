@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -107,9 +106,9 @@ public class GroupsController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GroupData.doInBackground(String... arg0): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
@@ -181,9 +180,9 @@ public class GroupsController extends MenuActivity {
 						GroupData.setPRIVILEGE_DELETE_COMMENT(c.getString("commentDeleting"));
 					}
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GroupData.doInBackground(String... arg0): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
