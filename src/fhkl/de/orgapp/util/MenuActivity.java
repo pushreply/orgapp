@@ -65,7 +65,7 @@ public class MenuActivity extends Activity {
 
 	private static final String TAG_SUCCESS = "success";
 	private int newNotificationNotificationId = 1;
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
@@ -120,8 +120,7 @@ public class MenuActivity extends Activity {
 							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.DELETE_EVENT).setVisible(true);
 			}
-			if (EventData.getPERSONID().equals(UserData.getPERSONID()))
-			{
+			if (EventData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.EVENT_SHARE_SETTINGS).setVisible(true);
 				menu.findItem(R.id.SHARE_EVENT_VIA_FACEBOOK).setVisible(true);
 				menu.findItem(R.id.SHARE_EVENT_VIA_TWITTER).setVisible(true);
@@ -169,7 +168,6 @@ public class MenuActivity extends Activity {
 
 		if (nameCurrentController.equals(CalendarController.class.getName())
 						|| nameCurrentController.equals(GroupsController.class.getName())
-						|| nameCurrentController.equals(EventController.class.getName())
 						|| nameCurrentController.equals(NotificationController.class.getName())) {
 			menu.findItem(R.id.REFRESH).setVisible(true);
 		}
@@ -182,7 +180,7 @@ public class MenuActivity extends Activity {
 		Intent intent;
 		AlertDialog.Builder builder;
 		String sharingMessage;
-		
+
 		switch (item.getItemId()) {
 		case R.id.CALENDAR:
 			intent = new Intent(MenuActivity.this, CalendarController.class);
@@ -239,21 +237,15 @@ public class MenuActivity extends Activity {
 			return true;
 
 		case R.id.SHARE_EVENT_VIA_FACEBOOK:
-			sharingMessage =
-				"New Event: " + EventData.getNAME()
-				+ ", Date: " + EventData.getEVENTDATE()
-				+ ", Time: " + EventData.getEVENTTIME()
-				+ ", Location: " + EventData.getEVENTLOCATION();
-		
-		return shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
+			sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+
+			return shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
 
 		case R.id.SHARE_EVENT_VIA_TWITTER:
-			sharingMessage =
-				"New Event: " + EventData.getNAME()
-				+ ", Date: " + EventData.getEVENTDATE()
-				+ ", Time: " + EventData.getEVENTTIME()
-				+ ", Location: " + EventData.getEVENTLOCATION();
-			
+			sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+
 			return shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
 
 		case R.id.EDIT_GROUP:
@@ -264,7 +256,8 @@ public class MenuActivity extends Activity {
 		case R.id.LEAVE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog dialog;
-			builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME() + IMessages.SecurityIssue.QUESTION_MARK);
+			builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME()
+							+ IMessages.SecurityIssue.QUESTION_MARK);
 
 			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 				@Override
@@ -290,7 +283,8 @@ public class MenuActivity extends Activity {
 		case R.id.DELETE_GROUP:
 			builder = new AlertDialog.Builder(MenuActivity.this);
 			AlertDialog leavedialog;
-			builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME() + IMessages.SecurityIssue.QUESTION_MARK);
+			builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME()
+							+ IMessages.SecurityIssue.QUESTION_MARK);
 
 			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
 				@Override
@@ -405,19 +399,17 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	protected void logout()
-	{
+	protected void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
 
 		deleteIcon();
-		
+
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
 		startActivity(intent);
 	}
-	
-	private void resetUserData()
-	{
+
+	private void resetUserData() {
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -426,9 +418,8 @@ public class MenuActivity extends Activity {
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
 	}
-	
-	private void resetNotificationSettingsData()
-	{
+
+	private void resetNotificationSettingsData() {
 		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
 		NotificationSettingsData.setSHOW_ENTRIES("");
 		NotificationSettingsData.setGROUP_INVITES("");
@@ -479,41 +470,40 @@ public class MenuActivity extends Activity {
 			}
 		}
 	}
-	
-	protected boolean shareToSocialNetwork(String sharedContent, String socialNetworkName, String sharingMessage)
-	{
+
+	protected boolean shareToSocialNetwork(String sharedContent, String socialNetworkName, String sharingMessage) {
 		Intent sharingIntent = new Intent(sharedContent);
 		sharingIntent.setType("text/plain");
 		ComponentName component = null;
 
 		PackageManager pManager = getPackageManager();
 		List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
-		
-		//Search app
-		for(int a=0; a<activityList.size(); a++)
-			if((activityList.get(a).activityInfo.name).contains(socialNetworkName))
-				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName, activityList.get(a).activityInfo.name);
+
+		// Search app
+		for (int a = 0; a < activityList.size(); a++)
+			if ((activityList.get(a).activityInfo.name).contains(socialNetworkName))
+				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
+								activityList.get(a).activityInfo.name);
 
 		// prepare content as string
 		sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
-		
-		//send intent to app
+
+		// send intent to app
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 
 		// send intent to twitter app
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 		sharingIntent.setComponent(component);
-		
-		//if no appropriate app found, send to browser and open url
-		if (component == null)
-		{
+
+		// if no appropriate app found, send to browser and open url
+		if (component == null) {
 			String url;
-			
-			if(socialNetworkName.equalsIgnoreCase("facebook"))
+
+			if (socialNetworkName.equalsIgnoreCase("facebook"))
 				url = "https://facebook.com/sharer/sharer.php?text=" + sharingMessage;
 			else
 				url = "https://twitter.com/intent/tweet?text=" + sharingMessage;
-			
+
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(browserIntent);
 
@@ -523,57 +513,48 @@ public class MenuActivity extends Activity {
 
 		return true;
 	}
-	
-	protected void checkOnNewNotificationsAndNotifyUser()
-	{
+
+	protected void checkOnNewNotificationsAndNotifyUser() {
 		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
-		
+
 		// check on new notifications
-		if(!newNotifications.hasNewNotifications())
+		if (!newNotifications.hasNewNotifications())
 			return;
-		
+
 		// create title and text for icon
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
-		
+
 		String title = IMessages.Notification.NEW_NOTIFICATION;
 		title += numberNewNotifications.equals("1") ? "" : "s";
-		
+
 		String text = IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_1;
 		text += numberNewNotifications;
 		text += IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
-		
+
 		// create icon for action bar
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-			.setSmallIcon(R.drawable.ic_action_unread)
-			.setContentTitle(title)
-			.setContentText(text)
-			.setAutoCancel(true);
-		
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_action_unread)
+						.setContentTitle(title).setContentText(text).setAutoCancel(true);
+
 		Intent resultIntent = new Intent(this, NotificationController.class);
-		
+
 		// pending intent for using own permissions
-		PendingIntent resultPendingIntent = PendingIntent.getActivity(
-												this,
-												0,
-												resultIntent,
-												PendingIntent.FLAG_UPDATE_CURRENT
-												);
-		
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
+
 		builder.setContentIntent(resultPendingIntent);
-		
+
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		// notify user by icon
 		notificationManager.notify(newNotificationNotificationId, builder.build());
-		
+
 		// notify user by vibration, if this set
-		if(Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
+		if (Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
 			((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(2000);
 	}
-	
-	protected void deleteIcon()
-	{
+
+	protected void deleteIcon() {
 		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
 	}
 }
