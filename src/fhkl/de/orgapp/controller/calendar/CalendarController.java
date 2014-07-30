@@ -89,6 +89,10 @@ public class CalendarController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			
+			if(!UserData.getSHOWN_EVENT_ENTRIES().equals(""))
+				params.add(new BasicNameValuePair("shownEventEntries", UserData.getSHOWN_EVENT_ENTRIES()));
+			
 			JSONObject json = jsonParser.makeHttpRequest(url_get_calendar, "GET", params);
 
 			Log.d("Calendar: ", json.toString());

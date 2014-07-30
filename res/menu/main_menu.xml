@@ -36,6 +36,10 @@
                 android:id="@+id/DELETE_EVENT"
                 android:title="@string/DELETE_EVENT"
                 android:visible="false"/>
+            <item
+                android:id="@+id/EVENT_SETTINGS_SETTINGS"
+                android:title="@string/SETTINGS"
+                android:visible="false" />
         </menu>
     </item>
     <item

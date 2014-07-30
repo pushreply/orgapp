@@ -1,6 +1,7 @@
 package fhkl.de.orgapp.util.data;
 
-public class UserData {
+public class UserData
+{
 	private static String PERSONID = "";
 	private static String FIRST_NAME = "";
 	private static String LAST_NAME = "";
@@ -8,60 +9,118 @@ public class UserData {
 	private static String GENDER = "";
 	private static String EMAIL = "";
 	private static String MEMBER_SINCE = "";
-
-	public static String getPERSONID() {
+	private static String SHOWN_EVENT_ENTRIES = "";
+	// TODO password, encrypted
+	// TODO picture
+	/**
+	 * @return the pERSONID
+	 */
+	public static String getPERSONID()
+	{
 		return PERSONID;
 	}
-
-	public static void setPERSONID(String _ID) {
-		PERSONID = _ID;
+	/**
+	 * @param pERSONID the pERSONID to set
+	 */
+	public static void setPERSONID(String pERSONID)
+	{
+		PERSONID = pERSONID;
 	}
-
-	public static String getFIRST_NAME() {
+	/**
+	 * @return the fIRST_NAME
+	 */
+	public static String getFIRST_NAME()
+	{
 		return FIRST_NAME;
 	}
-
-	public static void setFIRST_NAME(String _FIRST_NAME) {
-		FIRST_NAME = _FIRST_NAME;
+	/**
+	 * @param fIRST_NAME the fIRST_NAME to set
+	 */
+	public static void setFIRST_NAME(String fIRST_NAME)
+	{
+		FIRST_NAME = fIRST_NAME;
 	}
-
-	public static String getLAST_NAME() {
+	/**
+	 * @return the lAST_NAME
+	 */
+	public static String getLAST_NAME()
+	{
 		return LAST_NAME;
 	}
-
-	public static void setLAST_NAME(String _LAST_NAME) {
-		LAST_NAME = _LAST_NAME;
+	/**
+	 * @param lAST_NAME the lAST_NAME to set
+	 */
+	public static void setLAST_NAME(String lAST_NAME)
+	{
+		LAST_NAME = lAST_NAME;
 	}
-
-	public static String getBIRTHDAY() {
+	/**
+	 * @return the bIRTHDAY
+	 */
+	public static String getBIRTHDAY()
+	{
 		return BIRTHDAY;
 	}
-
-	public static void setBIRTHDAY(String _BIRTHDAY) {
-		BIRTHDAY = _BIRTHDAY;
+	/**
+	 * @param bIRTHDAY the bIRTHDAY to set
+	 */
+	public static void setBIRTHDAY(String bIRTHDAY)
+	{
+		BIRTHDAY = bIRTHDAY;
 	}
-
+	/**
+	 * @return the gENDER
+	 */
 	public static String getGENDER() {
 		return GENDER;
 	}
-
-	public static void setGENDER(String _GENDER) {
-		GENDER = _GENDER;
+	/**
+	 * @param gENDER the gENDER to set
+	 */
+	public static void setGENDER(String gENDER)
+	{
+		GENDER = gENDER;
 	}
-
-	public static String getEMAIL() {
+	/**
+	 * @return the eMAIL
+	 */
+	public static String getEMAIL()
+	{
 		return EMAIL;
 	}
-
-	public static void setEMAIL(String _EMAIL) {
-		EMAIL = _EMAIL;
+	/**
+	 * @param eMAIL the eMAIL to set
+	 */
+	public static void setEMAIL(String eMAIL)
+	{
+		EMAIL = eMAIL;
 	}
-
-	public static String getMEMBER_SINCE() {
+	/**
+	 * @return the mEMBER_SINCE
+	 */
+	public static String getMEMBER_SINCE()
+	{
 		return MEMBER_SINCE;
 	}
-
-	public static void setMEMBER_SINCE(String _MEMBER_SINCE) {
-		MEMBER_SINCE = _MEMBER_SINCE;
+	/**
+	 * @param mEMBER_SINCE the mEMBER_SINCE to set
+	 */
+	public static void setMEMBER_SINCE(String mEMBER_SINCE)
+	{
+		MEMBER_SINCE = mEMBER_SINCE;
+	}
+	/**
+	 * @return the sHOWN_EVENT_ENTRIES
+	 */
+	public static String getSHOWN_EVENT_ENTRIES()
+	{
+		return SHOWN_EVENT_ENTRIES;
+	}
+	/**
+	 * @param sHOWN_EVENT_ENTRIES the sHOWN_EVENT_ENTRIES to set
+	 */
+	public static void setSHOWN_EVENT_ENTRIES(String sHOWN_EVENT_ENTRIES)
+	{
+		SHOWN_EVENT_ENTRIES = sHOWN_EVENT_ENTRIES;
 	}
 }

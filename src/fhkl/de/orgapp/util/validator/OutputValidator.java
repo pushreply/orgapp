@@ -17,4 +17,12 @@ public class OutputValidator
 		
 		return true;
 	}
+	
+	public static boolean isPersonShownEventEntriesSet(String shownEventEntries)
+	{
+		if(shownEventEntries == null || shownEventEntries.equals("") || shownEventEntries.equalsIgnoreCase("null"))
+			return false;
+		
+		return true;
+	}
 }

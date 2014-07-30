@@ -24,6 +24,7 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
@@ -163,10 +164,10 @@ public class LoginController extends Activity
 					return IMessages.Error.INVALID_USER;
 				}
 			}
-			catch (JSONException e)
+			catch (Exception e)
 			{
-				System.out.println("Error in Validator.doInBackground(String... arg0): " + e.getMessage());
 				e.printStackTrace();
+				logout();
 			}
 			
 			//invokes onPostExecute(String)
@@ -188,21 +189,15 @@ public class LoginController extends Activity
 			{
 				try
 				{
-					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
-					
 					// set user data
 					UserData.setPERSONID(e.getString("personId"));
 					UserData.setFIRST_NAME(e.getString("firstName"));
 					UserData.setLAST_NAME(e.getString("lastName"));
-
-					if (OutputValidator.isUserBirthdaySet(e.getString("birthday")))
-						UserData.setBIRTHDAY(e.getString("birthday"));
-					else
-						UserData.setBIRTHDAY("");
-
+					UserData.setBIRTHDAY(OutputValidator.isUserBirthdaySet(e.getString("birthday")) ? e.getString("birthday") : "" );
 					UserData.setGENDER(e.getString("gender"));
 					UserData.setEMAIL(e.getString("eMail"));
 					UserData.setMEMBER_SINCE(e.getString("created"));
+					UserData.setSHOWN_EVENT_ENTRIES(OutputValidator.isPersonShownEventEntriesSet(e.getString("shownEventEntries")) ? e.getString("shownEventEntries") : "");
 					
 					// set notification settings of the user
 					NotificationSettingsData.setNOTIFICATION_SETTINGS_ID(notificationSettings.getString("notificationSettingsId"));
@@ -219,14 +214,53 @@ public class LoginController extends Activity
 					NotificationSettingsData.setPRIVILEGE_GIVEN(notificationSettings.getInt("privilegeGiven") == 1 ? "true": "false");
 					NotificationSettingsData.setVIBRATION(notificationSettings.getInt("vibration") == 1 ? "true": "false");
 					
+					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 					startActivity(intent);
 				}
-				catch(JSONException e)
+				catch(Exception e)
 				{
-					System.out.println("Error in Validator.onPostExecute(String message): " + e.getMessage());
 					e.printStackTrace();
+					logout();
 				}
 			}
 		}
+	}
+	
+	private void logout()
+	{
+		resetUserData();
+		resetNotificationSettingsData();
+
+		Intent intent = new Intent(LoginController.this, StartController.class);
+		startActivity(intent);
+	}
+
+	private void resetUserData()
+	{
+		UserData.setPERSONID("");
+		UserData.setFIRST_NAME("");
+		UserData.setLAST_NAME("");
+		UserData.setBIRTHDAY("");
+		UserData.setGENDER("");
+		UserData.setEMAIL("");
+		UserData.setMEMBER_SINCE("");
+		UserData.setSHOWN_EVENT_ENTRIES("");
+	}
+
+	private void resetNotificationSettingsData()
+	{
+		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
+		NotificationSettingsData.setSHOW_ENTRIES("");
+		NotificationSettingsData.setGROUP_INVITES("");
+		NotificationSettingsData.setGROUP_EDITED("");
+		NotificationSettingsData.setGROUP_REMOVED("");
+		NotificationSettingsData.setEVENTS_ADDED("");
+		NotificationSettingsData.setEVENTS_EDITED("");
+		NotificationSettingsData.setEVENTS_REMOVED("");
+		NotificationSettingsData.setCOMMENTS_ADDED("");
+		NotificationSettingsData.setCOMMENTS_EDITED("");
+		NotificationSettingsData.setCOMMENTS_REMOVED("");
+		NotificationSettingsData.setPRIVILEGE_GIVEN("");
+		NotificationSettingsData.setVIBRATION("");
 	}
 }

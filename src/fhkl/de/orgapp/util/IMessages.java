@@ -14,18 +14,18 @@ public interface IMessages {
 	 */
 
 	public static final class DialogButton {
-		public static final String NEW_GENERIC = "New";
+		public static final String CANCEL = "Cancel";
 		public static final String DELETE_GENERIC = "Delete";
 		public static final String EDIT_GENERIC = "Edit";
 		public static final String LIST = "List";
 		public static final String MANUALLY = "Manual";
+		public static final String NEW_GENERIC = "New";
 		public static final String NO = "No";
 		public static final String NO_MEMBER_INVITE = "No member invite";
 		public static final String OK = "Ok";
 		public static final String SHARE_EVENT_VIA_FACEBOOK = "On Facebook";
 		public static final String SHARE_EVENT_VIA_TWITTER = "On Twitter";
 		public static final String YES = "Yes";
-		public static final String CANCEL = "Cancel";
 	}
 
 	/**
@@ -33,10 +33,10 @@ public interface IMessages {
 	 */
 
 	public static final class Error {
-		public static final String EMPTY_COMMENT = "You don't write any comment yet.";
 		public static final String DUPLICATE_EMAIL = "E-mail address duplicated";
 		public static final String DUPLICATE_PERSON = "Person already exists";
 		public static final String EMAIL_ADDRESSES_DO_NOT_MATCH = "Email addresses do not match";
+		public static final String EMPTY_COMMENT = "You don't write any comment yet.";
 		public static final String EXIST_USER = "User does not exist: ";
 		public static final String GROUP_NOT_DELETED = "Group was not deleted";
 		public static final String INSUFFICIENT_PRIVILEGES = "Insufficient privileges";
@@ -61,6 +61,8 @@ public interface IMessages {
 		public static final String NO_CHANGES_MADE = "No changes were made";
 		public static final String NO_INTERNET_CONNECTION = "Please check your internet connection";
 		public static final String NO_MEMBER_SELECTED = "Please select at least one person";
+		public static final String NO_NUMBER_ENTERED = "Please enter a number";
+		public static final String NUMBER_ZERO_NOT_ALLOW = "Number \"0\" is not allow";
 		public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
 		public static final String PRIVATE_INFO_NOT_UPDATED = "You have to update your private information";
 		public static final String PRIVILEGE_ADMIN = "Admin privileges cannot be altered";
@@ -78,8 +80,15 @@ public interface IMessages {
 	 */
 
 	public static final class Notification {
+		public static final String CREATE_COMMENT_1 = "A new comment in the event \"";
+		public static final String CREATE_COMMENT_2 = "\" was added.";
+		public static final String DELETE_COMMENT_1 = "The following comment has been deleted: \"";
+		public static final String DELETE_COMMENT_2 = "\"";
 		public static final String DELETE_GROUP_NOTIFICATION_1 = "Group ";
 		public static final String DELETE_GROUP_NOTIFICATION_2 = " has been deleted";
+		public static final String EDIT_COMMENT_1 = "The following comment was changed from \"";
+		public static final String EDIT_COMMENT_2 = "\" to \"";
+		public static final String EDIT_COMMENT_3 = "\"";
 		public static final String MESSAGE_CREATE_EVENT_1 = "In the group \"";
 		public static final String MESSAGE_CREATE_EVENT_2 = "\" the following new event was added: ";
 		public static final String MESSAGE_CREATE_EVENT_3 = "\" the following recurring new event was added: ";
@@ -93,14 +102,6 @@ public interface IMessages {
 		public static final String NOTIFICATION_LEFT_GROUP = "You left the group ";
 		public static final String YOU_HAVE_UNREAD_NOTIFICATION_1 = "You have ";
 		public static final String YOU_HAVE_UNREAD_NOTIFICATION_2 = " unread notification";
-		public static final String DELETE_COMMENT_1 = "The following comment has been deleted: \"";
-		public static final String DELETE_COMMENT_2 = "\"";
-		public static final String EDIT_COMMENT_1 = "The following comment was changed from \"";
-		public static final String EDIT_COMMENT_2 = "\" to \"";
-		public static final String EDIT_COMMENT_3 = "\"";
-		public static final String CREATE_COMMENT_1 = "A new comment in the event \"";
-		public static final String CREATE_COMMENT_2 = "\" was added.";
-
 	}
 
 	/**
@@ -108,21 +109,21 @@ public interface IMessages {
 	 */
 
 	public static final class SecurityIssue {
+		public static final String COMMENT = "Comment management menu";
 		public static final String CONFIRM_LEAVING_GROUP = "Do you really want to leave group ";
+		public static final String DELETE_COMMENT = "Delete comment";
 		public static final String DELETE_EVENT = "Do you really want to delete this event?";
+		public static final String EDIT_COMMENT = "Edit comment";
 		public static final String MESSAGE_DELETE_GROUP = "Do you really want to delete the group ";
+		public static final String NEW_COMMENT = "New comment";
+		public static final String NOTIFICATION = "Notification";
 		public static final String QUESTION_DELETE_MEMBER = "Do you really want to remove this member from the group?";
 		public static final String QUESTION_MARK = "?";
 		public static final String QUESTION_MEMBER = "Do you want do insert member manually or by list?";
 		public static final String SHARE_CREATED_EVENT = "Do you want to share the created event?";
 		public static final String SHARE_DELETED_EVENT = "Do you want to share the deleted event?";
 		public static final String SHARE_EDITED_EVENT = "Do you want to share the edited event?";
-		public static final String COMMENT = "Comment management menu";
-		public static final String NEW_COMMENT = "New comment";
-		public static final String EDIT_COMMENT = "Edit comment";
-		public static final String DELETE_COMMENT = "Delete comment";
 		public static final String QUESTION_DELETE_COMMENT = "Do you really want to delete this comment?";
-		public static final String NOTIFICATION = "Notification";
 	}
 
 	/**
@@ -167,7 +168,7 @@ public interface IMessages {
 	 */
 
 	public static final class Success {
-		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
 		public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
+		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
 	}
 }

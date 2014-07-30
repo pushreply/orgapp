@@ -35,6 +35,7 @@ import fhkl.de.orgapp.controller.event.CreateEventController;
 import fhkl.de.orgapp.controller.event.DeleteEventController;
 import fhkl.de.orgapp.controller.event.EditEventController;
 import fhkl.de.orgapp.controller.event.EventController;
+import fhkl.de.orgapp.controller.event.EventSettingsController;
 import fhkl.de.orgapp.controller.groups.DeleteGroupController;
 import fhkl.de.orgapp.controller.groups.EditGroupController;
 import fhkl.de.orgapp.controller.groups.GroupsController;
@@ -112,6 +113,7 @@ public class MenuActivity extends Activity {
 		if (nameCurrentController.equals(EventController.class.getName())) {
 			menu.findItem(R.id.EVENT_SETTINGS).setVisible(true);
 			menu.findItem(R.id.SHOW_ATTENDING_MEMBER).setVisible(true);
+			menu.findItem(R.id.EVENT_SETTINGS_SETTINGS).setVisible(true);
 			if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_EDIT_EVENT().equals("1")
 							|| EventData.getPERSONID().equals(UserData.getPERSONID())) {
 				menu.findItem(R.id.EDIT_EVENT).setVisible(true);
@@ -236,6 +238,11 @@ public class MenuActivity extends Activity {
 			builder.create().show();
 			return true;
 
+		case R.id.EVENT_SETTINGS_SETTINGS:
+			intent = new Intent(MenuActivity.this, EventSettingsController.class);
+			startActivity(intent);
+			return true;
+			
 		case R.id.SHARE_EVENT_VIA_FACEBOOK:
 			sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
 							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
@@ -417,6 +424,7 @@ public class MenuActivity extends Activity {
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
+		UserData.setSHOWN_EVENT_ENTRIES("");
 	}
 
 	private void resetNotificationSettingsData() {

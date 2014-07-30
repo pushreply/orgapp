@@ -39,6 +39,7 @@ if(mysql_num_rows($result) > 0)
 		$person["birthday"] = $row["birthday"];
 		$person["gender"] = $row["gender"];
 		$person["picture"] = $row["picture"];
+		$person["shownEventEntries"] = $row["shownEventEntries"];
 
 		array_push($response["person"], $person);
 	}

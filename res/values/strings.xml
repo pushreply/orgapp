@@ -15,6 +15,7 @@
     <string name="FEMALE">w</string>
     <string name="YES">Yes</string>
     <string name="NO">No</string>
+    <string name="SETTINGS">Settings</string>
 
     <!-- Startbildschirm -->
     <string name="LOGIN">Login</string>
@@ -50,6 +51,9 @@
     <string name="SHARE">Share</string>
     <string name="SHARE_EVENT_VIA_FACEBOOK">On Facebook</string>
     <string name="SHARE_EVENT_VIA_TWITTER">On Twitter</string>
+    
+    <!-- Event Settings -->
+    <string name="RECEIVED_EVENT_ENTRIES">Do you want to limit how much events you see?</string>
 
     <!-- Groups -->
     <string name="NEW_GROUP">New Group</string>
