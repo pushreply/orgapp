@@ -50,6 +50,12 @@
             android:name=".controller.event.DeleteEventController"
             android:label="@string/DELETE_EVENT" >
         </activity>
+        
+        <activity
+            android:name=".controller.event.EventSettingsController"
+            android:label="@string/EVENT_SETTINGS" >
+        </activity>
+        
         <activity
             android:name=".controller.groups.GroupsController"
             android:label="@string/GROUPS" >
