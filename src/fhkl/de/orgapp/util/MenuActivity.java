@@ -151,7 +151,7 @@ public class MenuActivity extends Activity {
 
 			menu.findItem(R.id.SHOW_MEMBER_LIST).setVisible(true);
 
-			if (GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
+			if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1"))
 				menu.findItem(R.id.INVITE_MEMBER).setVisible(true);
 		}
 
@@ -353,7 +353,7 @@ public class MenuActivity extends Activity {
 					startActivity(intent);
 				}
 			});
-			builder.setNeutralButton(IMessages.DialogButton.NO_MEMBER_INVITE, new OnClickListener() {
+			builder.setNeutralButton(IMessages.DialogButton.CANCEL, new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -443,7 +443,7 @@ public class MenuActivity extends Activity {
 		NotificationSettingsData.setVIBRATION("");
 	}
 
-	class MemberList extends AsyncTask<String, String, String> {
+	public class MemberList extends AsyncTask<String, String, String> {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();

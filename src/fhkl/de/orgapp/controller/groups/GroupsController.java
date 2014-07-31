@@ -9,21 +9,28 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
+import fhkl.de.orgapp.controller.event.CreateEventController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
@@ -130,20 +137,22 @@ public class GroupsController extends MenuActivity {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-							TextView tv_groupId = (TextView) view.findViewById(R.id.GROUPID);
-							TextView tv_personId = (TextView) view.findViewById(R.id.PERSONID);
-							TextView tv_groupName = (TextView) view.findViewById(R.id.GROUPNAME);
-							TextView tv_groupInfo = (TextView) view.findViewById(R.id.GROUPINFO);
-
-							GroupData.setGROUPID(tv_groupId.getText().toString());
-							GroupData.setPERSONID(tv_personId.getText().toString());
-							GroupData.setGROUPNAME(tv_groupName.getText().toString());
-							GroupData.setGROUPINFO(tv_groupInfo.getText().toString());
-
-							System.out.println("group admin: " + tv_personId.getText().toString());
-							new Privileges().execute();
+							setGroupData(view);
+							new SetPrivileges().execute();
 						}
 
+					});
+
+					groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+							setGroupData(view);
+							new SetPrivileges().execute("menu");
+
+							return true;
+						}
 					});
 					groupList.setAdapter(adapter);
 				}
@@ -152,7 +161,7 @@ public class GroupsController extends MenuActivity {
 
 	}
 
-	class Privileges extends AsyncTask<String, String, String> {
+	class SetPrivileges extends AsyncTask<String, String, String> {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -185,15 +194,218 @@ public class GroupsController extends MenuActivity {
 				logout();
 			}
 
-			return null;
+			if (args.length != 0) {
+				return args[0];
+			} else {
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			System.out.println("result:" + result);
+			if (result != null) {
 
-			Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
-			startActivity(intent);
+				EventData.setBACK(false);
+
+				LinearLayout ll = new LinearLayout(GroupsController.this);
+				ll.setOrientation(LinearLayout.VERTICAL);
+
+				if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_CREATE_EVENT().equals("1")) {
+
+					Button createEvent = new Button(GroupsController.this);
+					createEvent.setText(getResources().getString(R.string.CREATE_EVENT));
+
+					createEvent.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							Intent intent = new Intent(GroupsController.this, CreateEventController.class);
+							startActivity(intent);
+						}
+					});
+
+					ll.addView(createEvent);
+				}
+
+				if (GroupData.getPERSONID().equals(UserData.getPERSONID())) {
+
+					Button editGroup = new Button(GroupsController.this);
+					editGroup.setText(getResources().getString(R.string.EDIT_GROUP));
+
+					editGroup.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							Intent intent = new Intent(GroupsController.this, EditGroupController.class);
+							startActivity(intent);
+						}
+					});
+
+					ll.addView(editGroup);
+
+					Button deleteGroup = new Button(GroupsController.this);
+					deleteGroup.setText(getResources().getString(R.string.DELETE_GROUP));
+
+					deleteGroup.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							AlertDialog.Builder builder = new AlertDialog.Builder(GroupsController.this);
+							AlertDialog leavedialog;
+							builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME()
+											+ IMessages.SecurityIssue.QUESTION_MARK);
+
+							builder.setPositiveButton(IMessages.DialogButton.YES, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+									startActivity(new Intent(GroupsController.this, DeleteGroupController.class));
+								}
+							});
+
+							builder.setNegativeButton(IMessages.DialogButton.NO, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
+
+							leavedialog = builder.create();
+
+							leavedialog.show();
+						}
+					});
+
+					ll.addView(deleteGroup);
+				} else {
+
+					Button leaveGroup = new Button(GroupsController.this);
+					leaveGroup.setText(getResources().getString(R.string.LEAVE_GROUP));
+
+					leaveGroup.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							AlertDialog.Builder builder = new AlertDialog.Builder(GroupsController.this);
+							AlertDialog dialog;
+							builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME()
+											+ IMessages.SecurityIssue.QUESTION_MARK);
+
+							builder.setPositiveButton(IMessages.DialogButton.YES, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+									startActivity(new Intent(GroupsController.this, LeaveGroupController.class));
+								}
+							});
+
+							builder.setNegativeButton(IMessages.DialogButton.NO, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
+
+							dialog = builder.create();
+
+							dialog.show();
+						}
+					});
+
+					ll.addView(leaveGroup);
+				}
+
+				Button showMemberList = new Button(GroupsController.this);
+				showMemberList.setText(getResources().getString(R.string.SHOW_MEMBER_LIST));
+
+				showMemberList.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						new MemberList().execute();
+					}
+				});
+
+				ll.addView(showMemberList);
+
+				if (GroupData.getPERSONID().equals(UserData.getPERSONID())
+								|| GroupData.getPRIVILEGE_INVITE_MEMBER().equals("1")) {
+
+					Button inviteMember = new Button(GroupsController.this);
+					inviteMember.setText(getResources().getString(R.string.INVITE_MEMBER));
+
+					inviteMember.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+
+							AlertDialog.Builder builder = new AlertDialog.Builder(GroupsController.this);
+							builder.setMessage(IMessages.SecurityIssue.QUESTION_MEMBER);
+							builder.setPositiveButton(IMessages.DialogButton.LIST, new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									Intent intent = new Intent(GroupsController.this, ListInviteMemberController.class);
+									dialog.dismiss();
+									finish();
+									startActivity(intent);
+								}
+
+							});
+							builder.setNegativeButton(IMessages.DialogButton.MANUALLY, new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									Intent intent = new Intent(GroupsController.this, ManualInviteMemberController.class);
+									dialog.dismiss();
+									finish();
+									startActivity(intent);
+								}
+							});
+							builder.setNeutralButton(IMessages.DialogButton.CANCEL, new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
+							builder.create().show();
+						}
+					});
+
+					ll.addView(inviteMember);
+				}
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(GroupsController.this);
+				builder.setTitle(getResources().getString(R.string.GROUP_SETTINGS));
+				builder.setView(ll);
+
+				builder.create().show();
+
+			} else {
+				Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
+				startActivity(intent);
+			}
 		}
+	}
+
+	private void setGroupData(View view) {
+
+		TextView tv_groupId = (TextView) view.findViewById(R.id.GROUPID);
+		TextView tv_personId = (TextView) view.findViewById(R.id.PERSONID);
+		TextView tv_groupName = (TextView) view.findViewById(R.id.GROUPNAME);
+		TextView tv_groupInfo = (TextView) view.findViewById(R.id.GROUPINFO);
+
+		GroupData.setGROUPID(tv_groupId.getText().toString());
+		GroupData.setPERSONID(tv_personId.getText().toString());
+		GroupData.setGROUPNAME(tv_groupName.getText().toString());
+		GroupData.setGROUPINFO(tv_groupInfo.getText().toString());
 	}
 }
