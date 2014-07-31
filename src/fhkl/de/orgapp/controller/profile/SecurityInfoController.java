@@ -33,10 +33,13 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class SecurityInfoController extends MenuActivity
 {
+	// For http request
 	private static String URL_UPDATE_PERSON_SECURITY_INFO = "http://pushrply.com/update_person_security_info.php";
 	
+	// For progress dialog
 	private ProgressDialog pDialog;
 	
+	// Required variables for layout fields
 	TextView textEmail, textEmailConfirm;
 	EditText emailNew, emailConfirmNew;
 	Button changeButton, cancelButton;
@@ -51,11 +54,20 @@ public class SecurityInfoController extends MenuActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		// Set the layout
 		setContentView(R.layout.security_information);
+		
+		// Check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 		
+		// Fetch the views
 		getViews();
+		
+		// Set the texts of the views
 		setTexts();
+		
+		// Set the text sizes
 		setTextSizes();
 	}
 	
@@ -93,6 +105,7 @@ public class SecurityInfoController extends MenuActivity
 	
 	private void setTextSizes()
 	{
+		// Android specific sizes
 		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		emailNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		textEmailConfirm.setTextAppearance(this, android.R.style.TextAppearance_Large);
@@ -107,31 +120,35 @@ public class SecurityInfoController extends MenuActivity
 	
 	public void changeSecurityInfo(View view)
 	{
+		// Error message in case of incomplete fields
 		if(!isSecurityInfoComplete())
 		{
 			Toast.makeText(getApplicationContext(), IMessages.Error.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
+		// Error message in case of invalid email
 		if(!isEmailValid())
 		{
 			Toast.makeText(getApplicationContext(), IMessages.Error.INVALID_EMAIL, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
-		// Check the match of the two email entered by the user
+		// Error message in case of no match of the two emails
 		if(!emailNew.getText().toString().equals(emailConfirmNew.getText().toString()))
 		{
 			Toast.makeText(getApplicationContext(), IMessages.Error.EMAIL_ADDRESSES_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
+		// Error message in case of undone changes
 		if(!hasSecurityInfoChanged())
 		{
 			Toast.makeText(getApplicationContext(), IMessages.Error.SECURITY_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
+		// Update the security information
 		new SecurityInfoUpdater().execute();
 	}
 	
@@ -152,6 +169,7 @@ public class SecurityInfoController extends MenuActivity
 	
 	private void backToProfile()
 	{
+		// Start the ProfileController
 		Intent intent = new Intent(this, ProfileController.class);
 		startActivity(intent);
 	}
@@ -212,7 +230,7 @@ public class SecurityInfoController extends MenuActivity
 	class SecurityInfoUpdater extends AsyncTask<String, String, String>
 	{
 		/**
-		 * Defines a progress dialog within the main thread 
+		 * Defines a progress dialog within the main thread
 		 */
 		
 		@Override
@@ -220,6 +238,7 @@ public class SecurityInfoController extends MenuActivity
 		{
 			super.onPreExecute();
 			
+			// Display a progress dialog
 			pDialog = new ProgressDialog(SecurityInfoController.this);
 			pDialog.setMessage(IMessages.Status.UPDATING_SECURITY_INFO);
 			pDialog.setIndeterminate(false);
@@ -236,29 +255,34 @@ public class SecurityInfoController extends MenuActivity
 		@Override
 		protected String doInBackground(String... arg0)
 		{
+			// Required parameters for the request
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eMail", emailNew.getText().toString()));
 			
+			// Make the request
 			JSONObject json = new JSONParser().makeHttpRequest(URL_UPDATE_PERSON_SECURITY_INFO, "GET", params);
 			
 			try
 			{
 				int success = json.getInt("success");
 				
+				// In case of success
 				if(success == 1)
 				{
 					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
+				// In case of no success
 				else
 				{
 					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			}
+			// In case of Error
 			catch(Exception e)
 			{
 				e.getStackTrace();
-				// logout in case of error
+				// Logout the user
 				logout();
 			}
 			
@@ -276,13 +300,18 @@ public class SecurityInfoController extends MenuActivity
 		protected void onPostExecute(String message)
 		{
 			super.onPostExecute(message);
+			
+			// Hide the progress dialog
 			pDialog.dismiss();
 			
+			// Display a message if available
 			if(message != null)
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			
+			// Set the updated data to the POJO
 			UserData.setEMAIL(emailNew.getText().toString());
 			
+			// Back to the profile of the user
 			backToProfile();
 		}
 	}

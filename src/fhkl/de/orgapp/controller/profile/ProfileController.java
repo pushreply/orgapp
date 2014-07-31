@@ -17,6 +17,7 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class ProfileController extends MenuActivity
 {
+	// Required variables for layout fields
 	TextView textFirstName, textLastName, textBirthday, textGender, textEmail, textMemberSince;
 	TextView textPrivateInformation, textSecurityInformation, textGeneralInformation;
 	TextView firstName, lastName, birthday, gender, email, memberSince;
@@ -32,13 +33,17 @@ public class ProfileController extends MenuActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		// Set the layout
 		setContentView(R.layout.profil);
 		
-		// check for new notifications and signal the user
+		// Check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 		
+		// Fetch the views
 		getViews();
+		// Set the texts of the views
 		setTexts();
+		// Set the text sizes
 		setTextSizes();
 	}
 	
@@ -91,8 +96,10 @@ public class ProfileController extends MenuActivity
 		lastName.setText(UserData.getLAST_NAME());
 		birthday.setText(UserData.getBIRTHDAY());
 		
+		// User set no gender
 		if(!UserData.getGENDER().equalsIgnoreCase("m") && !UserData.getGENDER().equalsIgnoreCase("w"))
 			gender.setText("");
+		// User set a gender
 		else
 			gender.setText(UserData.getGENDER());
 		
@@ -106,6 +113,7 @@ public class ProfileController extends MenuActivity
 	
 	private void setTextSizes()
 	{
+		// Android specific sizes
 		textPrivateInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textSecurityInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textGeneralInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
