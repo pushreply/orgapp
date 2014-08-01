@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -66,16 +65,6 @@ public class NotificationController extends MenuActivity
 		
 		// Fetch the notifications
 		new Notification().execute();
-
-		// Fetch the message field
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View notificationItemView = inflater.inflate(R.layout.notification_item, null);
-		TextView message = (TextView) notificationItemView.findViewById(R.id.MESSAGE);
-
-		// Increase maximal lines of the field at older android versions
-		if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 16) {
-			message.setMaxLines(Integer.MAX_VALUE);
-		}
 	}
 
 	class Notification extends AsyncTask<String, String, String>
@@ -290,9 +279,6 @@ public class NotificationController extends MenuActivity
 							return(row);
 						}
 					}
-
-					// Set the adapter
-					notificationListView.setAdapter(new NotificationListAdapter(notificationList));
 					
 					// Make the list clickable
 					notificationListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -307,42 +293,14 @@ public class NotificationController extends MenuActivity
 							// If message is bold (unread), declare them as read and update read status
 							if (message.getTypeface() != null && message.getTypeface().isBold())
 							{
+								// Display the message normal
 								message.setTypeface(Typeface.DEFAULT);
 								
 								// Update read status
 								new NotificationReadStatusUpdater().execute(position);
 							}
-
-							// In case of message takes more than two lines, show a dialog with the message
-							if (message.getLineCount() > 2)
-							{
-								// Build the dialog
-								AlertDialog.Builder builder = new AlertDialog.Builder(NotificationController.this);
-								
-								// Define the title
-								builder.setTitle(IMessages.SecurityIssue.NOTIFICATION);
-								
-								// Define a text view
-								TextView tv = new TextView(NotificationController.this);
-								
-								// Set the text with the message
-								tv.setText(message.getText().toString());
-								builder.setView(tv);
-
-								// Set a button
-								builder.setNeutralButton(IMessages.DialogButton.OK, new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										return;
-									}
-								});
-								
-								// Create and show the dialog
-								builder.create().show();
-							}
 						}
-
+						
 						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String>
 						{
 							@Override
@@ -359,6 +317,80 @@ public class NotificationController extends MenuActivity
 							}
 						}
 					});
+					
+					// Make the list clickable for a long click
+					notificationListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+					{
+						@Override
+						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+						{
+							// Fetch the id of selected message
+							final TextView message = (TextView) view.findViewById(R.id.MESSAGE);
+							
+							// In case of message takes more than two lines, show a dialog with the message
+							if (message.getLineCount() > 2)
+							{
+								// Build the dialog
+								AlertDialog.Builder builder = new AlertDialog.Builder(NotificationController.this);
+								
+								// Define the title
+								builder.setTitle(IMessages.SecurityIssue.NOTIFICATION);
+								
+								// Define a text view
+								TextView tv = new TextView(NotificationController.this);
+								
+								// Set the text with the message
+								tv.setText(message.getText().toString());
+								builder.setView(tv);
+								
+								final int positionFinal = position;
+								
+								// Set a button
+								builder.setNeutralButton(IMessages.DialogButton.OK, new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog, int which)
+									{
+										// If message is bold (unread), declare them as read and update read status
+										if (message.getTypeface() != null && message.getTypeface().isBold())
+										{
+											// Display the message normal
+											message.setTypeface(Typeface.DEFAULT);
+											
+											// Update read status
+											new NotificationReadStatusUpdater().execute(positionFinal);
+										}
+										
+										return;
+									}
+								});
+								
+								// Create and show the dialog
+								builder.create().show();
+							}
+							
+							return false;
+						}
+						
+						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String>
+						{
+							@Override
+							protected String doInBackground(Integer... arg)
+							{
+								// Required parameters for the request
+								List<NameValuePair> params = new ArrayList<NameValuePair>();
+								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
+								
+								// Make the request
+								jsonParser.makeHttpRequest(url_update_notification_read_status, "GET", params);
+
+								return null;
+							}
+						}
+					});
+					
+					// Set the adapter
+					notificationListView.setAdapter(new NotificationListAdapter(notificationList));
 				}
 			});
 		}
