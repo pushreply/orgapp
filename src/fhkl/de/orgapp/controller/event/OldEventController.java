@@ -23,7 +23,6 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
-import fhkl.de.orgapp.util.data.CommentData;
 import fhkl.de.orgapp.util.data.EventData;
 
 public class OldEventController extends MenuActivity {
@@ -95,8 +94,7 @@ public class OldEventController extends MenuActivity {
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
 
-			CommentData.setACTION("showcomment");
-			vp.add(new BasicNameValuePair("do", CommentData.getACTION()));
+			vp.add(new BasicNameValuePair("do", "showcomment"));
 			vp.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());

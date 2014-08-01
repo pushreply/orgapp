@@ -124,10 +124,6 @@
         </activity>
         <activity android:name=".controller.event.EventController" >
         </activity>
-        <activity
-            android:name=".controller.comment.InsertCommentController"
-            android:label="@string/COMMENT" >
-        </activity>
     </application>
 
 </manifest>
