@@ -15,9 +15,9 @@ if ($_GET['do']=="createGroup"
 	/*
 	 * pass the get values to some variables
 	*/
-	$personId= $_GET['personId'];
+	$personId = $_GET['personId'];
 	$name = htmlspecialchars($_GET['name']); /*escape every '<tag>' (not only HTML) */
-	info = htmlspecialchars($_GET['info']);
+	$info = htmlspecialchars($_GET['info']);
 
 	$response = array ();
 
@@ -33,8 +33,8 @@ if ($_GET['do']=="createGroup"
 
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT);
-		$sth->bindValue(':name', $message);
-		$sth->bindValue(':info', $classification);
+		$sth->bindValue(':name', $name);
+		$sth->bindValue(':info', $info);
 		$confirm = $sth->execute();
 
 		//check insertion status
@@ -87,8 +87,8 @@ if ($_GET['do']=="updateGroup"
 
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':groupId', $commentid, PDO::PARAM_INT);
-		$sth->bindValue(':name', $name)
-		;$sth->bindValue(':info', $info);
+		$sth->bindValue(':name', $name);
+		$sth->bindValue(':info', $info);
 		$confirm = $sth->execute();
 
 		if ($confirm==true) {
