@@ -9,9 +9,7 @@ public class UserData
 	private static String GENDER = "";
 	private static String EMAIL = "";
 	private static String MEMBER_SINCE = "";
-	private static String SHOWN_EVENT_ENTRIES = "";
-	// TODO password, encrypted
-	// TODO picture
+	
 	/**
 	 * @return the pERSONID
 	 */
@@ -108,19 +106,5 @@ public class UserData
 	public static void setMEMBER_SINCE(String mEMBER_SINCE)
 	{
 		MEMBER_SINCE = mEMBER_SINCE;
-	}
-	/**
-	 * @return the sHOWN_EVENT_ENTRIES
-	 */
-	public static String getSHOWN_EVENT_ENTRIES()
-	{
-		return SHOWN_EVENT_ENTRIES;
-	}
-	/**
-	 * @param sHOWN_EVENT_ENTRIES the sHOWN_EVENT_ENTRIES to set
-	 */
-	public static void setSHOWN_EVENT_ENTRIES(String sHOWN_EVENT_ENTRIES)
-	{
-		SHOWN_EVENT_ENTRIES = sHOWN_EVENT_ENTRIES;
 	}
 }

@@ -28,25 +28,29 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
-public class RegisterController extends Activity {
+public class RegisterController extends Activity
+{
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
-	JSONParser jsonParser = new JSONParser();
 	EditText inputEMail;
 	EditText inputPassword;
 	EditText inputPasswordConfirm;
 	EditText inputFirstName;
 	EditText inputLastName;
 
-	// url to check existing person and create new person
+	// For http request
 	private static String url_check_person = "http://pushrply.com/select_person_by_email.php";
 	private static String url_create_person = "http://pushrply.com/create_person.php";
 	private static String url_create_notification_settings = "http://pushrply.com/create_notification_settings.php";
+	private static String url_event_settings = "http://pushrply.com/pdo_eventsettingscontrol.php";
 
-	// JSON Node names
+	// For json issues
+	JSONParser jsonParser = new JSONParser();
 	private static final String TAG_SUCCESS = "success";
-
+	List<NameValuePair> params;
+	Integer success, newPersonId;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -127,9 +131,9 @@ public class RegisterController extends Activity {
 			if (!InputValidator.isStringLengthInRange(lastName, 0, 255))
 				return IMessages.Error.INVALID_LASTNAME;
 
-			List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-			paramsCheck.add(new BasicNameValuePair("eMail", eMail));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET", paramsCheck);
+			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("eMail", eMail));
+			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET", params);
 
 			Log.d("Create Response", jsonCheck.toString());
 
@@ -145,39 +149,59 @@ public class RegisterController extends Activity {
 			}
 
 			// Building Parameters
-			List<NameValuePair> paramsCreate = new ArrayList<NameValuePair>();
-			paramsCreate.add(new BasicNameValuePair("eMail", eMail));
+			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("eMail", eMail));
 
 			// verschlüsselung
 
-			paramsCreate.add(new BasicNameValuePair("password", password));
-			paramsCreate.add(new BasicNameValuePair("firstName", firstName));
-			paramsCreate.add(new BasicNameValuePair("lastName", lastName));
+			params.add(new BasicNameValuePair("password", password));
+			params.add(new BasicNameValuePair("firstName", firstName));
+			params.add(new BasicNameValuePair("lastName", lastName));
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			Date date = new Date();
-			paramsCreate.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
+			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// getting JSON Object
-			// Note that create person url accepts GET method
-			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET", paramsCreate);
+			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET", params);
 
-			// check log cat fro response
+			// check log cat for response
 			Log.d("Create Response", json.toString());
 
 			// check for success tag
-			try {
-				Integer success = json.getInt(TAG_SUCCESS);
-
-				if (success != 0) {
-					// successfully created person
-					List<NameValuePair> paramsSettings = new ArrayList<NameValuePair>();
-					paramsSettings.add(new BasicNameValuePair("personId", success.toString()));
-					json = jsonParser.makeHttpRequest(url_create_notification_settings, "GET", paramsSettings);
-					json.getInt(TAG_SUCCESS);
-					if (success == 1) {
-						Intent i = new Intent(getApplicationContext(), LoginController.class);
-						startActivity(i);
-					} else {
+			try
+			{
+				success = json.getInt(TAG_SUCCESS);
+				
+				// Fetch id of new person
+				newPersonId = success;
+				
+				if (success != 0)
+				{
+					// Create notification settings
+					params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
+					json = jsonParser.makeHttpRequest(url_create_notification_settings, "GET", params);
+					success = json.getInt(TAG_SUCCESS);
+					
+					if (success == 1)
+					{
+						// Create event settings
+						params = new ArrayList<NameValuePair>();
+						params.add(new BasicNameValuePair("do", "create"));
+						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
+						
+						json = jsonParser.makeHttpRequest(url_event_settings, "GET", params);
+						
+						success = json.getInt(TAG_SUCCESS);
+						
+						if(success == 1)
+						{
+							Intent i = new Intent(getApplicationContext(), LoginController.class);
+							startActivity(i);
+						}
+					}
+					else
+					{
 						// failed to create notification settings
 					}
 

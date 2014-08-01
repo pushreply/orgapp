@@ -23,6 +23,7 @@ import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
+import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
@@ -37,8 +38,8 @@ public class LoginController extends Activity {
 	EditText inputEMail;
 	EditText inputPassword;
 	List<NameValuePair> params;
-	JSONObject json, e, notificationSettings;
-	JSONArray person = null, notificationSettingsArray;
+	JSONObject json, e, notificationSettings, eventSettings;
+	JSONArray person = null, notificationSettingsArray, eventSettingsArray;
 	int success;
 
 	@Override
@@ -109,7 +110,7 @@ public class LoginController extends Activity {
 						// verschlüsselung
 
 						if (password.equals(inputPassword.getText().toString())) {
-							// fetch notification settings of the user
+							// Fetch notification settings of the user
 							String urlSelectNotificationSettings = "http://pushrply.com/get_notification_settings.php";
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
@@ -123,6 +124,28 @@ public class LoginController extends Activity {
 								notificationSettings = notificationSettingsArray.getJSONObject(0);
 							} else {
 								System.out.println("No notificationSettings loaded");
+								logout();
+							}
+							
+							// Fetch event settings of the user
+							String urlSelectEventSettings = "http://pushrply.com/pdo_eventsettingscontrol.php";
+							params = new ArrayList<NameValuePair>();
+							params.add(new BasicNameValuePair("do", "read"));
+							params.add(new BasicNameValuePair("personId", e.getString("personId")));
+							
+							json = new JSONParser().makeHttpRequest(urlSelectEventSettings, "GET", params);
+							
+							success = json.getInt("success");
+							
+							if(success == 1)
+							{
+								eventSettingsArray = json.getJSONArray("eventSettings");
+								eventSettings = eventSettingsArray.getJSONObject(0);
+							}
+							else
+							{
+								System.out.println("No eventSettings loaded");
+								logout();
 							}
 
 							// invokes onPostExecute(String)
@@ -152,14 +175,14 @@ public class LoginController extends Activity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
-			// error message
+			// Error message
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
-			// everything successful
+			// Everything successful
 			else {
 				try {
-					// set user data
+					// Set user data
 					UserData.setPERSONID(e.getString("personId"));
 					UserData.setFIRST_NAME(e.getString("firstName"));
 					UserData.setLAST_NAME(e.getString("lastName"));
@@ -168,10 +191,8 @@ public class LoginController extends Activity {
 					UserData.setGENDER(e.getString("gender"));
 					UserData.setEMAIL(e.getString("eMail"));
 					UserData.setMEMBER_SINCE(e.getString("created"));
-					UserData.setSHOWN_EVENT_ENTRIES(OutputValidator.isPersonShownEventEntriesSet(e.getString("shownEventEntries")) ? e
-									.getString("shownEventEntries") : "");
 
-					// set notification settings of the user
+					// Set notification settings of the user
 					NotificationSettingsData
 									.setNOTIFICATION_SETTINGS_ID(notificationSettings.getString("notificationSettingsId"));
 					NotificationSettingsData
@@ -197,6 +218,10 @@ public class LoginController extends Activity {
 									: "false");
 					NotificationSettingsData.setVIBRATION(notificationSettings.getInt("vibration") == 1 ? "true" : "false");
 
+					// Set event settings of the user
+					EventSettingsData.setEVENT_SETTINGS_ID(eventSettings.getString("eventSettingsId"));
+					EventSettingsData.setSHOWN_EVENT_ENTRIES(OutputValidator.isEventSettingsShownEntriesSet(eventSettings.getString("shownEntries")) ? eventSettings.getString("shownEntries") : "");
+					
 					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 					startActivity(intent);
 				} catch (Exception e) {
@@ -210,6 +235,7 @@ public class LoginController extends Activity {
 	private void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
+		resetEventSettingsData();
 
 		Intent intent = new Intent(LoginController.this, StartController.class);
 		startActivity(intent);
@@ -223,7 +249,6 @@ public class LoginController extends Activity {
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
-		UserData.setSHOWN_EVENT_ENTRIES("");
 	}
 
 	private void resetNotificationSettingsData() {
@@ -240,5 +265,11 @@ public class LoginController extends Activity {
 		NotificationSettingsData.setCOMMENTS_REMOVED("");
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
+	}
+	
+	private void resetEventSettingsData()
+	{
+		EventSettingsData.setEVENT_SETTINGS_ID("");
+		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
 }

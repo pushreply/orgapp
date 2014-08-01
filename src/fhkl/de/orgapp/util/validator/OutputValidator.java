@@ -18,9 +18,9 @@ public class OutputValidator
 		return true;
 	}
 	
-	public static boolean isPersonShownEventEntriesSet(String shownEventEntries)
+	public static boolean isEventSettingsShownEntriesSet(String shownEntries)
 	{
-		if(shownEventEntries == null || shownEventEntries.equals("") || shownEventEntries.equalsIgnoreCase("null"))
+		if(shownEntries == null || shownEntries.equals("") || shownEntries.equalsIgnoreCase("null"))
 			return false;
 		
 		return true;

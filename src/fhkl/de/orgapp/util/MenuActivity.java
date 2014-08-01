@@ -54,6 +54,7 @@ import fhkl.de.orgapp.controller.profile.SecurityInfoController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.check.NewNotificationsChecker;
 import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
@@ -409,7 +410,7 @@ public class MenuActivity extends Activity {
 	protected void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
-
+		resetEventSettingsData();
 		deleteIcon();
 
 		Intent intent = new Intent(MenuActivity.this, StartController.class);
@@ -424,7 +425,6 @@ public class MenuActivity extends Activity {
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
 		UserData.setMEMBER_SINCE("");
-		UserData.setSHOWN_EVENT_ENTRIES("");
 	}
 
 	private void resetNotificationSettingsData() {
@@ -441,6 +441,12 @@ public class MenuActivity extends Activity {
 		NotificationSettingsData.setCOMMENTS_REMOVED("");
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
+	}
+	
+	private void resetEventSettingsData()
+	{
+		EventSettingsData.setEVENT_SETTINGS_ID("");
+		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
 
 	public class MemberList extends AsyncTask<String, String, String> {

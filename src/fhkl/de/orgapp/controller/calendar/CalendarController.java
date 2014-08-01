@@ -27,6 +27,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
+import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
@@ -90,8 +91,8 @@ public class CalendarController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			
-			if(!UserData.getSHOWN_EVENT_ENTRIES().equals(""))
-				params.add(new BasicNameValuePair("shownEventEntries", UserData.getSHOWN_EVENT_ENTRIES()));
+			if(!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
+				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 			
 			JSONObject json = jsonParser.makeHttpRequest(url_get_calendar, "GET", params);
 

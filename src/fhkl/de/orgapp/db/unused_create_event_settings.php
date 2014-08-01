@@ -13,13 +13,11 @@ $db = new DB_CONNECT ();
 
 $personId = $_GET ['personId'];
 
-$result = mysql_query ("Insert into notificationSettings (personId, groupInvites, groupEdited,
-			groupRemoved, eventsAdded, eventsEdited, eventsRemoved, commentsAdded, commentsEdited, commentsRemoved, privilegeGiven)
-			values('$personId', true, true, true, true, true, true, true, true, true, true)" ) or die ( mysql_error () );
+$result = mysql_query ("Insert into eventSettings (personId) values('$personId')") or die ( mysql_error () );
 if ($result) {
 	// successfully inserted into database
 	$response ["success"] = 1;
-	$response ["message"] = "Notification Settings successfully created.";
+	$response ["message"] = "Event Settings successfully created.";
 
 	// echoing JSON response
 	echo json_encode ( $response );

@@ -17,7 +17,7 @@ if
 	 * pass the get values to some variables
 	 */
 	$personid= $_GET['personId'];
-	$shownEventEntries = isset($_GET['shownEventEntries']) ? $_GET['shownEventEntries'] : null;
+	$shownEntries = isset($_GET['shownEntries']) ? $_GET['shownEntries'] : null;
 
 	$response = array ();
 
@@ -25,8 +25,8 @@ if
 
 	try
 	{
-		$sql='UPDATE person SET
-				shownEventEntries = :shownEventEntries
+		$sql='UPDATE eventSettings SET
+				shownEntries = :shownEntries
 				WHERE personId = :personId';
 
 		$sth = $pdo->prepare($sql);
@@ -34,10 +34,10 @@ if
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
 		
-		if(isset($_GET['shownEventEntries']))
-			$sth->bindValue(':shownEventEntries', $shownEventEntries, PDO::PARAM_INT);
+		if(isset($_GET['shownEntries']))
+			$sth->bindValue(':shownEntries', $shownEntries, PDO::PARAM_INT);
 		else
-			$sth->bindValue(':shownEventEntries', $shownEventEntries, PDO::PARAM_NULL);
+			$sth->bindValue(':shownEntries', $shownEntries, PDO::PARAM_NULL);
 		
 		$confirm = $sth->execute();
 		

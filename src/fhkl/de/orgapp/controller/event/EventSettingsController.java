@@ -21,6 +21,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
@@ -35,7 +36,7 @@ public class EventSettingsController extends MenuActivity {
 	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
 
-	private static String URL_UPDATE_EVENT_SETTINGS = "http://pushrply.com/pdo_person.php";
+	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 	private static final String TAG_SUCCESS = "success";
 
 	CheckBox receivedEntries;
@@ -59,9 +60,9 @@ public class EventSettingsController extends MenuActivity {
 		save = (Button) findViewById(R.id.EVENT_SETTINGS_BUTTON_SAVE);
 		cancel = (Button) findViewById(R.id.EVENT_SETTINGS_BUTTON_CANCEL);
 
-		if (UserData.getSHOWN_EVENT_ENTRIES() != null && !UserData.getSHOWN_EVENT_ENTRIES().equals("")) {
+		if (EventSettingsData.getSHOWN_EVENT_ENTRIES() != null && !EventSettingsData.getSHOWN_EVENT_ENTRIES().equals("")) {
 			receivedEntries.setChecked(true);
-			numberEntries.setText(UserData.getSHOWN_EVENT_ENTRIES());
+			numberEntries.setText(EventSettingsData.getSHOWN_EVENT_ENTRIES());
 			numberEntries.setVisibility(View.VISIBLE);
 		} else {
 			numberEntries.setVisibility(View.GONE);
@@ -119,7 +120,7 @@ public class EventSettingsController extends MenuActivity {
 	}
 
 	private boolean hasEventSettingsChanged() {
-		if (numberEntries.getText().toString().equals(UserData.getSHOWN_EVENT_ENTRIES()))
+		if (numberEntries.getText().toString().equals(EventSettingsData.getSHOWN_EVENT_ENTRIES()))
 			return false;
 
 		return true;
@@ -158,7 +159,7 @@ public class EventSettingsController extends MenuActivity {
 		protected String doInBackground(String... arg0) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-			params.add(new BasicNameValuePair("do", "updateeventsettings"));
+			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			if (receivedEntries.isChecked()) {
@@ -172,16 +173,17 @@ public class EventSettingsController extends MenuActivity {
 					return IMessages.Error.INVALID_NUMBER;
 				}
 
-				params.add(new BasicNameValuePair("shownEventEntries", numberEntries.getText().toString()));
+				params.add(new BasicNameValuePair("shownEntries", numberEntries.getText().toString()));
 			}
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_UPDATE_EVENT_SETTINGS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1) {
-					updateEventSettingsInUserData();
+				if (success == 1)
+				{
+					updateEventSettings();
 
 					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
@@ -210,8 +212,8 @@ public class EventSettingsController extends MenuActivity {
 			}
 		}
 
-		private void updateEventSettingsInUserData() {
-			UserData.setSHOWN_EVENT_ENTRIES(receivedEntries.isChecked() ? numberEntries.getText().toString() : "");
+		private void updateEventSettings() {
+			EventSettingsData.setSHOWN_EVENT_ENTRIES(receivedEntries.isChecked() ? numberEntries.getText().toString() : "");
 		}
 	}
 }

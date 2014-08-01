@@ -43,6 +43,7 @@ import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.check.NewNotificationsChecker;
+import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
@@ -356,10 +357,11 @@ public class ManualInviteMemberController extends Activity {
 		notificationManager.notify(newNotificationNotificationId, builder.build());
 	}
 
-	protected void logout() {
+	private void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
-
+		resetEventSettingsData();
+		
 		deleteIcon();
 
 		Intent intent = new Intent(ManualInviteMemberController.this, StartController.class);
@@ -390,6 +392,12 @@ public class ManualInviteMemberController extends Activity {
 		NotificationSettingsData.setCOMMENTS_REMOVED("");
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
+	}
+	
+	private void resetEventSettingsData()
+	{
+		EventSettingsData.setEVENT_SETTINGS_ID("");
+		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
 
 	protected void deleteIcon() {
