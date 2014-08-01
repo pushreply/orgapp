@@ -234,22 +234,64 @@ if ($_GET['do']=="deletePrivilege"
 				WHERE personId = :personId and groupId = :groupId';
 
 		$sth = $pdo->prepare($sql);
-		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
 		$confirm = $sth->execute();
 
 		if ($confirm==true) {
 			$response ["success"] = 1;
-			$response ["message"] = "Event is successfully deleted.";
+			$response ["message"] = "Privilege is successfully deleted.";
 			echo json_encode ($response);
 		}
 		else {
 
-			$response ["message"] = "Event is not deleted.";
+			$response ["message"] = "Privilege is not deleted.";
 			echo json_encode ($response);
 		}
 	} catch (Exception $e) {
 		$response ["success"] = 0;
-		$response ["message"] = "Event delete failed.";
+		$response ["message"] = "Privilege delete failed.";
+		echo 'ERROR: ' . $e->getMessage();
+		exit();
+	}
+}
+
+/*------------------------------------------------------------
+ * DELETE PRIVILEGE from one group
+* check the user input:
+*/
+
+if ($_GET['do']=="deletePrivilegeGroup"
+		&& isset($_GET['groupId']))
+{
+	$groupId = $_GET['groupId'];
+
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try {
+
+		$sql = 'DELETE FROM privilege
+				WHERE groupId = :groupId';
+
+		$sth = $pdo->prepare($sql);
+		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$confirm = $sth->execute();
+
+		if ($confirm==true) {
+			$response ["success"] = 1;
+			$response ["message"] = "Privilege is successfully deleted.";
+			echo json_encode ($response);
+		}
+		else {
+
+			$response ["message"] = "Privilege is not deleted.";
+			echo json_encode ($response);
+		}
+	} catch (Exception $e) {
+		$response ["success"] = 0;
+		$response ["message"] = "Privilege delete failed.";
 		echo 'ERROR: ' . $e->getMessage();
 		exit();
 	}

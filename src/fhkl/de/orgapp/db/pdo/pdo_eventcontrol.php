@@ -288,4 +288,77 @@ if ($_GET['do']=="readGroupEvents" && isset($_GET['groupId']))
 	}
 }
 
+/*------------------------------------------------------------
+ * Returns all user events
+* check the user input:
+*/
+
+if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
+{
+	$personId = $_GET['personId'];
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try {
+
+		$sql = 'SELECT ev.eventId, ev.personId, ev.groupId, ev.name, ev.eventDate, ev.eventTime, ev.eventLocation
+				FROM event ev join eventPerson ep using (eventId)
+				WHERE ep.personId = :personId and ev.eventDate > (select CURDATE())
+				ORDER BY eventDate asc, eventTime asc';
+
+		$sth = $pdo->prepare($sql);
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
+		$confirm = $sth->execute();
+		$result = $sth->fetchAll();
+
+		if ($confirm==true) {
+			/*
+			 * need a container for json
+			*/
+			$response["event"] = array();
+
+			if(isset($_GET['shownEventEntries']))
+			{
+				$shownEventEntries = $_GET ['shownEventEntries'];
+
+				for($i = 0; $i < $shownEventEntries & $result; $i ++) {
+
+					$event['eventId'] = $result['eventId'];
+					$event['personId'] = $result['personId'];
+					$event['groupId'] = $result['groupId'];
+					$event['name'] = html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8');
+					$event['eventDate'] = $result['eventDate'];
+					$event['eventTime'] = $result['eventTime'];
+					$event['eventLocation'] = html_entity_decode($result['eventLocation'], ENT_QUOTES, 'UTF-8');
+				}
+			} else {
+				foreach ($result as $row)
+				{
+					$event['eventId'] = $row['eventId'];
+					$event['personId'] = $row['personId'];
+					$event['groupId'] = $row['groupId'];
+					$event['name'] = html_entity_decode($row['name'], ENT_QUOTES, 'UTF-8');
+					$event['eventDate'] = $row['eventDate'];
+					$event['eventTime'] = $row['eventTime'];
+					$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
+				}
+				/*
+				 * push each value to the data container
+				*/
+				array_push($response["event"], $event);
+			}
+			$response ["success"] = 1;
+			echo json_encode ($response);
+		}
+		else {
+			$response ["success"] = 0;
+			echo json_encode ($response);
+		}
+	} catch (Exception $e) {
+		echo 'ERROR: DB.';
+		exit();
+	}
+}
+
 ?>
