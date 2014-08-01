@@ -41,7 +41,7 @@ if ($_GET['do']=="createEvent"
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':personId', $personid, PDO::PARAM_INT);
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':eventDate', $eventDate);

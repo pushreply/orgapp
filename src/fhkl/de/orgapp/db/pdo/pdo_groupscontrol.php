@@ -32,7 +32,7 @@ if ($_GET['do']=="createGroup"
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':personId', $personid, PDO::PARAM_INT);
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':info', $info);
 		$confirm = $sth->execute();
@@ -86,7 +86,7 @@ if ($_GET['do']=="updateGroup"
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':groupId', $commentid, PDO::PARAM_INT);
+		$sth->bindValue(':groupId', groupId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':info', $info);
 		$confirm = $sth->execute();
