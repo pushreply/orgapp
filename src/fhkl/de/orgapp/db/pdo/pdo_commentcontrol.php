@@ -11,7 +11,7 @@ $dbpath = 'pdo_db_connect.inc.php';
 if ($_GET['do']=="addcomment"
 		&& isset($_GET['eventId'])
 		&& isset($_GET['personId'])
-		&& isset($_GET['message']) 
+		&& isset($_GET['message'])
 		&& htmlspecialchars($_GET['message']) != null)
 {
 	/*
@@ -153,7 +153,8 @@ if ($_GET['do']=="deletecomment"
 		}
 	} catch (Exception $e) {
 		$response ["success"] = 0;
-		echo 'ERROR: delete comment failed.';
+		$response ["message"] = "Comment delete failed.";
+		echo 'ERROR: ' . $e->getMessage();
 		exit();
 	}
 }
