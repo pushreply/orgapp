@@ -26,7 +26,7 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class LeaveGroupController extends MenuActivity {
 	private static String URL_LEAVE_GROUP = "http://pushrply.com/leave_group.php";
-	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -81,12 +81,14 @@ public class LeaveGroupController extends MenuActivity {
 				}
 
 				notificationParams = new ArrayList<NameValuePair>();
+				notificationParams.add(new BasicNameValuePair("do", "create"));
+				// TODO Add email
 				notification = IMessages.Notification.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));
 
-				json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", notificationParams);
+				json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", notificationParams);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;

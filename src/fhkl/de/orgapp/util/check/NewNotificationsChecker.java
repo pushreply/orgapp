@@ -16,8 +16,7 @@ import android.os.AsyncTask;
 
 public class NewNotificationsChecker
 {
-	private static String URL_CHECK_FOR_NEW_NOTIFICATIONS = "http://pushrply.com/check_for_new_notifications.php";
-	private static String URL_GET_NUMBER_OF_NEW_NOTIFICATIONS = "http://pushrply.com/get_number_new_notifications.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_HAS_NEW_NOTIFICATIONS = "hasNewNotifications";
 	private static final String TAG_NEW_NOTIFICATIONS = "new notifications";
@@ -73,9 +72,10 @@ public class NewNotificationsChecker
 		@Override
 		protected String doInBackground(String... arg)
 		{
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
+			params.add(new BasicNameValuePair("do", "checkunread"));
 			
-			json = new JSONParser().makeHttpRequest(URL_CHECK_FOR_NEW_NOTIFICATIONS, "GET", initializeParams(params));
+			json = new JSONParser().makeHttpRequest(URL_NOTIFICATION, "GET", params);
 			
 			try
 			{
@@ -110,9 +110,10 @@ public class NewNotificationsChecker
 		@Override
 		protected String doInBackground(String... arg)
 		{
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
+			params.add(new BasicNameValuePair("do", "checknumberunread"));
 			
-			json = new JSONParser().makeHttpRequest(URL_GET_NUMBER_OF_NEW_NOTIFICATIONS, "GET", initializeParams(params));
+			json = new JSONParser().makeHttpRequest(URL_NOTIFICATION, "GET", params);
 			
 			try
 			{

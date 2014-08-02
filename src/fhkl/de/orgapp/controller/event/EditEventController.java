@@ -43,7 +43,7 @@ public class EditEventController extends MenuActivity {
 
 	private static String URL_UPDATE_EVENT = "http://pushrply.com/update_event.php";
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-	private static String URL_CREATE_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private ProgressDialog pDialog;
 
@@ -250,12 +250,13 @@ public class EditEventController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "5"));
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
-							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 						}
 					}
 				}

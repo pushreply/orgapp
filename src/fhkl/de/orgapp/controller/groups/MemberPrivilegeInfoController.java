@@ -37,7 +37,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	private static String URL_UPDATE_PRIVILEGES = "http://pushrply.com/update_privileges.php";
-	private static String URL_CREATE_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -295,6 +295,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
+						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						paramsNotification.add(new BasicNameValuePair("eMail", tv_eMail.getText().toString()));
 						paramsNotification.add(new BasicNameValuePair("classification", "10"));
 						String message = new String();
@@ -378,7 +379,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotification);
 
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {

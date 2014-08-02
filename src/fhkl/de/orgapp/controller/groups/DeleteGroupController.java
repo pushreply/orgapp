@@ -22,7 +22,7 @@ public class DeleteGroupController extends MenuActivity {
 	private static String URL_GET_ALL_USER_IN_GROUP = "http://pushrply.com/get_all_user_in_group.php";
 	private static String URL_DELETE_PRIVILEGE_ENTRIES_BY_GROUP_ID = "http://pushrply.com/delete_privilege_entries_by_group_id.php";
 	private static String URL_DELETE_GROUP_BY_ID = "http://pushrply.com/delete_group_by_id.php";
-	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private ProgressDialog pDialog;
@@ -78,10 +78,9 @@ public class DeleteGroupController extends MenuActivity {
 					return null;
 
 				notificationParams = new ArrayList<NameValuePair>();
-
+				notificationParams.add(new BasicNameValuePair("do", "create"));
 				notification = IMessages.Notification.DELETE_GROUP_NOTIFICATION_1 + GroupData.getGROUPNAME()
 								+ IMessages.Notification.DELETE_GROUP_NOTIFICATION_2;
-
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));
@@ -90,7 +89,7 @@ public class DeleteGroupController extends MenuActivity {
 					notificationParams.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL)
 									.toString()));
 					// send notification
-					json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", notificationParams);
+					json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", notificationParams);
 
 					if (json.getInt(TAG_SUCCESS) != 1)
 						return null;

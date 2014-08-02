@@ -46,7 +46,7 @@ public class EventController extends MenuActivity {
 	private static String URL_DELETE_PERSON_IN_EVENT = "http://pushrply.com/delete_person_in_event.php";
 	private static String URL_COMMENTCONTROL = "http://pushrply.com/pdo_commentcontrol.php";
 	private static String URL_GET_ATTENDING_MEMBER = "http://pushrply.com/get_attending_member.php";
-	private static String URL_CREATE_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -478,13 +478,14 @@ public class EventController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "9"));
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.DELETE_COMMENT_1
 											+ message + IMessages.Notification.DELETE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 						}
 					}
 				}
@@ -551,6 +552,7 @@ public class EventController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "8"));
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
@@ -558,7 +560,7 @@ public class EventController extends MenuActivity {
 											+ message + IMessages.Notification.EDIT_COMMENT_2 + changedMessage
 											+ IMessages.Notification.EDIT_COMMENT_3));
 
-							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 						}
 					}
 				}
@@ -631,13 +633,14 @@ public class EventController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "7"));
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.CREATE_COMMENT_1
 											+ EventData.getNAME() + IMessages.Notification.CREATE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(URL_CREATE_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 						}
 					}
 				}

@@ -39,7 +39,7 @@ import fhkl.de.orgapp.util.data.UserData;
 public class ListInviteMemberController extends MenuActivity {
 	private static String URL_GET_INVITE_MEMBER_LIST = "http://pushrply.com/get_invite_member_list.php";
 	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
-	private static String URL_SEND_NOTIFICATION = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	Button inviteButton, cancelButton;
 	View horizontalLine;
@@ -284,14 +284,14 @@ public class ListInviteMemberController extends MenuActivity {
 
 						// send notification
 						paramsNotification = new ArrayList<NameValuePair>();
+						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						notification = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
-
 						paramsNotification.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
 						paramsNotification.add(new BasicNameValuePair("message", notification));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 
-						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotification);
 
 						success = json.getInt(TAG_SUCCESS);
 

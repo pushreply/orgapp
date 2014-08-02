@@ -59,7 +59,7 @@ public class ManualInviteMemberController extends Activity {
 	private static String URL_EXIST_USER = "http://pushrply.com/select_person_by_email.php";
 	private static String URL_USER_INVITED = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
-	private static String URL_SEND_NOTIFICATIONS = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATIONS = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -298,12 +298,13 @@ public class ManualInviteMemberController extends Activity {
 					if (success == 1) {
 						// Send Notifications
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
+						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						String message = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(URL_SEND_NOTIFICATIONS, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(URL_NOTIFICATIONS, "GET", paramsNotification);
 						json.getInt(TAG_SUCCESS);
 
 					}

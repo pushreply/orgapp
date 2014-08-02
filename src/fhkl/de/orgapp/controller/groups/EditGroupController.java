@@ -36,7 +36,7 @@ public class EditGroupController extends MenuActivity {
 	private static String url_check_group = "http://pushrply.com/get_group.php";
 	private static String url_update_group = "http://pushrply.com/update_group.php";
 	private static String url_get_all_user_in_group = "http://pushrply.com/get_all_user_in_group.php";
-	private static String url_create_notification = "http://pushrply.com/create_notification.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -194,6 +194,7 @@ public class EditGroupController extends MenuActivity {
 							JSONObject c = member.getJSONObject(i);
 
 							List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "2"));
 							String message = new String();
@@ -215,7 +216,7 @@ public class EditGroupController extends MenuActivity {
 
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "null"));
 
-							json = jsonParser.makeHttpRequest(url_create_notification, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 
 							Intent intent = new Intent(EditGroupController.this, GroupsController.class);
 							startActivity(intent);

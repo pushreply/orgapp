@@ -33,8 +33,7 @@ import fhkl.de.orgapp.util.data.UserData;
 public class NotificationController extends MenuActivity
 {
 	// For http request
-	private static String url_get_notification = "http://pushrply.com/get_notifications.php";
-	private static String url_update_notification_read_status = "http://pushrply.com/update_notification_read_status.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
@@ -95,6 +94,7 @@ public class NotificationController extends MenuActivity
 			{
 				// Required parameters for the request
 				List<NameValuePair> paramsNotifications = new ArrayList<NameValuePair>();
+				paramsNotifications.add(new BasicNameValuePair("do", "read"));
 				paramsNotifications.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 				// Set the parameters according the notification settings
@@ -140,12 +140,12 @@ public class NotificationController extends MenuActivity
 				}
 				if (NotificationSettingsData.getSHOW_ENTRIES() != null && !NotificationSettingsData.getSHOW_ENTRIES().equals(""))
 					paramsNotifications.add(new BasicNameValuePair("shownEntries", NotificationSettingsData.getSHOW_ENTRIES()));
-
+				
 				// Make the request
-				JSONObject json = jsonParser.makeHttpRequest(url_get_notification, "GET", paramsNotifications);
+				JSONObject json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotifications);
 
 				int success = json.getInt(TAG_SUCCESS);
-
+				
 				// In case of success
 				if(success == 1)
 				{
@@ -308,10 +308,11 @@ public class NotificationController extends MenuActivity
 							{
 								// Required parameters for the request
 								List<NameValuePair> params = new ArrayList<NameValuePair>();
+								params.add(new BasicNameValuePair("do", "update"));
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(url_update_notification_read_status, "GET", params);
+								jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", params);
 
 								return null;
 							}
@@ -379,10 +380,11 @@ public class NotificationController extends MenuActivity
 							{
 								// Required parameters for the request
 								List<NameValuePair> params = new ArrayList<NameValuePair>();
+								params.add(new BasicNameValuePair("do", "update"));
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(url_update_notification_read_status, "GET", params);
+								jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", params);
 
 								return null;
 							}
