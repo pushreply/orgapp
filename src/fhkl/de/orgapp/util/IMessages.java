@@ -64,6 +64,7 @@ public interface IMessages {
 		public static final String NO_NUMBER_ENTERED = "Please enter a number";
 		public static final String NUMBER_ZERO_NOT_ALLOW = "Number \"0\" is not allow";
 		public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
+		public static final String PERSON_NOT_CREATED = "Error during creation of the person";
 		public static final String PRIVATE_INFO_NOT_UPDATED = "You have to update your private information";
 		public static final String PRIVILEGE_ADMIN = "Admin privileges cannot be altered";
 		public static final String REMOVING_ADMIN = "Admin cannot be removed";
@@ -167,8 +168,10 @@ public interface IMessages {
 	 * messages for success
 	 */
 
-	public static final class Success {
+	public static final class Success
+	{
 		public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
+		public static final String PERSON_SUCCESSFUL_CREATED = "You have created the person";
 		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
 	}
 }

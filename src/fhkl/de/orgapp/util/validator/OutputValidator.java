@@ -2,9 +2,17 @@ package fhkl.de.orgapp.util.validator;
 
 public class OutputValidator
 {
-	public static boolean isUserBirthdaySet(String userBirthdayString)
+	public static boolean isUserBirthdaySet(String birthday)
 	{
-		if(userBirthdayString == null || userBirthdayString.equals("") || userBirthdayString.equalsIgnoreCase("0000-00-00"))
+		if(birthday == null || birthday.equals("") || birthday.equalsIgnoreCase("0000-00-00"))
+			return false;
+		
+		return true;
+	}
+	
+	public static boolean isUserGenderSet(String gender)
+	{
+		if(gender == null || gender.equals("") || gender.equals("-") || gender.equalsIgnoreCase("null"))
 			return false;
 		
 		return true;

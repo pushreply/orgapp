@@ -41,7 +41,7 @@ import fhkl.de.orgapp.util.data.UserData;
 public class PrivateInfoController extends MenuActivity
 {
 	// For http request
-	private static String URL_UPDATE_PERSON_PRIVATE_INFO = "http://pushrply.com/update_person_private_info.php";
+	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
 
 	// Required variables for progress dialog, calendar, new date fields, birthday and gender
 	private ProgressDialog pDialog;
@@ -461,14 +461,16 @@ public class PrivateInfoController extends MenuActivity
 		{
 			// Required parameters for the request
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("firstName", firstNameNew.getText().toString()));
 			params.add(new BasicNameValuePair("lastName", lastNameNew.getText().toString()));
 			params.add(new BasicNameValuePair("birthday", birthdayNew.getText().toString()));
 			params.add(new BasicNameValuePair("gender", String.valueOf(genderNew)));
+			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
 
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(URL_UPDATE_PERSON_PRIVATE_INFO, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(URL_PERSON, "GET", params);
 
 			try
 			{

@@ -40,13 +40,13 @@ public class RegisterController extends Activity
 	EditText inputLastName;
 
 	// For http request
-	private static String url_check_person = "http://pushrply.com/select_person_by_email.php";
-	private static String url_create_person = "http://pushrply.com/create_person.php";
+	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
 	private static String url_create_notification_settings = "http://pushrply.com/create_notification_settings.php";
-	private static String url_event_settings = "http://pushrply.com/pdo_eventsettingscontrol.php";
+	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
+	JSONObject json;
 	private static final String TAG_SUCCESS = "success";
 	List<NameValuePair> params;
 	Integer success, newPersonId;
@@ -132,14 +132,15 @@ public class RegisterController extends Activity
 				return IMessages.Error.INVALID_LASTNAME;
 
 			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			JSONObject jsonCheck = jsonParser.makeHttpRequest(url_check_person, "GET", params);
+			json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
 
-			Log.d("Create Response", jsonCheck.toString());
+			Log.d("Create Response", json.toString());
 
 			// check for success tag
 			try {
-				int success = jsonCheck.getInt(TAG_SUCCESS);
+				int success = json.getInt(TAG_SUCCESS);
 
 				if (success == 1) {
 					return IMessages.Error.DUPLICATE_PERSON;
@@ -150,10 +151,9 @@ public class RegisterController extends Activity
 
 			// Building Parameters
 			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "create"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-
-			// verschlüsselung
-
+			// TODO verschluesselung
 			params.add(new BasicNameValuePair("password", password));
 			params.add(new BasicNameValuePair("firstName", firstName));
 			params.add(new BasicNameValuePair("lastName", lastName));
@@ -162,7 +162,7 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// getting JSON Object
-			JSONObject json = jsonParser.makeHttpRequest(url_create_person, "GET", params);
+			json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
 
 			// check log cat for response
 			Log.d("Create Response", json.toString());
@@ -190,14 +190,13 @@ public class RegisterController extends Activity
 						params.add(new BasicNameValuePair("do", "create"));
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 						
-						json = jsonParser.makeHttpRequest(url_event_settings, "GET", params);
+						json = jsonParser.makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
 						
 						success = json.getInt(TAG_SUCCESS);
 						
 						if(success == 1)
 						{
-							Intent i = new Intent(getApplicationContext(), LoginController.class);
-							startActivity(i);
+							return IMessages.Success.PERSON_SUCCESSFUL_CREATED;
 						}
 					}
 					else
@@ -207,8 +206,10 @@ public class RegisterController extends Activity
 
 					// closing this screen
 					finish();
-				} else {
-					// failed to create person
+				}
+				else
+				{
+					return IMessages.Error.PERSON_NOT_CREATED;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -228,6 +229,9 @@ public class RegisterController extends Activity
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
+			
+			Intent i = new Intent(getApplicationContext(), LoginController.class);
+			startActivity(i);
 		}
 	}
 }

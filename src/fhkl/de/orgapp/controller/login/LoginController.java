@@ -28,7 +28,13 @@ import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
 
-public class LoginController extends Activity {
+public class LoginController extends Activity
+{
+	// For http request
+	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
+	String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/get_notification_settings.php";
+	String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
+	
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -87,35 +93,36 @@ public class LoginController extends Activity {
 		}
 
 		@Override
-		protected String doInBackground(String... arg0) {
-			// url to select a person
-			String urlSelectPerson = "http://pushrply.com/select_person_by_email.php";
+		protected String doInBackground(String... arg0)
+		{
 			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 
-			json = new JSONParser().makeHttpRequest(urlSelectPerson, "GET", params);
+			json = new JSONParser().makeHttpRequest(URL_PERSON, "GET", params);
 
-			try {
+			try
+			{
 				success = json.getInt("success");
-
+				
 				if (success == 1) {
 					person = json.getJSONArray("person");
 
 					e = person.getJSONObject(0);
 
 					String eMail = e.getString("eMail");
-
+					
 					if (eMail.equals(inputEMail.getText().toString())) {
 						String password = e.getString("password");
 						// verschlüsselung
 
-						if (password.equals(inputPassword.getText().toString())) {
+						if (password.equals(inputPassword.getText().toString()))
+						{
 							// Fetch notification settings of the user
-							String urlSelectNotificationSettings = "http://pushrply.com/get_notification_settings.php";
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
-							json = new JSONParser().makeHttpRequest(urlSelectNotificationSettings, "GET", params);
+							json = new JSONParser().makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
 
 							success = json.getInt("success");
 
@@ -128,12 +135,11 @@ public class LoginController extends Activity {
 							}
 							
 							// Fetch event settings of the user
-							String urlSelectEventSettings = "http://pushrply.com/pdo_eventsettingscontrol.php";
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 							
-							json = new JSONParser().makeHttpRequest(urlSelectEventSettings, "GET", params);
+							json = new JSONParser().makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
 							
 							success = json.getInt("success");
 							
@@ -186,9 +192,8 @@ public class LoginController extends Activity {
 					UserData.setPERSONID(e.getString("personId"));
 					UserData.setFIRST_NAME(e.getString("firstName"));
 					UserData.setLAST_NAME(e.getString("lastName"));
-					UserData.setBIRTHDAY(OutputValidator.isUserBirthdaySet(e.getString("birthday")) ? e.getString("birthday")
-									: "");
-					UserData.setGENDER(e.getString("gender"));
+					UserData.setBIRTHDAY(OutputValidator.isUserBirthdaySet(e.getString("birthday")) ? e.getString("birthday") : "");
+					UserData.setGENDER(OutputValidator.isUserGenderSet(e.getString("gender")) ? e.getString("gender") : "");
 					UserData.setEMAIL(e.getString("eMail"));
 					UserData.setMEMBER_SINCE(e.getString("created"));
 
