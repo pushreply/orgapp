@@ -44,12 +44,12 @@ if
 		$sth->bindValue(':created', $created);
 		
 		$confirm = $sth->execute();
-	
+		
 		//check insertion status
 		if ($confirm==true)
 		{
 			// successfully inserted into database
-			$response ["success"] = 1;
+			$response ["success"] = $pdo->lastInsertId();
 			// echoing JSON response
 			echo json_encode ($response);
 		}

@@ -28,7 +28,7 @@ import fhkl.de.orgapp.util.data.UserData;
 public class NotificationSettingsController extends MenuActivity
 {
 	// For http request
-	private static String URL_UPDATE_NOTIFICATION_SETTINGS = "http://pushrply.com/update_notification_settings.php";
+	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
 
 	// Required variables for progress dialog, vibration and shown entries
 	private ProgressDialog pDialog;
@@ -213,6 +213,7 @@ public class NotificationSettingsController extends MenuActivity
 		{
 			// Required parameters for the request
 			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair(TAG_GROUP_INVITES, groupInvites.isChecked() ? "1" : "0"));
 			params.add(new BasicNameValuePair(TAG_GROUP_EDITED, groupEdited.isChecked() ? "1" : "0"));
@@ -252,7 +253,7 @@ public class NotificationSettingsController extends MenuActivity
 			try
 			{
 				// Make the request
-				JSONObject json = new JSONParser().makeHttpRequest(URL_UPDATE_NOTIFICATION_SETTINGS, "GET", params);
+				JSONObject json = new JSONParser().makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success

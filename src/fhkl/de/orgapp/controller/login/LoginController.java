@@ -32,7 +32,7 @@ public class LoginController extends Activity
 {
 	// For http request
 	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/get_notification_settings.php";
+	String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
 	String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 	
 	// Progress Dialog
@@ -120,6 +120,7 @@ public class LoginController extends Activity
 						{
 							// Fetch notification settings of the user
 							params = new ArrayList<NameValuePair>();
+							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
 							json = new JSONParser().makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);

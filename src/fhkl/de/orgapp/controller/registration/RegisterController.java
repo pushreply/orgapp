@@ -41,7 +41,7 @@ public class RegisterController extends Activity
 
 	// For http request
 	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	private static String url_create_notification_settings = "http://pushrply.com/create_notification_settings.php";
+	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
 	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 
 	// For json issues
@@ -153,7 +153,7 @@ public class RegisterController extends Activity
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "create"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			// TODO verschluesselung
+			// TODO Verschluesselung
 			params.add(new BasicNameValuePair("password", password));
 			params.add(new BasicNameValuePair("firstName", firstName));
 			params.add(new BasicNameValuePair("lastName", lastName));
@@ -170,17 +170,16 @@ public class RegisterController extends Activity
 			// check for success tag
 			try
 			{
-				success = json.getInt(TAG_SUCCESS);
-				
 				// Fetch id of new person
-				newPersonId = success;
+				newPersonId = json.getInt(TAG_SUCCESS);
 				
-				if (success != 0)
+				if (newPersonId.intValue() != 0)
 				{
 					// Create notification settings
 					params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("do", "create"));
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
-					json = jsonParser.makeHttpRequest(url_create_notification_settings, "GET", params);
+					json = jsonParser.makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
 					success = json.getInt(TAG_SUCCESS);
 					
 					if (success == 1)
@@ -198,14 +197,17 @@ public class RegisterController extends Activity
 						{
 							return IMessages.Success.PERSON_SUCCESSFUL_CREATED;
 						}
+						else
+						{
+							// TODO rollback?
+							System.out.println("No event settings created");
+						}
 					}
 					else
 					{
-						// failed to create notification settings
+						// TODO rollback?
+						System.out.println("No notification settings created");
 					}
-
-					// closing this screen
-					finish();
 				}
 				else
 				{
@@ -230,6 +232,10 @@ public class RegisterController extends Activity
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
 			
+			// Close screen
+			finish();
+			
+			// Start LoginController
 			Intent i = new Intent(getApplicationContext(), LoginController.class);
 			startActivity(i);
 		}
