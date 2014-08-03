@@ -41,7 +41,7 @@ public class MemberListController extends MenuActivity {
 
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 	private static String URL_DELETE_MEMBER = "http://pushrply.com/delete_member.php";
-	private static String URL_GET_PERSON = "http://pushrply.com/get_person_by_personId.php";
+	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 
 	private static final String TAG_SUCCESS = "success";
@@ -234,8 +234,9 @@ public class MemberListController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
 
 			Log.d("Member: ", json.toString());
 

@@ -32,8 +32,8 @@ public class LoginController extends Activity
 {
 	// For http request
 	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
-	String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
+	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
+	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 	
 	// Progress Dialog
 	private ProgressDialog pDialog;

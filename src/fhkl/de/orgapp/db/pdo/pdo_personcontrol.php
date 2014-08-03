@@ -70,74 +70,142 @@ if
  * READ PERSON
 */
 
-if
-(
-	$_GET['do']=="read"
-	&& isset($_GET['eMail'])
-)
+if($_GET['do']=="read")
 {
-	/*
-	 * pass the get values to some variables
-	*/
-	$eMail = $_GET['eMail'];
-	
-	$response = array ();
-	
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-	
-	try
+	// By email
+	if(isset($_GET['eMail']))
 	{
-		$sql= 'SELECT * FROM person WHERE eMail = :eMail';
-	
-		$sth = $pdo->prepare($sql);
-	
-		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':eMail', $eMail);
+		/*
+		 * pass the get values to some variables
+		*/
+		$eMail = $_GET['eMail'];
 		
-		$sth->execute();
-		$result = $sth->fetchAll();
+		$response = array ();
 		
-		// if $result contains rows
-		if(count($result) > 0)
+		require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+		
+		try
 		{
-			/*
-			 * need a container for json
-			*/
-			$response["person"] = array();
-				
-			foreach ($result as $row)
+			$sql= 'SELECT * FROM person WHERE eMail = :eMail';
+		
+			$sth = $pdo->prepare($sql);
+		
+			/* bind the values, in the same order as the $sql statement. */
+			$sth->bindValue(':eMail', $eMail);
+			
+			$sth->execute();
+			$result = $sth->fetchAll();
+			
+			// if $result contains rows
+			if(count($result) > 0)
 			{
-				$person['personId'] = $row['personId'];
-				$person['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
-				$person['password'] = $row['password'];
-				$person['firstName'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
-				$person['lastName'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
-				$person['created'] = $row['created'];
-				$person['birthday'] = $row['birthday'];
-				$person['gender'] = $row['gender'];
-					
 				/*
-				 * push each value to the data container
+				 * need a container for json
 				*/
-				array_push($response["person"], $person);
+				$response["person"] = array();
+					
+				foreach ($result as $row)
+				{
+					$person['personId'] = $row['personId'];
+					$person['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
+					$person['password'] = $row['password'];
+					$person['firstName'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
+					$person['lastName'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
+					$person['created'] = $row['created'];
+					$person['birthday'] = $row['birthday'];
+					$person['gender'] = $row['gender'];
+						
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["person"], $person);
+				}
+					
+				// successfully selected from database
+				$response ["success"] = 1;
+				// echoing JSON response
+				echo json_encode ($response);
 			}
-				
-			// successfully selected from database
-			$response ["success"] = 1;
-			// echoing JSON response
-			echo json_encode ($response);
+			else
+			{
+				$response ["success"] = 0;
+				echo json_encode ($response);
+			}
 		}
-		else
+		catch (PDOException $e)
 		{
 			$response ["success"] = 0;
-			echo json_encode ($response);
+			echo 'ERROR: ' . $e->getMessage();
+			exit();
 		}
 	}
-	catch (PDOException $e)
+	
+	// By personId
+	if(isset($_GET['personId']))
 	{
-		$response ["success"] = 0;
-		echo 'ERROR: ' . $e->getMessage();
-		exit();
+		/*
+		 * pass the get values to some variables
+		*/
+		$personId = $_GET['personId'];
+		
+		$response = array ();
+		
+		require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+		
+		try
+		{
+			$sql= 'SELECT * FROM person WHERE personId = :personId';
+		
+			$sth = $pdo->prepare($sql);
+		
+			/* bind the values, in the same order as the $sql statement. */
+			$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+				
+			$sth->execute();
+			$result = $sth->fetchAll();
+				
+			// if $result contains rows
+			if(count($result) > 0)
+			{
+				/*
+				 * need a container for json
+				*/
+				$response["person"] = array();
+					
+				foreach ($result as $row)
+				{
+					$person['personId'] = $row['personId'];
+					$person['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
+					$person['password'] = $row['password'];
+					$person['firstName'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
+					$person['lastName'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
+					$person['created'] = $row['created'];
+					$person['birthday'] = $row['birthday'];
+					$person['gender'] = $row['gender'];
+		
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["person"], $person);
+				}
+					
+				// successfully selected from database
+				$response ["success"] = 1;
+				// echoing JSON response
+				echo json_encode ($response);
+			}
+			else
+			{
+				$response ["success"] = 0;
+				echo json_encode ($response);
+			}
+		}
+		catch (PDOException $e)
+		{
+			$response ["success"] = 0;
+			echo 'ERROR: ' . $e->getMessage();
+			exit();
+		}
 	}
 }
 
