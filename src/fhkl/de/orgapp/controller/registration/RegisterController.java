@@ -195,7 +195,7 @@ public class RegisterController extends Activity
 						
 						if(success == 1)
 						{
-							return IMessages.Success.PERSON_SUCCESSFUL_CREATED;
+							return null;
 						}
 						else
 						{
@@ -225,19 +225,27 @@ public class RegisterController extends Activity
 		 * **/
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
-			// dismiss the dialog once done
+			
+			// Dismiss the dialog once done
 			pDialog.dismiss();
 
-			if (message != null) {
+			// Error Message
+			if (message != null)
+			{
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
-			
-			// Close screen
-			finish();
-			
-			// Start LoginController
-			Intent i = new Intent(getApplicationContext(), LoginController.class);
-			startActivity(i);
+			// Success
+			else
+			{
+				Toast.makeText(getApplicationContext(), IMessages.Success.PERSON_SUCCESSFUL_CREATED, Toast.LENGTH_LONG).show();
+				
+				// Close screen
+				finish();
+				
+				// Start LoginController
+				Intent i = new Intent(getApplicationContext(), LoginController.class);
+				startActivity(i);
+			}
 		}
 	}
 }
