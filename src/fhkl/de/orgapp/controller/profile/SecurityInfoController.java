@@ -259,7 +259,11 @@ public class SecurityInfoController extends MenuActivity
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			
+			// The new value
 			params.add(new BasicNameValuePair("eMail", emailNew.getText().toString()));
+			
+			// This values are not changeable in this layout, but required for the update
 			params.add(new BasicNameValuePair("firstName", UserData.getFIRST_NAME()));
 			params.add(new BasicNameValuePair("lastName", UserData.getLAST_NAME()));
 			params.add(new BasicNameValuePair("birthday", UserData.getBIRTHDAY()));

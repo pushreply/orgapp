@@ -463,10 +463,14 @@ public class PrivateInfoController extends MenuActivity
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			
+			// The new values
 			params.add(new BasicNameValuePair("firstName", firstNameNew.getText().toString()));
 			params.add(new BasicNameValuePair("lastName", lastNameNew.getText().toString()));
 			params.add(new BasicNameValuePair("birthday", birthdayNew.getText().toString()));
 			params.add(new BasicNameValuePair("gender", String.valueOf(genderNew)));
+			
+			// This value is not changeable in this layout, but required for the update
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
 
 			// Make the request
