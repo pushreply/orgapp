@@ -24,6 +24,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -36,11 +37,6 @@ public class CalendarController extends MenuActivity {
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> eventList;
-
-	private static String url_get_calendar = "http://pushrply.com/get_person_events.php";
-	private static String url_get_event = "http://pushrply.com/get_event.php";
-	private static String url_get_group = "http://pushrply.com/get_group.php";
-	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 
 	TextView tv_eventId;
 	private static final String TAG_SUCCESS = "success";
@@ -90,11 +86,11 @@ public class CalendarController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			
-			if(!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
+
+			if (!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
-			
-			JSONObject json = jsonParser.makeHttpRequest(url_get_calendar, "GET", params);
+			params.add(new BasicNameValuePair("do", "readUserEvents"));
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			Log.d("Calendar: ", json.toString());
 
@@ -171,8 +167,9 @@ public class CalendarController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			Log.d("Event: ", json.toString());
 
@@ -197,8 +194,9 @@ public class CalendarController extends MenuActivity {
 					}
 
 					List<NameValuePair> paramsGetGroup = new ArrayList<NameValuePair>();
+					paramsGetGroup.add(new BasicNameValuePair("do", "readGroup"));
 					paramsGetGroup.add(new BasicNameValuePair("groupId", EventData.getGROUPID()));
-					json = jsonParser.makeHttpRequest(url_get_group, "GET", paramsGetGroup);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetGroup);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -214,9 +212,10 @@ public class CalendarController extends MenuActivity {
 					}
 
 					List<NameValuePair> paramsGetMember = new ArrayList<NameValuePair>();
+					paramsGetMember.add(new BasicNameValuePair("do", "readUserInGroup"));
 					paramsGetMember.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					paramsGetMember.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
-					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsGetMember);
+					paramsGetMember.add(new BasicNameValuePair("eMail", UserData.getPERSONID()));
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember);
 
 					Log.d("Member: ", json.toString());
 
