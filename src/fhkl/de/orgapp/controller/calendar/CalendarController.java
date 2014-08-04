@@ -214,7 +214,7 @@ public class CalendarController extends MenuActivity {
 					List<NameValuePair> paramsGetMember = new ArrayList<NameValuePair>();
 					paramsGetMember.add(new BasicNameValuePair("do", "readUserInGroup"));
 					paramsGetMember.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					paramsGetMember.add(new BasicNameValuePair("eMail", UserData.getPERSONID()));
+					paramsGetMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember);
 
 					Log.d("Member: ", json.toString());
