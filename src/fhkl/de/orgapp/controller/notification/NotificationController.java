@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
@@ -32,9 +33,6 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class NotificationController extends MenuActivity
 {
-	// For http request
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
-
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
 	private static final String TAG_SUCCESS = "success";
@@ -142,7 +140,7 @@ public class NotificationController extends MenuActivity
 					paramsNotifications.add(new BasicNameValuePair("shownEntries", NotificationSettingsData.getSHOW_ENTRIES()));
 				
 				// Make the request
-				JSONObject json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotifications);
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotifications);
 
 				int success = json.getInt(TAG_SUCCESS);
 				
@@ -312,7 +310,7 @@ public class NotificationController extends MenuActivity
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", params);
+								jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 
 								return null;
 							}
@@ -384,7 +382,7 @@ public class NotificationController extends MenuActivity
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", params);
+								jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 
 								return null;
 							}

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.UserData;
@@ -40,9 +41,6 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class PrivateInfoController extends MenuActivity
 {
-	// For http request
-	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-
 	// Required variables for progress dialog, calendar, new date fields, birthday and gender
 	private ProgressDialog pDialog;
 	private Calendar calendar;
@@ -474,7 +472,7 @@ public class PrivateInfoController extends MenuActivity
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
 
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(URL_PERSON, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 
 			try
 			{

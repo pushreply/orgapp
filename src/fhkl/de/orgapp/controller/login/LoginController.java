@@ -22,6 +22,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.data.EventSettingsData;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
@@ -30,11 +31,6 @@ import fhkl.de.orgapp.util.validator.OutputValidator;
 
 public class LoginController extends Activity
 {
-	// For http request
-	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
-	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
-	
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -99,7 +95,7 @@ public class LoginController extends Activity
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 
-			json = new JSONParser().makeHttpRequest(URL_PERSON, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 
 			try
 			{
@@ -123,7 +119,7 @@ public class LoginController extends Activity
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
-							json = new JSONParser().makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
+							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
 
 							success = json.getInt("success");
 
@@ -140,7 +136,7 @@ public class LoginController extends Activity
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 							
-							json = new JSONParser().makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
+							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params);
 							
 							success = json.getInt("success");
 							

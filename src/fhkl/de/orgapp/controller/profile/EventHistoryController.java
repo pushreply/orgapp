@@ -22,6 +22,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.OldEventController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -37,10 +38,6 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class EventHistoryController extends MenuActivity
 {
-	// For http request
-	private static String URL_SELECT_EVENT_HISTORY = "http://pushrply.com/select_person_event_history.php";
-	private static String url_get_event = "http://pushrply.com/get_event.php";
-
 	// For json issues
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_EVENT_ID = "EVENT_ID";
@@ -118,10 +115,11 @@ public class EventHistoryController extends MenuActivity
 		{
 			// Required parameters for the request
 			List<NameValuePair> requestParams = new ArrayList<NameValuePair>();
+			requestParams.add(new BasicNameValuePair("do", "readOldEvents"));
 			requestParams.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_EVENT_HISTORY, "GET", requestParams);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams);
 
 			try
 			{
@@ -250,10 +248,11 @@ public class EventHistoryController extends MenuActivity
 		protected String doInBackground(String... args) {
 			// Required parameters for the request
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			try
 			{

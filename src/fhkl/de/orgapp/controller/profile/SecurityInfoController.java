@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.UserData;
@@ -33,9 +34,6 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class SecurityInfoController extends MenuActivity
 {
-	// For http request
-	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	
 	// For progress dialog
 	private ProgressDialog pDialog;
 	
@@ -270,7 +268,7 @@ public class SecurityInfoController extends MenuActivity
 			params.add(new BasicNameValuePair("gender", UserData.getGENDER()));
 			
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(URL_PERSON, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 			
 			try
 			{

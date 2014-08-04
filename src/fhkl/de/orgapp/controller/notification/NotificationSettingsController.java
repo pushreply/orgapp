@@ -20,6 +20,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
@@ -27,9 +28,6 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class NotificationSettingsController extends MenuActivity
 {
-	// For http request
-	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
-
 	// Required variables for progress dialog, vibration and shown entries
 	private ProgressDialog pDialog;
 	boolean vibration;
@@ -253,7 +251,7 @@ public class NotificationSettingsController extends MenuActivity
 			try
 			{
 				// Make the request
-				JSONObject json = new JSONParser().makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
+				JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success

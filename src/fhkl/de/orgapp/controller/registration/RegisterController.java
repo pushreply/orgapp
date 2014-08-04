@@ -25,6 +25,7 @@ import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.login.LoginController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
@@ -38,11 +39,6 @@ public class RegisterController extends Activity
 	EditText inputPasswordConfirm;
 	EditText inputFirstName;
 	EditText inputLastName;
-
-	// For http request
-	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	private static String URL_NOTIFICATION_SETTINGS = "http://pushrply.com/pdo_notificationsettingscontrol.php";
-	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
@@ -134,7 +130,7 @@ public class RegisterController extends Activity
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 
 			Log.d("Create Response", json.toString());
 
@@ -162,7 +158,7 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// getting JSON Object
-			json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 
 			// check log cat for response
 			Log.d("Create Response", json.toString());
@@ -179,7 +175,7 @@ public class RegisterController extends Activity
 					params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("do", "create"));
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
-					json = jsonParser.makeHttpRequest(URL_NOTIFICATION_SETTINGS, "GET", params);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
 					success = json.getInt(TAG_SUCCESS);
 					
 					if (success == 1)
@@ -189,7 +185,7 @@ public class RegisterController extends Activity
 						params.add(new BasicNameValuePair("do", "create"));
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 						
-						json = jsonParser.makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params);
 						
 						success = json.getInt(TAG_SUCCESS);
 						
