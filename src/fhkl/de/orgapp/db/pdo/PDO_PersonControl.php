@@ -1,6 +1,6 @@
 <?php
 
-$dbpath = 'pdo_db_connect.inc.php';
+$dbpath = 'PDO_DB_Connect.Inc.php';
 
 /*------------------------------------------------------------
  * CREATE PERSON
@@ -24,27 +24,27 @@ if
 	$firstName = htmlspecialchars($_GET['firstName']); /*escape every '<tag>' (not only HTML) */
 	$lastName = htmlspecialchars($_GET['lastName']); /*escape every '<tag>' (not only HTML) */
 	$created = $_GET['created'];
-	
+
 	$response = array ();
-	
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-	
+
 	try
 	{
 		$sql='INSERT INTO person(eMail, password, firstName, lastName, created)
 				VALUES(:eMail, :password, :firstName, :lastName, :created)';
-	
+
 		$sth = $pdo->prepare($sql);
-	
+
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':eMail', $eMail);
 		$sth->bindValue(':password', $password);
 		$sth->bindValue(':firstName', $firstName);
 		$sth->bindValue(':lastName', $lastName);
 		$sth->bindValue(':created', $created);
-		
+
 		$confirm = $sth->execute();
-		
+
 		//check insertion status
 		if ($confirm==true)
 		{
@@ -79,23 +79,23 @@ if($_GET['do']=="read")
 		 * pass the get values to some variables
 		*/
 		$eMail = $_GET['eMail'];
-		
+
 		$response = array ();
-		
+
 		require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-		
+
 		try
 		{
 			$sql= 'SELECT * FROM person WHERE eMail = :eMail';
-		
+
 			$sth = $pdo->prepare($sql);
-		
+
 			/* bind the values, in the same order as the $sql statement. */
 			$sth->bindValue(':eMail', $eMail);
-			
+
 			$sth->execute();
 			$result = $sth->fetchAll();
-			
+
 			// if $result contains rows
 			if(count($result) > 0)
 			{
@@ -103,7 +103,7 @@ if($_GET['do']=="read")
 				 * need a container for json
 				*/
 				$response["person"] = array();
-					
+
 				foreach ($result as $row)
 				{
 					$person['personId'] = $row['personId'];
@@ -114,13 +114,13 @@ if($_GET['do']=="read")
 					$person['created'] = $row['created'];
 					$person['birthday'] = $row['birthday'];
 					$person['gender'] = $row['gender'];
-						
+
 					/*
 					 * push each value to the data container
 					*/
 					array_push($response["person"], $person);
 				}
-					
+
 				// successfully selected from database
 				$response ["success"] = 1;
 				// echoing JSON response
@@ -139,7 +139,7 @@ if($_GET['do']=="read")
 			exit();
 		}
 	}
-	
+
 	// By personId
 	if(isset($_GET['personId']))
 	{
@@ -147,23 +147,23 @@ if($_GET['do']=="read")
 		 * pass the get values to some variables
 		*/
 		$personId = $_GET['personId'];
-		
+
 		$response = array ();
-		
+
 		require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-		
+
 		try
 		{
 			$sql= 'SELECT * FROM person WHERE personId = :personId';
-		
+
 			$sth = $pdo->prepare($sql);
-		
+
 			/* bind the values, in the same order as the $sql statement. */
 			$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
-				
+
 			$sth->execute();
 			$result = $sth->fetchAll();
-				
+
 			// if $result contains rows
 			if(count($result) > 0)
 			{
@@ -171,7 +171,7 @@ if($_GET['do']=="read")
 				 * need a container for json
 				*/
 				$response["person"] = array();
-					
+
 				foreach ($result as $row)
 				{
 					$person['personId'] = $row['personId'];
@@ -182,13 +182,13 @@ if($_GET['do']=="read")
 					$person['created'] = $row['created'];
 					$person['birthday'] = $row['birthday'];
 					$person['gender'] = $row['gender'];
-		
+
 					/*
 					 * push each value to the data container
 					*/
 					array_push($response["person"], $person);
 				}
-					
+
 				// successfully selected from database
 				$response ["success"] = 1;
 				// echoing JSON response
@@ -233,11 +233,11 @@ if
 	$lastName = htmlspecialchars($_GET['lastName']); /*escape every '<tag>' (not only HTML) */
 	$birthday = $_GET['birthday'];
 	$gender = $_GET['gender'];
-	
+
 	$response = array ();
-	
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-	
+
 	try
 	{
 		$sql='UPDATE person SET
@@ -247,9 +247,9 @@ if
 				birthday = :birthday,
 				gender = :gender
 				WHERE personId = :personId';
-	
+
 		$sth = $pdo->prepare($sql);
-	
+
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':eMail', $eMail);
 		$sth->bindValue(':firstName', $firstName);
@@ -257,9 +257,9 @@ if
 		$sth->bindValue(':birthday', $birthday);
 		$sth->bindValue(':gender', $gender);
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
-	
+
 		$confirm = $sth->execute();
-	
+
 		//check update status
 		if ($confirm==true) {
 			// successfully updated into database

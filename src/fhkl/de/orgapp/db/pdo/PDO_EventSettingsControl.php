@@ -1,6 +1,6 @@
 <?php
 
-$dbpath = 'pdo_db_connect.inc.php';
+$dbpath = 'PDO_DB_Connect.Inc.php';
 
 /*------------------------------------------------------------
  * CREATE EVENT SETTINGS
@@ -16,22 +16,22 @@ if
 	 * pass the get values to some variables
 	*/
 	$personid= $_GET['personId'];
-	
+
 	$response = array ();
-	
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-	
+
 	try
 	{
 		$sql= 'INSERT INTO eventSettings (personId) VALUES (:personId)';
-	
+
 		$sth = $pdo->prepare($sql);
-	
+
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
-	
+
 		$confirm = $sth->execute();
-	
+
 		//check insertion status
 		if ($confirm==true) {
 			// successfully insert into database
@@ -70,23 +70,23 @@ if
 	 * pass the get values to some variables
 	*/
 	$personid= $_GET['personId'];
-	
+
 	$response = array ();
-	
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
-	
+
 	try
 	{
 		$sql= 'SELECT * FROM eventSettings WHERE personId = :personId';
-	
+
 		$sth = $pdo->prepare($sql);
-	
+
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
-	
+
 		$confirm = $sth->execute();
 		$result = $sth->fetchAll();
-		
+
 		//check select status
 		if ($confirm==true)
 		{
@@ -94,18 +94,18 @@ if
 			 * need a container for json
 			*/
 			$response["eventSettings"] = array();
-			
+
 			foreach ($result as $row)
 			{
 				$eventSetting['eventSettingsId'] = $row['eventSettingsId'];
 				$eventSetting['shownEntries'] = $row['shownEntries'];
-			
+
 				/*
 				 * push each value to the data container
 				*/
 				array_push($response["eventSettings"], $eventSetting);
 			}
-			
+
 			// successfully selected from database
 			$response ["success"] = 1;
 			// echoing JSON response
@@ -124,7 +124,7 @@ if
 		exit();
 	}
 }
-	
+
 /*------------------------------------------------------------
  * UPDATE EVENT SETTINGS
  */
@@ -155,14 +155,14 @@ if
 
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
-		
+
 		if(isset($_GET['shownEntries']))
 			$sth->bindValue(':shownEntries', $shownEntries, PDO::PARAM_INT);
 		else
 			$sth->bindValue(':shownEntries', $shownEntries, PDO::PARAM_NULL);
-		
+
 		$confirm = $sth->execute();
-		
+
 		//check update status
 		if ($confirm==true) {
 			// successfully updated into database

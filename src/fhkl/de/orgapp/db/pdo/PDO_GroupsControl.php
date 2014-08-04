@@ -1,6 +1,6 @@
 <?php
 
-$dbpath = 'pdo_db_connect.inc.php';
+$dbpath = 'PDO_DB_Connect.Inc.php';
 
 /*------------------------------------------------------------
  * INSERT GROUP
