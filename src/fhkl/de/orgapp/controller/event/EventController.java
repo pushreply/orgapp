@@ -38,9 +38,13 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EventController extends MenuActivity {
 
+	// Prepare progress dialog instance
 	private ProgressDialog pDialog;
+	
+	// A new JSON parser instance
 	JSONParser jsonParser = new JSONParser();
 
+	// Backend URLs
 	private static String URL_GET_PERSON_IN_EVENT = "http://pushrply.com/get_person_in_event.php";
 	private static String URL_CREATE_PERSON_IN_EVENT = "http://pushrply.com/create_person_in_event.php";
 	private static String URL_DELETE_PERSON_IN_EVENT = "http://pushrply.com/delete_person_in_event.php";
@@ -48,15 +52,19 @@ public class EventController extends MenuActivity {
 	private static String URL_GET_ATTENDING_MEMBER = "http://pushrply.com/get_attending_member.php";
 	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
+	// Marker tag received from server to client app 
+	// to inform whether the request is completed or failed.
 	private static final String TAG_SUCCESS = "success";
 
 	String message, changedMessage, commentId;
 
+	// Variables to hold event details in the UI
 	TextView eventName;
 	TextView eventTime;
 	TextView eventDate;
 	TextView eventLocation;
 
+	// Toggle Button for attending/not attending an event
 	ToggleButton buttonAttendance;
 	boolean toggleButtonChecked;
 
@@ -67,11 +75,13 @@ public class EventController extends MenuActivity {
 	private static final String TAG_MESSAGE = "MESSAGE";
 	private static final String TAG_COMMENTDATETIME = "COMMENTDATETIME";
 
+	// Variables to hold comments data of an event in the UI. 
 	TextView messageContent;
 	TextView messageDateTime;
 	TextView firstname;
 	TextView lastname;
 
+	// Comment container as an array list and JSON array
 	ArrayList<HashMap<String, String>> commentList;
 	JSONArray comment = null;
 	JSONArray member = null;
@@ -80,8 +90,14 @@ public class EventController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event);
+		
+		// Check new notification and notify user
 		checkOnNewNotificationsAndNotifyUser();
+		
+		// Displays event name on the ActionBar
 		this.setTitle(EventData.getNAME());
+		
+		// Set the eventName and bind to their UI element in the layout. 
 		eventName = (TextView) findViewById(R.id.EVENTNAME);
 		eventTime = (TextView) findViewById(R.id.EVENTTIME);
 		eventDate = (TextView) findViewById(R.id.EVENTDATE);
@@ -151,7 +167,7 @@ public class EventController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON_IN_EVENT, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON_IN_EVENT, "GET", params, EventController.this);
 
 			Log.d("EventPerson: ", json.toString());
 
@@ -197,9 +213,9 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 			JSONObject json;
 			if (toggleButtonChecked) {
-				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params);
+				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params, EventController.this);
 			} else {
-				json = jsonParser.makeHttpRequest(URL_DELETE_PERSON_IN_EVENT, "GET", params);
+				json = jsonParser.makeHttpRequest(URL_DELETE_PERSON_IN_EVENT, "GET", params, EventController.this);
 			}
 
 			Log.d("EventPerson: ", json.toString());
@@ -231,7 +247,7 @@ public class EventController extends MenuActivity {
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", vp);
+			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", vp, EventController.this);
 
 			Log.d("Comments: ", json.toString());
 
@@ -455,7 +471,7 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("do", "deletecomment"));
 			params.add(new BasicNameValuePair("commentId", commentId));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
@@ -467,7 +483,7 @@ public class EventController extends MenuActivity {
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember);
+					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -485,7 +501,7 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.DELETE_COMMENT_1
 											+ message + IMessages.Notification.DELETE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification, EventController.this);
 						}
 					}
 				}
@@ -529,7 +545,7 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("commentId", commentId));
 			params.add(new BasicNameValuePair("message", changedMessage));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
@@ -541,7 +557,7 @@ public class EventController extends MenuActivity {
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember);
+					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -560,7 +576,7 @@ public class EventController extends MenuActivity {
 											+ message + IMessages.Notification.EDIT_COMMENT_2 + changedMessage
 											+ IMessages.Notification.EDIT_COMMENT_3));
 
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification, EventController.this);
 						}
 					}
 				}
@@ -610,7 +626,7 @@ public class EventController extends MenuActivity {
 			paramsInsertComment.add(new BasicNameValuePair("personId", personId));
 			paramsInsertComment.add(new BasicNameValuePair("message", message));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", paramsInsertComment);
+			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", paramsInsertComment, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
@@ -622,7 +638,7 @@ public class EventController extends MenuActivity {
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember);
+					json = new JSONParser().makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -640,7 +656,7 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.CREATE_COMMENT_1
 											+ EventData.getNAME() + IMessages.Notification.CREATE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification, EventController.this);
 						}
 					}
 				}

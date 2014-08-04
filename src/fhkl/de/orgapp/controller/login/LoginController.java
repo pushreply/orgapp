@@ -95,7 +95,7 @@ public class LoginController extends Activity
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 
-			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, LoginController.this);
 
 			try
 			{
@@ -119,7 +119,7 @@ public class LoginController extends Activity
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
-							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
+							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, LoginController.this);
 
 							success = json.getInt("success");
 
@@ -136,7 +136,7 @@ public class LoginController extends Activity
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 							
-							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params);
+							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, LoginController.this);
 							
 							success = json.getInt("success");
 							
