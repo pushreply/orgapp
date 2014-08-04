@@ -18,6 +18,15 @@ import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
 
+/**
+ * DeleteGroupController - Handles the delete group activity
+ * 
+ * Deletes the chosen group. Deletes all group users. Sends Notifications to
+ * members.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class DeleteGroupController extends MenuActivity {
 	private static String URL_GET_ALL_USER_IN_GROUP = "http://pushrply.com/get_all_user_in_group.php";
 	private static String URL_DELETE_PRIVILEGE_ENTRIES_BY_GROUP_ID = "http://pushrply.com/delete_privilege_entries_by_group_id.php";
@@ -33,6 +42,11 @@ public class DeleteGroupController extends MenuActivity {
 	int m;
 	String notification, TAG_EMAIL = "eMail";
 
+	/**
+	 * Calls the async class to delete a group.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,7 +54,17 @@ public class DeleteGroupController extends MenuActivity {
 		new GroupDelete().execute();
 	}
 
+	/**
+	 * Async class that deletes the group and users and sends notifications to
+	 * users.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GroupDelete extends AsyncTask<String, String, String> {
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -51,6 +75,13 @@ public class DeleteGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Deletes all group members, deletes group and sends notifications to all
+		 * members.
+		 * 
+		 * @param params String...
+		 * @return String result
+		 */
 		@Override
 		protected String doInBackground(String... params) {
 			urlParams = new ArrayList<NameValuePair>();
@@ -104,9 +135,14 @@ public class DeleteGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Shows Toasts. Starts new Activity on successful
+		 * delete.
+		 */
 		@Override
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
+			pDialog.dismiss();
 
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();

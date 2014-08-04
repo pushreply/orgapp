@@ -24,6 +24,15 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * EditGroupController - Handles the edit group activity
+ * 
+ * Loads chosen group. Checks if user changed group name or info. Edites Group.
+ * Sends Notifications to all group member.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class EditGroupController extends MenuActivity {
 
 	private ProgressDialog pDialog;
@@ -43,6 +52,11 @@ public class EditGroupController extends MenuActivity {
 	JSONArray member = null;
 	JSONArray groups = null;
 
+	/**
+	 * Initializes view elements. Registers ClickListener.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,18 +68,20 @@ public class EditGroupController extends MenuActivity {
 		Button bSave = (Button) findViewById(R.id.SAVE);
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
+		// Calls the Async class to load view elements
 		new GetGroup().execute();
 
 		bSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// creating new group in background thread
+				// Calls the Async class to edit a group
 				new EditGroup().execute();
 			}
 		});
 
 		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
+			// Returns to previous activity
 			public void onClick(View view) {
 				Intent intent = new Intent(EditGroupController.this, SingleGroupController.class);
 				startActivity(intent);
@@ -73,8 +89,17 @@ public class EditGroupController extends MenuActivity {
 		});
 	}
 
+	/**
+	 * Async class that loads view elements
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GetGroup extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -85,9 +110,16 @@ public class EditGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Gets current group name and info.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+			// Get group
 			JSONObject json = jsonParser.makeHttpRequest(url_check_group, "GET", params);
 
 			Log.d("Response", json.toString());
@@ -102,8 +134,10 @@ public class EditGroupController extends MenuActivity {
 
 						String result = new String();
 						result += c.getString("name");
+						// Saving current name to compare with new
 						beforeName = c.getString("name");
 						result += ", " + c.getString("info");
+						// Saving current info to compare with new
 						beforeInfo = c.getString("info");
 
 						return result;
@@ -117,6 +151,10 @@ public class EditGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Processes result. Calls method to set view
+		 * elements.
+		 */
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			pDialog.dismiss();
@@ -133,6 +171,11 @@ public class EditGroupController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Sets view elements.
+	 * 
+	 * @param datas String[]
+	 */
 	private void setTexts(String[] datas) {
 
 		inputName.setText(datas[0]);
@@ -141,6 +184,9 @@ public class EditGroupController extends MenuActivity {
 
 	class EditGroup extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -151,17 +197,28 @@ public class EditGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Compares current name and info with new name and info. Returns warning
+		 * when no changes were made. Updates group otherwise. Sends Notifications
+		 * to all group member.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
+			// Validates name
 			if (!InputValidator.isStringLengthInRange(name, 0, 255)) {
 				return IMessages.Error.INVALID_NAME;
 			}
+			// Validates info
 			if (!InputValidator.isStringLengthInRange(info, 0, 1024)) {
 				return IMessages.Error.INVALID_INFO;
 			}
 
+			// Checks for changes
 			if (beforeName.equals(name) && beforeInfo.equals(info)) {
 				return IMessages.Error.NO_CHANGES_MADE;
 			}
@@ -172,6 +229,7 @@ public class EditGroupController extends MenuActivity {
 			paramsUpdateGroup.add(new BasicNameValuePair("name", name));
 			paramsUpdateGroup.add(new BasicNameValuePair("info", info));
 
+			// Update group
 			JSONObject json = jsonParser.makeHttpRequest(url_update_group, "GET", paramsUpdateGroup);
 
 			Log.d("Create Response", json.toString());
@@ -182,6 +240,7 @@ public class EditGroupController extends MenuActivity {
 					List<NameValuePair> paramsGetUserInGroup = new ArrayList<NameValuePair>();
 					paramsGetUserInGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
+					// Get all group member
 					json = jsonParser.makeHttpRequest(url_get_all_user_in_group, "GET", paramsGetUserInGroup);
 
 					Log.d("Response", json.toString());
@@ -197,6 +256,8 @@ public class EditGroupController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "2"));
+
+							// Notification message. Depends on changes.
 							String message = new String();
 
 							if (!beforeName.equals(name)) {
@@ -216,6 +277,7 @@ public class EditGroupController extends MenuActivity {
 
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "null"));
 
+							// Send notifications
 							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
 
 							Intent intent = new Intent(EditGroupController.this, GroupsController.class);
@@ -230,6 +292,9 @@ public class EditGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Show Toast if group not edited.
+		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();

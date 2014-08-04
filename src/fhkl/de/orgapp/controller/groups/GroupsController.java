@@ -34,9 +34,17 @@ import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * GroupsController - Handles the groups activity
+ * 
+ * Loads a list of one user's groups. Starts new Activity ''SingleGroup'' on
+ * ItemClick. Opens a group menu on ItemLongClick.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class GroupsController extends MenuActivity {
 
-	// Progress Dialog
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
@@ -45,7 +53,6 @@ public class GroupsController extends MenuActivity {
 	private static String URL_SELECT_MY_GROUP = "http://pushrply.com/select_my_group.php";
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 
-	// JSON nodes
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_GROUP_ID = "GROUPID";
 	private static final String TAG_PERSON_ID = "PERSONID";
@@ -55,6 +62,11 @@ public class GroupsController extends MenuActivity {
 	JSONArray groups = null;
 	JSONArray member = null;
 
+	/**
+	 * Calls the async class to show and manage groups.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,8 +76,18 @@ public class GroupsController extends MenuActivity {
 		new Groups().execute();
 	}
 
+	/**
+	 * Async class that loads one user's groups. Handles ItemClick and
+	 * ItemLongClick.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class Groups extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -81,10 +103,17 @@ public class GroupsController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Loads one user's groups.
+		 * 
+		 * @param params String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
 			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
+			// Get groups
 			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_MY_GROUP, "GET", vp);
 
 			Log.d("Groups: ", json.toString());
@@ -102,16 +131,16 @@ public class GroupsController extends MenuActivity {
 						String name = c.getString("name");
 						String info = c.getString("info");
 
+						// Load groups into haspmap
 						HashMap<String, String> map = new HashMap<String, String>();
 						map.put(TAG_GROUP_ID, groupId);
 						map.put(TAG_PERSON_ID, personId);
 						map.put(TAG_GROUP_NAME, name);
 						map.put(TAG_GROUP_INFO, info);
 
+						// Add groups to arraylist
 						groupList.add(map);
 					}
-				} else {
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -121,7 +150,12 @@ public class GroupsController extends MenuActivity {
 			return null;
 		}
 
-		protected void onPostExecute(String file_url) {
+		/**
+		 * Removes ProcessDialog. Sets ListView. Defines ClickListener.
+		 * 
+		 * @param result String
+		 */
+		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
@@ -129,7 +163,6 @@ public class GroupsController extends MenuActivity {
 									TAG_GROUP_ID, TAG_PERSON_ID, TAG_GROUP_NAME, TAG_GROUP_INFO }, new int[] { R.id.GROUPID,
 									R.id.PERSONID, R.id.GROUPNAME, R.id.GROUPINFO });
 
-					// update listview
 					final ListView groupList = (ListView) findViewById(android.R.id.list);
 
 					groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,7 +170,10 @@ public class GroupsController extends MenuActivity {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+							// Set the group data
 							setGroupData(view);
+							// Call Async class that loads the privileges into GroupData.
+							// Open new activity ''SingleGroup''
 							new SetPrivileges().execute();
 						}
 
@@ -148,7 +184,10 @@ public class GroupsController extends MenuActivity {
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+							// Set the group data
 							setGroupData(view);
+							// Call Async class that loads the privileges into GroupData. Open
+							// the group menu.
 							new SetPrivileges().execute("menu");
 
 							return true;
@@ -161,12 +200,26 @@ public class GroupsController extends MenuActivity {
 
 	}
 
+	/**
+	 * Loads privileges into GroupData. Open new activity ''SingleGroup''
+	 * OnItemClick. Open the group menu OnItemLongClick.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class SetPrivileges extends AsyncTask<String, String, String> {
 
+		/**
+		 * Gets privileges. Saves privileges in GroupData.
+		 * 
+		 * @param args String...
+		 * @return String
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
+			// Get current user's privileges
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", params);
 
 			Log.d("Member: ", json.toString());
@@ -179,6 +232,7 @@ public class GroupsController extends MenuActivity {
 					for (int i = 0; i < member.length(); i++) {
 						JSONObject c = member.getJSONObject(i);
 
+						// Set privileges
 						GroupData.setPRIVILEGE_MANAGEMENT(c.getString("privilegeManagement"));
 						GroupData.setPRIVILEGE_INVITE_MEMBER(c.getString("memberInvitation"));
 						GroupData.setPRIVILEGE_EDIT_MEMBERLIST(c.getString("memberlistEditing"));
@@ -194,6 +248,7 @@ public class GroupsController extends MenuActivity {
 				logout();
 			}
 
+			// Differentiate OnItemClick and OnItemLongClick
 			if (args.length != 0) {
 				return args[0];
 			} else {
@@ -201,22 +256,33 @@ public class GroupsController extends MenuActivity {
 			}
 		}
 
+		/**
+		 * Opens group menu when result not null. Opens new activity ''SingleGroup''
+		 * when result null.
+		 * 
+		 * @param result String
+		 */
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			System.out.println("result:" + result);
+			// Group menu
 			if (result != null) {
 
 				EventData.setBACK(false);
 
+				// Define own view for AlertDialog
 				LinearLayout ll = new LinearLayout(GroupsController.this);
 				ll.setOrientation(LinearLayout.VERTICAL);
 
+				// Check all privileges. Add the group menu button only if privilege
+				// available
 				if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_CREATE_EVENT().equals("1")) {
 
+					// Create button
 					Button createEvent = new Button(GroupsController.this);
 					createEvent.setText(getResources().getString(R.string.CREATE_EVENT));
 
+					// Set ClickListener
 					createEvent.setOnClickListener(new OnClickListener() {
 
 						@Override
@@ -227,6 +293,7 @@ public class GroupsController extends MenuActivity {
 						}
 					});
 
+					// Add button to view
 					ll.addView(createEvent);
 				}
 
@@ -383,19 +450,28 @@ public class GroupsController extends MenuActivity {
 					ll.addView(inviteMember);
 				}
 
+				// Create AlertDialog
 				AlertDialog.Builder builder = new AlertDialog.Builder(GroupsController.this);
 				builder.setTitle(getResources().getString(R.string.GROUP_SETTINGS));
+				// Use LinearLayout with added buttons
 				builder.setView(ll);
 
 				builder.create().show();
 
-			} else {
+			}
+			// Start new activity ''SingleGroup''
+			else {
 				Intent intent = new Intent(GroupsController.this, SingleGroupController.class);
 				startActivity(intent);
 			}
 		}
 	}
 
+	/**
+	 * Sets GroupData with clicked ListView item.
+	 * 
+	 * @param view View
+	 */
 	private void setGroupData(View view) {
 
 		TextView tv_groupId = (TextView) view.findViewById(R.id.GROUPID);
