@@ -49,19 +49,31 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * CrateEventController - Handle each event instantiation in a group. 
+ * 
+ * @author ronaldo.hasiholan
+ *
+ */
 public class CreateEventController extends MenuActivity {
 
+	// Backend URLs
 	private static String URL_CREATE_EVENT = "http://pushrply.com/create_event.php";
 	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
 	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
+	// Android progress dialog
 	private ProgressDialog pDialog;
 
+	// Json parser and json array container
 	JSONParser jsonParser = new JSONParser();
 	JSONArray member;
 
+	// Marker tag to sent from server to client app 
+	// to inform whether the request is completed or failed.
 	private static final String TAG_SUCCESS = "success";
 
+	// Preparing UI instances
 	Calendar calendar;
 	EditText name, eventLocation, eventDate, eventTime, regularityChosen;
 	TextView regularityQuestion;
@@ -76,15 +88,22 @@ public class CreateEventController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_edit_event);
+		
+		// Notify user(s) with specific privileges.
 		checkOnNewNotificationsAndNotifyUser();
+		
+		// Prepare a java calendar instance
 		calendar = Calendar.getInstance();
 
+		// Bind the Android UI instances to the UI XML layout. 
 		name = (EditText) findViewById(R.id.EVENTNAME);
 		eventLocation = (EditText) findViewById(R.id.EVENTLOCATION);
 		eventDate = (EditText) findViewById(R.id.EVENTDATE);
-
+		
+		// Make the "eventDate" field clickable to call a date picker dialog
 		eventDate.setOnClickListener(new OnClickListener() {
-
+			
+			// A date picker dialog 
 			@Override
 			public void onClick(View v) {
 				new DatePickerDialog(CreateEventController.this, dateEvent, calendar.get(Calendar.YEAR), calendar
@@ -93,7 +112,8 @@ public class CreateEventController extends MenuActivity {
 		});
 
 		eventTime = (EditText) findViewById(R.id.EVENTTIME);
-
+		
+		// Make the time field clickable to call the time picker dialog
 		eventTime.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -102,7 +122,8 @@ public class CreateEventController extends MenuActivity {
 								.get(Calendar.MINUTE), true).show();
 			}
 		});
-
+		
+		// Regularity variables to let users create reoccuring events.
 		regularityDate = (CheckBox) findViewById(R.id.REGULARITYDATE);
 		regularityDateChosen = (Spinner) findViewById(R.id.REGULARITYDATE_CHOSEN);
 
@@ -110,28 +131,36 @@ public class CreateEventController extends MenuActivity {
 		regularityChosen = (EditText) findViewById(R.id.REGULARITY_CHOSEN);
 
 		radioGroupRegularity = (RadioGroup) findViewById(R.id.RADIOGROUP_REGULARITY);
-
+		
+		// Let the user selects whether the reoccurence limited to a date or a specific quantity (max 50 occurence). 
 		radioButtonRegularityDate = (RadioButton) findViewById(R.id.REGULARITY_DATE);
 		radioButtonRegularityNumber = (RadioButton) findViewById(R.id.REGULARITY_NUMBER);
 
+		// Save-Cancel Button 
 		bSave = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
 		
+		// If the checkbox for reoccurence event is thicked, show more options. 
 		regularityDate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 				if (isChecked) {
+					// Show the frequent dropdown spinner
 					regularityDateChosen.setVisibility(View.VISIBLE);
 					ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreateEventController.this,
 									R.array.SPINNER_REGULARITYDATE, android.R.layout.simple_spinner_item);
-
+					
+					// Set the array adapter using the selected value from the the dropdown spinner. 
 					adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					regularityDateChosen.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-							System.out.println(parent.getSelectedItem());
+							// Logcat helper:
+							System.out.println(parent.getSelectedItem()); 
+							
+							// Hide elements 
 							if (parent.getSelectedItem().toString().equals("empty")) {
 								regularityQuestion.setVisibility(View.GONE);
 								radioGroupRegularity.setVisibility(View.GONE);
@@ -194,7 +223,8 @@ public class CreateEventController extends MenuActivity {
 				}
 			}
 		});
-
+		
+		// Set actions to the Save - Cancel Button
 		bSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -211,6 +241,7 @@ public class CreateEventController extends MenuActivity {
 		});
 	}
 
+	// Background task for save button
 	class SaveEvent extends AsyncTask<String, String, String> {
 
 		@Override
@@ -219,6 +250,8 @@ public class CreateEventController extends MenuActivity {
 			pDialog = new ProgressDialog(CreateEventController.this);
 			pDialog.setMessage(IMessages.Status.SAVING_EVENT);
 			pDialog.setIndeterminate(false);
+			// If the progress is taking too long, let user cancels
+			// the progress dialog by hitting the android-back-button.
 			pDialog.setCancelable(true);
 			pDialog.show();
 		}
@@ -226,6 +259,7 @@ public class CreateEventController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
+			// Doing some input validation. The expected input are maximal 255 chars of string type. 
 			if (!InputValidator.isStringLengthInRange(name.getText().toString(), 0, 255)) {
 				return IMessages.Error.INVALID_NAME;
 			} else {
@@ -237,7 +271,8 @@ public class CreateEventController extends MenuActivity {
 			} else {
 				params.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
 			}
-
+			
+			// Time must be selected. 
 			if (eventTime.getText().toString().isEmpty()) {
 				return IMessages.Error.INVALID_EVENTTIME;
 			} else {

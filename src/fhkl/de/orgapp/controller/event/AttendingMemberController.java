@@ -52,7 +52,7 @@ public class AttendingMemberController extends MenuActivity {
 	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	
-	// Marker tag to sent from server to client app 
+	// Marker tag received from server to client app 
 	// to inform whether the request is completed or failed.
 	private static final String TAG_SUCCESS = "success";
 	
@@ -103,8 +103,8 @@ public class AttendingMemberController extends MenuActivity {
 			pDialog.setMessage(IMessages.Status.LOADING_MEMBER_LIST);
 			pDialog.setIndeterminate(false);
 			
-			// Allows user to cancel the progress dialog by hitting the android-back-button
-			// incase the progress is taking too long.
+			// If the progress is taking too long, let user cancels
+			// the progress dialog by hitting the android-back-button.
 			pDialog.setCancelable(true); 
 			pDialog.show();
 		}
@@ -117,8 +117,8 @@ public class AttendingMemberController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			// Send the HTTP request using GET request
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", params);
-
+			JSONObject json = jsonParser.makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", params, AttendingMemberController.this);
+			
 			// Log the json http request
 			Log.d("Memberlist: ", json.toString());
 
@@ -205,7 +205,7 @@ public class AttendingMemberController extends MenuActivity {
 			pDialog.setMessage(IMessages.Status.LOADING_INFO);
 			pDialog.setIndeterminate(false);
 			
-			// If the progress taking too much time, let user to cancel 
+			// If the progress is taking too long, let user cancels
 			// the progress dialog by hitting the android-back-button.
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -215,7 +215,7 @@ public class AttendingMemberController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params, AttendingMemberController.this);
 
 			Log.d("Member: ", json.toString());
 
@@ -242,7 +242,7 @@ public class AttendingMemberController extends MenuActivity {
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("eMail", MemberData.getEMAIL()));
 
-					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges);
+					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges, AttendingMemberController.this);
 
 					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
