@@ -304,7 +304,7 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 
 		$sql = 'SELECT ev.eventId, ev.personId, ev.groupId, ev.name, ev.eventDate, ev.eventTime, ev.eventLocation
 				FROM event ev join eventPerson ep using (eventId)
-				WHERE ep.personId = :personId and ev.eventDate > (select CURDATE())
+				WHERE ep.personId = :personId and ev.eventDate >= (select CURDATE())
 				ORDER BY eventDate asc, eventTime asc';
 
 		$sth = $pdo->prepare($sql);
@@ -360,5 +360,55 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 		exit();
 	}
 }
+
+/*------------------------------------------------------------
+ * Returns all old events
+* check the user input:
+*/
+
+if ($_GET['do']=="readOldEvents" && isset($_GET['personId']))
+{
+	$personId = $_GET['personId'];
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try {
+
+		$sql = 'SELECT * FROM event WHERE personId = :$personId and eventDate < (select CURDATE())';
+
+		$sth = $pdo->prepare($sql);
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
+		$confirm = $sth->execute();
+		$result = $sth->fetchAll();
+
+		if ($confirm==true) {
+			/*
+			 * need a container for json
+			*/
+			$response["previousEvents"] = array();
+
+			$previousEvents["eventId"] = $row["eventId"];
+			$previousEvents["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
+			$previousEvents["eventDate"] = $row["eventDate"];
+
+			/*
+			 * push each value to the data container
+			*/
+			array_push($response["previousEvents"], $previousEvents);
+
+			$response ["success"] = 1;
+			echo json_encode ($response);
+		}
+		else {
+			$response ["success"] = 0;
+			echo json_encode ($response);
+		}
+	} catch (Exception $e) {
+		echo 'ERROR: DB.';
+		exit();
+	}
+}
+
 
 ?>
