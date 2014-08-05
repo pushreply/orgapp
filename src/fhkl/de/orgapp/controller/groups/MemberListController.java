@@ -32,6 +32,15 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.MemberData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * MemberListController - Handles the member list activity.
+ * 
+ * Shows current attending members or group members. Gives the option to delete
+ * a member onLongItemClicked. Shows user information onItemClicked
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class MemberListController extends MenuActivity {
 
 	private ProgressDialog pDialog;
@@ -52,6 +61,11 @@ public class MemberListController extends MenuActivity {
 
 	JSONArray member = null;
 
+	/**
+	 * Initializes and loads view.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,8 +77,18 @@ public class MemberListController extends MenuActivity {
 		new GetMemberList().execute();
 	}
 
+	/**
+	 * Async class that returns member data. Defines onItemLongClickedListener.
+	 * Defines onItemClickedListener.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GetMemberList extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -75,11 +99,18 @@ public class MemberListController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Gets the member data.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
+			// Get member list
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_MEMBER_LIST, "GET", params);
 
 			Log.d("Memberlist: ", json.toString());
@@ -96,14 +127,14 @@ public class MemberListController extends MenuActivity {
 						String firstName = c.getString("firstName");
 						String lastName = c.getString("lastName");
 
+						// Load member into HashMap
 						HashMap<String, String> map = new HashMap<String, String>();
 						map.put(TAG_MEMBER_ID, personId);
 						map.put(TAG_MEMBER_NAME, firstName + " " + lastName);
 
+						// Add member to ArrayList
 						memberList.add(map);
 					}
-				} else {
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -113,6 +144,11 @@ public class MemberListController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Initializes and loads the ListView. Gives option
+		 * to delete user onItemLongClicked. Shows user information onItemClicked in
+		 * new activity.
+		 */
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
