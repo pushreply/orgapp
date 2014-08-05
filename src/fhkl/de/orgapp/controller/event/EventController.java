@@ -29,6 +29,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -109,6 +110,9 @@ public class EventController extends MenuActivity {
 		eventLocation.setText(EventData.getEVENTLOCATION());
 
 		buttonAttendance = (ToggleButton) findViewById(R.id.BUTTONATTENDANCE);
+		
+		// Make the toggle button clickable to
+		// execute the ChangeAttendingStatus()
 		buttonAttendance.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -118,19 +122,28 @@ public class EventController extends MenuActivity {
 				new ChangeAttendingStatus().execute();
 			}
 		});
+		
+		// Show an event detail
 		new GetEvent().execute();
 
 		commentList = new ArrayList<HashMap<String, String>>();
+
+		// Show the comments related to the current event detail
 		new ShowComments().execute();
 	}
 
 	public void addComment(View v) {
+		// Prepare a alert dialog builder for adding comments dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(EventController.this);
+		
+		// Set the UI text dialog for messages and button
 		builder.setTitle(IMessages.SecurityIssue.NEW_COMMENT);
 		final EditText addComment = new EditText(EventController.this);
 		builder.setView(addComment);
+		
+		// Make the "+" image as clickable button to let user add a new comment
 		builder.setNegativeButton(IMessages.DialogButton.NEW_GENERIC, new DialogInterface.OnClickListener() {
-
+			// 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 
@@ -138,7 +151,8 @@ public class EventController extends MenuActivity {
 				new AddComment().execute();
 			}
 		});
-
+		
+		// or let the user cancel the action
 		builder.setPositiveButton(IMessages.DialogButton.CANCEL, new DialogInterface.OnClickListener() {
 
 			@Override
@@ -149,7 +163,20 @@ public class EventController extends MenuActivity {
 		builder.create().show();
 	}
 
+	/**
+	 * Begin the background operation using asynchronous task to 
+	 * fetch data through the network.
+	 * The extended AsyncTask, GetEvent class retrieves event detail by
+	 * requesting the personId and eventId using the HTTP GET request. 
+	 * The PHP files on the server side handle the request, 
+	 * return the result and a success marker to the client app. 
+	 * 
+	 *
+	 */
 	class GetEvent extends AsyncTask<String, String, String> {
+		
+		// Show progress dialog on "updating" after updating an dataset or
+		// loading an event after an event on a list clicked/selected or updated.
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -164,13 +191,19 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
+			// Prepare the HTTP GET request parameter and values 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
+			
+			// Set a json object and make a HTTP Request using URL through a GET Request and the prepared parameters,
+			// and a context, this controller class, to pass through an HTTPS.
 			JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON_IN_EVENT, "GET", params, EventController.this);
 
+			// Log the json string
 			Log.d("EventPerson: ", json.toString());
 
+			// Toggle button marks the "going/not going" event. 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
@@ -185,6 +218,7 @@ public class EventController extends MenuActivity {
 		}
 
 		protected void onPostExecute(String message) {
+			// Dismiss the progress dialog and set the toggle button marker.
 			pDialog.dismiss();
 
 			setText();
@@ -196,10 +230,21 @@ public class EventController extends MenuActivity {
 		buttonAttendance.setChecked(toggleButtonChecked);
 	}
 
+	/**
+	 * Begin the background operation using asynchronous task to 
+	 * change data through the network.
+	 * The extended AsyncTask, ChangeAttendingStatus class modifies attending state 
+	 * by requesting the personId and eventId using the HTTP GET request. 
+	 * The PHP files on the server side handle the request, 
+	 * return the result and a success marker to the client app. 
+	 * 
+	 *
+	 */
 	class ChangeAttendingStatus extends AsyncTask<String, String, String> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// Run a progress dialog
 			pDialog = new ProgressDialog(EventController.this);
 			pDialog.setMessage(IMessages.Status.CHANGING_STATUS);
 			pDialog.setIndeterminate(false);
@@ -221,8 +266,8 @@ public class EventController extends MenuActivity {
 			Log.d("EventPerson: ", json.toString());
 
 			try {
-				int success = json.getInt(TAG_SUCCESS);
-				if (success == 1) {
+					int success = json.getInt(TAG_SUCCESS);
+					if (success == 1) {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -235,19 +280,31 @@ public class EventController extends MenuActivity {
 		}
 	}
 
-	// Show comments
+	/**
+	 * Begin the background operation using asynchronous task to 
+	 * retrieve data through the network.
+	 * The extended AsyncTask, ShowComments class retrieves all comments
+	 * of an event by requesting the eventId using the HTTP GET request. 
+	 * The string "do=showcomment" is being used to execute the corresponding 
+	 * PHP operation in the back-end.
+	 * The PHP files on the server side handle the request, 
+	 * return the result as a list and a success marker to the client app. 
+	 * 
+	 *
+	 */
 	class ShowComments extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
+			// Prepare the HTTP GET Parameters 
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
-
 			vp.add(new BasicNameValuePair("do", "showcomment"));
 			vp.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
-
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", vp, EventController.this);
+			
+			// Send the request as a json object including this context for the HTTPS request
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp, EventController.this);
 
 			Log.d("Comments: ", json.toString());
 
@@ -259,7 +316,9 @@ public class EventController extends MenuActivity {
 					for (int i = 0; i < comment.length(); i++) {
 
 						JSONObject c = comment.getJSONObject(i);
-
+						
+						// Main elements: commentId, personId, first name, last name,
+						// date and time of a comment (server-time) and the message. 
 						String commentId = c.getString("commentId");
 						String personId = c.getString("personId");
 						String firstname = c.getString("firstName");
@@ -289,6 +348,7 @@ public class EventController extends MenuActivity {
 		}
 
 		protected void onPostExecute(String file_url) {
+			// An adapter to hold the comment item in the list
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListAdapter adapter = new SimpleAdapter(EventController.this, commentList, R.layout.comment_item,
@@ -296,28 +356,36 @@ public class EventController extends MenuActivity {
 									new int[] { R.id.COMMENTID, R.id.MESSAGE, R.id.FIRSTNAME, R.id.LASTNAME, R.id.COMMENTDATETIME });
 
 					ListView commentList = (ListView) findViewById(android.R.id.list);
-
+					
+					// Make each item clickable and popup a dialog by click and hold an item
 					commentList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
+							
+							// Check whether the personId exists and has the privilege to edit and delete a comment
 							if (GroupData.getPERSONID().equals(UserData.getPERSONID())
 											|| GroupData.getPRIVILEGE_EDIT_COMMENT().equals("1")
 											|| GroupData.getPRIVILEGE_DELETE_COMMENT().equals("1")) {
-
+								
+								// Bind values to UI
 								TextView tv = (TextView) view.findViewById(R.id.MESSAGE);
 								message = tv.getText().toString();
 								tv = (TextView) view.findViewById(R.id.COMMENTID);
 								commentId = tv.getText().toString();
+								
+								// Prepare an alert dialog builder to let user have a menu 
+								// to edit, delete a comment or cancel the menu dialog.
 								AlertDialog.Builder builder = new AlertDialog.Builder(EventController.this);
 								builder.setTitle(IMessages.SecurityIssue.COMMENT);
-
+								
+								// Action: Edit
 								builder.setNegativeButton(IMessages.DialogButton.EDIT_GENERIC,
 												new android.content.DialogInterface.OnClickListener() {
 
 													@Override
 													public void onClick(DialogInterface dialog, int which) {
-
+														
+														// Check whether the user has an Edit privilege
 														if (GroupData.getPERSONID().equals(UserData.getPERSONID())
 																		|| GroupData.getPRIVILEGE_EDIT_COMMENT().equals("1")) {
 
@@ -327,7 +395,8 @@ public class EventController extends MenuActivity {
 															final EditText editComment = new EditText(EventController.this);
 															editComment.setText(message);
 															builder_inside.setView(editComment);
-
+															
+															// Action: confirm Edit 
 															builder_inside.setNegativeButton(IMessages.DialogButton.EDIT_GENERIC,
 																			new DialogInterface.OnClickListener() {
 
@@ -339,7 +408,8 @@ public class EventController extends MenuActivity {
 																					new EditComment().execute();
 																				}
 																			});
-
+															
+															// Action: cancel edit and exit the menu dialog
 															builder_inside.setPositiveButton(IMessages.DialogButton.CANCEL,
 																			new DialogInterface.OnClickListener() {
 
@@ -350,14 +420,18 @@ public class EventController extends MenuActivity {
 																			});
 
 															builder_inside.create().show();
-														} else {
+														} 
+														else 
+														{
+															// Inform the user that the action can't be completed due to insufficient privileges.
 															Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES,
 																			Toast.LENGTH_LONG).show();
 															dialog.dismiss();
 														}
 													}
 												});
-
+								
+								// Action: Delete 
 								builder.setPositiveButton(IMessages.DialogButton.DELETE_GENERIC,
 												new android.content.DialogInterface.OnClickListener() {
 
@@ -376,7 +450,7 @@ public class EventController extends MenuActivity {
 
 															builder_inside.setNegativeButton(IMessages.DialogButton.DELETE_GENERIC,
 																			new DialogInterface.OnClickListener() {
-
+																				
 																				@Override
 																				public void onClick(DialogInterface dialog, int which) {
 
@@ -384,7 +458,8 @@ public class EventController extends MenuActivity {
 																									EventController.this);
 																					builder_inside_inside
 																									.setTitle(IMessages.SecurityIssue.QUESTION_DELETE_COMMENT);
-
+																					
+																					// Action: confirm delete
 																					builder_inside_inside.setNegativeButton(
 																									IMessages.DialogButton.DELETE_GENERIC,
 																									new DialogInterface.OnClickListener() {
@@ -395,7 +470,8 @@ public class EventController extends MenuActivity {
 																											new DeleteComment().execute();
 																										}
 																									});
-
+																					
+																					// Action: cancel delete and exit the menu dialog
 																					builder_inside_inside.setPositiveButton(IMessages.DialogButton.CANCEL,
 																									new DialogInterface.OnClickListener() {
 
@@ -419,14 +495,17 @@ public class EventController extends MenuActivity {
 																			});
 
 															builder_inside.create().show();
-														} else {
+														} 
+														else 
+														{
+															// Inform the user that the action can't be completed due to insufficient privileges.
 															Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES,
 																			Toast.LENGTH_LONG).show();
 															dialog.dismiss();
 														}
 													}
 												});
-
+								// Action: cancel menu dialog and exit
 								builder.setNeutralButton(IMessages.DialogButton.CANCEL,
 												new android.content.DialogInterface.OnClickListener() {
 
@@ -440,6 +519,7 @@ public class EventController extends MenuActivity {
 								builder.create().show();
 								return true;
 							} else {
+								// Inform the user that the action can't be completed due to insufficient privileges.
 								Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG)
 												.show();
 								return false;
@@ -447,18 +527,31 @@ public class EventController extends MenuActivity {
 
 						}
 					});
-
 					commentList.setAdapter(adapter);
 				}
 			});
 		}
 	}
-
+	
+	/**
+	 * Begin the background operation using asynchronous task to 
+	 * delete the data through the network.
+	 * The extended AsyncTask, DeleteComment class deletes a comment
+	 * in an event by requesting the commentId using the HTTP GET request. 
+	 * The string "do=deletecomment" is being used to execute the corresponding 
+	 * PHP delete operation in the back-end.
+	 * The PHP files on the server side handle the request, 
+	 * return the result as a list and a success marker to the client app. 
+	 * 
+	 *
+	 */
+	
 	class DeleteComment extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// Run a progress dialog
 			pDialog = new ProgressDialog(EventController.this);
 			pDialog.setMessage(IMessages.Status.DELETING_COMMENT);
 			pDialog.setIndeterminate(false);
@@ -467,19 +560,21 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
+			// Prepare the HTTP GET Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "deletecomment"));
 			params.add(new BasicNameValuePair("commentId", commentId));
-
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params, EventController.this);
+			
+			// Send the request as a json object including this context for the HTTPS request
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				System.out.println(success);
-				if (success == 1) {
-
+				if (success == 1) 
+				{
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
@@ -527,6 +622,7 @@ public class EventController extends MenuActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// Run a progress dialog
 			pDialog = new ProgressDialog(EventController.this);
 			pDialog.setMessage(IMessages.Status.SAVING_COMMENT);
 			pDialog.setIndeterminate(false);
@@ -535,7 +631,7 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-
+			
 			if (message.equals(changedMessage)) {
 				return null;
 			}
@@ -545,7 +641,7 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("commentId", commentId));
 			params.add(new BasicNameValuePair("message", changedMessage));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", params, EventController.this);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
@@ -626,7 +722,7 @@ public class EventController extends MenuActivity {
 			paramsInsertComment.add(new BasicNameValuePair("personId", personId));
 			paramsInsertComment.add(new BasicNameValuePair("message", message));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", paramsInsertComment, EventController.this);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", paramsInsertComment, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
