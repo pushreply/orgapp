@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -17,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -24,11 +24,6 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
 public class DeleteEventController extends MenuActivity {
-
-	private static String URL_DELETE_ALL_MEMBERS_IN_EVENT = "http://pushrply.com/delete_all_members_in_event.php";
-	private static String URL_DELETE_EVENT = "http://pushrply.com/delete_event.php";
-	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private ProgressDialog pDialog;
@@ -55,47 +50,53 @@ public class DeleteEventController extends MenuActivity {
 
 		@Override
 		protected String doInBackground(String... args) {
-			List<NameValuePair> paramsDelete = new ArrayList<NameValuePair>();
-			paramsDelete.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-
-			JSONObject json = jsonParser.makeHttpRequest(URL_DELETE_ALL_MEMBERS_IN_EVENT, "GET", paramsDelete);
-
+			List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
+			paramsGetMemberList.add(new BasicNameValuePair("do", "readAllAttendingMember"));
+			paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+							paramsGetMemberList);
 			try {
 				if (json.getInt(TAG_SUCCESS) == 1) {
 
-					json = jsonParser.makeHttpRequest(URL_DELETE_EVENT, "GET", paramsDelete);
-					if (json.getInt(TAG_SUCCESS) == 1) {
-						List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
-						paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-						paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-						json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
+					member = json.getJSONArray("member");
+
+					for (int i = 0; i < member.length(); i++) {
+						JSONObject c = member.getJSONObject(i);
+
+						List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
+						paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
+						paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
+						paramsCreateNotification.add(new BasicNameValuePair("classification", "6"));
+						paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
+
+						paramsCreateNotification.add(new BasicNameValuePair("message",
+										IMessages.Notification.MESSAGE_DELETE_EVENT_1 + EventData.getNAME()
+														+ IMessages.Notification.MESSAGE_DELETE_EVENT_2));
+
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+										paramsCreateNotification);
+					}
+					if (json.getInt(TAG_SUCCESS) != 1) {
+
+						List<NameValuePair> paramsDelete = new ArrayList<NameValuePair>();
+						paramsDelete.add(new BasicNameValuePair("do", "deleteAllPersonsInEvent"));
+						paramsDelete.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
+
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", paramsDelete);
+
 						if (json.getInt(TAG_SUCCESS) == 1) {
+							List<NameValuePair> paramsDeleteEvent = new ArrayList<NameValuePair>();
+							paramsDeleteEvent.add(new BasicNameValuePair("do", "deleteEvent"));
+							paramsDeleteEvent.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-							member = json.getJSONArray("member");
-
-							for (int i = 0; i < member.length(); i++) {
-								JSONObject c = member.getJSONObject(i);
-
-								List<NameValuePair> paramsCreateNotification = new ArrayList<NameValuePair>();
-								paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
-								paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
-								paramsCreateNotification.add(new BasicNameValuePair("classification", "6"));
-								paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
-
-								paramsCreateNotification.add(new BasicNameValuePair("message",
-												IMessages.Notification.MESSAGE_DELETE_EVENT_1 + EventData.getNAME()
-																+ IMessages.Notification.MESSAGE_DELETE_EVENT_2));
-
-								json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
-								if (json.getInt(TAG_SUCCESS) != 1) {
-								}
-							}
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", paramsDeleteEvent);
 						}
 					}
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in DeleteEvent.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;

@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.MemberPrivilegeInfoController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -32,30 +32,25 @@ import fhkl.de.orgapp.util.data.MemberData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * AttendingMemberController - handles list of members who are attending an event. 
- * Each member is marked by email.
+ * AttendingMemberController - handles list of members who are attending an
+ * event. Each member is marked by email.
  * 
  * @author ronaldo.hasiholan
  * @version
  */
 public class AttendingMemberController extends MenuActivity {
-	
+
 	// Android progress dialog instance.
 	private ProgressDialog pDialog;
 
-	// A json parser and a container for the memberlist.  
+	// A json parser and a container for the memberlist.
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> memberList;
 
-	// Backend URLs 
-	private static String URL_GET_ATTENDING_MEMBER = "http://pushrply.com/get_attending_member.php";
-	private static String URL_PERSON = "http://pushrply.com/pdo_personcontrol.php";
-	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
-	
-	// Marker tag received from server to client app 
+	// Marker tag to sent from server to client app
 	// to inform whether the request is completed or failed.
 	private static final String TAG_SUCCESS = "success";
-	
+
 	// Variables for custom item list
 	private static final String TAG_MEMBER_ID = "MEMBERID";
 	private static final String TAG_MEMBER_NAME = "MEMBERNAME";
@@ -71,25 +66,24 @@ public class AttendingMemberController extends MenuActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.member_list);
-		
-		// Notify user(s) with specific privileges. 
+
+		// Notify user(s) with specific privileges.
 		checkOnNewNotificationsAndNotifyUser();
 		memberList = new ArrayList<HashMap<String, String>>();
-		
+
 		// Save the android-back-button state
 		EventData.setBACK(true);
-		
+
 		// Execute the GetMemberList() to get the members
 		new GetMemberList().execute();
 	}
 
 	/**
-	 * Begin the background operation using asynchronous task to fetch data 
-	 * through the network.
-	 * The GetMemberList Class gets all members who are attending the event by
-	 * referring the personId and eventId using the GET request. 
-	 * The PHP files on the server side handle the GET request, 
-	 * return the result and a success marker to the client app. 
+	 * Begin the background operation using asynchronous task to fetch data
+	 * through the network. The GetMemberList Class gets all members who are
+	 * attending the event by referring the personId and eventId using the GET
+	 * request. The PHP files on the server side handle the GET request, return
+	 * the result and a success marker to the client app.
 	 * 
 	 */
 	class GetMemberList extends AsyncTask<String, String, String> {
@@ -97,36 +91,36 @@ public class AttendingMemberController extends MenuActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
+
 			// Add a simple progress dialog
 			pDialog = new ProgressDialog(AttendingMemberController.this);
 			pDialog.setMessage(IMessages.Status.LOADING_MEMBER_LIST);
 			pDialog.setIndeterminate(false);
-			
+
 			// If the progress is taking too long, let user cancels
 			// the progress dialog by hitting the android-back-button.
-			pDialog.setCancelable(true); 
+			pDialog.setCancelable(true);
 			pDialog.show();
 		}
 
 		protected String doInBackground(String... args) {
-			
+
 			// Prepare the parameters for HTTP request to the server
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "readAttendingMember"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			// Send the HTTP request using GET request
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_ATTENDING_MEMBER, "GET", params, AttendingMemberController.this);
-			
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
 			// Log the json http request
 			Log.d("Memberlist: ", json.toString());
 
-			// If the json request is returning a success result, 
-			// fill the json array with the result, 
-			// iterate each json result item to a json object, 
+			// If the json request is returning a success result,
+			// fill the json array with the result,
+			// iterate each json result item to a json object,
 			// get each properties from the json object to a java string
-			// set the each string properly to android custom item list, 
+			// set the each string properly to android custom item list,
 			// put everything in the arraylist container.
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -149,30 +143,32 @@ public class AttendingMemberController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GetMemberList.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
 		}
 
 		protected void onPostExecute(String result) {
-			
-			// Dismiss the progress dialog after background process is finished and ready
+
+			// Dismiss the progress dialog after background process is finished and
+			// ready
 			pDialog.dismiss();
-			
-			// Set the android list adapter from a simple adapter by using the the member_list_item layout and the prepared variables.
+
+			// Set the android list adapter from a simple adapter by using the the
+			// member_list_item layout and the prepared variables.
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListAdapter adapter = new SimpleAdapter(AttendingMemberController.this, memberList,
 									R.layout.member_list_item, new String[] { TAG_MEMBER_ID, TAG_MEMBER_NAME }, new int[] {
 													R.id.MEMBERID, R.id.MEMBERNAME });
-					
-					// Set a list view using native android list 
+
+					// Set a list view using native android list
 					final ListView memberListView = (ListView) findViewById(android.R.id.list);
-					
-					// Set the clickable item on the list 
+
+					// Set the clickable item on the list
 					memberListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 						@Override
@@ -188,12 +184,11 @@ public class AttendingMemberController extends MenuActivity {
 	}
 
 	/**
-	 * Begin the background operation using asynchronous task to fetch data 
-	 * through the network.
-	 * The GetPrivilegesInfo Class gets a member information by
-	 * referring the personId using the GET request. 
-	 * The PHP files on the server side handle the GET request, 
-	 * return the result and a success marker to the client app. 
+	 * Begin the background operation using asynchronous task to fetch data
+	 * through the network. The GetPrivilegesInfo Class gets a member information
+	 * by referring the personId using the GET request. The PHP files on the
+	 * server side handle the GET request, return the result and a success marker
+	 * to the client app.
 	 * 
 	 */
 	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
@@ -204,7 +199,7 @@ public class AttendingMemberController extends MenuActivity {
 			pDialog = new ProgressDialog(AttendingMemberController.this);
 			pDialog.setMessage(IMessages.Status.LOADING_INFO);
 			pDialog.setIndeterminate(false);
-			
+
 			// If the progress is taking too long, let user cancels
 			// the progress dialog by hitting the android-back-button.
 			pDialog.setCancelable(true);
@@ -215,7 +210,7 @@ public class AttendingMemberController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params, AttendingMemberController.this);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
 
 			Log.d("Member: ", json.toString());
 
@@ -225,10 +220,11 @@ public class AttendingMemberController extends MenuActivity {
 
 					member = json.getJSONArray("person");
 
-					// Set the properties of a member using MemberData object from the json result
+					// Set the properties of a member using MemberData object from the
+					// json result
 					for (int i = 0; i < member.length(); i++) {
 						JSONObject c = member.getJSONObject(i);
-						
+
 						MemberData.setPERSONID(c.getString("personId"));
 						MemberData.setEMAIL(c.getString("eMail"));
 						MemberData.setFIRST_NAME(c.getString("firstName"));
@@ -236,20 +232,21 @@ public class AttendingMemberController extends MenuActivity {
 						MemberData.setBIRTHDAY(c.getString("birthday"));
 						MemberData.setGENDER(c.getString("gender"));
 					}
-					
-					// Another GET request to get privileges of a member in a group. 
-					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
-					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					paramsPrivileges.add(new BasicNameValuePair("eMail", MemberData.getEMAIL()));
 
-					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges, AttendingMemberController.this);
+					// Another GET request to get privileges of a member in a group.
+					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
+					paramsPrivileges.add(new BasicNameValuePair("do", "readUserInGroup"));
+					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsPrivileges.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
+
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges);
 
 					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						member = json.getJSONArray("member");
 
-						// Set the privileges of the MemberData object 
+						// Set the privileges of the MemberData object
 						for (int i = 0; i < member.length(); i++) {
 							JSONObject c = member.getJSONObject(i);
 
@@ -266,9 +263,9 @@ public class AttendingMemberController extends MenuActivity {
 						}
 					}
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in GetPrivilegesInfo.doInBackground(String... args): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 			return null;
 		}
@@ -276,11 +273,13 @@ public class AttendingMemberController extends MenuActivity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
-			// Close the current activity (also if an activity flow came backwards using android-back-button) 
-			// to run the next intended controller. 
+			// Close the current activity (also if an activity flow came backwards
+			// using android-back-button)
+			// to run the next intended controller.
 			finish();
-			
-			// Send an intent from the current cotroller to the other controller class where the information
+
+			// Send an intent from the current cotroller to the other controller class
+			// where the information
 			// is going to be treated.
 			Intent intent = new Intent(AttendingMemberController.this, MemberPrivilegeInfoController.class);
 			startActivity(intent);

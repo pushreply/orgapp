@@ -43,6 +43,7 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
@@ -50,17 +51,12 @@ import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 /**
- * CrateEventController - Handle each event instantiation in a group. 
+ * CrateEventController - Handle each event instantiation in a group.
  * 
  * @author ronaldo.hasiholan
- *
+ * 
  */
 public class CreateEventController extends MenuActivity {
-
-	// Backend URLs
-	private static String URL_CREATE_EVENT = "http://pushrply.com/create_event.php";
-	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	// Android progress dialog
 	private ProgressDialog pDialog;
@@ -69,7 +65,7 @@ public class CreateEventController extends MenuActivity {
 	JSONParser jsonParser = new JSONParser();
 	JSONArray member;
 
-	// Marker tag to sent from server to client app 
+	// Marker tag to sent from server to client app
 	// to inform whether the request is completed or failed.
 	private static final String TAG_SUCCESS = "success";
 
@@ -88,22 +84,22 @@ public class CreateEventController extends MenuActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_edit_event);
-		
+
 		// Notify user(s) with specific privileges.
 		checkOnNewNotificationsAndNotifyUser();
-		
+
 		// Prepare a java calendar instance
 		calendar = Calendar.getInstance();
 
-		// Bind the Android UI instances to the UI XML layout. 
+		// Bind the Android UI instances to the UI XML layout.
 		name = (EditText) findViewById(R.id.EVENTNAME);
 		eventLocation = (EditText) findViewById(R.id.EVENTLOCATION);
 		eventDate = (EditText) findViewById(R.id.EVENTDATE);
-		
+
 		// Make the "eventDate" field clickable to call a date picker dialog
 		eventDate.setOnClickListener(new OnClickListener() {
-			
-			// A date picker dialog 
+
+			// A date picker dialog
 			@Override
 			public void onClick(View v) {
 				new DatePickerDialog(CreateEventController.this, dateEvent, calendar.get(Calendar.YEAR), calendar
@@ -112,7 +108,7 @@ public class CreateEventController extends MenuActivity {
 		});
 
 		eventTime = (EditText) findViewById(R.id.EVENTTIME);
-		
+
 		// Make the time field clickable to call the time picker dialog
 		eventTime.setOnClickListener(new OnClickListener() {
 
@@ -122,7 +118,7 @@ public class CreateEventController extends MenuActivity {
 								.get(Calendar.MINUTE), true).show();
 			}
 		});
-		
+
 		// Regularity variables to let users create reoccuring events.
 		regularityDate = (CheckBox) findViewById(R.id.REGULARITYDATE);
 		regularityDateChosen = (Spinner) findViewById(R.id.REGULARITYDATE_CHOSEN);
@@ -131,16 +127,17 @@ public class CreateEventController extends MenuActivity {
 		regularityChosen = (EditText) findViewById(R.id.REGULARITY_CHOSEN);
 
 		radioGroupRegularity = (RadioGroup) findViewById(R.id.RADIOGROUP_REGULARITY);
-		
-		// Let the user selects whether the reoccurence limited to a date or a specific quantity (max 50 occurence). 
+
+		// Let the user selects whether the reoccurence limited to a date or a
+		// specific quantity (max 50 occurence).
 		radioButtonRegularityDate = (RadioButton) findViewById(R.id.REGULARITY_DATE);
 		radioButtonRegularityNumber = (RadioButton) findViewById(R.id.REGULARITY_NUMBER);
 
-		// Save-Cancel Button 
+		// Save-Cancel Button
 		bSave = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
-		
-		// If the checkbox for reoccurence event is thicked, show more options. 
+
+		// If the checkbox for reoccurence event is thicked, show more options.
 		regularityDate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
@@ -151,16 +148,17 @@ public class CreateEventController extends MenuActivity {
 					regularityDateChosen.setVisibility(View.VISIBLE);
 					ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreateEventController.this,
 									R.array.SPINNER_REGULARITYDATE, android.R.layout.simple_spinner_item);
-					
-					// Set the array adapter using the selected value from the the dropdown spinner. 
+
+					// Set the array adapter using the selected value from the the
+					// dropdown spinner.
 					adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					regularityDateChosen.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 							// Logcat helper:
-							System.out.println(parent.getSelectedItem()); 
-							
-							// Hide elements 
+							System.out.println(parent.getSelectedItem());
+
+							// Hide elements
 							if (parent.getSelectedItem().toString().equals("empty")) {
 								regularityQuestion.setVisibility(View.GONE);
 								radioGroupRegularity.setVisibility(View.GONE);
@@ -223,7 +221,7 @@ public class CreateEventController extends MenuActivity {
 				}
 			}
 		});
-		
+
 		// Set actions to the Save - Cancel Button
 		bSave.setOnClickListener(new OnClickListener() {
 			@Override
@@ -259,7 +257,8 @@ public class CreateEventController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-			// Doing some input validation. The expected input are maximal 255 chars of string type. 
+			// Doing some input validation. The expected input are maximal 255 chars
+			// of string type.
 			if (!InputValidator.isStringLengthInRange(name.getText().toString(), 0, 255)) {
 				return IMessages.Error.INVALID_NAME;
 			} else {
@@ -271,8 +270,8 @@ public class CreateEventController extends MenuActivity {
 			} else {
 				params.add(new BasicNameValuePair("eventLocation", eventLocation.getText().toString()));
 			}
-			
-			// Time must be selected. 
+
+			// Time must be selected.
 			if (eventTime.getText().toString().isEmpty()) {
 				return IMessages.Error.INVALID_EVENTTIME;
 			} else {
@@ -305,6 +304,7 @@ public class CreateEventController extends MenuActivity {
 								return IMessages.Error.INVALID_REGULARITY_DATE_2;
 							}
 						} catch (ParseException e) {
+							logout();
 						}
 
 						Calendar tmp = Calendar.getInstance();
@@ -356,6 +356,7 @@ public class CreateEventController extends MenuActivity {
 								return IMessages.Error.INVALID_REGULARITY_NUMBER;
 							}
 						} catch (NumberFormatException e) {
+							logout();
 						}
 					}
 					// No RadioButton checked
@@ -380,6 +381,7 @@ public class CreateEventController extends MenuActivity {
 				try {
 					chosenDate = sdfDate.parse(eventDate.getText().toString());
 				} catch (ParseException e) {
+					logout();
 				}
 
 				System.out.println("chosenDate" + chosenDate.toString());
@@ -391,6 +393,7 @@ public class CreateEventController extends MenuActivity {
 					try {
 						chosenRegularityDate = sdfDate.parse(regularityChosen.getText().toString());
 					} catch (ParseException e) {
+						logout();
 					}
 					int cnt = 0;
 					Calendar tmp = Calendar.getInstance();
@@ -453,8 +456,9 @@ public class CreateEventController extends MenuActivity {
 				Iterator<String> dateListIterator = dateList.iterator();
 				for (int i = 0; i < dateList.size(); i++) {
 					String tmpDateList = dateListIterator.next();
+					params.add(new BasicNameValuePair("do", "createEvent"));
 					params.add(new BasicNameValuePair("eventDate", tmpDateList));
-					json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", params);
+					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 				}
 			}
 			// Non-recurring events
@@ -473,20 +477,23 @@ public class CreateEventController extends MenuActivity {
 							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
+						logout();
 					}
 					params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
 				}
 
-				json = new JSONParser().makeHttpRequest(URL_CREATE_EVENT, "GET", params);
+				params.add(new BasicNameValuePair("do", "createEvent"));
+				json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 			}
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				if (success != 0) {
 					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
+					paramsGetMemberList.add(new BasicNameValuePair("do", "readAllUserInGroup"));
 					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
+					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMemberList);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -503,21 +510,24 @@ public class CreateEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
 							if (!regularityDate.isChecked()) {
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_CREATE_EVENT_1
-												+ GroupData.getGROUPNAME() + IMessages.Notification.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
+								paramsCreateNotification.add(new BasicNameValuePair("message",
+												IMessages.Notification.MESSAGE_CREATE_EVENT_1 + GroupData.getGROUPNAME()
+																+ IMessages.Notification.MESSAGE_CREATE_EVENT_2 + name.getText().toString()));
 							} else {
-								paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.MESSAGE_CREATE_EVENT_1
-												+ GroupData.getGROUPNAME() + IMessages.Notification.MESSAGE_CREATE_EVENT_3 + name.getText().toString()
-												+ IMessages.Notification.MESSAGE_CREATE_EVENT_4 + notificationDate.toString()));
+								paramsCreateNotification.add(new BasicNameValuePair("message",
+												IMessages.Notification.MESSAGE_CREATE_EVENT_1 + GroupData.getGROUPNAME()
+																+ IMessages.Notification.MESSAGE_CREATE_EVENT_3 + name.getText().toString()
+																+ IMessages.Notification.MESSAGE_CREATE_EVENT_4 + notificationDate.toString()));
 							}
 
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+											paramsCreateNotification);
 						}
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("Error in SaveEvent.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;

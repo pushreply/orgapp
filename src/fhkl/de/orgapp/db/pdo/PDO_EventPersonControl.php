@@ -199,4 +199,61 @@ if ($_GET['do']=="readAttendingMember"
 	}
 }
 
+<<<<<<< .mine
+/*------------------------------------------------------------
+ * Returns all attending members
+* check the user input:
+*/
+
+=======
+>>>>>>> .r313
+if ($_GET['do']=="readAllAttendingMember"
+		&& isset($_GET['eventId']))
+{
+	$eventId = $_GET['eventId'];
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try {
+
+		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName from person pers join eventPerson ep using(personId)
+				WHERE ep.eventId = :$eventId';
+
+		$sth = $pdo->prepare($sql);
+		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$confirm = $sth->execute();
+		$result = $sth->fetchAll();
+
+		if ($confirm==true) {
+			/*
+			 * need a container for json
+			*/
+			$response["member"] = array();
+
+			foreach ($result as $row)
+			{
+				$member['personId'] = $row['personId'];
+				$member['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
+				$member['firstName'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
+				$member['lastName'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
+
+				/*
+				 * push each value to the data container
+				*/
+				array_push($response["member"], $member);
+			}
+			$response ["success"] = 1;
+			echo json_encode ($response);
+		}
+		else {
+			$response ["success"] = 0;
+			echo json_encode ($response);
+		}
+	} catch (Exception $e) {
+		echo 'ERROR: DB.';
+		exit();
+	}
+}
+
 ?>
