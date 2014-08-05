@@ -199,14 +199,11 @@ if ($_GET['do']=="readAttendingMember"
 	}
 }
 
-<<<<<<< .mine
 /*------------------------------------------------------------
  * Returns all attending members
 * check the user input:
 */
 
-=======
->>>>>>> .r313
 if ($_GET['do']=="readAllAttendingMember"
 		&& isset($_GET['eventId']))
 {

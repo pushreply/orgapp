@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventSettingsData;
@@ -36,7 +37,6 @@ public class EventSettingsController extends MenuActivity {
 	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
 
-	private static String URL_EVENT_SETTINGS = "http://pushrply.com/pdo_eventsettingscontrol.php";
 	private static final String TAG_SUCCESS = "success";
 
 	CheckBox receivedEntries;
@@ -176,13 +176,12 @@ public class EventSettingsController extends MenuActivity {
 				params.add(new BasicNameValuePair("shownEntries", numberEntries.getText().toString()));
 			}
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_EVENT_SETTINGS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1)
-				{
+				if (success == 1) {
 					updateEventSettings();
 
 					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
