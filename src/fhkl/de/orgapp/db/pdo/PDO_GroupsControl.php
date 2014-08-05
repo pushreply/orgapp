@@ -222,7 +222,7 @@ if ($_GET['do']=="readUserGroup" && isset($_GET['personId']))
 
 		$sql = 'SELECT g.groupId, g.personId, g.name, g.info
 				FROM groups g join privilege p using (groupId)
-				WHERE personId = :personId';
+				WHERE p.personId = :personId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
