@@ -37,20 +37,26 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class ListInviteMemberController extends MenuActivity
-{
+/**
+ * ListInviteMemberController - Handles the list invite member activity.
+ * 
+ * Invites new group members via a ListView. Sends Notifications to other group
+ * members.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
+public class ListInviteMemberController extends MenuActivity {
+
 	Button inviteButton, cancelButton;
 	View horizontalLine;
 	TextView userInfo;
 	private ProgressDialog pDialog;
 	AlertDialog.Builder alertDialogBuilder;
 	AlertDialog alertDialog;
-	JSONParser jsonParser = new JSONParser();
 	List<HashMap<String, Object>> personList;
 
-	// JSON nodes
 	private static final String TAG_SUCCESS = "success";
-
 	private static final String TAG_PERSON_ID = "PERSON_ID";
 	private static final String TAG_TEXT_FIRST_NAME = "TEXT_FIRST_NAME";
 	private static final String TAG_FIRST_NAME = "FIRST_NAME";
@@ -62,6 +68,13 @@ public class ListInviteMemberController extends MenuActivity
 
 	JSONArray persons = null;
 
+	JSONParser jsonParser = new JSONParser();
+
+	/**
+	 * Calls async class that loads the member list.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,6 +85,12 @@ public class ListInviteMemberController extends MenuActivity
 		new PersonListGetter().execute();
 	}
 
+	/**
+	 * Returns a warning in case no member selection was made. Calls async class
+	 * that invites the selected users into the group if no errors present.
+	 * 
+	 * @param view View
+	 */
 	public void invitePersons(View view) {
 		if (!isAtLeastOnePersonSelected()) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.NO_MEMBER_SELECTED, Toast.LENGTH_LONG).show();
@@ -81,10 +100,19 @@ public class ListInviteMemberController extends MenuActivity
 		new PersonListInvite().execute();
 	}
 
-	public void cancelView(View view) {
-		backToSingleGroupView();
+	/**
+	 * Returns to previous activity.
+	 */
+	public void backToSingleGroupView() {
+		Intent intent = new Intent(ListInviteMemberController.this, SingleGroupController.class);
+		startActivity(intent);
 	}
 
+	/**
+	 * Validates member selection. At least one member has to be selected.
+	 * 
+	 * @return boolean AtLeastOneMemberSelected
+	 */
 	private boolean isAtLeastOnePersonSelected() {
 		int p;
 
@@ -96,15 +124,16 @@ public class ListInviteMemberController extends MenuActivity
 		return false;
 	}
 
-	private void backToSingleGroupView() {
-		Intent intent = new Intent(ListInviteMemberController.this, SingleGroupController.class);
-		intent.putExtra("UserId", UserData.getPERSONID());
-		intent.putExtra("GroupId", GroupData.getGROUPID());
-		intent.putExtra("GroupName", GroupData.getGROUPNAME());
-		startActivity(intent);
-	}
-
+	/**
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class PersonListGetter extends AsyncTask<String, String, String> {
+
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -116,15 +145,21 @@ public class ListInviteMemberController extends MenuActivity
 			pDialog.show();
 		}
 
+		/**
+		 * Gets user data.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
-			// Required parameters
+
 			params.add(new BasicNameValuePair("do", "readInviteMemberList"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			
-			// Fetch all users, who are in the groups of the logged user, but not in the selected group
+
+			// Fetch all users, who are in the groups of the logged user, but not in
+			// the selected group
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 			int success;
 
@@ -140,12 +175,13 @@ public class ListInviteMemberController extends MenuActivity
 
 					for (p = 0; p < persons.length(); p++) {
 						person = persons.getJSONObject(p);
-						
+
 						personId = person.getString("personId");
 						firstName = person.getString("firstName");
 						lastName = person.getString("lastName");
 						email = person.getString("eMail");
 
+						// Load selected member into HashMap
 						personMap = new HashMap<String, Object>();
 
 						personMap.put(TAG_PERSON_ID, personId);
@@ -157,6 +193,7 @@ public class ListInviteMemberController extends MenuActivity
 						personMap.put(TAG_EMAIL, email);
 						personMap.put(TAG_IS_SELECTED, false);
 
+						// Add selected member to ArrayList
 						personList.add(personMap);
 					}
 				}
@@ -168,6 +205,10 @@ public class ListInviteMemberController extends MenuActivity
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Initializes and loads ListView. Updates chosen
+		 * member list when ListItem is clicked.
+		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 
@@ -184,7 +225,6 @@ public class ListInviteMemberController extends MenuActivity
 													R.id.INVITE_MEMBER_LIST_TEXT_LAST_NAME, R.id.INVITE_MEMBER_LIST_USER_LAST_NAME,
 													R.id.INVITE_MEMBER_LIST_TEXT_EMAIL, R.id.INVITE_MEMBER_LIST_USER_EMAIL });
 
-					// update listview
 					final ListView personViewList = (ListView) findViewById(android.R.id.list);
 
 					personViewList.setAdapter(adapter);
@@ -196,12 +236,15 @@ public class ListInviteMemberController extends MenuActivity
 							HashMap<String, Object> selectedPerson = getSelectedPerson((TextView) view
 											.findViewById(R.id.INVITE_MEMBER_LIST_USER_EMAIL));
 
+							// Unselect member
 							if (image.getVisibility() == View.VISIBLE) {
 								image.setVisibility(View.INVISIBLE);
 
 								selectedPerson.put(TAG_IS_SELECTED, false);
 								personList.set(personList.indexOf(selectedPerson), selectedPerson);
-							} else if (image.getVisibility() == View.INVISIBLE) {
+							}
+							// Select member
+							else if (image.getVisibility() == View.INVISIBLE) {
 								image.setVisibility(View.VISIBLE);
 
 								selectedPerson.put(TAG_IS_SELECTED, true);
@@ -224,12 +267,18 @@ public class ListInviteMemberController extends MenuActivity
 			});
 		}
 
+		/**
+		 * Initializes, loads and formats the view.
+		 */
 		private void loadLayout() {
 			getViews();
 			setTexts();
 			setBackgrounds();
 		}
 
+		/**
+		 * Initializes the view
+		 */
 		private void getViews() {
 			inviteButton = (Button) findViewById(R.id.INVITE_MEMBER_LIST_INVITE_BUTTON);
 			cancelButton = (Button) findViewById(R.id.INVITE_MEMBER_LIST_CANCEL_BUTTON);
@@ -237,12 +286,18 @@ public class ListInviteMemberController extends MenuActivity
 			horizontalLine = findViewById(R.id.INVITE_MEMBER_LIST_HORIZONTAL_LINE);
 		}
 
+		/**
+		 * Loads values to fill view.
+		 */
 		private void setTexts() {
 			inviteButton.setText(getString(R.string.LIST_INVITE));
 			cancelButton.setText(getString(R.string.LIST_CANCEL));
 			userInfo.setText(getString(R.string.INVITE_MEMBER_LIST_USER_INFO));
 		}
 
+		/**
+		 * Sets background color for the view.
+		 */
 		private void setBackgrounds() {
 			inviteButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 			cancelButton.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -250,7 +305,17 @@ public class ListInviteMemberController extends MenuActivity
 		}
 	}
 
+	/**
+	 * 
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class PersonListInvite extends AsyncTask<String, String, String> {
+
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -261,6 +326,13 @@ public class ListInviteMemberController extends MenuActivity
 			pDialog.show();
 		}
 
+		/**
+		 * Invites selected persons into group. Sends Notification to selected
+		 * persons.
+		 * 
+		 * @param params String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... params) {
 			JSONObject json;
 			List<NameValuePair> paramsInvite, paramsNotification;
@@ -282,6 +354,7 @@ public class ListInviteMemberController extends MenuActivity
 					paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 					paramsInvite.add(new BasicNameValuePair("personId", personList.get(p).get(TAG_PERSON_ID).toString()));
 
+					// Create new member in group
 					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite);
 
 					try {
@@ -290,7 +363,6 @@ public class ListInviteMemberController extends MenuActivity
 						if (success != 1)
 							return null;
 
-						// Send notification
 						paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						notification = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
@@ -298,7 +370,7 @@ public class ListInviteMemberController extends MenuActivity
 						paramsNotification.add(new BasicNameValuePair("message", notification));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-
+						// Send notification
 						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
 
 						success = json.getInt(TAG_SUCCESS);
@@ -315,12 +387,20 @@ public class ListInviteMemberController extends MenuActivity
 			return "Successful";
 		}
 
+		/**
+		 * Removes ProcessDialog. Calls method that opens a AlertDialog.
+		 * 
+		 * @param message String
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 			if (message != null)
 				showInvertedPersonsDialog();
 		}
 
+		/**
+		 * Creates AlertDialog and returns every new invited member.
+		 */
 		private void showInvertedPersonsDialog() {
 			alertDialogBuilder = new AlertDialog.Builder(ListInviteMemberController.this);
 			alertDialogBuilder.setTitle(IMessages.Status.MESSAGE_INVITED_PERSON);
@@ -339,6 +419,11 @@ public class ListInviteMemberController extends MenuActivity
 			alertDialog.show();
 		}
 
+		/**
+		 * Converts the selected person from HaspMap to CharSequence Array
+		 * 
+		 * @return CharSequence[] persons
+		 */
 		private CharSequence[] getSelectedPersonsAsArray() {
 			int p;
 			List<String> selectedPersons = new ArrayList<String>();
