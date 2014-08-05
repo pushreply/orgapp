@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -29,8 +29,6 @@ public class OldEventController extends MenuActivity {
 
 	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
-
-	private static String URL_COMMENTCONTROL = "http://pushrply.com/pdo_commentcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -99,7 +97,7 @@ public class OldEventController extends MenuActivity {
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_COMMENTCONTROL, "GET", vp);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp);
 
 			Log.d("Comments: ", json.toString());
 
@@ -132,9 +130,9 @@ public class OldEventController extends MenuActivity {
 				} else {
 
 				}
-			} catch (JSONException e) {
-				System.out.println("Error in CommentData.doInBackground(String... arg0): " + e.getMessage());
+			} catch (Exception e) {
 				e.printStackTrace();
+				logout();
 			}
 
 			return null;
