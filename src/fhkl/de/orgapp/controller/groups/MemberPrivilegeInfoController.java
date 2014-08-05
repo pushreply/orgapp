@@ -22,6 +22,7 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.AttendingMemberController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -37,7 +38,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 	private static String URL_UPDATE_PRIVILEGES = "http://pushrply.com/update_privileges.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -379,7 +379,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
 
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {

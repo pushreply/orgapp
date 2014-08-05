@@ -28,6 +28,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.CreateEventController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -43,15 +44,12 @@ import fhkl.de.orgapp.util.data.UserData;
  * @author Jochen Jung
  * @version 1.0
  */
-public class GroupsController extends MenuActivity {
-
+public class GroupsController extends MenuActivity
+{
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> groupList;
-
-	private static String URL_SELECT_MY_GROUP = "http://pushrply.com/select_my_group.php";
-	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_GROUP_ID = "GROUPID";
@@ -111,10 +109,12 @@ public class GroupsController extends MenuActivity {
 		 */
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
+			
+			vp.add(new BasicNameValuePair("do", "readUserGroup"));
 			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
-			// Get groups
-			JSONObject json = jsonParser.makeHttpRequest(URL_SELECT_MY_GROUP, "GET", vp);
+			// Get groups of the user
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp);
 
 			Log.d("Groups: ", json.toString());
 
@@ -217,10 +217,13 @@ public class GroupsController extends MenuActivity {
 		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			params.add(new BasicNameValuePair("do", "readUserInGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+			
 			// Get current user's privileges
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 			Log.d("Member: ", json.toString());
 

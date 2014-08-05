@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
@@ -27,18 +28,14 @@ import fhkl.de.orgapp.util.data.GroupData;
  * @author Jochen Jung
  * @version 1.0
  */
-public class DeleteGroupController extends MenuActivity {
-	private static String URL_GET_ALL_USER_IN_GROUP = "http://pushrply.com/get_all_user_in_group.php";
-	private static String URL_DELETE_PRIVILEGE_ENTRIES_BY_GROUP_ID = "http://pushrply.com/delete_privilege_entries_by_group_id.php";
-	private static String URL_DELETE_GROUP_BY_ID = "http://pushrply.com/delete_group_by_id.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
-
+public class DeleteGroupController extends MenuActivity
+{
 	private static final String TAG_SUCCESS = "success";
 	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
 	JSONObject json;
 	JSONArray memberList;
-	List<NameValuePair> urlParams, notificationParams;
+	List<NameValuePair> params;
 	int m;
 	String notification, TAG_EMAIL = "eMail";
 
@@ -79,16 +76,18 @@ public class DeleteGroupController extends MenuActivity {
 		 * Deletes all group members, deletes group and sends notifications to all
 		 * members.
 		 * 
-		 * @param params String...
+		 * @param args String...
 		 * @return String result
 		 */
 		@Override
-		protected String doInBackground(String... params) {
-			urlParams = new ArrayList<NameValuePair>();
-			urlParams.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+		protected String doInBackground(String... args)
+		{
+			params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "readAllUserInGroup"));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-			// get all group members
-			json = jsonParser.makeHttpRequest(URL_GET_ALL_USER_IN_GROUP, "GET", urlParams);
+			// Get all group members
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 			try {
 				if (json.getInt(TAG_SUCCESS) != 1)
@@ -96,31 +95,40 @@ public class DeleteGroupController extends MenuActivity {
 
 				memberList = json.getJSONArray("member");
 
-				// delete privilege entries
-				json = jsonParser.makeHttpRequest(URL_DELETE_PRIVILEGE_ENTRIES_BY_GROUP_ID, "GET", urlParams);
+				// Delete privilege entries
+				params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("do", "deletePrivilegeGroup"));
+				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+				
+				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;
 
-				// delete group
-				json = jsonParser.makeHttpRequest(URL_DELETE_GROUP_BY_ID, "GET", urlParams);
+				// Delete group
+				params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("do", "deleteGroup"));
+				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+				
+				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;
 
-				notificationParams = new ArrayList<NameValuePair>();
-				notificationParams.add(new BasicNameValuePair("do", "create"));
+				// Send notifications
+				params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("do", "create"));
 				notification = IMessages.Notification.DELETE_GROUP_NOTIFICATION_1 + GroupData.getGROUPNAME()
 								+ IMessages.Notification.DELETE_GROUP_NOTIFICATION_2;
-				notificationParams.add(new BasicNameValuePair("message", notification));
-				notificationParams.add(new BasicNameValuePair("classification", "3"));
-				notificationParams.add(new BasicNameValuePair("syncInterval", null));
+				params.add(new BasicNameValuePair("message", notification));
+				params.add(new BasicNameValuePair("classification", "3"));
+				params.add(new BasicNameValuePair("syncInterval", null));
 
 				for (m = 0; m < memberList.length(); m++) {
-					notificationParams.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL)
+					params.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL)
 									.toString()));
-					// send notification
-					json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", notificationParams);
+					// Send notification
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 
 					if (json.getInt(TAG_SUCCESS) != 1)
 						return null;

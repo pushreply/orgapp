@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
@@ -42,10 +43,6 @@ public class EditGroupController extends MenuActivity {
 	String beforeInfo;
 
 	JSONParser jsonParser = new JSONParser();
-	private static String url_check_group = "http://pushrply.com/get_group.php";
-	private static String url_update_group = "http://pushrply.com/update_group.php";
-	private static String url_get_all_user_in_group = "http://pushrply.com/get_all_user_in_group.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -116,11 +113,13 @@ public class EditGroupController extends MenuActivity {
 		 * @param args String...
 		 * @return String result
 		 */
-		protected String doInBackground(String... args) {
+		protected String doInBackground(String... args)
+		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("do", "readGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			// Get group
-			JSONObject json = jsonParser.makeHttpRequest(url_check_group, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 			Log.d("Response", json.toString());
 
@@ -224,13 +223,14 @@ public class EditGroupController extends MenuActivity {
 			}
 
 			List<NameValuePair> paramsUpdateGroup = new ArrayList<NameValuePair>();
-
+			
+			paramsUpdateGroup.add(new BasicNameValuePair("do", "updateGroup"));
 			paramsUpdateGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			paramsUpdateGroup.add(new BasicNameValuePair("name", name));
 			paramsUpdateGroup.add(new BasicNameValuePair("info", info));
 
 			// Update group
-			JSONObject json = jsonParser.makeHttpRequest(url_update_group, "GET", paramsUpdateGroup);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsUpdateGroup);
 
 			Log.d("Create Response", json.toString());
 
@@ -238,10 +238,11 @@ public class EditGroupController extends MenuActivity {
 				Integer success = json.getInt(TAG_SUCCESS);
 				if (success != 0) {
 					List<NameValuePair> paramsGetUserInGroup = new ArrayList<NameValuePair>();
+					paramsGetUserInGroup.add(new BasicNameValuePair("do", "readAllUserInGroup"));
 					paramsGetUserInGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 					// Get all group member
-					json = jsonParser.makeHttpRequest(url_get_all_user_in_group, "GET", paramsGetUserInGroup);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetUserInGroup);
 
 					Log.d("Response", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -278,7 +279,7 @@ public class EditGroupController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "null"));
 
 							// Send notifications
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsCreateNotification);
 
 							Intent intent = new Intent(EditGroupController.this, GroupsController.class);
 							startActivity(intent);

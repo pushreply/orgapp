@@ -128,7 +128,7 @@ public class NewGroupController extends MenuActivity {
 					Log.d("Create Response", json.toString());
 					success = json.getInt(TAG_SUCCESS);
 					if (success != 0) {
-						// erfolg!
+						// Success
 					}
 				} else {
 

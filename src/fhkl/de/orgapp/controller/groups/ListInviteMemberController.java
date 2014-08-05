@@ -31,16 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class ListInviteMemberController extends MenuActivity {
-	private static String URL_GET_INVITE_MEMBER_LIST = "http://pushrply.com/get_invite_member_list.php";
-	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
-
+public class ListInviteMemberController extends MenuActivity
+{
 	Button inviteButton, cancelButton;
 	View horizontalLine;
 	TextView userInfo;
@@ -53,6 +51,7 @@ public class ListInviteMemberController extends MenuActivity {
 	// JSON nodes
 	private static final String TAG_SUCCESS = "success";
 
+	private static final String TAG_PERSON_ID = "PERSON_ID";
 	private static final String TAG_TEXT_FIRST_NAME = "TEXT_FIRST_NAME";
 	private static final String TAG_FIRST_NAME = "FIRST_NAME";
 	private static final String TAG_TEXT_LAST_NAME = "TEXT_LAST_NAME";
@@ -119,9 +118,14 @@ public class ListInviteMemberController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// Required parameters
+			params.add(new BasicNameValuePair("do", "readInviteMemberList"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_INVITE_MEMBER_LIST, "GET", params);
+			
+			// Fetch all users, who are in the groups of the logged user, but not in the selected group
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 			int success;
 
 			try {
@@ -131,18 +135,20 @@ public class ListInviteMemberController extends MenuActivity {
 					persons = json.getJSONArray("memberList");
 					int p;
 					JSONObject person;
-					String firstName, lastName, email;
+					String personId, firstName, lastName, email;
 					HashMap<String, Object> personMap;
 
 					for (p = 0; p < persons.length(); p++) {
 						person = persons.getJSONObject(p);
-
+						
+						personId = person.getString("personId");
 						firstName = person.getString("firstName");
 						lastName = person.getString("lastName");
 						email = person.getString("eMail");
 
 						personMap = new HashMap<String, Object>();
 
+						personMap.put(TAG_PERSON_ID, personId);
 						personMap.put(TAG_TEXT_FIRST_NAME, getString(R.string.TEXT_FIRST_NAME) + ": ");
 						personMap.put(TAG_FIRST_NAME, firstName);
 						personMap.put(TAG_TEXT_LAST_NAME, getString(R.string.TEXT_LAST_NAME) + ": ");
@@ -270,11 +276,13 @@ public class ListInviteMemberController extends MenuActivity {
 					dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					date = new Date();
 
+					// Required parameters
+					paramsInvite.add(new BasicNameValuePair("do", "createPrivilegeMember"));
 					paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-					paramsInvite.add(new BasicNameValuePair("eMail", personList.get(p).get(TAG_EMAIL).toString()));
+					paramsInvite.add(new BasicNameValuePair("personId", personList.get(p).get(TAG_PERSON_ID).toString()));
 
-					json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET", paramsInvite);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite);
 
 					try {
 						success = json.getInt(TAG_SUCCESS);
@@ -282,7 +290,7 @@ public class ListInviteMemberController extends MenuActivity {
 						if (success != 1)
 							return null;
 
-						// send notification
+						// Send notification
 						paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						notification = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
@@ -291,7 +299,7 @@ public class ListInviteMemberController extends MenuActivity {
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 
-						json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
 
 						success = json.getInt(TAG_SUCCESS);
 
