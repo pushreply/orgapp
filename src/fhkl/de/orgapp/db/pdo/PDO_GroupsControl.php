@@ -86,7 +86,7 @@ if ($_GET['do']=="updateGroup"
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':groupId', groupId, PDO::PARAM_INT);
+		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':info', $info);
 		$confirm = $sth->execute();
@@ -168,7 +168,7 @@ if ($_GET['do']=="readGroup" && isset($_GET['groupId']))
 
 		$sql = 'SELECT *
 				FROM groups
-				WHERE groupId =: groupId';
+				WHERE groupId = :groupId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
@@ -222,7 +222,7 @@ if ($_GET['do']=="readUserGroup" && isset($_GET['personId']))
 
 		$sql = 'SELECT g.groupId, g.personId, g.name, g.info
 				FROM groups g join privilege p using (groupId)
-				WHERE personId =: personId';
+				WHERE personId = :personId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
@@ -355,7 +355,7 @@ if ($_GET['do']=="readAllUserInGroup"
 			foreach ($result as $row)
 			{
 
-				$member['personId'] = $row ['personId'];
+				$member['personId'] = $row['personId'];
 				$member['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
 
 				/*
