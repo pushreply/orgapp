@@ -49,6 +49,14 @@ import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * ManualInviteMemberController - Handles the manual invite member activity.
+ * 
+ * Invites new group members via their respective E-Mail address.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class ManualInviteMemberController extends Activity {
 
 	private ProgressDialog pDialog;
@@ -70,11 +78,17 @@ public class ManualInviteMemberController extends Activity {
 	private Button bInvite;
 	private Button bCancel;
 
+	/**
+	 * Initializes and loads the view. Defines save and cancel Button.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.invite_member_manual);
 		checkNewNotificationAndCreateIcon();
+		// Set initial E-Mail field count
 		getIntent().putExtra("cnt", "0");
 
 		personIdLoggedPerson = UserData.getPERSONID();
@@ -94,6 +108,7 @@ public class ManualInviteMemberController extends Activity {
 		bInvite.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				// Async class that invites new members
 				new InviteMembers().execute();
 			}
 		});
@@ -102,14 +117,20 @@ public class ManualInviteMemberController extends Activity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
-				intent.putExtra("UserId", personIdLoggedPerson);
-				intent.putExtra("GroupId", GroupData.getGROUPID());
-				intent.putExtra("GroupName", GroupData.getGROUPNAME());
 				startActivity(intent);
 			}
 		});
 	}
 
+	/**
+	 * Can not implement MenuActivity because the created E-Mail address field has
+	 * to be accessed.
+	 * 
+	 * Renders the menu visible.
+	 * 
+	 * @param Menu menu
+	 * @return boolean OptionMenuCreated
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -124,6 +145,16 @@ public class ManualInviteMemberController extends Activity {
 		return true;
 	}
 
+	/**
+	 * Can not implement MenuActivity because the created E-Mail address field has
+	 * to be accessed.
+	 * 
+	 * Defines selected menu item functionality. Adds new formated E-Mail address
+	 * field.
+	 * 
+	 * @param item MenuItem
+	 * @return boolean OptionItemSelected
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
@@ -155,6 +186,7 @@ public class ManualInviteMemberController extends Activity {
 			startActivity(intent);
 			return true;
 		case R.id.ADD_EMAIL_FIELD:
+			// Current E-Mail address field count
 			Integer tmpCnt = Integer.valueOf(getIntent().getStringExtra("cnt").toString());
 
 			EditText editText = new EditText(ManualInviteMemberController.this);
@@ -162,13 +194,16 @@ public class ManualInviteMemberController extends Activity {
 			editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 			editText.setHint(R.string.EMAIL);
 
+			// Current E-Mail address field count + 1
 			tmpCnt++;
 
+			// Add remove E-Mail address field Button
 			ImageButton imageButton = new ImageButton(ManualInviteMemberController.this);
 			imageButton.setId(tmpCnt);
 			imageButton.setImageResource(R.drawable.ic_action_remove);
 
 			tmpCnt++;
+			// Sets new E-Mail address field count
 			getIntent().putExtra("cnt", tmpCnt.toString());
 
 			textLayout.addView(editText);
@@ -188,7 +223,9 @@ public class ManualInviteMemberController extends Activity {
 
 				@Override
 				public void onClick(View v) {
+					// Remove E-Mail address field
 					textLayout.removeView(findViewById(v.getId() - 1));
+					// Remove ImageView
 					textLayout.removeView(v);
 				}
 			});
@@ -198,8 +235,18 @@ public class ManualInviteMemberController extends Activity {
 		}
 	}
 
+	/**
+	 * 
+	 * Asnyc class that invites selected person into group.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class InviteMembers extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -212,6 +259,13 @@ public class ManualInviteMemberController extends Activity {
 			pDialog.show();
 		}
 
+		/**
+		 * Validates user input. Invites selected persons into group and sends
+		 * notification on correct input.
+		 * 
+		 * @param params String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... params) {
 			int editTextLength = textLayout.getChildCount();
 
@@ -224,12 +278,8 @@ public class ManualInviteMemberController extends Activity {
 				if (i % 2 == 0) {
 					EditText tmp = (EditText) textLayout.getChildAt(i);
 					if (i != 0) {
-						System.out.println("I ist:" + i);
-						System.out.println(tmp.getText().toString());
-
 						if (Arrays.asList(editTextArray).contains(tmp.getText().toString())) {
-							// Duplicate Input
-							System.out.println("duplicate");
+							// Duplicate E-Mail address
 							return IMessages.Error.DUPLICATE_EMAIL;
 						} else {
 							editTextArray[i / 2] = tmp.getText().toString();
@@ -240,17 +290,16 @@ public class ManualInviteMemberController extends Activity {
 					}
 				}
 			}
-			System.out.println("check 1 done");
 			for (int i = 0; i < editTextArray.length; i++) {
 				if (InputValidator.isEmailValid(editTextArray[i]) == false) {
-					// Wrong Email format
+					// Wrong E-Mail address format
 					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
-			System.out.println("check 2 done");
 			for (int i = 0; i < editTextArray.length; i++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
+				// Get user with specified E-Mail address
 				JSONObject json = jsonParser.makeHttpRequest(URL_EXIST_USER, "GET", paramsCheck);
 				int success;
 				try {
@@ -264,11 +313,11 @@ public class ManualInviteMemberController extends Activity {
 					logout();
 				}
 			}
-			System.out.println("check 3 done");
 			for (int i = 0; i < editTextArray.length; i++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 				paramsCheck.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
+				// Get user in group
 				JSONObject json = jsonParser.makeHttpRequest(URL_USER_INVITED, "GET", paramsCheck);
 				int success;
 				try {
@@ -282,8 +331,7 @@ public class ManualInviteMemberController extends Activity {
 					logout();
 				}
 			}
-			System.out.println("check 4 done");
-			// Everything okay
+			// Everything validated
 			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
 			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
@@ -291,12 +339,12 @@ public class ManualInviteMemberController extends Activity {
 			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 			for (int i = 0; i < editTextArray.length; i++) {
 				paramsInvite.add(new BasicNameValuePair("eMail", editTextArray[i]));
+				// Invite person into group
 				JSONObject json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET", paramsInvite);
 				int success;
 				try {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
-						// Send Notifications
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
@@ -304,9 +352,8 @@ public class ManualInviteMemberController extends Activity {
 						String message = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
+						// Send Notifications
 						json = jsonParser.makeHttpRequest(URL_NOTIFICATIONS, "GET", paramsNotification);
-						json.getInt(TAG_SUCCESS);
-
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -318,15 +365,20 @@ public class ManualInviteMemberController extends Activity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Returns warning on wrong input.
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-
 			}
 		}
 	}
 
+	/**
+	 * Checks if user received new notification. Displays notification icon.
+	 */
 	private void checkNewNotificationAndCreateIcon() {
 		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
 
@@ -358,17 +410,23 @@ public class ManualInviteMemberController extends Activity {
 		notificationManager.notify(newNotificationNotificationId, builder.build());
 	}
 
+	/**
+	 * Logs user out. Resets data.
+	 */
 	private void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
 		resetEventSettingsData();
-		
+
 		deleteIcon();
 
 		Intent intent = new Intent(ManualInviteMemberController.this, StartController.class);
 		startActivity(intent);
 	}
 
+	/**
+	 * Resets user data.
+	 */
 	private void resetUserData() {
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
@@ -379,6 +437,9 @@ public class ManualInviteMemberController extends Activity {
 		UserData.setMEMBER_SINCE("");
 	}
 
+	/**
+	 * Resets notification settings data.
+	 */
 	private void resetNotificationSettingsData() {
 		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
 		NotificationSettingsData.setSHOW_ENTRIES("");
@@ -394,13 +455,18 @@ public class ManualInviteMemberController extends Activity {
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
 	}
-	
-	private void resetEventSettingsData()
-	{
+
+	/**
+	 * Resets event settings data
+	 */
+	private void resetEventSettingsData() {
 		EventSettingsData.setEVENT_SETTINGS_ID("");
 		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
 
+	/**
+	 * Deletes the notification icon.
+	 */
 	protected void deleteIcon() {
 		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
 	}
