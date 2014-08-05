@@ -95,6 +95,7 @@ public class LeaveGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
+			// leave group
 			JSONObject json = jsonParser.makeHttpRequest(URL_LEAVE_GROUP, "GET", params);
 			Log.d("Response: ", json.toString());
 
@@ -111,6 +112,7 @@ public class LeaveGroupController extends MenuActivity {
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
 				notificationParams.add(new BasicNameValuePair("syncInterval", null));
 
+				// send notification
 				json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", notificationParams);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
