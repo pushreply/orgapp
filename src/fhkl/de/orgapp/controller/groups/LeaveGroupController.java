@@ -23,7 +23,7 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * LeaveGroupController - Handles the leave group activity
+ * LeaveGroupController - Handles the leave group activity.
  * 
  * Removes a group member from a group.
  * 
