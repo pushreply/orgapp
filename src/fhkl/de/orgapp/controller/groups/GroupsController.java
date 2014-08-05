@@ -114,7 +114,7 @@ public class GroupsController extends MenuActivity
 			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Get groups of the user
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp, GroupsController.this);
 
 			Log.d("Groups: ", json.toString());
 
@@ -223,7 +223,7 @@ public class GroupsController extends MenuActivity
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			
 			// Get current user's privileges
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params, GroupsController.this);
 
 			Log.d("Member: ", json.toString());
 
