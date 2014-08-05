@@ -375,7 +375,7 @@ if ($_GET['do']=="readOldEvents" && isset($_GET['personId']))
 
 	try {
 
-		$sql = 'SELECT * FROM event WHERE personId = :$personId and eventDate < (select CURDATE())';
+		$sql = 'SELECT * FROM event WHERE personId = :personId and eventDate < (select CURDATE())';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);

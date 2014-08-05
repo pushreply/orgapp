@@ -221,7 +221,7 @@ if ($_GET['do']=="readUserGroup" && isset($_GET['personId']))
 	try {
 
 		$sql = 'SELECT g.groupId, g.personId, g.name, g.info
-				FROM groups g join privilege p using (:groupId)
+				FROM groups g join privilege p using (groupId)
 				WHERE personId =: personId';
 
 		$sth = $pdo->prepare($sql);
@@ -277,8 +277,8 @@ if ($_GET['do']=="readUserInGroup"
 
 	try {
 
-		$sql = 'SELECT * FROM privilege p, person pers WHERE p.groupId = :$groupId
-				and p.personId = pers.personId and pers.personId = :$personId';
+		$sql = 'SELECT * FROM privilege p, person pers WHERE p.groupId = :groupId
+				AND p.personId = pers.personId and pers.personId = :personId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
@@ -339,7 +339,7 @@ if ($_GET['do']=="readAllUserInGroup"
 	try {
 
 		$sql = 'SELECT pers.personId, pers.eMail FROM privilege priv join person pers using(personId)
-				WHERE priv.groupId = :$groupId';
+				WHERE priv.groupId = :groupId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
@@ -393,8 +393,8 @@ if ($_GET['do']=="readMemberList"
 
 	try {
 
-		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName from person pers join privilege priv using(personId)
-				WHERE priv.groupId = :$groupId and priv.personId not like :$personId';
+		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName FROM person pers JOIN privilege priv USING(personId)
+				WHERE priv.groupId = :groupId AND priv.personId NOT LIKE :personId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
@@ -455,13 +455,13 @@ if ($_GET['do']=="readInviteMemberList"
 				FROM person pers
 				JOIN privilege priv
 				USING(personId)
-				WHERE pers.personId != :$personId
+				WHERE pers.personId != :personId
 				AND priv.groupId
 				IN
 				(
 				SELECT groupId
 				FROM privilege
-				WHERE personId = :$personId
+				WHERE personId = :personId
 				)
 				AND pers.personId
 				NOT IN
@@ -470,7 +470,8 @@ if ($_GET['do']=="readInviteMemberList"
 				FROM person pers
 				JOIN privilege priv
 				USING(personId)
-				WHERE priv.groupId = :$groupId AND pers.personId != :$personId';
+				WHERE priv.groupId = :groupId AND pers.personId != :personId
+				)';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);

@@ -75,7 +75,7 @@ if ($_GET['do']=="deletePersonInEvent"
 	try {
 
 		$sql = 'DELETE FROM eventPerson
-				WHERE personId = :personId and eventId = :eventId';
+				WHERE personId = :personId AND eventId = :eventId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
@@ -159,8 +159,8 @@ if ($_GET['do']=="readAttendingMember"
 
 	try {
 
-		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName from person pers join eventPerson ep using(personId)
-				WHERE ep.eventId = :$eventId and ep.personId not like :$personId';
+		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName FROM person pers JOIN eventPerson ep USING (personId)
+				WHERE ep.eventId = :eventId AND ep.personId not like :personId';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
@@ -198,6 +198,5 @@ if ($_GET['do']=="readAttendingMember"
 		exit();
 	}
 }
-
 
 ?>
