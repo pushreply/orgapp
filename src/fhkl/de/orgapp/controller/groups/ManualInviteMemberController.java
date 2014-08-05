@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -41,6 +42,7 @@ import fhkl.de.orgapp.controller.notification.NotificationController;
 import fhkl.de.orgapp.controller.profile.ProfileController;
 import fhkl.de.orgapp.controller.start.StartController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.check.NewNotificationsChecker;
 import fhkl.de.orgapp.util.data.EventSettingsData;
@@ -60,16 +62,20 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 public class ManualInviteMemberController extends Activity {
 
 	private ProgressDialog pDialog;
+	
+	// To identify the notification icon
 	private int newNotificationNotificationId = 1;
+	
+	// For json issues
 	JSONParser jsonParser = new JSONParser();
-	ArrayList<HashMap<String, String>> groupList;
-
-	private static String URL_EXIST_USER = "http://pushrply.com/select_person_by_email.php";
-	private static String URL_USER_INVITED = "http://pushrply.com/get_user_in_group_by_eMail.php";
-	private static String URL_INVITE_PERSON = "http://pushrply.com/create_user_in_group_by_eMail.php";
-	private static String URL_NOTIFICATIONS = "http://pushrply.com/pdo_notificationcontrol.php";
-
+	JSONArray persons;
+	
+	// To store the persons with email and personId
+	List<HashMap<String, Object>> existPersons;
+	
 	private static final String TAG_SUCCESS = "success";
+	private static final String TAG_PERSON_ID = "personId";
+	private static final String TAG_EMAIL = "email";
 
 	LinearLayout containerLayout;
 	GridLayout textLayout;
@@ -242,13 +248,14 @@ public class ManualInviteMemberController extends Activity {
 	 * @author Jochen Jung
 	 * @version 1.0
 	 */
-	class InviteMembers extends AsyncTask<String, String, String> {
-
+	class InviteMembers extends AsyncTask<String, String, String>
+	{
 		/**
 		 * Creates ProcessDialog
 		 */
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ManualInviteMemberController.this);
 
@@ -266,7 +273,8 @@ public class ManualInviteMemberController extends Activity {
 		 * @param params String...
 		 * @return String result
 		 */
-		protected String doInBackground(String... params) {
+		protected String doInBackground(String... params)
+		{
 			int editTextLength = textLayout.getChildCount();
 
 			if (editTextLength == 0) {
@@ -291,75 +299,127 @@ public class ManualInviteMemberController extends Activity {
 				}
 			}
 			for (int i = 0; i < editTextArray.length; i++) {
-				if (InputValidator.isEmailValid(editTextArray[i]) == false) {
+				if (!InputValidator.isEmailValid(editTextArray[i]))
+				{
 					// Wrong E-Mail address format
 					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
-			for (int i = 0; i < editTextArray.length; i++) {
+			
+			// To store the persons with email and personId
+			existPersons = new ArrayList<HashMap<String, Object>>();
+			HashMap<String, Object> person;
+			
+			for (int e = 0; e < editTextArray.length; e++)
+			{
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				// Get user with specified E-Mail address
-				JSONObject json = jsonParser.makeHttpRequest(URL_EXIST_USER, "GET", paramsCheck);
+				
+				// Required parameters
+				paramsCheck.add(new BasicNameValuePair("do", "read"));
+				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[e]));
+				
+				// Fetch person by email
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", paramsCheck);
+				
 				int success;
-				try {
+				
+				try
+				{
 					success = json.getInt(TAG_SUCCESS);
-					if (success == 0) {
+					
+					if(success == 0)
+					{
 						// User is not registered
 						return IMessages.Error.EXIST_USER;
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+					
+					// User exists
+					person = new HashMap<String, Object>();
+					
+					person.put(TAG_EMAIL, editTextArray[e]);
+					person.put(TAG_PERSON_ID, json.getJSONArray("person").getJSONObject(0).getString(TAG_PERSON_ID));
+					
+					existPersons.add(person);
+				}
+				catch (Exception exception)
+				{
+					exception.printStackTrace();
 					logout();
 				}
 			}
-			for (int i = 0; i < editTextArray.length; i++) {
+			
+			for (int p = 0; p < existPersons.size(); p++)
+			{
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
+				paramsCheck.add(new BasicNameValuePair("do", "readUserInGroup"));
 				paramsCheck.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				// Get user in group
-				JSONObject json = jsonParser.makeHttpRequest(URL_USER_INVITED, "GET", paramsCheck);
+				paramsCheck.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
+				
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCheck);
+				
 				int success;
-				try {
+				
+				try
+				{
 					success = json.getInt(TAG_SUCCESS);
-					if (success == 1) {
+					
+					if (success == 1)
+					{
 						// User already invited
 						return IMessages.Error.USER_INVITED;
 					}
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					e.printStackTrace();
 					logout();
 				}
 			}
+
 			// Everything validated
-			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
-			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 			Date date = new Date();
+			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
+			
+			// Required parameters
+			paramsInvite.add(new BasicNameValuePair("do", "createPrivilegeMember"));
+			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-			for (int i = 0; i < editTextArray.length; i++) {
-				paramsInvite.add(new BasicNameValuePair("eMail", editTextArray[i]));
-				// Invite person into group
-				JSONObject json = jsonParser.makeHttpRequest(URL_INVITE_PERSON, "GET", paramsInvite);
+			
+			for (int p = 0; p < existPersons.size(); p++)
+			{
+				paramsInvite.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
+				
+				// Invite person
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite);
+
 				int success;
-				try {
+				try
+				{
 					success = json.getInt(TAG_SUCCESS);
-					if (success == 1) {
+	
+					if (success == 1)
+					{
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
-						paramsNotification.add(new BasicNameValuePair("eMail", editTextArray[i]));
+						paramsNotification.add(new BasicNameValuePair("eMail", existPersons.get(p).get(TAG_EMAIL).toString()));
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						String message = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
+
 						// Send Notifications
-						json = jsonParser.makeHttpRequest(URL_NOTIFICATIONS, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
 					}
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					e.printStackTrace();
 					logout();
 				}
 			}
+			
 			Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
 			startActivity(intent);
 			return null;
