@@ -42,10 +42,6 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditEventController extends MenuActivity {
 
-//	private static String URL_UPDATE_EVENT = "http://pushrply.com/update_event.php";
-//	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-//	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
-
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
