@@ -22,8 +22,14 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
-//import fhkl.de.orgapp.controller.groups.GroupsController;
-
+/**
+ * LeaveGroupController - Handles the leave group activity
+ * 
+ * Removes a group member from a group.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class LeaveGroupController extends MenuActivity {
 	private static String URL_LEAVE_GROUP = "http://pushrply.com/leave_group.php";
 	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
@@ -39,6 +45,11 @@ public class LeaveGroupController extends MenuActivity {
 	ArrayList<HashMap<String, String>> memberList;
 	JSONArray member = null;
 
+	/**
+	 * Calls Async class that removes user from group.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,8 +61,17 @@ public class LeaveGroupController extends MenuActivity {
 		new LeaveGroup().execute();
 	}
 
+	/**
+	 * Asnyc class that removes user from group.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class LeaveGroup extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -62,16 +82,20 @@ public class LeaveGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Removes user from group.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
-			// need parameters personId and groupId
+
 			tv_memberId = (TextView) findViewById(R.id.MEMBERID);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-			// send parameters to jsonParser
 			JSONObject json = jsonParser.makeHttpRequest(URL_LEAVE_GROUP, "GET", params);
-
 			Log.d("Response: ", json.toString());
 
 			try {
@@ -82,7 +106,6 @@ public class LeaveGroupController extends MenuActivity {
 
 				notificationParams = new ArrayList<NameValuePair>();
 				notificationParams.add(new BasicNameValuePair("do", "create"));
-				// TODO Add email
 				notification = IMessages.Notification.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
 				notificationParams.add(new BasicNameValuePair("message", notification));
 				notificationParams.add(new BasicNameValuePair("classification", "3"));
@@ -101,6 +124,9 @@ public class LeaveGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Returns to groups activity.
+		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();
