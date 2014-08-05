@@ -32,7 +32,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * @version 1.0
  */
 
-public class LeaveGroupController extends MenuActivity {
+public class LeaveGroupController extends MenuActivity
+{
 	private static final String TAG_SUCCESS = "success";
 
 	List<NameValuePair> notificationParams;
@@ -66,8 +67,8 @@ public class LeaveGroupController extends MenuActivity {
 	 * @author Jochen Jung
 	 * @version 1.0
 	 */
-	class LeaveGroup extends AsyncTask<String, String, String> {
-
+	class LeaveGroup extends AsyncTask<String, String, String>
+	{
 		/**
 		 * Creates ProcessDialog
 		 */
@@ -101,28 +102,18 @@ public class LeaveGroupController extends MenuActivity {
 
 			Log.d("Response: ", json.toString());
 
-			try {
+			try
+			{
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1) {
+				if (success == 1)
+				{
 					return null;
 				}
 
-				// TODO Send notification at leaving group?
-//				notificationParams = new ArrayList<NameValuePair>();
-//				notificationParams.add(new BasicNameValuePair("do", "create"));
-				// TODO Add emails
-//				notification = IMessages.Notification.NOTIFICATION_LEAVING_GROUP + GroupData.getGROUPNAME();
-//				notificationParams.add(new BasicNameValuePair("message", notification));
-//				notificationParams.add(new BasicNameValuePair("classification", "3"));
-//				notificationParams.add(new BasicNameValuePair("syncInterval", null));
-//
-//				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", notificationParams);
-
-//				if (json.getInt(TAG_SUCCESS) != 1)
-//					return null;
-
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
 				logout();
 			}

@@ -29,6 +29,7 @@ import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.event.EventController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.check.UserJoinEventChecker;
@@ -38,19 +39,14 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.ListModel;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class SingleGroupController extends MenuActivity {
-
+public class SingleGroupController extends MenuActivity
+{
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
 
 	public ArrayList<ListModel> customAdapterValues = new ArrayList<ListModel>();
-
-	private static String url_get_calendar = "http://pushrply.com/get_group_events.php";
-	private static String url_get_event = "http://pushrply.com/get_event.php";
-	private static String URL_CREATE_PERSON_IN_EVENT = "http://pushrply.com/create_person_in_event.php";
-	private static String URL_DELETE_PERSON_IN_EVENT = "http://pushrply.com/delete_person_in_event.php";
-
+	
 	private static final String TAG_SUCCESS = "success";
 
 	String eventId = null;
@@ -88,14 +84,19 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) {
+		protected String doInBackground(String... args)
+		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// Required params
+			params.add(new BasicNameValuePair("do", "readGroupEvents"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			
 			if(!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 			
-			JSONObject json = jsonParser.makeHttpRequest(url_get_calendar, "GET", params);
+			// Fetch the events of a selected group
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			Log.d("Calendar: ", json.toString());
 
@@ -169,8 +170,13 @@ public class SingleGroupController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// Required parameters
+			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", eventId));
-			JSONObject json = jsonParser.makeHttpRequest(url_get_event, "GET", params);
+			
+			// Fetch the selected event
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			Log.d("Event: ", json.toString());
 
@@ -339,17 +345,25 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args) {
+		protected String doInBackground(String... args)
+		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// Required parameters
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", eventId));
+			
 			JSONObject json;
-			if (toggleButtonChecked) {
-				json = jsonParser.makeHttpRequest(URL_DELETE_PERSON_IN_EVENT, "GET", params);
-			} else {
-				json = jsonParser.makeHttpRequest(URL_CREATE_PERSON_IN_EVENT, "GET", params);
-			}
-
+			
+			// Not going to event
+			if(toggleButtonChecked)
+				params.add(new BasicNameValuePair("do", "deletePersonInEvent"));
+			// Going to event
+			else
+				params.add(new BasicNameValuePair("do", "createPersonInEvent"));
+				
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
+			
 			Log.d("EventPerson: ", json.toString());
 
 			try {

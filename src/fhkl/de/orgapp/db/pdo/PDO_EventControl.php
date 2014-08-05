@@ -242,8 +242,8 @@ if ($_GET['do']=="readGroupEvents" && isset($_GET['groupId']))
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
 
-	try {
-
+	try
+	{
 		$sql = 'SELECT eventId, personId, groupId, name, eventDate, eventTime, eventLocation
 				FROM event
 				WHERE groupId = :groupId and eventDate > (select CURDATE())
@@ -254,27 +254,60 @@ if ($_GET['do']=="readGroupEvents" && isset($_GET['groupId']))
 		$confirm = $sth->execute();
 		$result = $sth->fetchAll();
 
-		if ($confirm==true) {
+		if($confirm==true)
+		{
 			/*
 			 * need a container for json
 			*/
 			$response["event"] = array();
 
-			foreach ($result as $row)
+			// Parameter 'shownEventEntries' set
+			if(isset($_GET['shownEventEntries']))
 			{
-				$event['eventId'] = $row['eventId'];
-				$event['personId'] = $row['personId'];
-				$event['groupId'] = $row['groupId'];
-				$event['name'] = html_entity_decode($row['name'], ENT_QUOTES, 'UTF-8');
-				$event['eventDate'] = $row['eventDate'];
-				$event['eventTime'] = $row['eventTime'];
-				$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
-
-				/*
-				 * push each value to the data container
-				*/
-				array_push($response["event"], $event);
+				$shownEventEntries = $_GET['shownEventEntries'];
+				$i=0;
+				
+				foreach ($result as $row)
+				{
+					if($i == $shownEventEntries)
+						break;
+					
+					$event['eventId'] = $row['eventId'];
+					$event['personId'] = $row['personId'];
+					$event['groupId'] = $row['groupId'];
+					$event['name'] = html_entity_decode($row['name'], ENT_QUOTES, 'UTF-8');
+					$event['eventDate'] = $row['eventDate'];
+					$event['eventTime'] = $row['eventTime'];
+					$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
+	
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["event"], $event);
+					
+					$i++;
+				}
 			}
+			// Parameter 'shownEventEntries' not set
+			else
+			{
+				foreach ($result as $row)
+				{
+					$event['eventId'] = $row['eventId'];
+					$event['personId'] = $row['personId'];
+					$event['groupId'] = $row['groupId'];
+					$event['name'] = html_entity_decode($row['name'], ENT_QUOTES, 'UTF-8');
+					$event['eventDate'] = $row['eventDate'];
+					$event['eventTime'] = $row['eventTime'];
+					$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
+				
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["event"], $event);
+				}
+			}
+			
 			$response ["success"] = 1;
 			echo json_encode ($response);
 		}
@@ -409,6 +442,5 @@ if ($_GET['do']=="readOldEvents" && isset($_GET['personId']))
 		exit();
 	}
 }
-
 
 ?>

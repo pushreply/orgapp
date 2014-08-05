@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.GroupData;
@@ -39,16 +40,14 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * @author Jochen Jung
  * @version 1.0
  */
-public class NewGroupController extends MenuActivity {
-
+public class NewGroupController extends MenuActivity
+{
 	AlertDialog member_question;
 	private ProgressDialog pDialog;
 	EditText inputName;
 	EditText inputInfo;
 
 	JSONParser jsonParser = new JSONParser();
-	private static String url_create_group = "http://pushrply.com/create_group.php";
-	private static String url_create_user_in_group = "http://pushrply.com/create_user_in_group_by_personId.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -131,11 +130,14 @@ public class NewGroupController extends MenuActivity {
 
 			List<NameValuePair> paramsCreateGroup = new ArrayList<NameValuePair>();
 
+			// Required parameters
+			paramsCreateGroup.add(new BasicNameValuePair("do", "createGroup"));
 			paramsCreateGroup.add(new BasicNameValuePair("personId", personId));
 			paramsCreateGroup.add(new BasicNameValuePair("name", name));
 			paramsCreateGroup.add(new BasicNameValuePair("info", info));
+			
 			// Create new group
-			JSONObject json = jsonParser.makeHttpRequest(url_create_group, "GET", paramsCreateGroup);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup);
 
 			Log.d("Create Response", json.toString());
 
@@ -147,14 +149,17 @@ public class NewGroupController extends MenuActivity {
 					GroupData.setGROUPNAME(name);
 					GroupData.setGROUPINFO(info);
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
-
-					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
-					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					Date date = new Date();
+					
+					// Required parameters
+					paramsCreateUserInGroup.add(new BasicNameValuePair("do", "createPrivilegeAdmin"));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-					// Create new user in group which is admin
-					json = jsonParser.makeHttpRequest(url_create_user_in_group, "GET", paramsCreateUserInGroup);
+					
+					// Create new user in group as admin
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

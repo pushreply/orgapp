@@ -30,14 +30,11 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.MemberData;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class MemberPrivilegeInfoController extends MenuActivity {
-
+public class MemberPrivilegeInfoController extends MenuActivity
+{
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
-
-	private static String URL_GET_USER_IN_GROUP = "http://pushrply.com/get_user_in_group_by_eMail.php";
-	private static String URL_UPDATE_PRIVILEGES = "http://pushrply.com/update_privileges.php";
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -159,10 +156,14 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			String afterPrivilegeManagement = privilegeManagement.isChecked() == true ? "1" : "0";
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// Required parameters
+			params.add(new BasicNameValuePair("do", "readUserInGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			params.add(new BasicNameValuePair("eMail", tv_eMail.getText().toString()));
+			params.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", params);
+			// Fetch the selected member
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -277,6 +278,9 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					}
 
 					List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
+					
+					// Required parameters
+					paramsUpdate.add(new BasicNameValuePair("do", "updatePrivilege"));
 					paramsUpdate.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 					paramsUpdate.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsUpdate.add(new BasicNameValuePair("memberInvitation", afterMemberInvitation));
@@ -288,7 +292,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					paramsUpdate.add(new BasicNameValuePair("commentDeleting", afterCommentDeleting));
 					paramsUpdate.add(new BasicNameValuePair("privilegeManagement", afterPrivilegeManagement));
 
-					json = jsonParser.makeHttpRequest(URL_UPDATE_PRIVILEGES, "GET", paramsUpdate);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate);
 
 					Log.d("Member: ", json.toString());
 
