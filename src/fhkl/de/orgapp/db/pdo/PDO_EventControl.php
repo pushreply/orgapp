@@ -246,7 +246,7 @@ if ($_GET['do']=="readGroupEvents" && isset($_GET['groupId']))
 	{
 		$sql = 'SELECT eventId, personId, groupId, name, eventDate, eventTime, eventLocation
 				FROM event
-				WHERE groupId = :groupId and eventDate > (select CURDATE())
+				WHERE groupId = :groupId AND eventDate > (select CURDATE())
 				ORDER BY eventDate asc, eventTime asc';
 
 		$sth = $pdo->prepare($sql);
@@ -337,7 +337,7 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 
 		$sql = 'SELECT ev.eventId, ev.personId, ev.groupId, ev.name, ev.eventDate, ev.eventTime, ev.eventLocation
 				FROM event ev join eventPerson ep using (eventId)
-				WHERE ep.personId = :personId and ev.eventDate >= (select CURDATE())
+				WHERE ep.personId = :personId AND ev.eventDate >= (select CURDATE())
 				ORDER BY eventDate asc, eventTime asc';
 
 		$sth = $pdo->prepare($sql);
