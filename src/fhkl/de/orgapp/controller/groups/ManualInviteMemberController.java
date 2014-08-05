@@ -367,6 +367,8 @@ public class ManualInviteMemberController extends Activity {
 
 		/**
 		 * Removes ProcessDialog. Returns warning on wrong input.
+		 * 
+		 * @param message String
 		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();

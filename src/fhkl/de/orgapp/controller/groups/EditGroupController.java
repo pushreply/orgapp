@@ -113,8 +113,7 @@ public class EditGroupController extends MenuActivity {
 		 * @param args String...
 		 * @return String result
 		 */
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "readGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
@@ -153,6 +152,8 @@ public class EditGroupController extends MenuActivity {
 		/**
 		 * Removes ProcessDialog. Processes result. Calls method to set view
 		 * elements.
+		 * 
+		 * @param result String
 		 */
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
@@ -223,7 +224,7 @@ public class EditGroupController extends MenuActivity {
 			}
 
 			List<NameValuePair> paramsUpdateGroup = new ArrayList<NameValuePair>();
-			
+
 			paramsUpdateGroup.add(new BasicNameValuePair("do", "updateGroup"));
 			paramsUpdateGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			paramsUpdateGroup.add(new BasicNameValuePair("name", name));
@@ -279,7 +280,8 @@ public class EditGroupController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "null"));
 
 							// Send notifications
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+											paramsCreateNotification);
 
 							Intent intent = new Intent(EditGroupController.this, GroupsController.class);
 							startActivity(intent);
@@ -295,6 +297,8 @@ public class EditGroupController extends MenuActivity {
 
 		/**
 		 * Removes ProcessDialog. Show Toast if group not edited.
+		 * 
+		 * @param message String
 		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);

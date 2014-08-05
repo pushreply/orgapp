@@ -148,6 +148,8 @@ public class MemberListController extends MenuActivity {
 		 * Removes ProcessDialog. Initializes and loads the ListView. Gives option
 		 * to delete user onItemLongClicked. Shows user information onItemClicked in
 		 * new activity.
+		 * 
+		 * @param result String
 		 */
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
@@ -163,6 +165,7 @@ public class MemberListController extends MenuActivity {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 							tv_memberId = (TextView) view.findViewById(R.id.MEMBERID);
+							// Async class that saves MemberData and starts new activity
 							new GetPrivilegesInfo().execute();
 						}
 					});
@@ -170,6 +173,7 @@ public class MemberListController extends MenuActivity {
 					memberListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 						@Override
 						public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+							// Open AlertDialog only when user has required privileges
 							if (GroupData.getPERSONID().equals(UserData.getPERSONID())
 											|| GroupData.getPRIVILEGE_EDIT_MEMBERLIST().equals("1")) {
 								tv_memberId = (TextView) view.findViewById(R.id.MEMBERID);
@@ -179,6 +183,7 @@ public class MemberListController extends MenuActivity {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
+										// Async class that deletes the selected member
 										new DeleteMember().execute();
 									}
 
@@ -187,12 +192,14 @@ public class MemberListController extends MenuActivity {
 
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
+										// Close AlertDialog
 									}
 								});
 								builder.create().show();
 								return true;
 
 							} else {
+								// Show warning, user has not required privileges
 								Toast.makeText(getApplicationContext(), IMessages.Error.INSUFFICIENT_PRIVILEGES, Toast.LENGTH_LONG)
 												.show();
 								return false;
@@ -206,8 +213,17 @@ public class MemberListController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Async class that deletes selected member.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class DeleteMember extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -218,7 +234,11 @@ public class MemberListController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Deletes selected member from group. Returns to refreshed member list.
+		 */
 		protected String doInBackground(String... args) {
+			// Can not remove an admin
 			if (GroupData.getPERSONID().equals(tv_memberId.getText().toString())) {
 				return IMessages.Error.REMOVING_ADMIN;
 			}
@@ -226,7 +246,7 @@ public class MemberListController extends MenuActivity {
 
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-
+			// Deletes selected member from group
 			JSONObject json = jsonParser.makeHttpRequest(URL_DELETE_MEMBER, "GET", params);
 
 			Log.d("Response: ", json.toString());
@@ -246,18 +266,31 @@ public class MemberListController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Shows warning when selected member is admin.
+		 * 
+		 * @param message String
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-
 			}
 		}
 	}
 
+	/**
+	 * Asnyc class that sets MemberData and starts new activity.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -268,10 +301,17 @@ public class MemberListController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Loads member data from database and sets MemberData.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
+			// Get person data
 			JSONObject json = jsonParser.makeHttpRequest(URL_PERSON, "GET", params);
 
 			Log.d("Member: ", json.toString());
@@ -296,7 +336,7 @@ public class MemberListController extends MenuActivity {
 					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("eMail", MemberData.getEMAIL()));
-
+					// Get group data and privileges
 					json = jsonParser.makeHttpRequest(URL_GET_USER_IN_GROUP, "GET", paramsPrivileges);
 
 					Log.d("Member: ", json.toString());
@@ -330,6 +370,11 @@ public class MemberListController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * removes ProcessDialog
+		 * 
+		 * @param message String
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 		}

@@ -31,9 +31,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * @author Jochen Jung
  * @version 1.0
  */
-	
-public class LeaveGroupController extends MenuActivity
-{
+
+public class LeaveGroupController extends MenuActivity {
 	private static final String TAG_SUCCESS = "success";
 
 	List<NameValuePair> notificationParams;
@@ -88,11 +87,10 @@ public class LeaveGroupController extends MenuActivity
 		 * @param args String...
 		 * @return String result
 		 */
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			tv_memberId = (TextView) findViewById(R.id.MEMBERID);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("do", "deletePrivilege"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
@@ -103,12 +101,10 @@ public class LeaveGroupController extends MenuActivity
 
 			Log.d("Response: ", json.toString());
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
-				
-				if (success == 1)
-				{
+
+				if (success == 1) {
 					return null;
 				}
 
@@ -122,14 +118,11 @@ public class LeaveGroupController extends MenuActivity
 //				notificationParams.add(new BasicNameValuePair("syncInterval", null));
 //
 //				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", notificationParams);
-				
 
 //				if (json.getInt(TAG_SUCCESS) != 1)
 //					return null;
 
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 				logout();
 			}
@@ -139,9 +132,10 @@ public class LeaveGroupController extends MenuActivity
 
 		/**
 		 * Removes ProcessDialog. Returns to groups activity.
+		 * 
+		 * @param message String
 		 */
-		protected void onPostExecute(String message)
-		{
+		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();
 			startActivity(new Intent(LeaveGroupController.this, GroupsController.class));

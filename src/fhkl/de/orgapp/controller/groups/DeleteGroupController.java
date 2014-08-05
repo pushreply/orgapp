@@ -28,8 +28,7 @@ import fhkl.de.orgapp.util.data.GroupData;
  * @author Jochen Jung
  * @version 1.0
  */
-public class DeleteGroupController extends MenuActivity
-{
+public class DeleteGroupController extends MenuActivity {
 	private static final String TAG_SUCCESS = "success";
 	private ProgressDialog pDialog;
 	JSONParser jsonParser = new JSONParser();
@@ -80,8 +79,7 @@ public class DeleteGroupController extends MenuActivity
 		 * @return String result
 		 */
 		@Override
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "readAllUserInGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
@@ -99,7 +97,7 @@ public class DeleteGroupController extends MenuActivity
 				params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("do", "deletePrivilegeGroup"));
 				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-				
+
 				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
@@ -109,7 +107,7 @@ public class DeleteGroupController extends MenuActivity
 				params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("do", "deleteGroup"));
 				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-				
+
 				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
@@ -125,8 +123,7 @@ public class DeleteGroupController extends MenuActivity
 				params.add(new BasicNameValuePair("syncInterval", null));
 
 				for (m = 0; m < memberList.length(); m++) {
-					params.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL)
-									.toString()));
+					params.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL).toString()));
 					// Send notification
 					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 
@@ -146,6 +143,8 @@ public class DeleteGroupController extends MenuActivity
 		/**
 		 * Removes ProcessDialog. Shows Toasts. Starts new Activity on successful
 		 * delete.
+		 * 
+		 * @param message String
 		 */
 		@Override
 		protected void onPostExecute(String message) {

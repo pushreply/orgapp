@@ -208,6 +208,8 @@ public class ListInviteMemberController extends MenuActivity {
 		/**
 		 * Removes ProcessDialog. Initializes and loads ListView. Updates chosen
 		 * member list when ListItem is clicked.
+		 * 
+		 * @param message String
 		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
