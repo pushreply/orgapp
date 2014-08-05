@@ -31,6 +31,14 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * NewGroupController - Handles new group activity.
+ * 
+ * Adds new group. Gives member admin privileges.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class NewGroupController extends MenuActivity {
 
 	AlertDialog member_question;
@@ -44,6 +52,11 @@ public class NewGroupController extends MenuActivity {
 
 	private static final String TAG_SUCCESS = "success";
 
+	/**
+	 * Initializes view. Defines save and cancel Button functionality.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,10 +85,19 @@ public class NewGroupController extends MenuActivity {
 		});
 	}
 
+	/**
+	 * Async class that creates new group. Gives member admin privileges.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class CreateNewGroup extends AsyncTask<String, String, String> {
 
 		String groupId;
 
+		/**
+		 * Creates ProcessDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -86,15 +108,24 @@ public class NewGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Validates User input. Creates new group and gives admin privilege to
+		 * member when user input validated.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			String personId = UserData.getPERSONID();
 			String name = inputName.getText().toString();
 			String info = inputInfo.getText().toString();
 
 			if (!InputValidator.isStringLengthInRange(name, 0, 255)) {
+				// Wrong name format
 				return IMessages.Error.INVALID_NAME;
 			}
 			if (!InputValidator.isStringLengthInRange(info, 0, 1024)) {
+				// Wrong info format
 				return IMessages.Error.INVALID_INFO;
 			}
 
@@ -103,7 +134,7 @@ public class NewGroupController extends MenuActivity {
 			paramsCreateGroup.add(new BasicNameValuePair("personId", personId));
 			paramsCreateGroup.add(new BasicNameValuePair("name", name));
 			paramsCreateGroup.add(new BasicNameValuePair("info", info));
-
+			// Create new group
 			JSONObject json = jsonParser.makeHttpRequest(url_create_group, "GET", paramsCreateGroup);
 
 			Log.d("Create Response", json.toString());
@@ -122,16 +153,8 @@ public class NewGroupController extends MenuActivity {
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					Date date = new Date();
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-
+					// Create new user in group which is admin
 					json = jsonParser.makeHttpRequest(url_create_user_in_group, "GET", paramsCreateUserInGroup);
-
-					Log.d("Create Response", json.toString());
-					success = json.getInt(TAG_SUCCESS);
-					if (success != 0) {
-						// Success
-					}
-				} else {
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -141,6 +164,12 @@ public class NewGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProcessDialog. Shows AlertDialog, which gives the option to
+		 * invite member via list or manually, when group successfully created.
+		 * 
+		 * @param message String
+		 */
 		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
 			pDialog.dismiss();
