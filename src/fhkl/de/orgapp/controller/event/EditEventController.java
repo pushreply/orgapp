@@ -32,6 +32,7 @@ import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.groups.SingleGroupController;
 import fhkl.de.orgapp.util.IMessages;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
@@ -41,9 +42,9 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 public class EditEventController extends MenuActivity {
 
-	private static String URL_UPDATE_EVENT = "http://pushrply.com/update_event.php";
-	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
+//	private static String URL_UPDATE_EVENT = "http://pushrply.com/update_event.php";
+//	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
+//	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
 
 	private ProgressDialog pDialog;
 
@@ -171,6 +172,7 @@ public class EditEventController extends MenuActivity {
 							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
+						logout();
 					}
 					params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
 				}
@@ -228,8 +230,9 @@ public class EditEventController extends MenuActivity {
 				return IMessages.Error.NO_CHANGES_MADE;
 			}
 
+			params.add(new BasicNameValuePair("do", "updateEvent"));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-			JSONObject json = new JSONParser().makeHttpRequest(URL_UPDATE_EVENT, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -237,9 +240,11 @@ public class EditEventController extends MenuActivity {
 				if (success != 0) {
 
 					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
+					paramsGetMemberList.add(new BasicNameValuePair("do", "readAllAttendingMember"));
 					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					json = new JSONParser().makeHttpRequest(URL_GET_MEMBER_LIST, "GET", paramsGetMemberList);
+					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+									paramsGetMemberList);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -256,16 +261,15 @@ public class EditEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
-							json = jsonParser.makeHttpRequest(URL_NOTIFICATION, "GET", paramsCreateNotification);
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+											paramsCreateNotification);
 						}
 					}
 				}
-
 			} catch (Exception e) {
-				System.out.println("Error in EditEvent.doInBackground(String... args): " + e.getMessage());
 				e.printStackTrace();
+				logout();
 			}
-
 			return null;
 		}
 
@@ -393,6 +397,7 @@ public class EditEventController extends MenuActivity {
 			date = sdfDate.parse(EventData.getEVENTDATE());
 		} catch (ParseException e) {
 			e.printStackTrace();
+			logout();
 		}
 		eventTime.setText(sdfTime.format(time));
 
