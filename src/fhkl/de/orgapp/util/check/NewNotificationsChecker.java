@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
@@ -16,7 +17,8 @@ import android.os.AsyncTask;
 
 public class NewNotificationsChecker
 {
-	private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
+	//private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
+	private static String URL_NOTIFICATION = "http://pushrply.com/PDO_NotificationsControl.php";
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_HAS_NEW_NOTIFICATIONS = "hasNewNotifications";
 	private static final String TAG_NEW_NOTIFICATIONS = "new notifications";
@@ -24,6 +26,7 @@ public class NewNotificationsChecker
 	private static final String TAG_NUMBER_NEW_NOTIFICATIONS = "numberNewNotifications";
 	
 	JSONObject json = null;
+	JSONParser jsonParser = new JSONParser();
 	private boolean hasNewNotifications;
 	private String numberNewNotifications;
 	
