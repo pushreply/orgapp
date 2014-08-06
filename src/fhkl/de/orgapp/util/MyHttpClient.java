@@ -42,7 +42,7 @@ public class MyHttpClient extends DefaultHttpClient {
 
 			// Get the keystore from resource raw folder. The keystore is the
 			// trusted certificate.
-			InputStream in = context.getResources().openRawResource(R.raw.customtruststore);
+			InputStream in = context.getResources().openRawResource(R.raw.customtruststore146);
 			try {
 				// Initialize keystore with the provided trusted cert and 
 				// the keystore pass
