@@ -122,6 +122,7 @@ public class CalendarController extends MenuActivity {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -241,6 +242,7 @@ public class CalendarController extends MenuActivity {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
