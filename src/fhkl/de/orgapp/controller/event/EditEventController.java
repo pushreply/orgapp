@@ -168,6 +168,7 @@ public class EditEventController extends MenuActivity {
 							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
+						pDialog.dismiss();
 						logout();
 					}
 					params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
@@ -228,7 +229,7 @@ public class EditEventController extends MenuActivity {
 
 			params.add(new BasicNameValuePair("do", "updateEvent"));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EditEventController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -240,7 +241,7 @@ public class EditEventController extends MenuActivity {
 					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
-									paramsGetMemberList);
+									paramsGetMemberList, EditEventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -258,12 +259,13 @@ public class EditEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
 							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
-											paramsCreateNotification);
+											paramsCreateNotification, EditEventController.this);
 						}
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return null;

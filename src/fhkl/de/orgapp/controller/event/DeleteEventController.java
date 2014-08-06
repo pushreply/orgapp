@@ -55,7 +55,7 @@ public class DeleteEventController extends MenuActivity {
 			paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
-							paramsGetMemberList);
+							paramsGetMemberList, DeleteEventController.this);
 			try {
 				if (json.getInt(TAG_SUCCESS) == 1) {
 
@@ -75,7 +75,7 @@ public class DeleteEventController extends MenuActivity {
 														+ IMessages.Notification.MESSAGE_DELETE_EVENT_2));
 
 						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
-										paramsCreateNotification);
+										paramsCreateNotification, DeleteEventController.this);
 					}
 					if (json.getInt(TAG_SUCCESS) != 1) {
 
@@ -83,19 +83,20 @@ public class DeleteEventController extends MenuActivity {
 						paramsDelete.add(new BasicNameValuePair("do", "deleteAllPersonsInEvent"));
 						paramsDelete.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", paramsDelete);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", paramsDelete, DeleteEventController.this);
 
 						if (json.getInt(TAG_SUCCESS) == 1) {
 							List<NameValuePair> paramsDeleteEvent = new ArrayList<NameValuePair>();
 							paramsDeleteEvent.add(new BasicNameValuePair("do", "deleteEvent"));
 							paramsDeleteEvent.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", paramsDeleteEvent);
+							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", paramsDeleteEvent, DeleteEventController.this);
 						}
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 

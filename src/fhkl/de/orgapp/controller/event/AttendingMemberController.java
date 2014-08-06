@@ -112,7 +112,7 @@ public class AttendingMemberController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			// Send the HTTP request using GET request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params, AttendingMemberController.this);
 			// Log the json http request
 			Log.d("Memberlist: ", json.toString());
 
@@ -145,6 +145,7 @@ public class AttendingMemberController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -210,7 +211,7 @@ public class AttendingMemberController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, AttendingMemberController.this);
 
 			Log.d("Member: ", json.toString());
 
@@ -239,7 +240,7 @@ public class AttendingMemberController extends MenuActivity {
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges, AttendingMemberController.this);
 
 					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -265,6 +266,7 @@ public class AttendingMemberController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return null;

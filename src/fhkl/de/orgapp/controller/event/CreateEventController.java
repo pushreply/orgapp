@@ -304,6 +304,7 @@ public class CreateEventController extends MenuActivity {
 								return IMessages.Error.INVALID_REGULARITY_DATE_2;
 							}
 						} catch (ParseException e) {
+							pDialog.dismiss();
 							logout();
 						}
 
@@ -356,6 +357,7 @@ public class CreateEventController extends MenuActivity {
 								return IMessages.Error.INVALID_REGULARITY_NUMBER;
 							}
 						} catch (NumberFormatException e) {
+							pDialog.dismiss();
 							logout();
 						}
 					}
@@ -381,6 +383,7 @@ public class CreateEventController extends MenuActivity {
 				try {
 					chosenDate = sdfDate.parse(eventDate.getText().toString());
 				} catch (ParseException e) {
+					pDialog.dismiss();
 					logout();
 				}
 
@@ -393,6 +396,7 @@ public class CreateEventController extends MenuActivity {
 					try {
 						chosenRegularityDate = sdfDate.parse(regularityChosen.getText().toString());
 					} catch (ParseException e) {
+						pDialog.dismiss();
 						logout();
 					}
 					int cnt = 0;
@@ -458,7 +462,7 @@ public class CreateEventController extends MenuActivity {
 					String tmpDateList = dateListIterator.next();
 					params.add(new BasicNameValuePair("do", "createEvent"));
 					params.add(new BasicNameValuePair("eventDate", tmpDateList));
-					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
+					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CreateEventController.this);
 				}
 			}
 			// Non-recurring events
@@ -477,13 +481,14 @@ public class CreateEventController extends MenuActivity {
 							return IMessages.Error.INVALID_EVENTDATE;
 						}
 					} catch (ParseException e) {
+						pDialog.dismiss();
 						logout();
 					}
 					params.add(new BasicNameValuePair("eventDate", eventDate.getText().toString()));
 				}
 
 				params.add(new BasicNameValuePair("do", "createEvent"));
-				json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
+				json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CreateEventController.this);
 			}
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -493,7 +498,7 @@ public class CreateEventController extends MenuActivity {
 					paramsGetMemberList.add(new BasicNameValuePair("do", "readAllUserInGroup"));
 					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMemberList);
+					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMemberList, CreateEventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -521,12 +526,13 @@ public class CreateEventController extends MenuActivity {
 							}
 
 							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
-											paramsCreateNotification);
+											paramsCreateNotification, CreateEventController.this);
 						}
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
