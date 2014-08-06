@@ -251,7 +251,7 @@ public class NotificationSettingsController extends MenuActivity
 			try
 			{
 				// Make the request
-				JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
+				JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, NotificationSettingsController.this);
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success
