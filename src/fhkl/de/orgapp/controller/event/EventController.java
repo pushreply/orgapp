@@ -206,6 +206,7 @@ public class EventController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return null;
@@ -268,6 +269,7 @@ public class EventController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return null;
@@ -340,6 +342,7 @@ public class EventController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -606,6 +609,7 @@ public class EventController extends MenuActivity {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -685,6 +689,7 @@ public class EventController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return "success";
@@ -769,6 +774,7 @@ public class EventController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
