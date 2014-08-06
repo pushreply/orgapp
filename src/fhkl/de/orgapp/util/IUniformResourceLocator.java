@@ -3,6 +3,7 @@ package fhkl.de.orgapp.util;
 public interface IUniformResourceLocator {
 	public static final class DomainName {
 		public static final String SERVER_NAME = "https://pushrply.com/";
+		public static final String SERVER_NAME_HTTP = "http://pushrply.com/";
 	}
 
 	public static final class URL {
@@ -12,6 +13,7 @@ public interface IUniformResourceLocator {
 		public static final String URL_EVENTSETTINGS = DomainName.SERVER_NAME + "PDO_EventSettingsControl.php";
 		public static final String URL_GROUPS = DomainName.SERVER_NAME + "PDO_GroupsControl.php";
 		public static final String URL_NOTIFICATION = DomainName.SERVER_NAME + "PDO_NotificationsControl.php";
+		public static final String URL_NOTIFICATION_HTTP = DomainName.SERVER_NAME_HTTP + "PDO_NotificationsControl.php";
 		public static final String URL_NOTIFICATIONSETTINGS = DomainName.SERVER_NAME
 						+ "PDO_NotificationsSettingsControl.php";
 		public static final String URL_PERSON = DomainName.SERVER_NAME + "PDO_PersonControl.php";
