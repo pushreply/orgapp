@@ -8,37 +8,50 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.util.Log;
+import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class UserJoinEventChecker {
-
+public class UserJoinEventChecker extends Activity
+{
 	static JSONParser jsonParser = new JSONParser();
-
-	private static String URL_GET_PERSON_IN_EVENT = "http://pushrply.com/get_person_in_event.php";
 
 	private static final String TAG_SUCCESS = "success";
 
-	public static boolean attendingMember(String eventId) {
-
+	public static boolean attendingMember(String eventId)
+	{
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		
+		// Required parameters
+		params.add(new BasicNameValuePair("do", "checkuserjoinedevent"));
 		params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 		params.add(new BasicNameValuePair("eventId", eventId));
-		JSONObject json = jsonParser.makeHttpRequest(URL_GET_PERSON_IN_EVENT, "GET", params);
+		
+		// Check user joined event
+		JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
 
 		Log.d("EventPerson: ", json.toString());
 
-		try {
+		try
+		{
 			int success = json.getInt(TAG_SUCCESS);
-			if (success == 1) {
+			
+			if (success == 1)
+			{
 				return true;
-			} else {
+			}
+			else
+			{
 				return false;
 			}
-		} catch (JSONException e) {
+		}
+		catch (JSONException e)
+		{
 			e.printStackTrace();
 		}
+		
 		return false;
 	}
 }

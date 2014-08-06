@@ -124,6 +124,13 @@
         </activity>
         <activity android:name=".controller.event.EventController" >
         </activity>
+        
+        <activity android:name=".util.check.NewNotificationsChecker" >
+        </activity>
+        
+        <activity android:name=".util.check.UserJoinEventChecker" >
+        </activity>
+        
     </application>
 
 </manifest>

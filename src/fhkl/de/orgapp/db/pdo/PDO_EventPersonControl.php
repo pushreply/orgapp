@@ -253,4 +253,53 @@ if ($_GET['do']=="readAllAttendingMember"
 	}
 }
 
+/*------------------------------------------------------------
+ * Check for user joined in event
+* check the user input:
+*/
+
+if
+(
+	$_GET['do']=="checkuserjoinedevent"
+	&& isset($_GET['personId'])
+	&& isset($_GET['eventId'])
+)
+{
+	/*
+	 * pass the get values to some variables
+	*/
+	$eventId = $_GET['eventId'];
+	$personId = $_GET['personId'];
+	
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+	
+	try
+	{
+		$sql= 'SELECT * FROM eventPerson WHERE eventId = :eventId AND personId = :personId';
+	
+		$sth = $pdo->prepare($sql);
+	
+		/* bind the values, in the same order as the $sql statement. */
+		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
+	
+		$sth->execute();
+		$result = $sth->fetchAll();
+	
+		// if $result contains a rows
+		if(count($result) > 0)
+			$response["success"] = 1;
+		else
+			$response["success"] = 0;
+	
+		echo json_encode($response);
+	}
+	catch (PDOException $e)
+	{
+		$response["success"] = 0;
+		echo 'ERROR: ' . $e->getMessage();
+		exit();
+	}
+}
+
 ?>

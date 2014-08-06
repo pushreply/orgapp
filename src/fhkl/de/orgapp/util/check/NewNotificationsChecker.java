@@ -8,17 +8,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
-import android.os.AsyncTask;
-
-public class NewNotificationsChecker
+public class NewNotificationsChecker extends Activity
 {
-	//private static String URL_NOTIFICATION = "http://pushrply.com/pdo_notificationcontrol.php";
-	private static String URL_NOTIFICATION = "http://pushrply.com/PDO_NotificationsControl.php";
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_HAS_NEW_NOTIFICATIONS = "hasNewNotifications";
 	private static final String TAG_NEW_NOTIFICATIONS = "new notifications";
@@ -75,10 +73,11 @@ public class NewNotificationsChecker
 		@Override
 		protected String doInBackground(String... arg)
 		{
+			// Define and initialize params
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checkunread"));
 			
-			json = new JSONParser().makeHttpRequest(URL_NOTIFICATION, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 			
 			try
 			{
@@ -113,10 +112,11 @@ public class NewNotificationsChecker
 		@Override
 		protected String doInBackground(String... arg)
 		{
+			// Define and initialize params
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checknumberunread"));
 			
-			json = new JSONParser().makeHttpRequest(URL_NOTIFICATION, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
 			
 			try
 			{
@@ -142,7 +142,7 @@ public class NewNotificationsChecker
 	}
 	
 	/**
-	 * initialize a list of name value pairs
+	 * Initialize a list of required parameters
 	 * @param params the empty list
 	 * @return the initialized list
 	 */
