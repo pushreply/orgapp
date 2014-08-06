@@ -285,7 +285,7 @@ if ($_GET['do']=="readGroupEvents" && isset($_GET['groupId']))
 					*/
 					array_push($response["event"], $event);
 					
-					$i++;
+					$i++; 
 				}
 			}
 			// Parameter 'shownEventEntries' not set
@@ -355,7 +355,9 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 			{
 				$shownEventEntries = $_GET ['shownEventEntries'];
 
-				for($i = 0; $i < $shownEventEntries & $result; $i ++) {
+				// Using a counter to break the foreach loop
+				$counter = 0;
+				foreach ($result as $row) {
 
 					$event['eventId'] = $result['eventId'];
 					$event['personId'] = $result['personId'];
@@ -364,6 +366,13 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 					$event['eventDate'] = $result['eventDate'];
 					$event['eventTime'] = $result['eventTime'];
 					$event['eventLocation'] = html_entity_decode($result['eventLocation'], ENT_QUOTES, 'UTF-8');
+					
+					if ($counter++ == $shownEventEntries) break;
+					
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["event"], $event);
 				}
 			} else {
 				foreach ($result as $row)
@@ -375,11 +384,13 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 					$event['eventDate'] = $row['eventDate'];
 					$event['eventTime'] = $row['eventTime'];
 					$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
+					
+					/*
+					 * push each value to the data container
+					*/
+					array_push($response["event"], $event);
 				}
-				/*
-				 * push each value to the data container
-				*/
-				array_push($response["event"], $event);
+
 			}
 			$response ["success"] = 1;
 			echo json_encode ($response);
