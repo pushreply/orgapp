@@ -36,7 +36,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * event. Each member is marked by email.
  * 
  * @author ronaldo.hasiholan
- * @version
+ * @version ?
  */
 public class AttendingMemberController extends MenuActivity {
 

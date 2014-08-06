@@ -134,7 +134,7 @@ public class ManualInviteMemberController extends Activity {
 	 * 
 	 * Renders the menu visible.
 	 * 
-	 * @param Menu menu
+	 * @param menu the menu
 	 * @return boolean OptionMenuCreated
 	 */
 	@Override
