@@ -77,7 +77,7 @@ public class NewNotificationsChecker extends Activity
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checkunread"));
 			
-			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NewNotificationsChecker.this);
 			
 			try
 			{
@@ -116,7 +116,7 @@ public class NewNotificationsChecker extends Activity
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checknumberunread"));
 			
-			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
+			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NewNotificationsChecker.this);
 			
 			try
 			{

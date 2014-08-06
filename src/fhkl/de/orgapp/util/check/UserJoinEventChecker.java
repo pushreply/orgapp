@@ -16,11 +16,11 @@ import fhkl.de.orgapp.util.data.UserData;
 
 public class UserJoinEventChecker extends Activity
 {
-	static JSONParser jsonParser = new JSONParser();
+	private static JSONParser jsonParser = new JSONParser();
 
 	private static final String TAG_SUCCESS = "success";
 
-	public static boolean attendingMember(String eventId)
+	public boolean isMemberJoinedEvent(String eventId)
 	{
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		
@@ -30,7 +30,7 @@ public class UserJoinEventChecker extends Activity
 		params.add(new BasicNameValuePair("eventId", eventId));
 		
 		// Check user joined event
-		JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
+		JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params, UserJoinEventChecker.this);
 
 		Log.d("EventPerson: ", json.toString());
 

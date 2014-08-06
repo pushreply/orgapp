@@ -120,9 +120,15 @@ public class SingleGroupController extends MenuActivity
 						listModel.setEventName(eventName);
 						listModel.setEventDate(eventDate);
 						listModel.setEventTime(eventTime);
-						if (UserJoinEventChecker.attendingMember(eventId)) {
+						
+						UserJoinEventChecker joinChecker = new UserJoinEventChecker();
+						
+						if (joinChecker.isMemberJoinedEvent(eventId))
+						{
 							listModel.setAttending(R.drawable.ic_action_good);
-						} else {
+						}
+						else
+						{
 							listModel.setAttending(R.drawable.ic_action_bad);
 						}
 						customAdapterValues.add(listModel);
