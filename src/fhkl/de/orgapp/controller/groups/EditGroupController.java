@@ -118,7 +118,8 @@ public class EditGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("do", "readGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			// Get group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							EditGroupController.this);
 
 			Log.d("Response", json.toString());
 
@@ -231,7 +232,8 @@ public class EditGroupController extends MenuActivity {
 			paramsUpdateGroup.add(new BasicNameValuePair("info", info));
 
 			// Update group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsUpdateGroup);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsUpdateGroup,
+							EditGroupController.this);
 
 			Log.d("Create Response", json.toString());
 
@@ -243,7 +245,8 @@ public class EditGroupController extends MenuActivity {
 					paramsGetUserInGroup.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 					// Get all group member
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetUserInGroup);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetUserInGroup,
+									EditGroupController.this);
 
 					Log.d("Response", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -281,7 +284,7 @@ public class EditGroupController extends MenuActivity {
 
 							// Send notifications
 							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
-											paramsCreateNotification);
+											paramsCreateNotification, EditGroupController.this);
 
 							Intent intent = new Intent(EditGroupController.this, GroupsController.class);
 							startActivity(intent);
@@ -289,6 +292,7 @@ public class EditGroupController extends MenuActivity {
 					}
 				}
 			} catch (Exception e) {
+				pDialog.dismiss();
 				e.printStackTrace();
 				logout();
 			}

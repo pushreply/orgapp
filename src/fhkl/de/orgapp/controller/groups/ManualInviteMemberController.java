@@ -62,17 +62,17 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 public class ManualInviteMemberController extends Activity {
 
 	private ProgressDialog pDialog;
-	
+
 	// To identify the notification icon
 	private int newNotificationNotificationId = 1;
-	
+
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
 	JSONArray persons;
-	
+
 	// To store the persons with email and personId
 	List<HashMap<String, Object>> existPersons;
-	
+
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_PERSON_ID = "personId";
 	private static final String TAG_EMAIL = "email";
@@ -248,14 +248,12 @@ public class ManualInviteMemberController extends Activity {
 	 * @author Jochen Jung
 	 * @version 1.0
 	 */
-	class InviteMembers extends AsyncTask<String, String, String>
-	{
+	class InviteMembers extends AsyncTask<String, String, String> {
 		/**
 		 * Creates ProcessDialog
 		 */
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ManualInviteMemberController.this);
 
@@ -273,8 +271,7 @@ public class ManualInviteMemberController extends Activity {
 		 * @param params String...
 		 * @return String result
 		 */
-		protected String doInBackground(String... params)
-		{
+		protected String doInBackground(String... params) {
 			int editTextLength = textLayout.getChildCount();
 
 			if (editTextLength == 0) {
@@ -299,78 +296,71 @@ public class ManualInviteMemberController extends Activity {
 				}
 			}
 			for (int i = 0; i < editTextArray.length; i++) {
-				if (!InputValidator.isEmailValid(editTextArray[i]))
-				{
+				if (!InputValidator.isEmailValid(editTextArray[i])) {
 					// Wrong E-Mail address format
 					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
-			
+
 			// To store the persons with email and personId
 			existPersons = new ArrayList<HashMap<String, Object>>();
 			HashMap<String, Object> person;
-			
-			for (int e = 0; e < editTextArray.length; e++)
-			{
+
+			for (int e = 0; e < editTextArray.length; e++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
-				
+
 				// Required parameters
 				paramsCheck.add(new BasicNameValuePair("do", "read"));
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[e]));
-				
+
 				// Fetch person by email
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", paramsCheck);
-				
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", paramsCheck,
+								ManualInviteMemberController.this);
+
 				int success;
-				
-				try
-				{
+
+				try {
 					success = json.getInt(TAG_SUCCESS);
-					
-					if(success == 0)
-					{
+
+					if (success == 0) {
 						// User is not registered
 						return IMessages.Error.EXIST_USER;
 					}
-					
+
 					// User exists
 					person = new HashMap<String, Object>();
-					
+
 					person.put(TAG_EMAIL, editTextArray[e]);
 					person.put(TAG_PERSON_ID, json.getJSONArray("person").getJSONObject(0).getString(TAG_PERSON_ID));
-					
+
 					existPersons.add(person);
-				}
-				catch (Exception exception)
-				{
+				} catch (Exception exception) {
 					exception.printStackTrace();
+					pDialog.dismiss();
 					logout();
 				}
 			}
-			
-			for (int p = 0; p < existPersons.size(); p++)
-			{
+
+			for (int p = 0; p < existPersons.size(); p++) {
 				List<NameValuePair> paramsCheck = new ArrayList<NameValuePair>();
 				paramsCheck.add(new BasicNameValuePair("do", "readUserInGroup"));
 				paramsCheck.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 				paramsCheck.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
-				
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCheck);
-				
+
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCheck,
+								ManualInviteMemberController.this);
+
 				int success;
-				
-				try
-				{
+
+				try {
 					success = json.getInt(TAG_SUCCESS);
-					
-					if (success == 1)
-					{
+
+					if (success == 1) {
 						// User already invited
 						return IMessages.Error.USER_INVITED;
 					}
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
+					pDialog.dismiss();
 					e.printStackTrace();
 					logout();
 				}
@@ -381,26 +371,24 @@ public class ManualInviteMemberController extends Activity {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 			Date date = new Date();
 			List<NameValuePair> paramsInvite = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			paramsInvite.add(new BasicNameValuePair("do", "createPrivilegeMember"));
 			paramsInvite.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			paramsInvite.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-			
-			for (int p = 0; p < existPersons.size(); p++)
-			{
+
+			for (int p = 0; p < existPersons.size(); p++) {
 				paramsInvite.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
-				
+
 				// Invite person
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite);
+				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite,
+								ManualInviteMemberController.this);
 
 				int success;
-				try
-				{
+				try {
 					success = json.getInt(TAG_SUCCESS);
-	
-					if (success == 1)
-					{
+
+					if (success == 1) {
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						paramsNotification.add(new BasicNameValuePair("eMail", existPersons.get(p).get(TAG_EMAIL).toString()));
@@ -410,16 +398,16 @@ public class ManualInviteMemberController extends Activity {
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 
 						// Send Notifications
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
+										ManualInviteMemberController.this);
 					}
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
+					pDialog.dismiss();
 					e.printStackTrace();
 					logout();
 				}
 			}
-			
+
 			Intent intent = new Intent(ManualInviteMemberController.this, SingleGroupController.class);
 			startActivity(intent);
 			return null;

@@ -85,7 +85,8 @@ public class DeleteGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Get all group members
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							DeleteGroupController.this);
 
 			try {
 				if (json.getInt(TAG_SUCCESS) != 1)
@@ -98,7 +99,8 @@ public class DeleteGroupController extends MenuActivity {
 				params.add(new BasicNameValuePair("do", "deletePrivilegeGroup"));
 				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params);
+				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
+								DeleteGroupController.this);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;
@@ -108,7 +110,8 @@ public class DeleteGroupController extends MenuActivity {
 				params.add(new BasicNameValuePair("do", "deleteGroup"));
 				params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+								DeleteGroupController.this);
 
 				if (json.getInt(TAG_SUCCESS) != 1)
 					return null;
@@ -125,7 +128,8 @@ public class DeleteGroupController extends MenuActivity {
 				for (m = 0; m < memberList.length(); m++) {
 					params.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL).toString()));
 					// Send notification
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params,
+									DeleteGroupController.this);
 
 					if (json.getInt(TAG_SUCCESS) != 1)
 						return null;
@@ -133,6 +137,7 @@ public class DeleteGroupController extends MenuActivity {
 
 				return (IMessages.Success.GROUP_SUCCESSFUL_DELETED + GroupData.getGROUPNAME());
 			} catch (Exception e) {
+				pDialog.dismiss();
 				e.printStackTrace();
 				logout();
 			}

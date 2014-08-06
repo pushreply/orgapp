@@ -30,8 +30,7 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.MemberData;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class MemberPrivilegeInfoController extends MenuActivity
-{
+public class MemberPrivilegeInfoController extends MenuActivity {
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
@@ -156,14 +155,15 @@ public class MemberPrivilegeInfoController extends MenuActivity
 			String afterPrivilegeManagement = privilegeManagement.isChecked() == true ? "1" : "0";
 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("do", "readUserInGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 
 			// Fetch the selected member
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							MemberPrivilegeInfoController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -278,7 +278,7 @@ public class MemberPrivilegeInfoController extends MenuActivity
 					}
 
 					List<NameValuePair> paramsUpdate = new ArrayList<NameValuePair>();
-					
+
 					// Required parameters
 					paramsUpdate.add(new BasicNameValuePair("do", "updatePrivilege"));
 					paramsUpdate.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
@@ -292,7 +292,8 @@ public class MemberPrivilegeInfoController extends MenuActivity
 					paramsUpdate.add(new BasicNameValuePair("commentDeleting", afterCommentDeleting));
 					paramsUpdate.add(new BasicNameValuePair("privilegeManagement", afterPrivilegeManagement));
 
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate,
+									MemberPrivilegeInfoController.this);
 
 					Log.d("Member: ", json.toString());
 
@@ -383,7 +384,8 @@ public class MemberPrivilegeInfoController extends MenuActivity
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
+										MemberPrivilegeInfoController.this);
 
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {
@@ -392,6 +394,7 @@ public class MemberPrivilegeInfoController extends MenuActivity
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 

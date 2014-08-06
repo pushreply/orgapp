@@ -32,8 +32,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * @version 1.0
  */
 
-public class LeaveGroupController extends MenuActivity
-{
+public class LeaveGroupController extends MenuActivity {
 	private static final String TAG_SUCCESS = "success";
 
 	List<NameValuePair> notificationParams;
@@ -67,8 +66,7 @@ public class LeaveGroupController extends MenuActivity
 	 * @author Jochen Jung
 	 * @version 1.0
 	 */
-	class LeaveGroup extends AsyncTask<String, String, String>
-	{
+	class LeaveGroup extends AsyncTask<String, String, String> {
 		/**
 		 * Creates ProcessDialog
 		 */
@@ -98,23 +96,21 @@ public class LeaveGroupController extends MenuActivity
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Leave group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
+							LeaveGroupController.this);
 
 			Log.d("Response: ", json.toString());
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1)
-				{
+				if (success == 1) {
 					return null;
 				}
 
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 

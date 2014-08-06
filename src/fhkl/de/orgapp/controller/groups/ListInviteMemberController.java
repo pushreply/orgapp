@@ -160,7 +160,8 @@ public class ListInviteMemberController extends MenuActivity {
 
 			// Fetch all users, who are in the groups of the logged user, but not in
 			// the selected group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							ListInviteMemberController.this);
 			int success;
 
 			try {
@@ -199,6 +200,7 @@ public class ListInviteMemberController extends MenuActivity {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -357,7 +359,8 @@ public class ListInviteMemberController extends MenuActivity {
 					paramsInvite.add(new BasicNameValuePair("personId", personList.get(p).get(TAG_PERSON_ID).toString()));
 
 					// Create new member in group
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite,
+									ListInviteMemberController.this);
 
 					try {
 						success = json.getInt(TAG_SUCCESS);
@@ -373,7 +376,8 @@ public class ListInviteMemberController extends MenuActivity {
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						// Send notification
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
+										ListInviteMemberController.this);
 
 						success = json.getInt(TAG_SUCCESS);
 
@@ -381,6 +385,7 @@ public class ListInviteMemberController extends MenuActivity {
 							return null;
 					} catch (Exception e) {
 						e.printStackTrace();
+						pDialog.dismiss();
 						logout();
 					}
 				}

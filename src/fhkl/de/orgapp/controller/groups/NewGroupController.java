@@ -40,8 +40,7 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * @author Jochen Jung
  * @version 1.0
  */
-public class NewGroupController extends MenuActivity
-{
+public class NewGroupController extends MenuActivity {
 	AlertDialog member_question;
 	private ProgressDialog pDialog;
 	EditText inputName;
@@ -135,9 +134,10 @@ public class NewGroupController extends MenuActivity
 			paramsCreateGroup.add(new BasicNameValuePair("personId", personId));
 			paramsCreateGroup.add(new BasicNameValuePair("name", name));
 			paramsCreateGroup.add(new BasicNameValuePair("info", info));
-			
+
 			// Create new group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup,
+							NewGroupController.this);
 
 			Log.d("Create Response", json.toString());
 
@@ -151,18 +151,20 @@ public class NewGroupController extends MenuActivity
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					Date date = new Date();
-					
+
 					// Required parameters
 					paramsCreateUserInGroup.add(new BasicNameValuePair("do", "createPrivilegeAdmin"));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
-					
+
 					// Create new user in group as admin
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup,
+									NewGroupController.this);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 

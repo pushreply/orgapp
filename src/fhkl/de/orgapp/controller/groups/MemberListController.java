@@ -42,8 +42,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * @author Jochen Jung
  * @version 1.0
  */
-public class MemberListController extends MenuActivity
-{
+public class MemberListController extends MenuActivity {
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
@@ -103,14 +102,15 @@ public class MemberListController extends MenuActivity
 		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("do", "readMemberList"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Get member list
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							MemberListController.this);
 
 			Log.d("Memberlist: ", json.toString());
 
@@ -137,6 +137,7 @@ public class MemberListController extends MenuActivity
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -242,13 +243,14 @@ public class MemberListController extends MenuActivity
 				return IMessages.Error.REMOVING_ADMIN;
 			}
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("do", "deletePrivilege"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			// Deletes selected member from group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
+							MemberListController.this);
 
 			Log.d("Response: ", json.toString());
 
@@ -261,6 +263,7 @@ public class MemberListController extends MenuActivity
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 
@@ -313,7 +316,8 @@ public class MemberListController extends MenuActivity
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
 			// Get person data
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
+							MemberListController.this);
 
 			Log.d("Member: ", json.toString());
 
@@ -335,13 +339,14 @@ public class MemberListController extends MenuActivity
 					}
 
 					List<NameValuePair> paramsPrivileges = new ArrayList<NameValuePair>();
-					
+
 					// Required parameters
 					paramsPrivileges.add(new BasicNameValuePair("do", "readUserInGroup"));
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 					// Get group data and privileges
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges,
+									MemberListController.this);
 
 					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
@@ -369,6 +374,7 @@ public class MemberListController extends MenuActivity
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 			return null;

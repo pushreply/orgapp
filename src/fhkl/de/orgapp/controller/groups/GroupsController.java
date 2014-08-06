@@ -44,8 +44,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * @author Jochen Jung
  * @version 1.0
  */
-public class GroupsController extends MenuActivity
-{
+public class GroupsController extends MenuActivity {
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
@@ -109,12 +108,13 @@ public class GroupsController extends MenuActivity
 		 */
 		protected String doInBackground(String... params) {
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
-			
+
 			vp.add(new BasicNameValuePair("do", "readUserGroup"));
 			vp.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Get groups of the user
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp, GroupsController.this);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp,
+							GroupsController.this);
 
 			Log.d("Groups: ", json.toString());
 
@@ -143,6 +143,7 @@ public class GroupsController extends MenuActivity
 					}
 				}
 			} catch (Exception e) {
+				pDialog.dismiss();
 				e.printStackTrace();
 				logout();
 			}
@@ -217,13 +218,14 @@ public class GroupsController extends MenuActivity
 		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			params.add(new BasicNameValuePair("do", "readUserInGroup"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			
+
 			// Get current user's privileges
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params, GroupsController.this);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							GroupsController.this);
 
 			Log.d("Member: ", json.toString());
 
