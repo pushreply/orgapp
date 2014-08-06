@@ -130,7 +130,7 @@ public class RegisterController extends Activity
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
 			Log.d("Create Response", json.toString());
 
@@ -158,7 +158,7 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// getting JSON Object
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
 			// check log cat for response
 			Log.d("Create Response", json.toString());
@@ -175,7 +175,7 @@ public class RegisterController extends Activity
 					params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("do", "create"));
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params);
+					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, RegisterController.this);
 					success = json.getInt(TAG_SUCCESS);
 					
 					if (success == 1)
@@ -185,7 +185,7 @@ public class RegisterController extends Activity
 						params.add(new BasicNameValuePair("do", "create"));
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 						
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params);
+						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, RegisterController.this);
 						
 						success = json.getInt(TAG_SUCCESS);
 						
@@ -195,13 +195,11 @@ public class RegisterController extends Activity
 						}
 						else
 						{
-							// TODO rollback?
 							System.out.println("No event settings created");
 						}
 					}
 					else
 					{
-						// TODO rollback?
 						System.out.println("No notification settings created");
 					}
 				}

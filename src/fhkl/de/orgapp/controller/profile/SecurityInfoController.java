@@ -268,7 +268,7 @@ public class SecurityInfoController extends MenuActivity
 			params.add(new BasicNameValuePair("gender", UserData.getGENDER()));
 			
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params);
+			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, SecurityInfoController.this);
 			
 			try
 			{
@@ -289,6 +289,7 @@ public class SecurityInfoController extends MenuActivity
 			catch(Exception e)
 			{
 				e.getStackTrace();
+				pDialog.dismiss();
 				// Logout the user
 				logout();
 			}

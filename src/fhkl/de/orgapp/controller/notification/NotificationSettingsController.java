@@ -318,6 +318,7 @@ public class NotificationSettingsController extends MenuActivity
 			catch(Exception e)
 			{
 				e.printStackTrace();
+				pDialog.dismiss();
 				// Logout the user
 				logout();
 			}

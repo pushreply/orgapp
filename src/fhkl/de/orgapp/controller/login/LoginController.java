@@ -128,6 +128,7 @@ public class LoginController extends Activity
 								notificationSettings = notificationSettingsArray.getJSONObject(0);
 							} else {
 								System.out.println("No notificationSettings loaded");
+								pDialog.dismiss();
 								logout();
 							}
 							
@@ -148,6 +149,7 @@ public class LoginController extends Activity
 							else
 							{
 								System.out.println("No eventSettings loaded");
+								pDialog.dismiss();
 								logout();
 							}
 
@@ -167,6 +169,7 @@ public class LoginController extends Activity
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				pDialog.dismiss();
 				logout();
 			}
 

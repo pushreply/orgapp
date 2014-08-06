@@ -119,7 +119,7 @@ public class EventHistoryController extends MenuActivity
 			requestParams.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams, EventHistoryController.this);
 
 			try
 			{
@@ -157,6 +157,7 @@ public class EventHistoryController extends MenuActivity
 			catch (Exception e)
 			{
 				e.printStackTrace();
+				pDialog.dismiss();
 				// Logout user
 				logout();
 			}
@@ -252,7 +253,7 @@ public class EventHistoryController extends MenuActivity
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EventHistoryController.this);
 
 			try
 			{
@@ -284,6 +285,7 @@ public class EventHistoryController extends MenuActivity
 			catch (Exception e)
 			{
 				e.printStackTrace();
+				pDialog.dismiss();
 				// Logout user
 				logout();
 			}
