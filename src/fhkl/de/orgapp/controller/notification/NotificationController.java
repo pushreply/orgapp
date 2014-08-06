@@ -31,6 +31,14 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * NotificationController - Handles data to display the notifications of an user
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class NotificationController extends MenuActivity
 {
 	// For json issues
@@ -44,6 +52,15 @@ public class NotificationController extends MenuActivity
 	// Required variables for progress dialog and the notifications
 	private ProgressDialog pDialog;
 	ArrayList<HashMap<String, String>> notificationList;
+	
+	/**
+	 * Sets the content view.
+	 * Deletes the icon for new notifications.
+	 * Initializes the list for notifications.
+	 * Calls the inner class to get the notifications
+	 *
+	 * @param savedInstanceState contains the data
+	 */
 	
 	@SuppressLint("InflateParams")
 	@Override
@@ -64,8 +81,20 @@ public class NotificationController extends MenuActivity
 		new Notification().execute();
 	}
 
+	/**
+	 * Notification - Fetches the notifications from the database
+	 * 
+	 * @author Oliver Neubauer
+	 * @version 1.0
+	 *
+	 */
+	
 	class Notification extends AsyncTask<String, String, String>
 	{
+		/**
+		 * Displayes a progress dialog
+		 */
+		
 		@Override
 		protected void onPreExecute()
 		{
@@ -86,6 +115,12 @@ public class NotificationController extends MenuActivity
 			pDialog.show();
 		}
 
+		/**
+		 * Prepares and executes the request
+		 * 
+		 * @param args the parameters as array 
+		 */
+		
 		protected String doInBackground(String... args)
 		{
 			try
@@ -179,7 +214,16 @@ public class NotificationController extends MenuActivity
 			return null;
 		}
 
-		protected void onPostExecute(String file_url)
+		/**
+		 * Prepares the notifications for display depending on the read status.
+		 * Displayes the notifications in a list.
+		 * Defines onItemClick- and onItemLongClickListener.
+		 * Starts an AlertDialog in case of long click at an item
+		 * 
+		 * @param args is null
+		 */
+		
+		protected void onPostExecute(String args)
 		{
 			// Hide the progress dialog
 			pDialog.dismiss();

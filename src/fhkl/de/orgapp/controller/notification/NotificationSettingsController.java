@@ -26,6 +26,14 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * NotificationSettingsController - Handles the data to display the notification settings of an user
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class NotificationSettingsController extends MenuActivity
 {
 	// Required variables for progress dialog, vibration and shown entries
@@ -60,6 +68,16 @@ public class NotificationSettingsController extends MenuActivity
 	private final String TAG_TRUE = "true";
 	private final String TAG_FALSE = "false";
 
+	/**
+	 * Sets the content view.
+	 * Calls method for check at new notifications.
+	 * Initializes the required variables.
+	 * Calls method to set the hooks and texts.
+	 * Defines onChecked- and onClickListener
+	 *
+	 * @param savedInstanceState contains the data
+	 */
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -138,6 +156,10 @@ public class NotificationSettingsController extends MenuActivity
 		});
 	}
 	
+	/**
+	 * Sets the hooks and texts of the views
+	 */
+	
 	private void setTexts()
 	{
 		groupInvites.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_INVITES()));
@@ -177,6 +199,12 @@ public class NotificationSettingsController extends MenuActivity
 		}
 	}
 	
+	/**
+	 * Sets the hook and intern variable for vibration
+	 * 
+	 * @param view
+	 */
+	
 	public void selectVibrationAtNewNotifications(View view)
 	{
 		// Toggle between the radio button
@@ -192,8 +220,20 @@ public class NotificationSettingsController extends MenuActivity
 		}
 	}
 
+	/**
+	 * SaveSettings - Saves the notification settings entered by the user
+	 * 
+	 * @author Oliver Neubauer
+	 * @version 1.0
+	 *
+	 */
+	
 	class SaveSettings extends AsyncTask<String, String, String>
 	{
+		/**
+		 * Displayes a progress dialog
+		 */
+		
 		@Override
 		protected void onPreExecute()
 		{
@@ -207,6 +247,12 @@ public class NotificationSettingsController extends MenuActivity
 			pDialog.show();
 		}
 
+		/**
+		 * Prepares and executes the request
+		 *
+		 * @param args the parameters as array
+		 */
+		
 		protected String doInBackground(String... args)
 		{
 			// Required parameters for the request
@@ -279,6 +325,14 @@ public class NotificationSettingsController extends MenuActivity
 			return null;
 		}
 
+		/**
+		 * Dissmisses the progress dialog.
+		 * Displayes an user message.
+		 * Starts the NotificationController
+		 * 
+		 * @param message the message to be displayed
+		 */
+		
 		protected void onPostExecute(String message)
 		{
 			// Hide the progress dialog
@@ -296,7 +350,7 @@ public class NotificationSettingsController extends MenuActivity
 		}
 		
 		/**
-		 * updates the notification settings of the user
+		 * Updates the notification settings of the user in POJO
 		 */
 		
 		private void updateNotificationSettingsData()
