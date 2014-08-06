@@ -10,6 +10,7 @@ public interface IUniformResourceLocator {
 		public static final String URL_COMMENT = DomainName.SERVER_NAME + "PDO_CommentControl.php";
 		public static final String URL_EVENT = DomainName.SERVER_NAME + "PDO_EventControl.php";
 		public static final String URL_EVENTPERSON = DomainName.SERVER_NAME + "PDO_EventPersonControl.php";
+		public static final String URL_EVENTPERSON_HTTP = DomainName.SERVER_NAME_HTTP + "PDO_EventPersonControl.php";
 		public static final String URL_EVENTSETTINGS = DomainName.SERVER_NAME + "PDO_EventSettingsControl.php";
 		public static final String URL_GROUPS = DomainName.SERVER_NAME + "PDO_GroupsControl.php";
 		public static final String URL_NOTIFICATION = DomainName.SERVER_NAME + "PDO_NotificationsControl.php";

@@ -39,14 +39,13 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.ListModel;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class SingleGroupController extends MenuActivity
-{
+public class SingleGroupController extends MenuActivity {
 	private ProgressDialog pDialog;
 
 	JSONParser jsonParser = new JSONParser();
 
 	public ArrayList<ListModel> customAdapterValues = new ArrayList<ListModel>();
-	
+
 	private static final String TAG_SUCCESS = "success";
 
 	String eventId = null;
@@ -84,19 +83,19 @@ public class SingleGroupController extends MenuActivity
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required params
 			params.add(new BasicNameValuePair("do", "readGroupEvents"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			
-			if(!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
+
+			if (!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
-			
+
 			// Fetch the events of a selected group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+							SingleGroupController.this);
 
 			Log.d("Calendar: ", json.toString());
 
@@ -120,15 +119,12 @@ public class SingleGroupController extends MenuActivity
 						listModel.setEventName(eventName);
 						listModel.setEventDate(eventDate);
 						listModel.setEventTime(eventTime);
-						
+
 						UserJoinEventChecker joinChecker = new UserJoinEventChecker();
-						
-						if (joinChecker.isMemberJoinedEvent(eventId))
-						{
+
+						if (joinChecker.isMemberJoinedEvent(eventId)) {
 							listModel.setAttending(R.drawable.ic_action_good);
-						}
-						else
-						{
+						} else {
 							listModel.setAttending(R.drawable.ic_action_bad);
 						}
 						customAdapterValues.add(listModel);
@@ -176,11 +172,11 @@ public class SingleGroupController extends MenuActivity
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", eventId));
-			
+
 			// Fetch the selected event
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params);
 
@@ -351,25 +347,24 @@ public class SingleGroupController extends MenuActivity
 			pDialog.show();
 		}
 
-		protected String doInBackground(String... args)
-		{
+		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+
 			// Required parameters
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", eventId));
-			
+
 			JSONObject json;
-			
+
 			// Not going to event
-			if(toggleButtonChecked)
+			if (toggleButtonChecked)
 				params.add(new BasicNameValuePair("do", "deletePersonInEvent"));
 			// Going to event
 			else
 				params.add(new BasicNameValuePair("do", "createPersonInEvent"));
-				
+
 			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params);
-			
+
 			Log.d("EventPerson: ", json.toString());
 
 			try {
