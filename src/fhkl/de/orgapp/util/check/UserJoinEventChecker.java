@@ -5,20 +5,34 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
 import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class UserJoinEventChecker {
-	private static JSONParser jsonParser = new JSONParser();
+/**
+ * UserJoinEventChecker - Checks, whether the logged user joined in an event
+ *
+ * @author Jochen Jung
+ * @version 1.0
+ *
+ */
 
+public class UserJoinEventChecker
+{
+	// For json issues
+	private JSONParser jsonParser = new JSONParser();
 	private static final String TAG_SUCCESS = "success";
 
-	public boolean isMemberJoinedEvent(String eventId) {
+	/**
+	 * Makes the request to check, whether logged user joined the event
+	 * 
+	 * @param eventId the event id
+	 * @return true, if logged user joined in the event, false otherwise
+	 */
+	public boolean isMemberJoinedEvent(String eventId)
+	{
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 		// Required parameters
@@ -26,23 +40,28 @@ public class UserJoinEventChecker {
 		params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 		params.add(new BasicNameValuePair("eventId", eventId));
 
-		// Check user joined event
+		// Check logged user joined event
 		JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON_HTTP, "GET", params);
 
-		Log.d("EventPerson: ", json.toString());
-
-		try {
+		try
+		{
 			int success = json.getInt(TAG_SUCCESS);
 
-			if (success == 1) {
+			// In case of success
+			if (success == 1)
+			{
 				return true;
-			} else {
+			}
+			// In case of no success
+			else
+			{
 				return false;
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
-
-		return false;
+		// In case of error
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 }

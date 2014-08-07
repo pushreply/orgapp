@@ -1,5 +1,13 @@
 package fhkl.de.orgapp.util.data;
 
+/**
+ * EventSettingsData - Stores the event settings of an user for usage in the entire application
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class EventSettingsData
 {
 	private static String EVENT_SETTINGS_ID = "";

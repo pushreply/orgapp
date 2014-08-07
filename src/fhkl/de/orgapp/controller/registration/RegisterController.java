@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -16,7 +15,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,11 +27,20 @@ import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * RegisterController - Handles the data to register an user
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class RegisterController extends Activity
 {
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
+	// Variables for the input fields
 	EditText inputEMail;
 	EditText inputPassword;
 	EditText inputPasswordConfirm;
@@ -47,34 +54,49 @@ public class RegisterController extends Activity
 	List<NameValuePair> params;
 	Integer success, newPersonId;
 	
+	/**
+	 * Sets the content view.
+	 * Fetches the views by id.
+	 * Sets onClickListener
+	 * 
+	 * @param savedInstanceState contains the data
+	 */
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
+		
+		// Set the content view
 		setContentView(R.layout.register);
 
-		// Edit Text
+		// Fetch the views by id
 		inputEMail = (EditText) findViewById(R.id.EMAIL);
 		inputPassword = (EditText) findViewById(R.id.PASSWORD);
 		inputPasswordConfirm = (EditText) findViewById(R.id.PASSWORD_CONFIRMATION);
 		inputFirstName = (EditText) findViewById(R.id.FIRSTNAME);
 		inputLastName = (EditText) findViewById(R.id.LASTNAME);
-
-		// Create button
 		Button bSubmit = (Button) findViewById(R.id.SAVE);
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
-		// button click event
-		bSubmit.setOnClickListener(new View.OnClickListener() {
+		// Set onClickListener for submit
+		bSubmit.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View view) {
-				// creating new person in background thread
+			public void onClick(View view)
+			{
+				// Call the person creator
 				new CreateNewPerson().execute();
 			}
 		});
 
-		bCancel.setOnClickListener(new View.OnClickListener() {
+		// Set onClickListener for cancel
+		bCancel.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View view) {
+			public void onClick(View view)
+			{
+				// Call the StartController
 				Intent i = new Intent(RegisterController.this, StartController.class);
 				startActivity(i);
 			}
@@ -82,18 +104,22 @@ public class RegisterController extends Activity
 	}
 
 	/**
-	 * Background Async Task to Create new person
-	 * */
-	class CreateNewPerson extends AsyncTask<String, String, String> {
-
-		public CreateNewPerson() {
-		}
-
+	 * CreateNewPerson - Registers a new user
+	 * 
+	 * @author Oliver Neubauer
+	 * @version 1.0
+	 *
+	 */
+	
+	class CreateNewPerson extends AsyncTask<String, String, String>
+	{
 		/**
-		 * Before starting background thread Show Progress Dialog
-		 * */
+		 * Displays a progress dialog
+		 */
+		
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
 			pDialog = new ProgressDialog(RegisterController.this);
 			pDialog.setMessage(IMessages.Status.CREATING_PERSON);
@@ -103,121 +129,166 @@ public class RegisterController extends Activity
 		}
 
 		/**
-		 * Creating person
-		 * */
-		protected String doInBackground(String... args) {
+		 * Validates the user inputs.
+		 * Create a new user.
+		 * Create new notification settings.
+		 * Create new event settings
+		 * 
+		 * @param args the parameters as array
+		 * @return an error message or null in case of success
+		 */
+		
+		protected String doInBackground(String... args)
+		{
+			// Fetch the user input
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
 			String passwordConfirm = inputPasswordConfirm.getText().toString();
 			String firstName = inputFirstName.getText().toString();
 			String lastName = inputLastName.getText().toString();
 
+			// Validate email
 			if (!InputValidator.isEmailValid(eMail))
 				return IMessages.Error.INVALID_EMAIL;
 
+			// Validate password (only the length of them)
 			if (!InputValidator.isStringLengthInRange(password, 0, 255))
 				return IMessages.Error.INVALID_PASSWORD;
 
+			// Validate the equality of password and confirm password
 			if (!password.equals(passwordConfirm))
 				return IMessages.Error.PASSWORDS_DO_NOT_MATCH;
 
+			// Validate the first name (only the length of them)
 			if (!InputValidator.isStringLengthInRange(firstName, 0, 255))
 				return IMessages.Error.INVALID_FIRSTNAME;
 
+			// Validate the last name  (only the length of them)
 			if (!InputValidator.isStringLengthInRange(lastName, 0, 255))
 				return IMessages.Error.INVALID_LASTNAME;
 
 			params = new ArrayList<NameValuePair>();
+			
+			// The required parameters
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", eMail));
+			
+			// Make the request to check, whether person already exists
 			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
-			Log.d("Create Response", json.toString());
-
-			// check for success tag
-			try {
+			try
+			{
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success == 1) {
+				// Person already exists
+				if (success == 1)
+				{
 					return IMessages.Error.DUPLICATE_PERSON;
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			}
+			// In case of error
+			catch(Exception e)
+			{
+				// Back to StartController
+				Intent i = new Intent(RegisterController.this, StartController.class);
+				startActivity(i);
 			}
 
-			// Building Parameters
+			// The current date
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = new Date();
+			
+			// The required parameters
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "create"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			// TODO Verschluesselung
 			params.add(new BasicNameValuePair("password", password));
 			params.add(new BasicNameValuePair("firstName", firstName));
 			params.add(new BasicNameValuePair("lastName", lastName));
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-			Date date = new Date();
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
-			// getting JSON Object
+			// Make the request to create the person
 			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
-			// check log cat for response
-			Log.d("Create Response", json.toString());
-
-			// check for success tag
 			try
 			{
-				// Fetch id of new person
+				// Fetch the id of new person
 				newPersonId = json.getInt(TAG_SUCCESS);
 				
+				// In case of success
 				if (newPersonId.intValue() != 0)
 				{
-					// Create notification settings
+					// The required parameters
 					params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("do", "create"));
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
+					
+					// Make the request to create the notification settings
 					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, RegisterController.this);
+					
 					success = json.getInt(TAG_SUCCESS);
 					
+					// In case of success
 					if (success == 1)
 					{
-						// Create event settings
+						// The required parameters
 						params = new ArrayList<NameValuePair>();
 						params.add(new BasicNameValuePair("do", "create"));
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 						
+						// Make the request to create event settings
 						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, RegisterController.this);
 						
 						success = json.getInt(TAG_SUCCESS);
 						
+						// In case of success
 						if(success == 1)
 						{
 							return null;
 						}
+						// In case of no success
 						else
 						{
-							System.out.println("No event settings created");
+							// Back to StartController
+							Intent i = new Intent(RegisterController.this, StartController.class);
+							startActivity(i);
 						}
 					}
+					// In case of no success
 					else
 					{
-						System.out.println("No notification settings created");
+						// Back to StartController
+						Intent i = new Intent(RegisterController.this, StartController.class);
+						startActivity(i);
 					}
 				}
+				// In case of no success
 				else
 				{
 					return IMessages.Error.PERSON_NOT_CREATED;
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+			}
+			// In case of error
+			catch(Exception e)
+			{
+				// Back to StartController
+				Intent i = new Intent(RegisterController.this, StartController.class);
+				startActivity(i);
 			}
 
 			return null;
 		}
 
 		/**
-		 * After completing background task Dismiss the progress dialog
-		 * **/
-		protected void onPostExecute(String message) {
+		 * Dismisses the progress dialog.
+		 * Displays a negative message in case of error.
+		 * Starts the LoginController and displays a positive message in case of success
+		 * 
+		 * @param message the error message or null in case of success
+		 */
+		
+		protected void onPostExecute(String message)
+		{
 			super.onPostExecute(message);
 			
 			// Dismiss the dialog once done

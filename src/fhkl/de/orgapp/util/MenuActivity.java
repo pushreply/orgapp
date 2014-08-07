@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -23,7 +22,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,21 +57,47 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
-public class MenuActivity extends Activity {
+/**
+ * MenuActivity - Handles the data to define the user menu
+ * 
+ * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
+ * @version ?
+ *
+ */
 
+public class MenuActivity extends Activity
+{
+	// For json issues
 	JSONParser jsonParser = new JSONParser();
-
-	private static String URL_GET_MEMBER_LIST = "http://pushrply.com/get_member_list.php";
-
 	private static final String TAG_SUCCESS = "success";
+	
+	// Id of the icon for unread notifications
 	private int newNotificationNotificationId = 1;
 
-	public boolean onCreateOptionsMenu(Menu menu) {
+	/**
+	 * Renders the menu visible.
+	 * 
+	 * @param menu the menu
+	 * @return OptionMenuCreated
+	 */
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// Fetch the menu inflater
 		MenuInflater inflater = getMenuInflater();
+		
+		// Set the menu
 		inflater.inflate(R.menu.main_menu, menu);
+		
+		// The controller, which calls the menu
 		String nameCurrentController = getIntent().getComponent().getClassName();
 
+		// Set the title of logout item
 		menu.findItem(R.id.LOGOUT).setTitle("Logout ( " + UserData.getEMAIL() + " )");
+		
+		// Make the items visible
+		// Dependent on the position in the application
+		
 		if (nameCurrentController.equals(GroupsController.class.getName())) {
 			menu.findItem(R.id.NEW_GROUP).setVisible(true);
 		}
@@ -178,236 +202,275 @@ public class MenuActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Defines selected menu item functionality.
+	 * 
+	 * @param item the menu item
+	 * @return OptionItemSelected
+	 */
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		// The intent to be called
 		Intent intent;
+		// Dialog to be displayed
 		AlertDialog.Builder builder;
+		// Message to be displayed at sharing
 		String sharingMessage;
 
-		switch (item.getItemId()) {
-		case R.id.CALENDAR:
-			intent = new Intent(MenuActivity.this, CalendarController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.GROUPS:
-			intent = new Intent(MenuActivity.this, GroupsController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.NEW_GROUP:
-			intent = new Intent(MenuActivity.this, NewGroupController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.CREATE_EVENT:
-			intent = new Intent(MenuActivity.this, CreateEventController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.SHOW_ATTENDING_MEMBER:
-			intent = new Intent(MenuActivity.this, AttendingMemberController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.EDIT_EVENT:
-			intent = new Intent(MenuActivity.this, EditEventController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.DELETE_EVENT:
-			builder = new AlertDialog.Builder(MenuActivity.this);
-			builder.setMessage(IMessages.SecurityIssue.DELETE_EVENT);
-			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(MenuActivity.this, DeleteEventController.class);
-					dialog.dismiss();
-					finish();
-					startActivity(intent);
-				}
-
-			});
-			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			builder.create().show();
-			return true;
-
-		case R.id.EVENT_SETTINGS_SETTINGS:
-			intent = new Intent(MenuActivity.this, EventSettingsController.class);
-			startActivity(intent);
-			return true;
-			
-		case R.id.SHARE_EVENT_VIA_FACEBOOK:
-			sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
-							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
-
-			return shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
-
-		case R.id.SHARE_EVENT_VIA_TWITTER:
-			sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
-							+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
-
-			return shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
-
-		case R.id.EDIT_GROUP:
-			intent = new Intent(MenuActivity.this, EditGroupController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.LEAVE_GROUP:
-			builder = new AlertDialog.Builder(MenuActivity.this);
-			AlertDialog dialog;
-			builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME()
-							+ IMessages.SecurityIssue.QUESTION_MARK);
-
-			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					startActivity(new Intent(MenuActivity.this, LeaveGroupController.class));
-				}
-			});
-
-			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-
-			dialog = builder.create();
-
-			dialog.show();
-
-			return true;
-
-		case R.id.DELETE_GROUP:
-			builder = new AlertDialog.Builder(MenuActivity.this);
-			AlertDialog leavedialog;
-			builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME()
-							+ IMessages.SecurityIssue.QUESTION_MARK);
-
-			builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					startActivity(new Intent(MenuActivity.this, DeleteGroupController.class));
-				}
-			});
-
-			builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-
-			leavedialog = builder.create();
-
-			leavedialog.show();
-
-			return true;
-
-		case R.id.SHOW_MEMBER_LIST:
-			new MemberList().execute();
-			return true;
-
-		case R.id.BACK:
-			if (EventData.isBACK()) {
-				EventData.setBACK(false);
-				intent = new Intent(MenuActivity.this, EventController.class);
+		// Select appropriate menu item
+		switch (item.getItemId())
+		{
+			case R.id.CALENDAR:
+				intent = new Intent(MenuActivity.this, CalendarController.class);
 				startActivity(intent);
-			} else {
-				intent = new Intent(MenuActivity.this, SingleGroupController.class);
+				return true;
+	
+			case R.id.GROUPS:
+				intent = new Intent(MenuActivity.this, GroupsController.class);
 				startActivity(intent);
-			}
-			return true;
-
-		case R.id.INVITE_MEMBER:
-			builder = new AlertDialog.Builder(MenuActivity.this);
-			builder.setMessage(IMessages.SecurityIssue.QUESTION_MEMBER);
-			builder.setPositiveButton(IMessages.DialogButton.LIST, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(MenuActivity.this, ListInviteMemberController.class);
-					dialog.dismiss();
-					finish();
+				return true;
+	
+			case R.id.NEW_GROUP:
+				intent = new Intent(MenuActivity.this, NewGroupController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.CREATE_EVENT:
+				intent = new Intent(MenuActivity.this, CreateEventController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.SHOW_ATTENDING_MEMBER:
+				intent = new Intent(MenuActivity.this, AttendingMemberController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.EDIT_EVENT:
+				intent = new Intent(MenuActivity.this, EditEventController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.DELETE_EVENT:
+				
+				// Display a security issue
+				builder = new AlertDialog.Builder(MenuActivity.this);
+				builder.setMessage(IMessages.SecurityIssue.DELETE_EVENT);
+				builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(MenuActivity.this, DeleteEventController.class);
+						dialog.dismiss();
+						finish();
+						startActivity(intent);
+					}
+	
+				});
+				builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+				return true;
+	
+			case R.id.EVENT_SETTINGS_SETTINGS:
+				intent = new Intent(MenuActivity.this, EventSettingsController.class);
+				startActivity(intent);
+				return true;
+				
+			case R.id.SHARE_EVENT_VIA_FACEBOOK:
+				
+				// Define a message, which will be displayed at sharing
+				sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+								+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+	
+				// Share message on social network
+				return shareToSocialNetwork(Intent.ACTION_SEND, "facebook", sharingMessage);
+	
+			case R.id.SHARE_EVENT_VIA_TWITTER:
+				
+				// Define a message, which will be displayed at sharing
+				sharingMessage = "New Event: " + EventData.getNAME() + ", Date: " + EventData.getEVENTDATE() + ", Time: "
+								+ EventData.getEVENTTIME() + ", Location: " + EventData.getEVENTLOCATION();
+	
+				// Share message on social network
+				return shareToSocialNetwork(Intent.ACTION_SEND, "twitter", sharingMessage);
+	
+			case R.id.EDIT_GROUP:
+				intent = new Intent(MenuActivity.this, EditGroupController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.LEAVE_GROUP:
+				
+				// Display a security issue
+				builder = new AlertDialog.Builder(MenuActivity.this);
+				AlertDialog dialog;
+				builder.setMessage(IMessages.SecurityIssue.CONFIRM_LEAVING_GROUP + GroupData.getGROUPNAME()
+								+ IMessages.SecurityIssue.QUESTION_MARK);
+	
+				builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						startActivity(new Intent(MenuActivity.this, LeaveGroupController.class));
+					}
+				});
+	
+				builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+	
+				dialog = builder.create();
+	
+				dialog.show();
+	
+				return true;
+	
+			case R.id.DELETE_GROUP:
+				
+				// Display a security issue
+				builder = new AlertDialog.Builder(MenuActivity.this);
+				AlertDialog leavedialog;
+				builder.setMessage(IMessages.SecurityIssue.MESSAGE_DELETE_GROUP + GroupData.getGROUPNAME()
+								+ IMessages.SecurityIssue.QUESTION_MARK);
+	
+				builder.setPositiveButton(IMessages.DialogButton.YES, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						startActivity(new Intent(MenuActivity.this, DeleteGroupController.class));
+					}
+				});
+	
+				builder.setNegativeButton(IMessages.DialogButton.NO, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+	
+				leavedialog = builder.create();
+	
+				leavedialog.show();
+	
+				return true;
+	
+			case R.id.SHOW_MEMBER_LIST:
+				// Show the member list
+				new MemberList().execute();
+				return true;
+	
+			case R.id.BACK:
+				if (EventData.isBACK())
+				{
+					EventData.setBACK(false);
+					intent = new Intent(MenuActivity.this, EventController.class);
 					startActivity(intent);
 				}
-
-			});
-			builder.setNegativeButton(IMessages.DialogButton.MANUALLY, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(MenuActivity.this, ManualInviteMemberController.class);
-					dialog.dismiss();
-					finish();
+				else
+				{
+					intent = new Intent(MenuActivity.this, SingleGroupController.class);
 					startActivity(intent);
 				}
-			});
-			builder.setNeutralButton(IMessages.DialogButton.CANCEL, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			builder.create().show();
-			return true;
-
-		case R.id.NOTIFICATIONS:
-			intent = new Intent(MenuActivity.this, NotificationController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.PROFILE:
-			intent = new Intent(MenuActivity.this, ProfileController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.NOTIFICATION_SETTINGS:
-			intent = new Intent(MenuActivity.this, NotificationSettingsController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.CHANGE_PRIVATE_INFORMATION:
-			intent = new Intent(MenuActivity.this, PrivateInfoController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.LIST_EVENT_HISTORY:
-			intent = new Intent(MenuActivity.this, EventHistoryController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.CHANGE_SECURITY_INFORMATION:
-			intent = new Intent(MenuActivity.this, SecurityInfoController.class);
-			startActivity(intent);
-			return true;
-
-		case R.id.LOGOUT:
-			logout();
-			return true;
-
-		case R.id.REFRESH:
-			finish();
-			startActivity(getIntent().putExtra("Refresh", "Refresh"));
-
-		default:
-			return false;
+				return true;
+	
+			case R.id.INVITE_MEMBER:
+				
+				// Display a security issue, whether invite via list or manually
+				
+				builder = new AlertDialog.Builder(MenuActivity.this);
+				builder.setMessage(IMessages.SecurityIssue.QUESTION_MEMBER);
+				builder.setPositiveButton(IMessages.DialogButton.LIST, new OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(MenuActivity.this, ListInviteMemberController.class);
+						dialog.dismiss();
+						finish();
+						startActivity(intent);
+					}
+	
+				});
+				builder.setNegativeButton(IMessages.DialogButton.MANUALLY, new OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(MenuActivity.this, ManualInviteMemberController.class);
+						dialog.dismiss();
+						finish();
+						startActivity(intent);
+					}
+				});
+				builder.setNeutralButton(IMessages.DialogButton.CANCEL, new OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+				return true;
+	
+			case R.id.NOTIFICATIONS:
+				intent = new Intent(MenuActivity.this, NotificationController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.PROFILE:
+				intent = new Intent(MenuActivity.this, ProfileController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.NOTIFICATION_SETTINGS:
+				intent = new Intent(MenuActivity.this, NotificationSettingsController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.CHANGE_PRIVATE_INFORMATION:
+				intent = new Intent(MenuActivity.this, PrivateInfoController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.LIST_EVENT_HISTORY:
+				intent = new Intent(MenuActivity.this, EventHistoryController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.CHANGE_SECURITY_INFORMATION:
+				intent = new Intent(MenuActivity.this, SecurityInfoController.class);
+				startActivity(intent);
+				return true;
+	
+			case R.id.LOGOUT:
+				logout();
+				return true;
+	
+			case R.id.REFRESH:
+				finish();
+				startActivity(getIntent().putExtra("Refresh", "Refresh"));
+	
+			default:
+				return false;
 		}
 	}
 
-	protected void logout() {
+	/**
+	 * Resets user data, notification settings, event settings.
+	 * Deletes the icon, which signal user for new notifications.
+	 * Calles the StartController
+	 */
+	
+	protected void logout()
+	{
 		resetUserData();
 		resetNotificationSettingsData();
 		resetEventSettingsData();
@@ -417,7 +480,12 @@ public class MenuActivity extends Activity {
 		startActivity(intent);
 	}
 
-	private void resetUserData() {
+	/**
+	 * Resets the user data
+	 */
+	
+	private void resetUserData()
+	{
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -427,7 +495,12 @@ public class MenuActivity extends Activity {
 		UserData.setMEMBER_SINCE("");
 	}
 
-	private void resetNotificationSettingsData() {
+	/**
+	 * Resets the notification settings
+	 */
+	
+	private void resetNotificationSettingsData()
+	{
 		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
 		NotificationSettingsData.setSHOW_ENTRIES("");
 		NotificationSettingsData.setGROUP_INVITES("");
@@ -443,53 +516,113 @@ public class MenuActivity extends Activity {
 		NotificationSettingsData.setVIBRATION("");
 	}
 	
+	/**
+	 * Resets the event settings
+	 */
+	
 	private void resetEventSettingsData()
 	{
 		EventSettingsData.setEVENT_SETTINGS_ID("");
 		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
 
-	public class MemberList extends AsyncTask<String, String, String> {
-
-		protected String doInBackground(String... args) {
+	/**
+	 * MemberList - Fetches the members of a group
+	 * 
+	 * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
+	 * @version ?
+	 *
+	 */
+	
+	public class MemberList extends AsyncTask<String, String, String>
+	{
+		/**
+		 * Makes the request to fetch the members of a group
+		 *
+		 * @param args the arguments as array
+		 * @return an error message or null in case of success
+		 */
+		
+		protected String doInBackground(String... args)
+		{
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			// The required parameters
+			params.add(new BasicNameValuePair("do", "readMemberList"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
-			JSONObject json = jsonParser.makeHttpRequest(URL_GET_MEMBER_LIST, "GET", params);
+			// Make the request to fetch the members of a group
+			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params, MenuActivity.this);
 
-			Log.d("Memberlist: ", json.toString());
-
-			try {
+			try
+			{
 				int success = json.getInt(TAG_SUCCESS);
-				if (success == 1) {
-					Intent intent = new Intent(MenuActivity.this, MemberListController.class);
-					startActivity(intent);
-				} else {
+				
+				// In case of success
+				if (success == 1)
+				{
+					return null;
+				}
+				// In case of no success
+				else
+				{
 					return IMessages.Status.MEMBERLIST_EMPTY;
 				}
-
-			} catch (JSONException e) {
-				System.out.println("Error in MemberList.doInBackground(String... args): " + e.getMessage());
-				e.printStackTrace();
+			}
+			// In case of error
+			catch (Exception e)
+			{
+				// Logout the user
+				logout();
 			}
 
 			return null;
 		}
 
-		protected void onPostExecute(String message) {
-
-			if (message != null) {
+		/**
+		 * Displays a negative message in case of error.
+		 * Starts the MemberListController in case of success
+		 * 
+		 * @param message the error message or null in case of success
+		 */
+		
+		protected void onPostExecute(String message)
+		{
+			// The error message
+			if (message != null)
+			{
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+			}
+			// In case of success
+			else
+			{
+				// Start the MemberListController
+				Intent intent = new Intent(MenuActivity.this, MemberListController.class);
+				startActivity(intent);
 			}
 		}
 	}
 
-	protected boolean shareToSocialNetwork(String sharedContent, String socialNetworkName, String sharingMessage) {
+	/**
+	 * Shares a messages on social network
+	 * 
+	 * @param sharedContent the type of intent
+	 * @param socialNetworkName the name of social network
+	 * @param sharingMessage the message to be shared
+	 * @return success
+	 */
+	
+	protected boolean shareToSocialNetwork(String sharedContent, String socialNetworkName, String sharingMessage)
+	{
+		// Prepare intent
 		Intent sharingIntent = new Intent(sharedContent);
 		sharingIntent.setType("text/plain");
+		
+		// The component
 		ComponentName component = null;
 
+		// Fetch all appropriate applications
 		PackageManager pManager = getPackageManager();
 		List<ResolveInfo> activityList = pManager.queryIntentActivities(sharingIntent, 0);
 
@@ -499,43 +632,55 @@ public class MenuActivity extends Activity {
 				component = new ComponentName(activityList.get(a).activityInfo.applicationInfo.packageName,
 								activityList.get(a).activityInfo.name);
 
-		// prepare content as string
+		// Prepare content as string
 		sharingIntent.putExtra(Intent.EXTRA_SUBJECT, EventData.getNAME());
 
-		// send intent to app
+		// Send intent to app
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 
-		// send intent to twitter app
+		// Send intent to twitter app
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 		sharingIntent.setComponent(component);
 
-		// if no appropriate app found, send to browser and open url
-		if (component == null) {
+		// If no appropriate app found, send to browser and open url
+		if (component == null)
+		{
 			String url;
 
-			if (socialNetworkName.equalsIgnoreCase("facebook"))
+			// In case of facebook
+			if(socialNetworkName.equalsIgnoreCase("facebook"))
 				url = "https://facebook.com/sharer/sharer.php?text=" + sharingMessage;
+			// In case of twitter
 			else
 				url = "https://twitter.com/intent/tweet?text=" + sharingMessage;
 
+			// Start the activity
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			startActivity(browserIntent);
 
 			return true;
 		}
+		
+		// Start the activity
 		startActivity(sharingIntent);
 
 		return true;
 	}
 
-	protected void checkOnNewNotificationsAndNotifyUser() {
+	/**
+	 * Checks for new notifications
+	 */
+	
+	protected void checkOnNewNotificationsAndNotifyUser()
+	{
+		// Object for check on new notifications
 		NewNotificationsChecker newNotifications = new NewNotificationsChecker();
 
-		// check on new notifications
+		// In case of no new notifications
 		if (!newNotifications.hasNewNotifications())
 			return;
 
-		// create title and text for icon
+		// Create title and text for icon
 		String numberNewNotifications = newNotifications.getNumberNewNotifications();
 
 		String title = IMessages.Notification.NEW_NOTIFICATION;
@@ -546,13 +691,13 @@ public class MenuActivity extends Activity {
 		text += IMessages.Notification.YOU_HAVE_UNREAD_NOTIFICATION_2;
 		text += numberNewNotifications.equals("1") ? "" : "s";
 
-		// create icon for action bar
+		// Create icon for action bar
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_action_unread)
 						.setContentTitle(title).setContentText(text).setAutoCancel(true);
 
 		Intent resultIntent = new Intent(this, NotificationController.class);
 
-		// pending intent for using own permissions
+		// Pending intent for using own permissions
 		PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent,
 						PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -560,15 +705,19 @@ public class MenuActivity extends Activity {
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-		// notify user by icon
+		// Notify user by icon
 		notificationManager.notify(newNotificationNotificationId, builder.build());
 
-		// notify user by vibration, if this set
+		// Notify user by vibration, if this set
 		if (Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
 			((Vibrator) getSystemService(Context.VIBRATOR_SERVICE)).vibrate(2000);
 	}
 
-	protected void deleteIcon() {
+	/**
+	 * Delets the icon for signal the user on new notifications
+	 */
+	protected void deleteIcon()
+	{
 		((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(newNotificationNotificationId);
 	}
 }

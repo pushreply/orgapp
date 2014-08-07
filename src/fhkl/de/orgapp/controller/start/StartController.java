@@ -17,56 +17,102 @@ import fhkl.de.orgapp.controller.login.LoginController;
 import fhkl.de.orgapp.controller.registration.RegisterController;
 import fhkl.de.orgapp.util.IMessages;
 
-public class StartController extends Activity {
+/**
+ * StartController - Handles the data for the splash screen
+ *
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
+public class StartController extends Activity
+{
+	// For the displayed button
 	private Button bLogin;
 	private Button bRegister;
+	
+	// For the check on internet connection
 	boolean isConnected;
 
+	/**
+	 * Splits the splash screen.
+	 * Sets the content view.
+	 * Calls method to define onClickListener
+	 *
+	 * @param savedInstanceState contains the data
+	 */
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		
-		//go full screen, but show status bar
+		// Go full screen, but show status bar
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, 
         		WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		setContentView(R.layout.start);
 		
+        // Set content view
+        setContentView(R.layout.start);
+		
+		// Define onClickListener
 		addListenerOnButton();
 
 	}
 
-	public void addListenerOnButton() {
-
-		// check internet connection
+	/**
+	 * Checks the internet connection.
+	 * Fetches the views by id.
+	 * Defines onClickListener for the buttons
+	 */
+	
+	public void addListenerOnButton()
+	{
+		// Check the internet connection
 		Context ctx = this;
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
+		// Fetch the views by id
 		bLogin = (Button) findViewById(R.id.LOGIN);
 		bRegister = (Button) findViewById(R.id.REGISTER);
 
-		bLogin.setOnClickListener(new OnClickListener() {
+		// Set onClickListener for login
+		bLogin.setOnClickListener(new OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
-				if (isConnected) {
+			public void onClick(View v)
+			{
+				// If internet connection is active
+				if (isConnected)
+				{
 					Intent i = new Intent(StartController.this, LoginController.class);
 					startActivity(i);
-				} else {
+				}
+				// If internet connection is not active
+				else
+				{
 					Toast.makeText(getApplicationContext(), IMessages.Error.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}
 		});
 
-		bRegister.setOnClickListener(new OnClickListener() {
+		// Set onClickListener for register
+		bRegister.setOnClickListener(new OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
-				if (isConnected) {
+			public void onClick(View v)
+			{
+				// If internet connection is active
+				if (isConnected)
+				{
 					Intent i = new Intent(StartController.this, RegisterController.class);
 					startActivity(i);
-				} else {
+				}
+				// If internet connection is not active
+				else
+				{
 					Toast.makeText(getApplicationContext(), IMessages.Error.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
 			}

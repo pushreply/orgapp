@@ -1,5 +1,13 @@
 package fhkl.de.orgapp.util.data;
 
+/**
+ * NotificationSettingsData - Stores the notification settings of an user for usage in the entire application
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class NotificationSettingsData
 {
 	private static String NOTIFICATION_SETTINGS_ID = "";

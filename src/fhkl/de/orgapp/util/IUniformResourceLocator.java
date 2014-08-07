@@ -1,12 +1,33 @@
 package fhkl.de.orgapp.util;
 
-public interface IUniformResourceLocator {
-	public static final class DomainName {
+/**
+ * IUniformResourceLocator - Defines all URLs to make database requests
+ * 
+ * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
+public interface IUniformResourceLocator
+{
+	/**
+	 * Defines the server names
+	 */
+	
+	public static final class DomainName
+	{
+		// Name for https request
 		public static final String SERVER_NAME = "https://pushrply.com/";
+		// Name for http request
 		public static final String SERVER_NAME_HTTP = "http://pushrply.com/";
 	}
 
-	public static final class URL {
+	/**
+	 * Defines the entire URLs
+	 */
+	
+	public static final class URL
+	{
 		public static final String URL_COMMENT = DomainName.SERVER_NAME + "PDO_CommentControl.php";
 		public static final String URL_EVENT = DomainName.SERVER_NAME + "PDO_EventControl.php";
 		public static final String URL_EVENTPERSON = DomainName.SERVER_NAME + "PDO_EventPersonControl.php";

@@ -1,7 +1,7 @@
 package fhkl.de.orgapp.util;
 
 /**
- * IMessages - defines all constants to display them. Grouped by message type
+ * IMessages - Defines all constants to display them. Grouped by message type
  * 
  * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
  * @version 5.1
@@ -10,7 +10,7 @@ package fhkl.de.orgapp.util;
 
 public interface IMessages {
 	/**
-	 * messages for buttons
+	 * Messages for buttons
 	 */
 
 	public static final class DialogButton {
@@ -29,7 +29,7 @@ public interface IMessages {
 	}
 
 	/**
-	 * messages for errors
+	 * Messages for errors
 	 */
 
 	public static final class Error {
@@ -77,7 +77,7 @@ public interface IMessages {
 	}
 
 	/**
-	 * messages for user notifications
+	 * Messages for user notifications
 	 */
 
 	public static final class Notification {
@@ -106,7 +106,7 @@ public interface IMessages {
 	}
 
 	/**
-	 * messages for security issue
+	 * Messages for security issue
 	 */
 
 	public static final class SecurityIssue {
@@ -128,7 +128,7 @@ public interface IMessages {
 	}
 
 	/**
-	 * messages for status
+	 * Messages for status
 	 */
 
 	public static final class Status {
@@ -165,7 +165,7 @@ public interface IMessages {
 	}
 
 	/**
-	 * messages for success
+	 * Messages for success
 	 */
 
 	public static final class Success

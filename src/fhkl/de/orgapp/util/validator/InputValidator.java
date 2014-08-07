@@ -3,8 +3,25 @@ package fhkl.de.orgapp.util.validator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class InputValidator {
-	public static boolean isEmailValid(String eMail) {
+/**
+ * InputValidator - Checks the data for correctness entered by the user
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
+public class InputValidator
+{
+	/**
+	 * Checks the email input
+	 * 
+	 * @param eMail the users email to be checked
+	 * @return true if email is valid, false otherwise
+	 */
+	
+	public static boolean isEmailValid(String eMail)
+	{
 		if (eMail == null)
 			return false;
 
@@ -14,7 +31,17 @@ public class InputValidator {
 		return true;
 	}
 
-	public static boolean isStringLengthInRange(String value, int minLength, int maxLength) {
+	/**
+	 * Checks the length of a text
+	 * 
+	 * @param value the text to be checked
+	 * @param minLength the minimal allow length
+	 * @param maxLength the maximal allow length
+	 * @return true if value is in range, false otherwise
+	 */
+	
+	public static boolean isStringLengthInRange(String value, int minLength, int maxLength)
+	{
 		if (value == null)
 			return false;
 
@@ -24,7 +51,16 @@ public class InputValidator {
 		return true;
 	}
 
-	public static boolean isDateValid(String date, String dateFormat) {
+	/**
+	 * Checks the date input
+	 * 
+	 * @param date the date to be checked
+	 * @param dateFormat the allow date format
+	 * @return true if date is valid, false otherwise
+	 */
+	
+	public static boolean isDateValid(String date, String dateFormat)
+	{
 		if (date == null)
 			return false;
 
@@ -40,15 +76,27 @@ public class InputValidator {
 		return true;
 	}
 
-	public static boolean isNumberValid(String number) {
+	/**
+	 * Checks the number input
+	 * 
+	 * @param number the number to be checked
+	 * @return true if number is valid, false otherwise
+	 */
+	
+	public static boolean isNumberValid(String number)
+	{
 		if (number == null)
 			return false;
 
-		try {
+		try
+		{
 			Integer.valueOf(number);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e)
+		{
 			return false;
 		}
+		
 		return true;
 	}
 }

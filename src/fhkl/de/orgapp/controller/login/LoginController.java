@@ -29,54 +29,93 @@ import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.OutputValidator;
 
+/**
+ * LoginController - Handles the data for login of the user
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class LoginController extends Activity
 {
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
+	// For json issues
+	JSONObject json, e, notificationSettings, eventSettings;
+	JSONArray person = null, notificationSettingsArray, eventSettingsArray;
+	List<NameValuePair> params;
+	int success;
+	
+	// For the displayed button
 	private Button bSubmit;
 	private Button bCancel;
 
+	// For the user input
 	EditText inputEMail;
 	EditText inputPassword;
-	List<NameValuePair> params;
-	JSONObject json, e, notificationSettings, eventSettings;
-	JSONArray person = null, notificationSettingsArray, eventSettingsArray;
-	int success;
 
+	/**
+	 * Sets the content view.
+	 * Fetches the views by id.
+	 * Sets onClickListener
+	 *
+	 * @param savedInstanceState contains the data
+	 */
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
+		
+		// Set the content view
 		setContentView(R.layout.login);
 
+		// Fetch the views by id
 		bSubmit = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
-
 		inputEMail = (EditText) findViewById(R.id.EMAIL);
 		inputPassword = (EditText) findViewById(R.id.PASSWORD);
 
-		bSubmit.setOnClickListener(new OnClickListener() {
+		// Set OnclickListener for submit
+		bSubmit.setOnClickListener(new OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
+				// Call the data validator
 				new Validator().execute();
 			}
 		});
 
-		bCancel.setOnClickListener(new OnClickListener() {
+		// Set onClickListener for cancel
+		bCancel.setOnClickListener(new OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
+				// Back to StartController
 				Intent i = new Intent(LoginController.this, StartController.class);
 				startActivity(i);
 			}
 		});
 	}
 
-	class Validator extends AsyncTask<String, String, String> {
-		final static String TAG = "Validator";
-
-		public Validator() {
-		}
-
+	/**
+	 * Validator - Checks the data entered by the user
+	 * 
+	 * @author Oliver Neubauer
+	 * @version 1.0
+	 *
+	 */
+	
+	class Validator extends AsyncTask<String, String, String>
+	{
+		/**
+		 * Displays a progress dialog
+		 */
+		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -88,107 +127,157 @@ public class LoginController extends Activity
 			pDialog.show();
 		}
 
+		/**
+		 * Executes the request for check the user.
+		 * Fetches the notification settings of the user.
+		 * Fetches the event settings of the user.
+		 * 
+		 * @param arg0 the parameters as array
+		 * @return an error message or null in case of success
+		 */
+		
 		@Override
 		protected String doInBackground(String... arg0)
 		{
+			// The required parameters for the request
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 
+			// Make the request to fetch the person
 			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, LoginController.this);
 
 			try
 			{
 				success = json.getInt("success");
 				
-				if (success == 1) {
+				// In case of success
+				if (success == 1)
+				{
+					// Fetch the person array
 					person = json.getJSONArray("person");
 
+					// Get the person (the only one)
 					e = person.getJSONObject(0);
 
+					// Get the email
 					String eMail = e.getString("eMail");
 					
-					if (eMail.equals(inputEMail.getText().toString())) {
+					// Check the email on correctness
+					if (eMail.equals(inputEMail.getText().toString()))
+					{
+						// Get the password
 						String password = e.getString("password");
-						// verschlüsselung
 
+						// Check the password on correctness
 						if (password.equals(inputPassword.getText().toString()))
 						{
-							// Fetch notification settings of the user
+							// The required parameters for the request
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
+							// Make the request to fetch the notification settings
 							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, LoginController.this);
 
 							success = json.getInt("success");
 
-							if (success == 1) {
+							// In case of success
+							if (success == 1)
+							{
 								notificationSettingsArray = json.getJSONArray("notificationSettings");
 								notificationSettings = notificationSettingsArray.getJSONObject(0);
-							} else {
-								System.out.println("No notificationSettings loaded");
+							}
+							// In case of no success
+							else
+							{
 								pDialog.dismiss();
 								logout();
 							}
 							
-							// Fetch event settings of the user
+							// The required parameters for the request
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
 							
+							// Make the request to fetch the event settings
 							json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, LoginController.this);
 							
 							success = json.getInt("success");
 							
+							// In case of success
 							if(success == 1)
 							{
 								eventSettingsArray = json.getJSONArray("eventSettings");
 								eventSettings = eventSettingsArray.getJSONObject(0);
 							}
+							// In case of no success
 							else
 							{
-								System.out.println("No eventSettings loaded");
+								// Close the progress dialog
 								pDialog.dismiss();
+								// Logout the user
 								logout();
 							}
 
-							// invokes onPostExecute(String)
 							return null;
-						} else {
-							// invokes onPostExecute(String)
+						}
+						// In case of no success
+						else
+						{
 							return IMessages.Error.INVALID_PASSWORD;
 						}
-					} else {
-						// invokes onPostExecute(String)
+					}
+					// In case of no success
+					else
+					{
 						return IMessages.Error.INVALID_USER;
 					}
-				} else {
-					// invokes onPostExecute(String)
+				}
+				// In case of no success
+				else
+				{
 					return IMessages.Error.INVALID_USER;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			}
+			// In case of error
+			catch(Exception e)
+			{
+				// Close the progress dialog
 				pDialog.dismiss();
+				// Logout the user
 				logout();
 			}
-
-			// invokes onPostExecute(String)
+			
 			return null;
 		}
 
+		/**
+		 * Dismisses the progress dialog
+		 * Displays the error message, if available.
+		 * Sets the user data, notification settings and event settings.
+		 * Calls the CalendarController
+		 *
+		 * @param message the error message or null in case of success
+		 */
+		
 		@Override
-		protected void onPostExecute(String message) {
+		protected void onPostExecute(String message)
+		{
+			// Close the progress dialog
 			pDialog.dismiss();
 
-			// Error message
-			if (message != null) {
+			// Display an error message
+			if (message != null)
+			{
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
-			// Everything successful
-			else {
-				try {
-					// Set user data
+			// In case of success
+			else
+			{
+				try
+				{
+					// Set the user data
 					UserData.setPERSONID(e.getString("personId"));
 					UserData.setFIRST_NAME(e.getString("firstName"));
 					UserData.setLAST_NAME(e.getString("lastName"));
@@ -197,7 +286,7 @@ public class LoginController extends Activity
 					UserData.setEMAIL(e.getString("eMail"));
 					UserData.setMEMBER_SINCE(e.getString("created"));
 
-					// Set notification settings of the user
+					// Set the notification settings of the user
 					NotificationSettingsData
 									.setNOTIFICATION_SETTINGS_ID(notificationSettings.getString("notificationSettingsId"));
 					NotificationSettingsData
@@ -223,20 +312,29 @@ public class LoginController extends Activity
 									: "false");
 					NotificationSettingsData.setVIBRATION(notificationSettings.getInt("vibration") == 1 ? "true" : "false");
 
-					// Set event settings of the user
+					// Set the event settings of the user
 					EventSettingsData.setEVENT_SETTINGS_ID(eventSettings.getString("eventSettingsId"));
 					EventSettingsData.setSHOWN_EVENT_ENTRIES(OutputValidator.isEventSettingsShownEntriesSet(eventSettings.getString("shownEntries")) ? eventSettings.getString("shownEntries") : "");
 					
+					// Call the CalendarController
 					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 					startActivity(intent);
-				} catch (Exception e) {
-					e.printStackTrace();
+				}
+				// In case of error
+				catch (Exception e)
+				{
+					// Logout the user
 					logout();
 				}
 			}
 		}
 	}
 
+	/**
+	 * Calls methods for reset the user data, notification settings and event settings.
+	 * Calls the StartController
+	 */
+	
 	private void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
@@ -246,7 +344,12 @@ public class LoginController extends Activity
 		startActivity(intent);
 	}
 
-	private void resetUserData() {
+	/**
+	 * Resets the user data
+	 */
+	
+	private void resetUserData()
+	{
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -256,7 +359,12 @@ public class LoginController extends Activity
 		UserData.setMEMBER_SINCE("");
 	}
 
-	private void resetNotificationSettingsData() {
+	/**
+	 * Resets the notification settings
+	 */
+	
+	private void resetNotificationSettingsData()
+	{
 		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
 		NotificationSettingsData.setSHOW_ENTRIES("");
 		NotificationSettingsData.setGROUP_INVITES("");
@@ -271,6 +379,10 @@ public class LoginController extends Activity
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
 	}
+	
+	/**
+	 * Resets the event settings
+	 */
 	
 	private void resetEventSettingsData()
 	{

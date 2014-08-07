@@ -1,5 +1,13 @@
 package fhkl.de.orgapp.util.data;
 
+/**
+ * UserData - Stores the user data for usage in the entire application
+ * 
+ * @author Oliver Neubauer
+ * @version 1.0
+ *
+ */
+
 public class UserData
 {
 	private static String PERSONID = "";

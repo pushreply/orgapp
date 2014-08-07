@@ -217,7 +217,7 @@ public class NotificationController extends MenuActivity
 
 		/**
 		 * Prepares the notifications for display depending on the read status.
-		 * Displayes the notifications in a list.
+		 * Displays the notifications in a list.
 		 * Defines onItemClick- and onItemLongClickListener.
 		 * Starts an AlertDialog in case of long click at an item
 		 * 
@@ -344,6 +344,14 @@ public class NotificationController extends MenuActivity
 							}
 						}
 						
+						/**
+						 * Updates the read status of the selected notification
+						 * 
+						 * @author Oliver Neubauer
+						 * @version 1.0
+						 *
+						 */
+						
 						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String>
 						{
 							@Override
@@ -415,6 +423,14 @@ public class NotificationController extends MenuActivity
 							
 							return false;
 						}
+						
+						/**
+						 * Updates the read status of the selected notification
+						 * 
+						 * @author Oliver Neubauer
+						 * @version 1.0
+						 *
+						 */
 						
 						class NotificationReadStatusUpdater extends AsyncTask<Integer, String, String>
 						{
