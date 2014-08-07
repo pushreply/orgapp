@@ -36,6 +36,20 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * EventController - Manage all event occurrences and comments in each event.
+ * Available operations: 
+ * <ul>
+ * <li>Show all events from each group.</li>
+ * <li>Show all events from each user (see CalendarController).</li>
+ * <li>Change the attending status of a user to an event.</li>
+ * <li>Delete an event.</li>
+ * <li>Edit or update an event.</li>
+ * <li>Show all comments from an event. </li>
+ * </ul>
+ * @author ronaldo.hasiholan
+ *
+ */
 public class EventController extends MenuActivity {
 
 	// Prepare progress dialog instance
@@ -624,6 +638,17 @@ public class EventController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Begin the background operation using asynchronous task to update the data
+	 * through the network. The extended AsyncTask, EditComment class deletes a
+	 * comment in an event by requesting the commentId using the HTTP GET request.
+	 * The string "do=updatecomment" is being used to execute the corresponding
+	 * PHP delete operation in the back-end. The PHP files on the server side
+	 * handle the request, return the result as a list and a success marker to the
+	 * client app.
+	 * 
+	 * 
+	 */
 	class EditComment extends AsyncTask<String, String, String> {
 
 		@Override
@@ -638,11 +663,13 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-
+			// Discard operation if the proposed new message has the same content 
+			// as actual. 
 			if (message.equals(changedMessage)) {
 				return null;
 			}
-
+			
+			// Prepare HTTP GET request parameters and put everything as JSON object
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "updatecomment"));
 			params.add(new BasicNameValuePair("commentId", commentId));
@@ -656,6 +683,9 @@ public class EventController extends MenuActivity {
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				System.out.println(success);
+				
+				// If the server send success reponse, set another request to read all 
+				// member which is going to the event. 
 				if (success == 1) {
 
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
@@ -667,9 +697,11 @@ public class EventController extends MenuActivity {
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
-
+						
+						// Get the "member" array returned by PHP to JSON
 						member = json.getJSONArray("member");
-
+						
+						// Prepare HTTP GET Request to create notification.
 						for (int i = 0; i < member.length(); i++) {
 							JSONObject c = member.getJSONObject(i);
 
@@ -696,6 +728,7 @@ public class EventController extends MenuActivity {
 		}
 
 		protected void onPostExecute(String result) {
+			// Dismiss progress dialog
 			pDialog.dismiss();
 
 			if (result != null) {
@@ -704,7 +737,18 @@ public class EventController extends MenuActivity {
 			}
 		}
 	}
-
+	
+	/**
+	 * Begin the background operation using asynchronous task to add data
+	 * through the network. The extended AsyncTask, AddComment class creates a
+	 * comment in an event by requesting the commentId using the HTTP GET request.
+	 * The string "do=addcomment" is being used to execute the corresponding
+	 * PHP 'add a comment' operation in the back-end. The PHP files on the server side
+	 * handle the request, return the result as a list and a success marker to the
+	 * client app.
+	 * 
+	 * 
+	 */
 	class AddComment extends AsyncTask<String, String, String> {
 
 		@Override
