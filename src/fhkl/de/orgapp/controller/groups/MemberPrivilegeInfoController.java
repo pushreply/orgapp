@@ -52,6 +52,9 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		setContentView(R.layout.member_privilege_info);
 		checkOnNewNotificationsAndNotifyUser();
 
+		bSave = (Button) findViewById(R.id.SAVE_PRIVILEGES);
+		bCancel = (Button) findViewById(R.id.CANCEL);
+
 		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
 			LinearLayout privilege_options = (LinearLayout) findViewById(R.id.PRIVILEGE_OPTIONS);
 			privilege_options.setVisibility(View.VISIBLE);
@@ -74,6 +77,8 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			privilegeCommentDeleting.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_DELETE_COMMENT()));
 			privilegeManagement.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_MANAGEMENT()));
 
+		} else {
+			bSave.setVisibility(View.GONE);
 		}
 
 		tv_eMail = (TextView) findViewById(R.id.MEMBER_EMAIL);
@@ -103,8 +108,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		}
 		tv_memberSince.setText(MemberData.getMEMBER_SINCE());
 
-		bSave = (Button) findViewById(R.id.SAVE_PRIVILEGES);
-		bCancel = (Button) findViewById(R.id.CANCEL);
 		bSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
