@@ -171,7 +171,7 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to fetch data
 	 * through the network. The extended AsyncTask, GetEvent class retrieves event
-	 * detail by requesting the personId and eventId using the HTTP GET request.
+	 * detail by requesting the personId and eventId using the HTTPS request.
 	 * The PHP files on the server side handle the request, return the result and
 	 * a success marker to the client app.
 	 * 
@@ -195,19 +195,18 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			// Prepare the HTTP GET request parameter and values
+			// Prepare the URL GET request parameter and values
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "readAttendingMember"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-			// Set a json object and make a HTTP Request using URL through a GET
-			// Request and the prepared parameters,
-			// and a context, this controller class, to pass through an HTTPS.
+			// Set a JSON object, give it the URL, the prepared parameters and this context, 
+			// and send the request through HTTPS.
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							EventController.this);
 
-			// Log the json string
+			// Log the JSON string
 			Log.d("EventPerson: ", json.toString());
 
 			// Toggle button marks the "going/not going" event.
@@ -243,7 +242,7 @@ public class EventController extends MenuActivity {
 	 * Begin the background operation using asynchronous task to change data
 	 * through the network. The extended AsyncTask, ChangeAttendingStatus class
 	 * modifies attending state by requesting the personId and eventId using the
-	 * HTTP GET request. The PHP files on the server side handle the request,
+	 * HTTPS request. The PHP files on the server side handle the request,
 	 * return the result and a success marker to the client app.
 	 * 
 	 * 
@@ -261,6 +260,8 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
+			
+			// Prepare the HTTPS request to set whether an event passed to the user private calendar or not. 
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
@@ -297,7 +298,7 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to retrieve data
 	 * through the network. The extended AsyncTask, ShowComments class retrieves
-	 * all comments of an event by requesting the eventId using the HTTP GET
+	 * all comments of an event by requesting the eventId using the HTTPS 
 	 * request. The string "do=showcomment" is being used to execute the
 	 * corresponding PHP operation in the back-end. The PHP files on the server
 	 * side handle the request, return the result as a list and a success marker
@@ -309,15 +310,15 @@ public class EventController extends MenuActivity {
 
 		@Override
 		protected String doInBackground(String... params) {
-			// Prepare the HTTP GET Parameters
+			// Prepare the HTTPS GET Parameters
 			List<NameValuePair> vp = new ArrayList<NameValuePair>();
 			vp.add(new BasicNameValuePair("do", "showcomment"));
 			vp.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
 
-			// Send the request as a json object including this context for the HTTPS
-			// request
+			// Send the request as a JSON object including this class as context 
+			// for the HTTPS GET request.
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
 							EventController.this);
 
@@ -554,7 +555,7 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to delete the data
 	 * through the network. The extended AsyncTask, DeleteComment class deletes a
-	 * comment in an event by requesting the commentId using the HTTP GET request.
+	 * comment in an event by requesting the commentId using the HTTPS request.
 	 * The string "do=deletecomment" is being used to execute the corresponding
 	 * PHP delete operation in the back-end. The PHP files on the server side
 	 * handle the request, return the result as a list and a success marker to the
@@ -577,12 +578,12 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			// Prepare the HTTP GET Parameters
+			// Prepare the HTTPS GET Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "deletecomment"));
 			params.add(new BasicNameValuePair("commentId", commentId));
 
-			// Send the request as a json object including this context for the HTTPS
+			// Send the request as a JSON object including this context for the HTTPS
 			// request
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
 							EventController.this);
@@ -641,7 +642,7 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to update the data
 	 * through the network. The extended AsyncTask, EditComment class deletes a
-	 * comment in an event by requesting the commentId using the HTTP GET request.
+	 * comment in an event by requesting the commentId using the HTTPS request.
 	 * The string "do=updatecomment" is being used to execute the corresponding
 	 * PHP delete operation in the back-end. The PHP files on the server side
 	 * handle the request, return the result as a list and a success marker to the
@@ -669,7 +670,7 @@ public class EventController extends MenuActivity {
 				return null;
 			}
 			
-			// Prepare HTTP GET request parameters and put everything as JSON object
+			// Prepare HTTPS GET request parameters and put everything as JSON object
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "updatecomment"));
 			params.add(new BasicNameValuePair("commentId", commentId));
@@ -741,7 +742,7 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to add data
 	 * through the network. The extended AsyncTask, AddComment class creates a
-	 * comment in an event by requesting the commentId using the HTTP GET request.
+	 * comment in an event by requesting the commentId using the HTTPS request.
 	 * The string "do=addcomment" is being used to execute the corresponding
 	 * PHP 'add a comment' operation in the back-end. The PHP files on the server side
 	 * handle the request, return the result as a list and a success marker to the

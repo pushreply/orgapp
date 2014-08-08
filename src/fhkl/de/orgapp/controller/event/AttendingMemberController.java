@@ -40,7 +40,7 @@ import fhkl.de.orgapp.util.data.UserData;
  */
 public class AttendingMemberController extends MenuActivity {
 
-	// Android progress dialog instance.
+	// Android progress dialog.
 	private ProgressDialog pDialog;
 
 	// A json parser and a container for the memberlist.
@@ -111,15 +111,15 @@ public class AttendingMemberController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-			// Send the HTTP request using GET request
+			// Send the HTTPS request using GET request
 			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params, AttendingMemberController.this);
-			// Log the json http request
+			// Log the JSON http request
 			Log.d("Memberlist: ", json.toString());
 
-			// If the json request is returning a success result,
-			// fill the json array with the result,
-			// iterate each json result item to a json object,
-			// get each properties from the json object to a java string
+			// If the JSON request is returning a success result,
+			// fill the JSON array with the result,
+			// iterate each JSON result item to a JSON object,
+			// get each properties from the JSON object to a java string
 			// set the each string properly to android custom item list,
 			// put everything in the arraylist container.
 			try {
@@ -222,7 +222,7 @@ public class AttendingMemberController extends MenuActivity {
 					member = json.getJSONArray("person");
 
 					// Set the properties of a member using MemberData object from the
-					// json result
+					// JSON result
 					for (int i = 0; i < member.length(); i++) {
 						JSONObject c = member.getJSONObject(i);
 
