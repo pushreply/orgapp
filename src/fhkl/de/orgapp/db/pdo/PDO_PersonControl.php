@@ -147,7 +147,7 @@ if($_GET['do']=="read")
 				}
 				else
 				{
-					$response ["success"] = 0;
+					$response ["success"] = 2;
 					echo json_encode ($response);
 				}
 			}
