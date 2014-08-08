@@ -12,7 +12,7 @@
         android:id="@+id/LOGIN"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20sp"
+        android:layout_margin="10sp"
         android:alpha="0.7"
         android:background="#000000"
         android:text="@string/LOGIN"
@@ -23,11 +23,22 @@
         android:id="@+id/REGISTER"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20sp"
+        android:layout_margin="10sp"
         android:alpha="0.7"
         android:background="#000000"
         android:text="@string/REGISTER"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ffffff" />
+    
+     <Button
+        android:id="@+id/FORGOTPASSWORD"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10sp"
+        android:alpha="0.7"
+        android:background="#ff0000"
+        android:text="@string/FORGOTPASSWORD"
+        android:textAppearance="?android:attr/textAppearanceButton"
         android:textColor="#ffffff" />
 
 </LinearLayout>
