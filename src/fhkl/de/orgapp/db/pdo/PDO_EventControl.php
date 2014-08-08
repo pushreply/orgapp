@@ -429,21 +429,22 @@ if ($_GET['do']=="readOldEvents" && isset($_GET['personId']))
 		$confirm = $sth->execute();
 		$result = $sth->fetchAll();
 
-		if ($confirm==true) {
+		if ($confirm==true && $result != null) {
 			/*
 			 * need a container for json
 			*/
 			$response["previousEvents"] = array();
 
-			$previousEvents["eventId"] = $row["eventId"];
-			$previousEvents["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
-			$previousEvents["eventDate"] = $row["eventDate"];
+			foreach ($result as $row) {
+				$previousEvents["eventId"] = $row["eventId"];
+				$previousEvents["name"] = html_entity_decode($row["name"], ENT_QUOTES, 'UTF-8');
+				$previousEvents["eventDate"] = $row["eventDate"];
 
-			/*
-			 * push each value to the data container
-			*/
-			array_push($response["previousEvents"], $previousEvents);
-
+				/*
+				 * push each value to the data container
+				*/
+				array_push($response["previousEvents"], $previousEvents);
+			}
 			$response ["success"] = 1;
 			echo json_encode ($response);
 		}
