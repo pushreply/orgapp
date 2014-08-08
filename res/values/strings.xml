@@ -22,8 +22,8 @@
 
     <!-- Register/Login -->
     <string name="EMAIL">Email address</string>
-    <string name="PASSWORD">password</string>
-    <string name="PASSWORD_CONFIRMATION">password (confirmation)</string>
+    <string name="PASSWORD">Password</string>
+    <string name="PASSWORD_CONFIRMATION">Password (confirmation)</string>
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
 
@@ -146,7 +146,8 @@
     <string name="CHANGE_BIRTHDAY">Change birthday</string>
     <string name="GENERAL_INFORMATION">General information</string>
     <string name="EMAIL_MUST_HAVE">Email *</string>
-    <string name="EMAIL_CONFIRM_MUST_HAVE">Email (confirm) *</string>
+    <string name="PASSWORD_MUST_HAVE">Password *</string>
+    <string name="PASSWORD_CONFIRM_MUST_HAVE">Password (confirm) *</string>
     <string name="CLEAR_BIRTHDAY">Clear birthday</string>
 
     <!-- Private information -->

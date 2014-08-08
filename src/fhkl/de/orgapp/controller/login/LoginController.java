@@ -133,22 +133,27 @@ public class LoginController extends Activity {
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 			params.add(new BasicNameValuePair("password", inputPassword.getText().toString()));
+			
+			// Set password
+			// Reset password in case of no login
+			UserData.setPASSWORD(inputPassword.getText().toString());
+			
 			// Make the request to fetch the person
 			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
 							LoginController.this);
-			try {
+			try
+			{
 				success = json.getInt("success");
 
 				// If the password correct, client receives success = 1
-				if (success == 1) {
-					System.out.println("success " + success);
+				if (success == 1)
+				{
 					// Fetch the person array
 					person = json.getJSONArray("person");
 
 					// Get the person (the only one)
 					e = person.getJSONObject(0);
 
-					System.out.println("person " + e);
 					// Get the email
 					String eMail = e.getString("eMail");
 
@@ -210,12 +215,17 @@ public class LoginController extends Activity {
 					}
 				}
 				// If the password incorrect, client receives success = 2
-				else if(success==2){
+				else if(success==2)
+				{
+					// Reset password in UserData
+					UserData.setPASSWORD("");
 					return IMessages.Error.INVALID_PASSWORD;
 				}
 				// In case of no success
-				else {
-
+				else
+				{
+					// Reset password in UserData
+					UserData.setPASSWORD("");
 					return IMessages.Error.INVALID_USER;
 				}
 			}
@@ -329,6 +339,7 @@ public class LoginController extends Activity {
 		UserData.setBIRTHDAY("");
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
+		UserData.setPASSWORD("");
 		UserData.setMEMBER_SINCE("");
 	}
 

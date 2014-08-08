@@ -531,6 +531,7 @@ public class ManualInviteMemberController extends Activity {
 		UserData.setBIRTHDAY("");
 		UserData.setGENDER("");
 		UserData.setEMAIL("");
+		UserData.setPASSWORD("");
 		UserData.setMEMBER_SINCE("");
 	}
 

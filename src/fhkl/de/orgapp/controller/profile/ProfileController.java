@@ -2,6 +2,7 @@ package fhkl.de.orgapp.controller.profile;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.MenuActivity;
@@ -18,9 +19,9 @@ import fhkl.de.orgapp.util.data.UserData;
 public class ProfileController extends MenuActivity
 {
 	// Required variables for layout fields
-	TextView textFirstName, textLastName, textBirthday, textGender, textEmail, textMemberSince;
+	TextView textFirstName, textLastName, textBirthday, textGender, textEmail, textPassword, textMemberSince;
 	TextView textPrivateInformation, textSecurityInformation, textGeneralInformation;
-	TextView firstName, lastName, birthday, gender, email, memberSince;
+	TextView firstName, lastName, birthday, gender, email, password, memberSince;
 	
 	/**
 	 * Sets the content view.
@@ -58,6 +59,7 @@ public class ProfileController extends MenuActivity
 		textBirthday = (TextView) findViewById(R.id.TEXT_BIRTHDAY);
 		textGender = (TextView) findViewById(R.id.TEXT_GENDER);
 		textEmail = (TextView) findViewById(R.id.TEXT_EMAIL_PROFIL);
+		textPassword = (TextView) findViewById(R.id.TEXT_PASSWORD_PROFIL);
 		textMemberSince = (TextView) findViewById(R.id.TEXT_MEMBER_SINCE);
 		textPrivateInformation = (TextView) findViewById(R.id.TEXT_PRIVATE_INFORMATION);
 		textSecurityInformation = (TextView) findViewById(R.id.TEXT_SECURITY_INFORMATION);
@@ -68,6 +70,7 @@ public class ProfileController extends MenuActivity
 		birthday = (TextView) findViewById(R.id.USER_BIRTHDAY);
 		gender = (TextView) findViewById(R.id.USER_GENDER);
 		email = (TextView) findViewById(R.id.USER_EMAIL_PROFIL);
+		password = (TextView) findViewById(R.id.USER_PASSWORD_PROFIL);
 		memberSince = (TextView) findViewById(R.id.USER_MEMBER_SINCE);
 	}
 	
@@ -87,6 +90,7 @@ public class ProfileController extends MenuActivity
 		textSecurityInformation.setText(R.string.SECURITY_INFORMATION);
 		textSecurityInformation.setPaintFlags(textSecurityInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		textEmail.setText(getString(R.string.EMAIL) + ":");
+		textPassword.setText(getString(R.string.PASSWORD) + ":");
 		
 		textGeneralInformation.setText(R.string.GENERAL_INFORMATION);
 		textGeneralInformation.setPaintFlags(textGeneralInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -104,6 +108,10 @@ public class ProfileController extends MenuActivity
 			gender.setText(UserData.getGENDER());
 		
 		email.setText(UserData.getEMAIL());
+		password.setText(UserData.getPASSWORD());
+		// Password appearance in dots
+		password.setTransformationMethod(new PasswordTransformationMethod());
+		
 		memberSince.setText(UserData.getMEMBER_SINCE());
 	}
 	
@@ -123,6 +131,7 @@ public class ProfileController extends MenuActivity
 		textBirthday.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textGender.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		textPassword.setTextAppearance(this, android.R.style.TextAppearance_Large);;
 		textMemberSince.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		
 		firstName.setTextAppearance(this, android.R.style.TextAppearance_Medium);
@@ -130,6 +139,7 @@ public class ProfileController extends MenuActivity
 		birthday.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		gender.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		email.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		password.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		memberSince.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
 }

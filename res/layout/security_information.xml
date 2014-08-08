@@ -5,11 +5,11 @@
     android:orientation="vertical"
     android:stretchColumns="*" >
     
-    <TableRow
+   <TableRow
    		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" >
    		
-        <TextView
+   		<TextView
             android:id="@+id/SECURITY_INFO_TEXT_EMAIL"
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
@@ -22,20 +22,37 @@
        
    </TableRow>
    
-    <TableRow
+   <TableRow
    		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" >
    		
         <TextView
-            android:id="@+id/SECURITY_INFO_TEXT_EMAIL_CONFIRM"
+            android:id="@+id/SECURITY_INFO_TEXT_PASSWORD"
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
         
         <EditText
-            android:id="@+id/SECURITY_INFO_USER_EMAIL_CONFIRM"
+            android:id="@+id/SECURITY_INFO_USER_PASSWORD"
         	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:inputType="textEmailAddress" />
+			android:inputType="textPassword" />
+       
+   </TableRow>
+    
+   <TableRow
+   		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" >
+   		
+        <TextView
+            android:id="@+id/SECURITY_INFO_TEXT_PASSWORD_CONFIRM"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+        
+        <EditText
+            android:id="@+id/SECURITY_INFO_USER_PASSWORD_CONFIRM"
+        	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:inputType="textPassword" />
        
    </TableRow>
    

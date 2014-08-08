@@ -38,8 +38,8 @@ public class SecurityInfoController extends MenuActivity
 	private ProgressDialog pDialog;
 	
 	// Required variables for layout fields
-	TextView textEmail, textEmailConfirm;
-	EditText emailNew, emailConfirmNew;
+	TextView textEmail, textPassword, textPasswordConfirm;
+	EditText emailNew, passwordNew, passwordConfirmNew;
 	Button changeButton, cancelButton;
 	
 	/**
@@ -77,8 +77,10 @@ public class SecurityInfoController extends MenuActivity
 	{
 		textEmail = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL);
 		emailNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL);
-		textEmailConfirm = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL_CONFIRM);
-		emailConfirmNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL_CONFIRM);
+		textPassword = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_PASSWORD);
+		passwordNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD);	
+		textPasswordConfirm = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_PASSWORD_CONFIRM);
+		passwordConfirmNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD_CONFIRM);		
 		changeButton = (Button) findViewById(R.id.CHANGE_SECURITY_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_SECURITY_INFO_VIEW);
 	}
@@ -90,9 +92,11 @@ public class SecurityInfoController extends MenuActivity
 	private void setTexts()
 	{
 		textEmail.setText(getString(R.string.EMAIL_MUST_HAVE) + ":");
-		textEmailConfirm.setText(getString(R.string.EMAIL_CONFIRM_MUST_HAVE) + ":");
+		textPassword.setText(getString(R.string.PASSWORD_MUST_HAVE) + ":");
+		textPasswordConfirm.setText(getString(R.string.PASSWORD_CONFIRM_MUST_HAVE));
 		emailNew.setText(UserData.getEMAIL());
-		emailConfirmNew.setHint(UserData.getEMAIL());
+		passwordNew.setText(UserData.getPASSWORD());
+		passwordConfirmNew.setText(UserData.getPASSWORD());
 		changeButton.setText(getString(R.string.CHANGE_INFO));
 		cancelButton.setText(getString(R.string.CANCEL));
 	}
@@ -106,8 +110,10 @@ public class SecurityInfoController extends MenuActivity
 		// Android specific sizes
 		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		emailNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
-		textEmailConfirm.setTextAppearance(this, android.R.style.TextAppearance_Large);
-		emailConfirmNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		textPassword.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		passwordNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
+		textPasswordConfirm.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		passwordConfirmNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
 	
 	/**
@@ -132,10 +138,10 @@ public class SecurityInfoController extends MenuActivity
 			return;
 		}
 		
-		// Error message in case of no match of the two emails
-		if(!emailNew.getText().toString().equals(emailConfirmNew.getText().toString()))
+		// Error message in case of no match of the two password
+		if(!passwordNew.getText().toString().equals(passwordConfirmNew.getText().toString()))
 		{
-			Toast.makeText(getApplicationContext(), IMessages.Error.EMAIL_ADDRESSES_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), IMessages.Error.PASSWORDS_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -182,7 +188,8 @@ public class SecurityInfoController extends MenuActivity
 	{
 		if(
 		     emailNew.getText().toString().equals("")
-			 || emailConfirmNew.getText().toString().equals("")
+			 || passwordNew.getText().toString().equals("")
+			 || passwordConfirmNew.getText().toString().equals("")
 		  )
 				return false;
 			
@@ -206,12 +213,15 @@ public class SecurityInfoController extends MenuActivity
 	/**
 	 * Checks, whether changes were done
 	 *
-	 * @return false, if the new email contains the same data as previous. True otherwise
+	 * @return false, if new email and new password contains the same data as previous. True otherwise
 	 */
 	
 	private boolean hasSecurityInfoChanged()
 	{
-		if(emailNew.getText().toString().equals(UserData.getEMAIL()))
+		if(
+			emailNew.getText().toString().equals(UserData.getEMAIL())
+			&& passwordNew.getText().toString().equals(UserData.getPASSWORD())
+		  )
 			return false;
 		
 		return true;
@@ -260,6 +270,7 @@ public class SecurityInfoController extends MenuActivity
 			
 			// The new value
 			params.add(new BasicNameValuePair("eMail", emailNew.getText().toString()));
+			params.add(new BasicNameValuePair("password", passwordNew.getText().toString()));
 			
 			// This values are not changeable in this layout, but required for the update
 			params.add(new BasicNameValuePair("firstName", UserData.getFIRST_NAME()));
@@ -318,6 +329,7 @@ public class SecurityInfoController extends MenuActivity
 			
 			// Set the updated data to the POJO
 			UserData.setEMAIL(emailNew.getText().toString());
+			UserData.setPASSWORD(passwordNew.getText().toString());
 			
 			// Back to the profile of the user
 			backToProfile();

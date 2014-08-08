@@ -470,6 +470,7 @@ public class PrivateInfoController extends MenuActivity
 			
 			// This value is not changeable in this layout, but required for the update
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
+			params.add(new BasicNameValuePair("password", UserData.getPASSWORD()));
 
 			// Make the request
 			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, PrivateInfoController.this);

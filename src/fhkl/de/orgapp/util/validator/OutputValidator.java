@@ -19,7 +19,7 @@ public class OutputValidator
 	
 	public static boolean isUserBirthdaySet(String birthday)
 	{
-		if(birthday == null || birthday.equals("") || birthday.equalsIgnoreCase("0000-00-00"))
+		if(birthday == null || birthday.equals("") || birthday.equalsIgnoreCase("null") || birthday.equalsIgnoreCase("0000-00-00"))
 			return false;
 		
 		return true;
