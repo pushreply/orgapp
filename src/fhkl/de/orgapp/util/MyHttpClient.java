@@ -16,7 +16,7 @@ import fhkl.de.orgapp.R;
 import android.content.Context;
 
 /**
- * MyHttpClient - Manage the self-signed certificate (/res/raw/customtruststore146.bks)
+ * MyHttpClient - handles the self-signed certificate (/res/raw/customtruststore146.bks)
  * to access HTTPS through SSL connection. 
  * It extends the DefaultHttpRequest.
  * 
