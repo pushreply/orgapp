@@ -54,7 +54,7 @@ public class DeleteEventController extends MenuActivity {
 			paramsGetMemberList.add(new BasicNameValuePair("do", "readAllAttendingMember"));
 			paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
 							paramsGetMemberList, DeleteEventController.this);
 			try {
 				if (json.getInt(TAG_SUCCESS) == 1) {
@@ -74,7 +74,7 @@ public class DeleteEventController extends MenuActivity {
 										IMessages.Notification.MESSAGE_DELETE_EVENT_1 + EventData.getNAME()
 														+ IMessages.Notification.MESSAGE_DELETE_EVENT_2));
 
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 										paramsCreateNotification, DeleteEventController.this);
 					}
 					if (json.getInt(TAG_SUCCESS) != 1) {
@@ -83,14 +83,14 @@ public class DeleteEventController extends MenuActivity {
 						paramsDelete.add(new BasicNameValuePair("do", "deleteAllPersonsInEvent"));
 						paramsDelete.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", paramsDelete, DeleteEventController.this);
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", paramsDelete, DeleteEventController.this);
 
 						if (json.getInt(TAG_SUCCESS) == 1) {
 							List<NameValuePair> paramsDeleteEvent = new ArrayList<NameValuePair>();
 							paramsDeleteEvent.add(new BasicNameValuePair("do", "deleteEvent"));
 							paramsDeleteEvent.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", paramsDeleteEvent, DeleteEventController.this);
+							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", paramsDeleteEvent, DeleteEventController.this);
 						}
 					}
 				}
