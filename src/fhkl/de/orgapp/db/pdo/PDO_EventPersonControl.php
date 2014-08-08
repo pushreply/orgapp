@@ -143,7 +143,7 @@ if ($_GET['do']=="deleteAllPersonsInEvent"
 }
 
 /*------------------------------------------------------------
- * Returns a specific attending member
+ * Returns all attending member except the specific member
 * check the user input:
 */
 
@@ -160,7 +160,8 @@ if ($_GET['do']=="readAttendingMember"
 	try {
 
 		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName FROM person pers JOIN eventPerson ep USING (personId)
-				WHERE ep.eventId = :eventId AND ep.personId not like :personId';
+				WHERE ep.eventId = :eventId AND ep.personId not like :personId
+				ORDER BY pers.firstName asc, pers.lastName asc';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
@@ -215,7 +216,8 @@ if ($_GET['do']=="readAllAttendingMember"
 	try {
 
 		$sql = 'SELECT pers.personId, pers.eMail, pers.firstName, pers.lastName from person pers join eventPerson ep using(personId)
-				WHERE ep.eventId = :eventId';
+				WHERE ep.eventId = :eventId
+				ORDER BY pers.firstName asc, pers.lastName asc';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT); /* integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/

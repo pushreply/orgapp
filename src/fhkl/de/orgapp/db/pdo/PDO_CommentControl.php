@@ -175,7 +175,8 @@ if ($_GET['do']=="showcomment" && isset($_GET['eventId']))
 		$sql = 'SELECT c.commentId, c.commentDateTime, c.personId, p.firstName, p.lastName, c.message
 				FROM comment c, person p
 				WHERE c.personId = p.personId
-				AND c.eventId = :eventId';
+				AND c.eventId = :eventId
+				ORDER BY c.commentDateTime desc';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':eventId', $eventid, PDO::PARAM_INT);

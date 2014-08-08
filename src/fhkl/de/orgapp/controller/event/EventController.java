@@ -201,7 +201,7 @@ public class EventController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			// Prepare the URL GET request parameter and values
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("do", "readAttendingMember"));
+			params.add(new BasicNameValuePair("do", "checkuserjoinedevent"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
