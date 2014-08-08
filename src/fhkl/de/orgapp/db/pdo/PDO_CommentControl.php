@@ -20,7 +20,6 @@ if ($_GET['do']=="addcomment"
 	$eventid = $_GET['eventId'];
 	$personid= $_GET['personId'];
 	$message = htmlspecialchars($_GET['message']); /*escape every '<tag>' (not only HTML) */
-	$classification = $_GET['classification'];
 
 	$response = array ();
 
@@ -30,8 +29,7 @@ if ($_GET['do']=="addcomment"
 		$sql='INSERT INTO comment SET
 				eventId = :eventId,
 				personId = :personId,
-				message = :message,
-				classification = :classification';
+				message = :message';
 
 		$sth = $pdo->prepare($sql);
 
@@ -39,7 +37,6 @@ if ($_GET['do']=="addcomment"
 		$sth->bindValue(':eventId', $eventid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT);
 		$sth->bindValue(':message', $message);
-		$sth->bindValue(':classification', $classification, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 
 		//check insertion status
