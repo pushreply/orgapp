@@ -66,7 +66,6 @@ public class DeleteEventController extends MenuActivity {
 						paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 						paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 						paramsCreateNotification.add(new BasicNameValuePair("classification", "6"));
-						paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
 						paramsCreateNotification.add(new BasicNameValuePair("message",
 										IMessages.Notification.MESSAGE_DELETE_EVENT_1 + EventData.getNAME()

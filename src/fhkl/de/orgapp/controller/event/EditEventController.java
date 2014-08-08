@@ -229,7 +229,8 @@ public class EditEventController extends MenuActivity {
 
 			params.add(new BasicNameValuePair("do", "updateEvent"));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EditEventController.this);
+			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+							EditEventController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -255,7 +256,6 @@ public class EditEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "5"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
 							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",

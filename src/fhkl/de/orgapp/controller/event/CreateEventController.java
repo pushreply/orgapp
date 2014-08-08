@@ -462,7 +462,8 @@ public class CreateEventController extends MenuActivity {
 					String tmpDateList = dateListIterator.next();
 					params.add(new BasicNameValuePair("do", "createEvent"));
 					params.add(new BasicNameValuePair("eventDate", tmpDateList));
-					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CreateEventController.this);
+					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+									CreateEventController.this);
 				}
 			}
 			// Non-recurring events
@@ -488,7 +489,8 @@ public class CreateEventController extends MenuActivity {
 				}
 
 				params.add(new BasicNameValuePair("do", "createEvent"));
-				json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CreateEventController.this);
+				json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+								CreateEventController.this);
 			}
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -498,7 +500,8 @@ public class CreateEventController extends MenuActivity {
 					paramsGetMemberList.add(new BasicNameValuePair("do", "readAllUserInGroup"));
 					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
-					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMemberList, CreateEventController.this);
+					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMemberList,
+									CreateEventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -512,7 +515,6 @@ public class CreateEventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "4"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 
 							if (!regularityDate.isChecked()) {
 								paramsCreateNotification.add(new BasicNameValuePair("message",

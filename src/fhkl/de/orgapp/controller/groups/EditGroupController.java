@@ -280,8 +280,6 @@ public class EditGroupController extends MenuActivity {
 
 							paramsCreateNotification.add(new BasicNameValuePair("message", message));
 
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "null"));
-
 							// Send notifications
 							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 											paramsCreateNotification, EditGroupController.this);

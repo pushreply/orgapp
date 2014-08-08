@@ -38,17 +38,18 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 /**
  * EventController - Manage all event occurrences and comments in each event.
- * Available operations: 
+ * Available operations:
  * <ul>
  * <li>Show all events from each group.</li>
  * <li>Show all events from each user (see CalendarController).</li>
  * <li>Change the attending status of a user to an event.</li>
  * <li>Delete an event.</li>
  * <li>Edit or update an event.</li>
- * <li>Show all comments from an event. </li>
+ * <li>Show all comments from an event.</li>
  * </ul>
+ * 
  * @author ronaldo.hasiholan
- *
+ * 
  */
 public class EventController extends MenuActivity {
 
@@ -174,9 +175,9 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to fetch data
 	 * through the network. The extended AsyncTask, GetEvent class retrieves event
-	 * detail by requesting the personId and eventId using the HTTPS request.
-	 * The PHP files on the server side handle the request, return the result and
-	 * a success marker to the client app.
+	 * detail by requesting the personId and eventId using the HTTPS request. The
+	 * PHP files on the server side handle the request, return the result and a
+	 * success marker to the client app.
 	 * 
 	 * 
 	 */
@@ -204,7 +205,8 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-			// Set a JSON object, give it the URL, the prepared parameters and this context, 
+			// Set a JSON object, give it the URL, the prepared parameters and this
+			// context,
 			// and send the request through HTTPS.
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							EventController.this);
@@ -245,8 +247,8 @@ public class EventController extends MenuActivity {
 	 * Begin the background operation using asynchronous task to change data
 	 * through the network. The extended AsyncTask, ChangeAttendingStatus class
 	 * modifies attending state by requesting the personId and eventId using the
-	 * HTTPS request. The PHP files on the server side handle the request,
-	 * return the result and a success marker to the client app.
+	 * HTTPS request. The PHP files on the server side handle the request, return
+	 * the result and a success marker to the client app.
 	 * 
 	 * 
 	 */
@@ -263,8 +265,9 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			
-			// Prepare the HTTPS request to set whether an event passed to the user private calendar or not. 
+
+			// Prepare the HTTPS request to set whether an event passed to the user
+			// private calendar or not.
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
@@ -301,11 +304,11 @@ public class EventController extends MenuActivity {
 	/**
 	 * Begin the background operation using asynchronous task to retrieve data
 	 * through the network. The extended AsyncTask, ShowComments class retrieves
-	 * all comments of an event by requesting the eventId using the HTTPS 
-	 * request. The string "do=showcomment" is being used to execute the
-	 * corresponding PHP operation in the back-end. The PHP files on the server
-	 * side handle the request, return the result as a list and a success marker
-	 * to the client app.
+	 * all comments of an event by requesting the eventId using the HTTPS request.
+	 * The string "do=showcomment" is being used to execute the corresponding PHP
+	 * operation in the back-end. The PHP files on the server side handle the
+	 * request, return the result as a list and a success marker to the client
+	 * app.
 	 * 
 	 * 
 	 */
@@ -320,7 +323,7 @@ public class EventController extends MenuActivity {
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
 
-			// Send the request as a JSON object including this class as context 
+			// Send the request as a JSON object including this class as context
 			// for the HTTPS GET request.
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
 							EventController.this);
@@ -615,7 +618,6 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "9"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.DELETE_COMMENT_1
 											+ message + IMessages.Notification.DELETE_COMMENT_2));
 
@@ -667,12 +669,12 @@ public class EventController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			// Discard operation if the proposed new message has the same content 
-			// as actual. 
+			// Discard operation if the proposed new message has the same content
+			// as actual.
 			if (message.equals(changedMessage)) {
 				return null;
 			}
-			
+
 			// Prepare HTTPS GET request parameters and put everything as JSON object
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "updatecomment"));
@@ -687,9 +689,9 @@ public class EventController extends MenuActivity {
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				System.out.println(success);
-				
-				// If the server send success reponse, set another request to read all 
-				// member which is going to the event. 
+
+				// If the server send success reponse, set another request to read all
+				// member which is going to the event.
 				if (success == 1) {
 
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
@@ -701,10 +703,10 @@ public class EventController extends MenuActivity {
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
-						
+
 						// Get the "member" array returned by PHP to JSON
 						member = json.getJSONArray("member");
-						
+
 						// Prepare HTTP GET Request to create notification.
 						for (int i = 0; i < member.length(); i++) {
 							JSONObject c = member.getJSONObject(i);
@@ -713,7 +715,6 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "8"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.EDIT_COMMENT_1
 											+ message + IMessages.Notification.EDIT_COMMENT_2 + changedMessage
 											+ IMessages.Notification.EDIT_COMMENT_3));
@@ -741,15 +742,15 @@ public class EventController extends MenuActivity {
 			}
 		}
 	}
-	
+
 	/**
-	 * Begin the background operation using asynchronous task to add data
-	 * through the network. The extended AsyncTask, AddComment class creates a
-	 * comment in an event by requesting the commentId using the HTTPS request.
-	 * The string "do=addcomment" is being used to execute the corresponding
-	 * PHP 'add a comment' operation in the back-end. The PHP files on the server side
-	 * handle the request, return the result as a list and a success marker to the
-	 * client app.
+	 * Begin the background operation using asynchronous task to add data through
+	 * the network. The extended AsyncTask, AddComment class creates a comment in
+	 * an event by requesting the commentId using the HTTPS request. The string
+	 * "do=addcomment" is being used to execute the corresponding PHP 'add a
+	 * comment' operation in the back-end. The PHP files on the server side handle
+	 * the request, return the result as a list and a success marker to the client
+	 * app.
 	 * 
 	 * 
 	 */
@@ -782,8 +783,8 @@ public class EventController extends MenuActivity {
 			paramsInsertComment.add(new BasicNameValuePair("personId", personId));
 			paramsInsertComment.add(new BasicNameValuePair("message", message));
 
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", paramsInsertComment,
-							EventController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET",
+							paramsInsertComment, EventController.this);
 
 			Log.d("comment: ", json.toString());
 
@@ -811,7 +812,6 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("do", "create"));
 							paramsCreateNotification.add(new BasicNameValuePair("eMail", c.getString("eMail")));
 							paramsCreateNotification.add(new BasicNameValuePair("classification", "7"));
-							paramsCreateNotification.add(new BasicNameValuePair("syncInterval", "0"));
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.CREATE_COMMENT_1
 											+ EventData.getNAME() + IMessages.Notification.CREATE_COMMENT_2));
 

@@ -383,7 +383,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						}
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
-						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
 										MemberPrivilegeInfoController.this);
 

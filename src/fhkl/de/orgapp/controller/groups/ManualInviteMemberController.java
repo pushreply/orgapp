@@ -397,7 +397,6 @@ public class ManualInviteMemberController extends Activity {
 						paramsNotification.add(new BasicNameValuePair("classification", "1"));
 						String message = IMessages.Notification.MESSAGE_INVITE + GroupData.getGROUPNAME();
 						paramsNotification.add(new BasicNameValuePair("message", message));
-						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 
 						// Send Notifications
 						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,

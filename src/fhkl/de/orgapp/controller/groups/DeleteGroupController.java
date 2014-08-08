@@ -123,7 +123,6 @@ public class DeleteGroupController extends MenuActivity {
 								+ IMessages.Notification.DELETE_GROUP_NOTIFICATION_2;
 				params.add(new BasicNameValuePair("message", notification));
 				params.add(new BasicNameValuePair("classification", "3"));
-				params.add(new BasicNameValuePair("syncInterval", null));
 
 				for (m = 0; m < memberList.length(); m++) {
 					params.add(new BasicNameValuePair("eMail", memberList.getJSONObject(m).getString(TAG_EMAIL).toString()));
