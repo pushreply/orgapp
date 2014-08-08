@@ -314,4 +314,89 @@ $_GET['do']=="update"
 	}
 }
 
+/*------------------------------------------------------------
+ * Forgot password, send email
+*/
+
+if ( $_GET['do']=="forget" && isset($_GET['eMail']) )
+{
+	/*
+	 * pass the get values to some variables
+	*/
+	$personid= $_GET['personId'];
+	$eMail = htmlspecialchars($_GET['eMail']); /*escape every '<tag>' (not only HTML) */
+
+	/* Generate a new password */
+	$newpassword = generateRandomString();
+
+	/*
+	 * Hashing password
+	*/
+	$hashedpassword = hash('sha512', $prefix . $newpassword . $suffix);
+
+	$response = array ();
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
+
+	try
+	{
+		$sql='UPDATE person SET
+				password = :password
+				WHERE eMail = :eMail';
+
+		$sth = $pdo->prepare($sql);
+
+		/* bind the values, in the same order as the $sql statement. */
+		$sth->bindValue(':eMail', $eMail);
+		$sth->bindValue(':password', $hashedpassword);
+
+		$confirm = $sth->execute();
+
+		//check update status
+		if ($confirm==true) {
+
+			/* successfully updated into database */
+			$response ["success"] = 1;
+				
+			/* echoing JSON response */
+			echo json_encode ($response);
+				
+			/* Send Email to user */
+			sendEmail($eMail, $newpassword);
+				
+		}
+		else
+		{
+			$response ["success"] = 0;
+			echo json_encode ($response);
+		}
+	}
+	catch (PDOException $e)
+	{
+		$response ["success"] = 0;
+		echo 'ERROR: ' . $e->getMessage();
+		exit();
+	}
+}
+
+function generateRandomString($length = 8) {
+	$characters = '123456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, strlen($characters) - 1)];
+	}
+	return $randomString;
+}
+
+function sendEmail($eMail, $newpassword){
+	$to      = $eMail;
+	$subject = 'Your new password';
+	$message = 'Your new password = ' . $newpassword ;
+	$headers = 'From: orgapp@pushrply.com ' . "\r\n" .
+			'Reply-To: orgapp@pushrply.com ' . "\r\n" .
+			'X-Mailer: PHP/' . phpversion();
+
+	mail($to, $subject, $message, $headers);
+}
+
 ?>
