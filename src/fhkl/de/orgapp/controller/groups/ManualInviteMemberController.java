@@ -281,6 +281,14 @@ public class ManualInviteMemberController extends Activity {
 			}
 
 			String[] editTextArray = new String[editTextLength / 2];
+
+			for (int i = 0; i < editTextArray.length; i++) {
+				if (!InputValidator.isEmailValid(editTextArray[i])) {
+					// Wrong E-Mail address format
+					return IMessages.Error.INVALID_EMAIL;
+				}
+			}
+
 			for (int i = 0; i < editTextLength; i++) {
 				if (i % 2 == 0) {
 					EditText tmp = (EditText) textLayout.getChildAt(i);
@@ -295,12 +303,6 @@ public class ManualInviteMemberController extends Activity {
 
 						editTextArray[i / 2] = tmp.getText().toString();
 					}
-				}
-			}
-			for (int i = 0; i < editTextArray.length; i++) {
-				if (!InputValidator.isEmailValid(editTextArray[i])) {
-					// Wrong E-Mail address format
-					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
 
@@ -485,7 +487,9 @@ public class ManualInviteMemberController extends Activity {
 		editor.putString("shownEntries", NotificationSettingsData.getSHOW_ENTRIES());
 		editor.putString("groupInvites", NotificationSettingsData.getGROUP_INVITES());
 		editor.putString("groupEdited", NotificationSettingsData.getGROUP_EDITED());
+		editor.putString("groupRemoved", NotificationSettingsData.getGROUP_REMOVED());
 		editor.putString("eventsAdded", NotificationSettingsData.getEVENTS_ADDED());
+		editor.putString("eventsEdited", NotificationSettingsData.getEVENTS_EDITED());
 		editor.putString("eventsRemoved", NotificationSettingsData.getEVENTS_REMOVED());
 		editor.putString("commentsAdded", NotificationSettingsData.getCOMMENTS_ADDED());
 		editor.putString("commentsEdited", NotificationSettingsData.getCOMMENTS_EDITED());

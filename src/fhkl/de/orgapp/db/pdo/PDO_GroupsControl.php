@@ -16,8 +16,8 @@ if ($_GET['do']=="createGroup"
 	 * pass the get values to some variables
 	*/
 	$personId = $_GET['personId'];
-	$name = htmlspecialchars($_GET['name']); /*escape every '<tag>' (not only HTML) */
-	$info = htmlspecialchars($_GET['info']);
+	$name = htmlspecialchars($_GET['name'], ENT_QUOTES, 'UTF-8'); /*escape every '<tag>' (not only HTML) */
+	$info = htmlspecialchars($_GET['info'], ENT_QUOTES, 'UTF-8');
 
 	$response = array ();
 
@@ -71,8 +71,8 @@ if ($_GET['do']=="updateGroup"
 		&& isset($_GET['info']))
 {
 	$groupId = $_GET['groupId'];
-	$name = htmlspecialchars($_GET['name']);
-	$info = htmlspecialchars($_GET['info']);
+	$name = htmlspecialchars($_GET['name'], ENT_QUOTES, 'UTF-8');
+	$info = htmlspecialchars($_GET['info'], ENT_QUOTES, 'UTF-8');
 
 	$response = array ();
 
@@ -80,16 +80,16 @@ if ($_GET['do']=="updateGroup"
 
 	try {
 		$sql='UPDATE groups SET
-				name = :name
+				name = :name,
 				info = :info
 				WHERE groupId = :groupId';
 
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':info', $info);
+		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 
 		if ($confirm==true) {
@@ -287,7 +287,7 @@ if ($_GET['do']=="readUserInGroup"
 		$confirm = $sth->execute();
 		$result = $sth->fetchAll();
 
-		if ($confirm==true) {
+		if ($confirm==true && $result != null) {
 			/*
 			 * need a container for json
 			*/

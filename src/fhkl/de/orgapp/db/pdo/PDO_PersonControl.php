@@ -12,12 +12,12 @@ $suffix = "21x92u1707";
 
 if
 (
-	$_GET['do']=="create"
-	&& isset($_GET['eMail'])
-	&& isset($_GET['password'])
-	&& isset($_GET['firstName'])
-	&& isset($_GET['lastName'])
-	&& isset($_GET['created'])
+$_GET['do']=="create"
+		&& isset($_GET['eMail'])
+		&& isset($_GET['password'])
+		&& isset($_GET['firstName'])
+		&& isset($_GET['lastName'])
+		&& isset($_GET['created'])
 )
 {
 	/*
@@ -31,8 +31,8 @@ if
 
 	$response = array ();
 
-	/* 
-	* Hashing password 
+	/*
+	 * Hashing password
 	*/
 	$hashedpassword = hash('sha512', $prefix . $password . $suffix);
 
@@ -137,7 +137,7 @@ if($_GET['do']=="read")
 					array_push($response["person"], $person);
 				}
 
-				if($hashedpassword == $person['password']) 
+				if($hashedpassword == $person['password'])
 				{
 					// successfully selected from database
 					$response ["success"] = 1;
@@ -197,19 +197,11 @@ if($_GET['do']=="read")
 				*/
 				$response["person"] = array();
 
-				/* check if password is set, and encrypt. */
-				if (isset($_GET['password']))
-				{
-					$password = $_GET['password'];
-					$hashedpassword = hash('sha512', $prefix . $password . $suffix);
-					echo $hashedpassword;
-				}
 
 				foreach ($result as $row)
 				{
 					$person['personId'] = $row['personId'];
 					$person['eMail'] = html_entity_decode($row['eMail'], ENT_QUOTES, 'UTF-8');
-					$person['password'] = $row['password'];
 					$person['firstName'] = html_entity_decode($row['firstName'], ENT_QUOTES, 'UTF-8');
 					$person['lastName'] = html_entity_decode($row['lastName'], ENT_QUOTES, 'UTF-8');
 					$person['created'] = $row['created'];
@@ -222,18 +214,8 @@ if($_GET['do']=="read")
 					array_push($response["person"], $person);
 				}
 
-				if($hashedpassword == $person['password']) 
-				{
-					// successfully selected from database
-					$response ["success"] = 1;
-					// echoing JSON response
-					echo json_encode ($response);
-				}
-				else
-				{
-					$response ["success"] = 2;
-					echo json_encode ($response);
-				}
+				$response ["success"] = 1;
+				echo json_encode ($response);
 
 			}
 			else
@@ -257,14 +239,14 @@ if($_GET['do']=="read")
 
 if
 (
-	$_GET['do']=="update"
-	&& isset($_GET['personId'])
-	&& isset($_GET['eMail'])
-	&& isset($_GET['firstName'])
-	&& isset($_GET['lastName'])
-	&& isset($_GET['birthday'])
-	&& isset($_GET['gender'])
-	&& isset($_GET['password'])
+$_GET['do']=="update"
+		&& isset($_GET['personId'])
+		&& isset($_GET['eMail'])
+		&& isset($_GET['firstName'])
+		&& isset($_GET['lastName'])
+		&& isset($_GET['birthday'])
+		&& isset($_GET['gender'])
+		&& isset($_GET['password'])
 )
 {
 	/*
@@ -282,7 +264,7 @@ if
 	 * Hashing password
 	*/
 	$hashedpassword = hash('sha512', $prefix . $password . $suffix);
-	
+
 	$response = array ();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;

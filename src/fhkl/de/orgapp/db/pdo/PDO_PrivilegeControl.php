@@ -93,7 +93,7 @@ if ($_GET['do']=="createPrivilegeMember"
 		$sql='INSERT INTO privilege SET
 				groupId = :groupId,
 				personId = :personId,
-				memberSince = :membersince,
+				memberSince = :memberSince,
 				privilegeManagement = false,
 				memberInvitation = false,
 				memberlistEditing = false,

@@ -20,7 +20,7 @@ if ($_GET['do']=="createEvent"
 	*/
 	$personId = $_GET['personId'];
 	$groupId = $_GET['groupId'];
-	$name = htmlspecialchars($_GET['name']); /*escape every '<tag>' (not only HTML) */
+	$name = htmlspecialchars($_GET['name'], ENT_QUOTES, 'UTF-8'); /*escape every '<tag>' (not only HTML) */
 	$eventDate = $_GET['eventDate'];
 	$eventTime = $_GET['eventTime'];
 	$eventLocation = $_GET['eventLocation'];
@@ -34,8 +34,8 @@ if ($_GET['do']=="createEvent"
 				personId = :personId,
 				groupId = :groupId,
 				name = :name,
-				eventDate = :eventDate
-				eventTime = :eventTime
+				eventDate = :eventDate,
+				eventTime = :eventTime,
 				eventLocation = :eventLocation';
 
 		$sth = $pdo->prepare($sql);
@@ -85,7 +85,7 @@ if ($_GET['do']=="updateEvent"
 		&& isset($_GET['eventLocation']))
 {
 	$eventId = $_GET['eventId'];
-	$name = htmlspecialchars($_GET['name']);
+	$name = htmlspecialchars($_GET['name'], ENT_QUOTES, 'UTF-8');
 	$eventDate = $_GET['eventDate'];
 	$eventTime = $_GET['eventTime'];
 	$eventLocation = htmlspecialchars($_GET['eventLocation']);
@@ -96,9 +96,9 @@ if ($_GET['do']=="updateEvent"
 
 	try {
 		$sql='UPDATE event  SET
-				name = :name
-				eventDate = :eventDate
-				eventTime = :eventTime
+				name = :name,
+				eventDate = :eventDate,
+				eventTime = :eventTime,
 				eventLocation = :eventLocation
 				WHERE eventId = :eventId';
 

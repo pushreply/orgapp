@@ -432,7 +432,6 @@ public class CreateEventController extends MenuActivity {
 				Iterator<String> dateListIterator = dateList.iterator();
 				for (int i = 0; i < dateList.size(); i++) {
 					String tmpDateList = dateListIterator.next();
-					params.add(new BasicNameValuePair("do", "createEvent"));
 					params.add(new BasicNameValuePair("eventDate", tmpDateList));
 					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 									CreateEventController.this);
