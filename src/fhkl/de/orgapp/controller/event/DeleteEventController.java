@@ -75,7 +75,7 @@ public class DeleteEventController extends MenuActivity {
 						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 										paramsCreateNotification, DeleteEventController.this);
 					}
-					if (json.getInt(TAG_SUCCESS) != 1) {
+					if (json.getInt(TAG_SUCCESS) == 1) {
 
 						List<NameValuePair> paramsDelete = new ArrayList<NameValuePair>();
 						paramsDelete.add(new BasicNameValuePair("do", "deleteAllPersonsInEvent"));
