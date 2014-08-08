@@ -30,6 +30,14 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.MemberData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * MemberPrivilegeInfoController - Handles the member privilege info activity.
+ * 
+ * Privileges Management handling. Additional member information.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class MemberPrivilegeInfoController extends MenuActivity {
 	private ProgressDialog pDialog;
 
@@ -45,6 +53,12 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					privilegeEventDeleting, privilegeCommentEditing, privilegeCommentDeleting, privilegeManagement;
 	Button bSave, bCancel;
 
+	/**
+	 * Initializes Views. Loads member information. Loads privilege information
+	 * when user is authorized to handle privilege management.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,6 +69,8 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		bSave = (Button) findViewById(R.id.SAVE_PRIVILEGES);
 		bCancel = (Button) findViewById(R.id.CANCEL);
 
+		// Only group admins and member with privilege management rights are allowed
+		// to edit privileges
 		if (GroupData.getPERSONID().equals(UserData.getPERSONID()) || GroupData.getPRIVILEGE_MANAGEMENT().equals("1")) {
 			LinearLayout privilege_options = (LinearLayout) findViewById(R.id.PRIVILEGE_OPTIONS);
 			privilege_options.setVisibility(View.VISIBLE);
@@ -78,6 +94,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			privilegeManagement.setChecked(Boolean.parseBoolean(MemberData.getPRIVILEGE_MANAGEMENT()));
 
 		} else {
+			// Hide save button
 			bSave.setVisibility(View.GONE);
 		}
 
@@ -132,8 +149,17 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 		});
 	}
 
+	/**
+	 * Async class that saves the selected privileges.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class SavePrivileges extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProgressDialog.
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -144,10 +170,18 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Saves selected privileges. Sends notification to member.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
+			// Can not edit admin privileges
 			if (GroupData.getPERSONID().equals(MemberData.getPERSONID())) {
 				return IMessages.Error.PRIVILEGE_ADMIN;
 			}
+			// Check the checkboxes
 			String afterMemberInvitation = privilegeInvitation.isChecked() == true ? "1" : "0";
 			String afterMemberlistEditing = privilegeMemberlistEditing.isChecked() == true ? "1" : "0";
 			String afterEventCreating = privilegeEventCreating.isChecked() == true ? "1" : "0";
@@ -187,6 +221,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						String beforePrivilegeManagement = c.getString("privilegeManagement");
 						boolean privilegeChanged = false;
 
+						// Compares current and selected privileges
 						if (beforeMemberInvitation.equals(afterMemberInvitation)) {
 							privilegesGiven[0] = "";
 						} else {
@@ -295,6 +330,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					paramsUpdate.add(new BasicNameValuePair("commentDeleting", afterCommentDeleting));
 					paramsUpdate.add(new BasicNameValuePair("privilegeManagement", afterPrivilegeManagement));
 
+					// Update the privileges
 					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate,
 									MemberPrivilegeInfoController.this);
 
@@ -303,11 +339,15 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						List<NameValuePair> paramsNotification = new ArrayList<NameValuePair>();
+
+						// Required parameters
 						paramsNotification.add(new BasicNameValuePair("do", "create"));
 						paramsNotification.add(new BasicNameValuePair("eMail", tv_eMail.getText().toString()));
 						paramsNotification.add(new BasicNameValuePair("classification", "10"));
 						String message = new String();
 						boolean firstEntry = true;
+
+						// Message which describes granted and revoked user rights
 						message += "The following privileges were changed in the group \"" + GroupData.getGROUPNAME() + "\": ";
 
 						if (!privilegesGiven[0].isEmpty()) {
@@ -386,12 +426,10 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 						}
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
+
+						// Send notification to member
 						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
 										MemberPrivilegeInfoController.this);
-
-						success = json.getInt(TAG_SUCCESS);
-						if (success == 1) {
-						}
 					}
 				}
 			} catch (Exception e) {
@@ -399,10 +437,14 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 				pDialog.dismiss();
 				logout();
 			}
-
 			return null;
 		}
 
+		/**
+		 * Removes ProgressDialog. Starts new activity.
+		 * 
+		 * @param message String
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
