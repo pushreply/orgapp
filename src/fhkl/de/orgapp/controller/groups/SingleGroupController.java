@@ -39,6 +39,15 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.ListModel;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * SingleGroupController - Handles the single group activity.
+ * 
+ * Displays group information and group events. Quick sign-in/sign-off via click
+ * on icon.
+ * 
+ * @author Jochen Jung
+ * @version 1.0
+ */
 public class SingleGroupController extends MenuActivity {
 	private ProgressDialog pDialog;
 
@@ -56,6 +65,12 @@ public class SingleGroupController extends MenuActivity {
 	TextView tv_eventId, tvGroupInfo, groupInfo;
 	LinearLayout hr;
 
+	/**
+	 * Initializes the view. Calls async class that loads the group events in a
+	 * ListView.
+	 * 
+	 * @param savedInstanceState Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,7 +87,17 @@ public class SingleGroupController extends MenuActivity {
 		new GetGroupCalendar().execute();
 	}
 
+	/**
+	 * Async class that loads the group events in a ListView
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GetGroupCalendar extends AsyncTask<String, String, String> {
+
+		/**
+		 * Creates ProgressDialog
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -83,6 +108,12 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * 
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -90,6 +121,7 @@ public class SingleGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("do", "readGroupEvents"));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
+			// Show limited events. Adjustable in event settings
 			if (!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 
@@ -115,11 +147,13 @@ public class SingleGroupController extends MenuActivity {
 						eventTime = eventTime.substring(0, 5);
 						final ListModel listModel = new ListModel();
 
+						// Save values in custom model
 						listModel.setEventId(eventId);
 						listModel.setEventName(eventName);
 						listModel.setEventDate(eventDate);
 						listModel.setEventTime(eventTime);
 
+						// Check if member is signed on/off event
 						UserJoinEventChecker joinChecker = new UserJoinEventChecker();
 
 						if (joinChecker.isMemberJoinedEvent(eventId)) {
@@ -127,11 +161,10 @@ public class SingleGroupController extends MenuActivity {
 						} else {
 							listModel.setAttending(R.drawable.ic_action_bad);
 						}
+						// Save model to custom adapter
 						customAdapterValues.add(listModel);
 
 					}
-				} else {
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -142,6 +175,10 @@ public class SingleGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProgressDialog. Initializes and loads ListView. Loads group
+		 * information and separator.
+		 */
 		protected void onPostExecute(String file_url) {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
@@ -159,8 +196,17 @@ public class SingleGroupController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Async class that saves event values in EventData.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class GetEvent extends AsyncTask<String, String, String> {
 
+		/**
+		 * Creates ProgressDialog.
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -171,6 +217,12 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Saves event values in EventData.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -192,6 +244,7 @@ public class SingleGroupController extends MenuActivity {
 					for (int i = 0; i < event.length(); i++) {
 						JSONObject c = event.getJSONObject(i);
 
+						// Save event values
 						EventData.setEVENTID(c.getString("eventId"));
 						EventData.setEVENTDATE(c.getString("eventDate"));
 						EventData.setEVENTTIME(c.getString("eventTime"));
@@ -211,6 +264,9 @@ public class SingleGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProgressDialog. Starts new activity.
+		 */
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 
@@ -219,6 +275,12 @@ public class SingleGroupController extends MenuActivity {
 		}
 	}
 
+	/**
+	 * Custom adapter for four TextViews and one ImageView
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	private class CustomAdapter extends BaseAdapter {
 
 		private ArrayList<ListModel> data;
@@ -228,6 +290,13 @@ public class SingleGroupController extends MenuActivity {
 		private final Activity context;
 		private LayoutInflater inflater = null;
 
+		/**
+		 * Initializes Customadapter.
+		 * 
+		 * @param context
+		 * @param data
+		 * @param res
+		 */
 		public CustomAdapter(Activity context, ArrayList<ListModel> data, Resources res) {
 
 			this.context = context;
@@ -237,6 +306,12 @@ public class SingleGroupController extends MenuActivity {
 			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
+		/**
+		 * ViewHolder that temporary holds view values.
+		 * 
+		 * @author Jochen Jung
+		 * @version 1.0
+		 */
 		public class ViewHolder {
 
 			public TextView eventId;
@@ -246,6 +321,14 @@ public class SingleGroupController extends MenuActivity {
 			public ImageView attending;
 		}
 
+		/**
+		 * Sets values. Registers onClickListener.
+		 * 
+		 * @param position int
+		 * @param view View
+		 * @param parent ViewGroup
+		 * @return View view
+		 */
 		@SuppressLint({ "InflateParams", "ViewHolder" })
 		@Override
 		public View getView(int position, View view, ViewGroup parent) {
@@ -282,6 +365,7 @@ public class SingleGroupController extends MenuActivity {
 				tagAttending[1] = tempValues.getAttending().toString();
 				holder.attending.setTag(tagAttending);
 
+				// Set onClickListener
 				holder.eventName.setOnClickListener(onEventListener);
 				holder.eventDate.setOnClickListener(onEventListener);
 				holder.eventTime.setOnClickListener(onEventListener);
@@ -290,6 +374,7 @@ public class SingleGroupController extends MenuActivity {
 			return view;
 		}
 
+		// Open the selected event in new activity
 		private OnClickListener onEventListener = new OnClickListener() {
 
 			@Override
@@ -300,6 +385,7 @@ public class SingleGroupController extends MenuActivity {
 			}
 		};
 
+		// Change attending status in current activity
 		private OnClickListener onAttendingListener = new OnClickListener() {
 
 			@Override
@@ -321,6 +407,11 @@ public class SingleGroupController extends MenuActivity {
 			}
 		};
 
+		/**
+		 * Gets the data count.
+		 * 
+		 * @return int Count
+		 */
 		@Override
 		public int getCount() {
 			if (data.size() <= 0)
@@ -328,18 +419,40 @@ public class SingleGroupController extends MenuActivity {
 			return data.size();
 		}
 
+		/**
+		 * Gets the data at given position
+		 * 
+		 * @param position int
+		 * @return Object item
+		 */
 		@Override
 		public Object getItem(int position) {
 			return data.get(position);
 		}
 
+		/**
+		 * Get the itemId at given position
+		 * 
+		 * @param position int
+		 * @return long itemId
+		 */
 		@Override
 		public long getItemId(int position) {
 			return position;
 		}
 	}
 
+	/**
+	 * Async class that changes attending status depending on current status.
+	 * 
+	 * @author Jochen Jung
+	 * @version 1.0
+	 */
 	class ChangeAttendingStatus extends AsyncTask<String, String, String> {
+
+		/**
+		 * Creates ProgressDialog.
+		 */
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -350,6 +463,12 @@ public class SingleGroupController extends MenuActivity {
 			pDialog.show();
 		}
 
+		/**
+		 * Changes attending status depending on current status.
+		 * 
+		 * @param args String...
+		 * @return String result
+		 */
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -359,13 +478,14 @@ public class SingleGroupController extends MenuActivity {
 
 			JSONObject json;
 
-			// Not going to event
+			// Going to event -> Not going to event
 			if (toggleButtonChecked)
 				params.add(new BasicNameValuePair("do", "deletePersonInEvent"));
-			// Going to event
+			// Not going to event -> Going to event
 			else
 				params.add(new BasicNameValuePair("do", "createPersonInEvent"));
 
+			// Change attending status
 			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							SingleGroupController.this);
 
@@ -383,6 +503,9 @@ public class SingleGroupController extends MenuActivity {
 			return null;
 		}
 
+		/**
+		 * Removes ProgressDialog. Restarts refreshed activity.
+		 */
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
