@@ -94,7 +94,7 @@ public class NewGroupController extends MenuActivity {
 		String groupId;
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -172,7 +172,7 @@ public class NewGroupController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Shows AlertDialog, which gives the option to
+		 * Removes ProgressDialog. Shows AlertDialog, which gives the option to
 		 * invite member via list or manually, when group successfully created.
 		 * 
 		 * @param message String

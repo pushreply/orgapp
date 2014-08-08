@@ -59,7 +59,7 @@ public class DeleteGroupController extends MenuActivity {
 	 */
 	class GroupDelete extends AsyncTask<String, String, String> {
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -145,7 +145,7 @@ public class DeleteGroupController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Shows Toasts. Starts new Activity on successful
+		 * Removes ProgressDialog. Shows Toasts. Starts new Activity on successful
 		 * delete.
 		 * 
 		 * @param message String

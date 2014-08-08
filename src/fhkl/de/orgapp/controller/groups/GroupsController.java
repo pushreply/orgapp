@@ -83,7 +83,7 @@ public class GroupsController extends MenuActivity {
 	class Groups extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -152,7 +152,7 @@ public class GroupsController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Sets ListView. Defines ClickListener.
+		 * Removes ProgressDialog. Sets ListView. Defines ClickListener.
 		 * 
 		 * @param result String
 		 */

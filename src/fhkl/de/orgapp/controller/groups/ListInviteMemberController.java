@@ -132,7 +132,7 @@ public class ListInviteMemberController extends MenuActivity {
 	class PersonListGetter extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -208,7 +208,7 @@ public class ListInviteMemberController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Initializes and loads ListView. Updates chosen
+		 * Removes ProgressDialog. Initializes and loads ListView. Updates chosen
 		 * member list when ListItem is clicked.
 		 * 
 		 * @param message String
@@ -318,7 +318,7 @@ public class ListInviteMemberController extends MenuActivity {
 	class PersonListInvite extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -394,7 +394,7 @@ public class ListInviteMemberController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Calls method that opens a AlertDialog.
+		 * Removes ProgressDialog. Calls method that opens a AlertDialog.
 		 * 
 		 * @param message String
 		 */

@@ -68,7 +68,7 @@ public class LeaveGroupController extends MenuActivity {
 	 */
 	class LeaveGroup extends AsyncTask<String, String, String> {
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -118,7 +118,7 @@ public class LeaveGroupController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Returns to groups activity.
+		 * Removes ProgressDialog. Returns to groups activity.
 		 * 
 		 * @param message String
 		 */

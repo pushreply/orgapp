@@ -82,7 +82,7 @@ public class MemberListController extends MenuActivity {
 	class GetMemberList extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -145,7 +145,7 @@ public class MemberListController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Initializes and loads the ListView. Gives option
+		 * Removes ProgressDialog. Initializes and loads the ListView. Gives option
 		 * to delete user onItemLongClicked. Shows user information onItemClicked in
 		 * new activity.
 		 * 
@@ -222,7 +222,7 @@ public class MemberListController extends MenuActivity {
 	class DeleteMember extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -271,7 +271,7 @@ public class MemberListController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Shows warning when selected member is admin.
+		 * Removes ProgressDialog. Shows warning when selected member is admin.
 		 * 
 		 * @param message String
 		 */
@@ -293,7 +293,7 @@ public class MemberListController extends MenuActivity {
 	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -381,7 +381,7 @@ public class MemberListController extends MenuActivity {
 		}
 
 		/**
-		 * removes ProcessDialog
+		 * Removes ProgressDialog
 		 * 
 		 * @param message String
 		 */

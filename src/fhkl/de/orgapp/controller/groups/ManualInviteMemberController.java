@@ -252,7 +252,7 @@ public class ManualInviteMemberController extends Activity {
 	 */
 	class InviteMembers extends AsyncTask<String, String, String> {
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -417,7 +417,7 @@ public class ManualInviteMemberController extends Activity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Returns warning on wrong input.
+		 * Removes ProgressDialog. Returns warning on wrong input.
 		 * 
 		 * @param message String
 		 */

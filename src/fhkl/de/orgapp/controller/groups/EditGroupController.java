@@ -95,7 +95,7 @@ public class EditGroupController extends MenuActivity {
 	class GetGroup extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -151,7 +151,7 @@ public class EditGroupController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Processes result. Calls method to set view
+		 * Removes ProgressDialog. Processes result. Calls method to set view
 		 * elements.
 		 * 
 		 * @param result String
@@ -186,7 +186,7 @@ public class EditGroupController extends MenuActivity {
 	class EditGroup extends AsyncTask<String, String, String> {
 
 		/**
-		 * Creates ProcessDialog
+		 * Creates ProgressDialog
 		 */
 		@Override
 		protected void onPreExecute() {
@@ -298,7 +298,7 @@ public class EditGroupController extends MenuActivity {
 		}
 
 		/**
-		 * Removes ProcessDialog. Show Toast if group not edited.
+		 * Removes ProgressDialog. Show Toast if group not edited.
 		 * 
 		 * @param message String
 		 */
