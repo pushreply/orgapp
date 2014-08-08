@@ -2,6 +2,10 @@
 
 $dbpath = 'PDO_DB_Connect.Inc.php';
 
+$prefix = "79t43sbp26";
+$suffix = "21x92u1707";
+
+
 /*------------------------------------------------------------
  * CREATE PERSON
 */
@@ -27,6 +31,11 @@ if
 
 	$response = array ();
 
+	/* 
+	* Hashing password 
+	*/
+	$hashedpassword = hash('sha512', $prefix . $password . $suffix);
+
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
 
 	try
@@ -38,7 +47,7 @@ if
 
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':eMail', $eMail);
-		$sth->bindValue(':password', $password);
+		$sth->bindValue(':password', $hashedpassword);
 		$sth->bindValue(':firstName', $firstName);
 		$sth->bindValue(':lastName', $lastName);
 		$sth->bindValue(':created', $created);
@@ -78,7 +87,7 @@ if($_GET['do']=="read")
 		/*
 		 * pass the get values to some variables
 		*/
-		$eMail = $_GET['eMail'];
+		$eMail =  html_entity_decode($_GET['eMail'], ENT_QUOTES, 'UTF-8');
 
 		$response = array ();
 
@@ -104,6 +113,13 @@ if($_GET['do']=="read")
 				*/
 				$response["person"] = array();
 
+				/* check if password is set, and encrypt. */
+				if (isset($_GET['password']))
+				{
+					$password = htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8');
+					$hashedpassword = hash('sha512', $prefix . $password . $suffix);
+				}
+
 				foreach ($result as $row)
 				{
 					$person['personId'] = $row['personId'];
@@ -121,10 +137,19 @@ if($_GET['do']=="read")
 					array_push($response["person"], $person);
 				}
 
-				// successfully selected from database
-				$response ["success"] = 1;
-				// echoing JSON response
-				echo json_encode ($response);
+				if($hashedpassword == $person['password']) 
+				{
+					// successfully selected from database
+					$response ["success"] = 1;
+
+					// echoing JSON response
+					echo json_encode ($response);
+				}
+				else
+				{
+					$response ["success"] = 0;
+					echo json_encode ($response);
+				}
 			}
 			else
 			{
@@ -172,6 +197,14 @@ if($_GET['do']=="read")
 				*/
 				$response["person"] = array();
 
+				/* check if password is set, and encrypt. */
+				if (isset($_GET['password']))
+				{
+					$password = $_GET['password'];
+					$hashedpassword = hash('sha512', $prefix . $password . $suffix);
+					echo $hashedpassword;
+				}
+
 				foreach ($result as $row)
 				{
 					$person['personId'] = $row['personId'];
@@ -189,10 +222,19 @@ if($_GET['do']=="read")
 					array_push($response["person"], $person);
 				}
 
-				// successfully selected from database
-				$response ["success"] = 1;
-				// echoing JSON response
-				echo json_encode ($response);
+				if($hashedpassword == $person['password']) 
+				{
+					// successfully selected from database
+					$response ["success"] = 1;
+					// echoing JSON response
+					echo json_encode ($response);
+				}
+				else
+				{
+					$response ["success"] = 2;
+					echo json_encode ($response);
+				}
+
 			}
 			else
 			{
