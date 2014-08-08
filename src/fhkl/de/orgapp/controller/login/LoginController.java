@@ -136,13 +136,10 @@ public class LoginController extends Activity {
 			// Make the request to fetch the person
 			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
 							LoginController.this);
-			System.out.println("success " + json.toString());
 			try {
-				System.out.println("success start");
 				success = json.getInt("success");
-				System.out.println("success end");
 
-				// In case of success
+				// If the password correct, client receives success = 1
 				if (success == 1) {
 					System.out.println("success " + success);
 					// Fetch the person array
@@ -206,20 +203,19 @@ public class LoginController extends Activity {
 
 						return null;
 
-						// In case of no success
-//						else
-//						{
-//							return IMessages.Error.INVALID_PASSWORD;
-//						}
 					}
 					// In case of no success
 					else {
 						return IMessages.Error.INVALID_USER;
 					}
 				}
+				// If the password incorrect, client receives success = 2
+				else if(success==2){
+					return IMessages.Error.INVALID_PASSWORD;
+				}
 				// In case of no success
 				else {
-					System.out.println("NO success ");
+
 					return IMessages.Error.INVALID_USER;
 				}
 			}
