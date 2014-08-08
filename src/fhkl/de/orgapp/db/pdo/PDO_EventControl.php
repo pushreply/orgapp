@@ -359,13 +359,13 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 				$counter = 0;
 				foreach ($result as $row) {
 
-					$event['eventId'] = $result['eventId'];
-					$event['personId'] = $result['personId'];
-					$event['groupId'] = $result['groupId'];
-					$event['name'] = html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8');
-					$event['eventDate'] = $result['eventDate'];
-					$event['eventTime'] = $result['eventTime'];
-					$event['eventLocation'] = html_entity_decode($result['eventLocation'], ENT_QUOTES, 'UTF-8');
+					$event['eventId'] = $row['eventId'];
+					$event['personId'] = $row['personId'];
+					$event['groupId'] = $row['groupId'];
+					$event['name'] = html_entity_decode($row['name'], ENT_QUOTES, 'UTF-8');
+					$event['eventDate'] = $row['eventDate'];
+					$event['eventTime'] = $row['eventTime'];
+					$event['eventLocation'] = html_entity_decode($row['eventLocation'], ENT_QUOTES, 'UTF-8');
 
 					/*
 					 * push each value to the data container
