@@ -69,7 +69,9 @@ public class StartController extends Activity {
 			NotificationSettingsData.setSHOW_ENTRIES(prefs.getString("shownEntries", ""));
 			NotificationSettingsData.setGROUP_INVITES(prefs.getString("groupInvites", ""));
 			NotificationSettingsData.setGROUP_EDITED(prefs.getString("groupEdited", ""));
+			NotificationSettingsData.setGROUP_REMOVED(prefs.getString("groupRemoved", ""));
 			NotificationSettingsData.setEVENTS_ADDED(prefs.getString("eventsAdded", ""));
+			NotificationSettingsData.setEVENTS_EDITED(prefs.getString("eventsEdited", ""));
 			NotificationSettingsData.setEVENTS_REMOVED(prefs.getString("eventsRemoved", ""));
 			NotificationSettingsData.setCOMMENTS_ADDED(prefs.getString("commentsAdded", ""));
 			NotificationSettingsData.setCOMMENTS_EDITED(prefs.getString("commentsEdited", ""));

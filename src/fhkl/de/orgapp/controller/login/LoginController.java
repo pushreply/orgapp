@@ -34,11 +34,10 @@ import fhkl.de.orgapp.util.validator.OutputValidator;
  * 
  * @author Oliver Neubauer
  * @version 1.0
- *
+ * 
  */
 
-public class LoginController extends Activity
-{
+public class LoginController extends Activity {
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -47,7 +46,7 @@ public class LoginController extends Activity
 	JSONArray person = null, notificationSettingsArray, eventSettingsArray;
 	List<NameValuePair> params;
 	int success;
-	
+
 	// For the displayed button
 	private Button bSubmit;
 	private Button bCancel;
@@ -57,18 +56,15 @@ public class LoginController extends Activity
 	EditText inputPassword;
 
 	/**
-	 * Sets the content view.
-	 * Fetches the views by id.
-	 * Sets onClickListener
-	 *
+	 * Sets the content view. Fetches the views by id. Sets onClickListener
+	 * 
 	 * @param savedInstanceState contains the data
 	 */
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Set the content view
 		setContentView(R.layout.login);
 
@@ -79,22 +75,18 @@ public class LoginController extends Activity
 		inputPassword = (EditText) findViewById(R.id.PASSWORD);
 
 		// Set OnclickListener for submit
-		bSubmit.setOnClickListener(new OnClickListener()
-		{
+		bSubmit.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				// Call the data validator
 				new Validator().execute();
 			}
 		});
 
 		// Set onClickListener for cancel
-		bCancel.setOnClickListener(new OnClickListener()
-		{
+		bCancel.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				// Back to StartController
 				Intent i = new Intent(LoginController.this, StartController.class);
 				startActivity(i);
@@ -107,15 +99,14 @@ public class LoginController extends Activity
 	 * 
 	 * @author Oliver Neubauer
 	 * @version 1.0
-	 *
+	 * 
 	 */
-	
-	class Validator extends AsyncTask<String, String, String>
-	{
+
+	class Validator extends AsyncTask<String, String, String> {
 		/**
 		 * Displays a progress dialog
 		 */
-		
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -128,100 +119,93 @@ public class LoginController extends Activity
 		}
 
 		/**
-		 * Executes the request for check the user.
-		 * Fetches the notification settings of the user.
-		 * Fetches the event settings of the user.
+		 * Executes the request for check the user. Fetches the notification
+		 * settings of the user. Fetches the event settings of the user.
 		 * 
 		 * @param arg0 the parameters as array
 		 * @return an error message or null in case of success
 		 */
-		
+
 		@Override
-		protected String doInBackground(String... arg0)
-		{
+		protected String doInBackground(String... arg0) {
 			// The required parameters for the request
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 			params.add(new BasicNameValuePair("password", inputPassword.getText().toString()));
 			// Make the request to fetch the person
-			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, LoginController.this);
+			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
+							LoginController.this);
 			System.out.println("success " + json.toString());
-			try
-			{
+			try {
 				System.out.println("success start");
 				success = json.getInt("success");
 				System.out.println("success end");
-				
+
 				// In case of success
-				if (success == 1)
-				{
+				if (success == 1) {
 					System.out.println("success " + success);
 					// Fetch the person array
 					person = json.getJSONArray("person");
 
 					// Get the person (the only one)
 					e = person.getJSONObject(0);
-					
+
 					System.out.println("person " + e);
 					// Get the email
 					String eMail = e.getString("eMail");
-					
+
 					// Check the email on correctness
-					if (eMail.equals(inputEMail.getText().toString()))
-					{
+					if (eMail.equals(inputEMail.getText().toString())) {
 
-						
-							// The required parameters for the request
-							params = new ArrayList<NameValuePair>();
-							params.add(new BasicNameValuePair("do", "read"));
-							params.add(new BasicNameValuePair("personId", e.getString("personId")));
-						
-							// Make the request to fetch the notification settings
-							json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, LoginController.this);
+						// The required parameters for the request
+						params = new ArrayList<NameValuePair>();
+						params.add(new BasicNameValuePair("do", "read"));
+						params.add(new BasicNameValuePair("personId", e.getString("personId")));
 
-							success = json.getInt("success");
+						// Make the request to fetch the notification settings
+						json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET",
+										params, LoginController.this);
 
-							// In case of success
-							if (success == 1)
-							{
-								notificationSettingsArray = json.getJSONArray("notificationSettings");
-								notificationSettings = notificationSettingsArray.getJSONObject(0);
-							}
-							// In case of no success
-							else
-							{
-								pDialog.dismiss();
-								logout();
-							}
-							
-							// The required parameters for the request
-							params = new ArrayList<NameValuePair>();
-							params.add(new BasicNameValuePair("do", "read"));
-							params.add(new BasicNameValuePair("personId", e.getString("personId")));
-							
-							// Make the request to fetch the event settings
-							json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, LoginController.this);
-							
-							success = json.getInt("success");
-							
-							// In case of success
-							if(success == 1)
-							{
-								eventSettingsArray = json.getJSONArray("eventSettings");
-								eventSettings = eventSettingsArray.getJSONObject(0);
-							}
-							// In case of no success
-							else
-							{
-								// Close the progress dialog
-								pDialog.dismiss();
-								// Logout the user
-								logout();
-							}
+						success = json.getInt("success");
 
-							return null;
-						
+						// In case of success
+						if (success == 1) {
+							notificationSettingsArray = json.getJSONArray("notificationSettings");
+							notificationSettings = notificationSettingsArray.getJSONObject(0);
+						}
+						// In case of no success
+						else {
+							pDialog.dismiss();
+							logout();
+						}
+
+						// The required parameters for the request
+						params = new ArrayList<NameValuePair>();
+						params.add(new BasicNameValuePair("do", "read"));
+						params.add(new BasicNameValuePair("personId", e.getString("personId")));
+
+						// Make the request to fetch the event settings
+						json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params,
+										LoginController.this);
+
+						success = json.getInt("success");
+
+						// In case of success
+						if (success == 1) {
+							eventSettingsArray = json.getJSONArray("eventSettings");
+							eventSettings = eventSettingsArray.getJSONObject(0);
+						}
+						// In case of no success
+						else {
+							// Close the progress dialog
+							pDialog.dismiss();
+							// Logout the user
+							logout();
+						}
+
+						return null;
+
 						// In case of no success
 //						else
 //						{
@@ -229,60 +213,53 @@ public class LoginController extends Activity
 //						}
 					}
 					// In case of no success
-					else
-					{
+					else {
 						return IMessages.Error.INVALID_USER;
 					}
 				}
 				// In case of no success
-				else
-				{
+				else {
 					System.out.println("NO success ");
 					return IMessages.Error.INVALID_USER;
 				}
 			}
 			// In case of error
-			catch(Exception e)
-			{
+			catch (Exception e) {
 				// Close the progress dialog
 				pDialog.dismiss();
 				// Logout the user
 				logout();
 			}
-			
+
 			return null;
 		}
 
 		/**
-		 * Dismisses the progress dialog
-		 * Displays the error message, if available.
-		 * Sets the user data, notification settings and event settings.
-		 * Calls the CalendarController
-		 *
+		 * Dismisses the progress dialog Displays the error message, if available.
+		 * Sets the user data, notification settings and event settings. Calls the
+		 * CalendarController
+		 * 
 		 * @param message the error message or null in case of success
 		 */
-		
+
 		@Override
-		protected void onPostExecute(String message)
-		{
+		protected void onPostExecute(String message) {
 			// Close the progress dialog
 			pDialog.dismiss();
 
 			// Display an error message
-			if (message != null)
-			{
+			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
 			// In case of success
-			else
-			{
-				try
-				{
+			else {
+				try {
 					// Set the user data
 					UserData.setPERSONID(e.getString("personId"));
 					UserData.setFIRST_NAME(e.getString("firstName"));
 					UserData.setLAST_NAME(e.getString("lastName"));
-					UserData.setBIRTHDAY(OutputValidator.isUserBirthdaySet(e.getString("birthday")) ? e.getString("birthday") : "");
+					UserData.setBIRTHDAY(OutputValidator.isUserBirthdaySet(e.getString("birthday")) ? e.getString("birthday")
+									: "");
 					UserData.setGENDER(OutputValidator.isUserGenderSet(e.getString("gender")) ? e.getString("gender") : "");
 					UserData.setEMAIL(e.getString("eMail"));
 					UserData.setMEMBER_SINCE(e.getString("created"));
@@ -315,15 +292,15 @@ public class LoginController extends Activity
 
 					// Set the event settings of the user
 					EventSettingsData.setEVENT_SETTINGS_ID(eventSettings.getString("eventSettingsId"));
-					EventSettingsData.setSHOWN_EVENT_ENTRIES(OutputValidator.isEventSettingsShownEntriesSet(eventSettings.getString("shownEntries")) ? eventSettings.getString("shownEntries") : "");
-					
+					EventSettingsData.setSHOWN_EVENT_ENTRIES(OutputValidator.isEventSettingsShownEntriesSet(eventSettings
+									.getString("shownEntries")) ? eventSettings.getString("shownEntries") : "");
+
 					// Call the CalendarController
 					Intent intent = new Intent(getApplicationContext(), CalendarController.class);
 					startActivity(intent);
 				}
 				// In case of error
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					// Logout the user
 					logout();
 				}
@@ -332,10 +309,10 @@ public class LoginController extends Activity
 	}
 
 	/**
-	 * Calls methods for reset the user data, notification settings and event settings.
-	 * Calls the StartController
+	 * Calls methods for reset the user data, notification settings and event
+	 * settings. Calls the StartController
 	 */
-	
+
 	private void logout() {
 		resetUserData();
 		resetNotificationSettingsData();
@@ -348,9 +325,8 @@ public class LoginController extends Activity
 	/**
 	 * Resets the user data
 	 */
-	
-	private void resetUserData()
-	{
+
+	private void resetUserData() {
 		UserData.setPERSONID("");
 		UserData.setFIRST_NAME("");
 		UserData.setLAST_NAME("");
@@ -363,9 +339,8 @@ public class LoginController extends Activity
 	/**
 	 * Resets the notification settings
 	 */
-	
-	private void resetNotificationSettingsData()
-	{
+
+	private void resetNotificationSettingsData() {
 		NotificationSettingsData.setNOTIFICATION_SETTINGS_ID("");
 		NotificationSettingsData.setSHOW_ENTRIES("");
 		NotificationSettingsData.setGROUP_INVITES("");
@@ -380,13 +355,12 @@ public class LoginController extends Activity
 		NotificationSettingsData.setPRIVILEGE_GIVEN("");
 		NotificationSettingsData.setVIBRATION("");
 	}
-	
+
 	/**
 	 * Resets the event settings
 	 */
-	
-	private void resetEventSettingsData()
-	{
+
+	private void resetEventSettingsData() {
 		EventSettingsData.setEVENT_SETTINGS_ID("");
 		EventSettingsData.setSHOWN_EVENT_ENTRIES("");
 	}
