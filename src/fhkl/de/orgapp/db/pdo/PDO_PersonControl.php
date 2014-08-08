@@ -275,7 +275,13 @@ if
 	$lastName = htmlspecialchars($_GET['lastName']); /*escape every '<tag>' (not only HTML) */
 	$birthday = $_GET['birthday'];
 	$gender = $_GET['gender'];
+	$password = htmlspecialchars($_GET['password'], ENT_QUOTES, 'UTF-8');
 
+	/*
+	 * Hashing password
+	*/
+	$hashedpassword = hash('sha512', $prefix . $password . $suffix);
+	
 	$response = array ();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
@@ -287,7 +293,8 @@ if
 				firstName = :firstName,
 				lastName = :lastName,
 				birthday = :birthday,
-				gender = :gender
+				gender = :gender,
+				password = :password
 				WHERE personId = :personId';
 
 		$sth = $pdo->prepare($sql);
@@ -298,6 +305,7 @@ if
 		$sth->bindValue(':lastName', $lastName);
 		$sth->bindValue(':birthday', $birthday);
 		$sth->bindValue(':gender', $gender);
+		$sth->bindValue(':password', $hashedpassword);
 		$sth->bindValue(':personId', $personid, PDO::PARAM_INT); /* every integer must have "PDO::PARAM_INT"; it's a PHP PDO bug :)*/
 
 		$confirm = $sth->execute();
