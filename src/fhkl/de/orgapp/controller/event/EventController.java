@@ -65,6 +65,7 @@ public class EventController extends MenuActivity {
 	String message, changedMessage, commentId;
 
 	// Variables to hold event details in the UI
+	TextView groupName;
 	TextView eventName;
 	TextView eventTime;
 	TextView eventDate;
@@ -104,11 +105,13 @@ public class EventController extends MenuActivity {
 		this.setTitle(EventData.getNAME());
 
 		// Set the eventName and bind to their UI element in the layout.
+		groupName = (TextView) findViewById(R.id.GROUPNAME);
 		eventName = (TextView) findViewById(R.id.EVENTNAME);
 		eventTime = (TextView) findViewById(R.id.EVENTTIME);
 		eventDate = (TextView) findViewById(R.id.EVENTDATE);
 		eventLocation = (TextView) findViewById(R.id.EVENTLOCATION);
 
+		groupName.setText(GroupData.getGROUPNAME());
 		eventName.setText(EventData.getNAME());
 		eventTime.setText(EventData.getEVENTTIME());
 		eventDate.setText(EventData.getEVENTDATE());

@@ -36,6 +36,7 @@
     <string name="LOGOUT">Logout</string>
 
     <!-- Event -->
+    <string name="GROUPNAME_LABEL">Group: </string>
     <string name="EVENTNAME_LABEL">Event: </string>
     <string name="EVENTTIME_LABEL">Time: </string>
     <string name="EVENTDATE_LABEL">Date: </string>

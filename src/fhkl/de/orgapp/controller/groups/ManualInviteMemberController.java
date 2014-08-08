@@ -18,7 +18,9 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -461,13 +463,55 @@ public class ManualInviteMemberController extends Activity {
 	}
 
 	/**
-	 * Logs user out. Resets data.
+	 * Saves the preferences when app is closed.
 	 */
-	private void logout() {
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		SharedPreferences prefs = getSharedPreferences("fhkl.de.orgapp", Context.MODE_PRIVATE);
+
+		SharedPreferences.Editor editor = prefs.edit();
+
+		// Save the data to SharedPreferences
+		editor.putString("personId", UserData.getPERSONID());
+		editor.putString("firstName", UserData.getFIRST_NAME());
+		editor.putString("lastName", UserData.getLAST_NAME());
+		editor.putString("birthday", UserData.getBIRTHDAY());
+		editor.putString("gender", UserData.getGENDER());
+		editor.putString("eMail", UserData.getEMAIL());
+		editor.putString("memberSince", UserData.getMEMBER_SINCE());
+
+		editor.putString("notificationSettingsId", NotificationSettingsData.getNOTIFICATION_SETTINGS_ID());
+		editor.putString("shownEntries", NotificationSettingsData.getSHOW_ENTRIES());
+		editor.putString("groupInvites", NotificationSettingsData.getGROUP_INVITES());
+		editor.putString("groupEdited", NotificationSettingsData.getGROUP_EDITED());
+		editor.putString("eventsAdded", NotificationSettingsData.getEVENTS_ADDED());
+		editor.putString("eventsRemoved", NotificationSettingsData.getEVENTS_REMOVED());
+		editor.putString("commentsAdded", NotificationSettingsData.getCOMMENTS_ADDED());
+		editor.putString("commentsEdited", NotificationSettingsData.getCOMMENTS_EDITED());
+		editor.putString("commentsRemoved", NotificationSettingsData.getCOMMENTS_REMOVED());
+		editor.putString("privilegeGiven", NotificationSettingsData.getPRIVILEGE_GIVEN());
+		editor.putString("vibration", NotificationSettingsData.getVIBRATION());
+
+		editor.putString("eventSettingsId", EventSettingsData.getEVENT_SETTINGS_ID());
+		editor.putString("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES());
+
+		editor.commit();
+	}
+
+	/**
+	 * Resets user data, notification settings, event settings. Deletes the icon,
+	 * which signal user for new notifications. Calles the StartController
+	 */
+	protected void logout() {
+		// Delete SharedPreferences
+		SharedPreferences prefs = getSharedPreferences("fhkl.de.orgapp", Context.MODE_PRIVATE);
+		prefs.edit().clear().commit();
+
 		resetUserData();
 		resetNotificationSettingsData();
 		resetEventSettingsData();
-
 		deleteIcon();
 
 		Intent intent = new Intent(ManualInviteMemberController.this, StartController.class);
