@@ -321,8 +321,6 @@ public class EventController extends MenuActivity {
 			vp.add(new BasicNameValuePair("do", "showcomment"));
 			vp.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
-			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
-
 			// Send the request as a JSON object including this class as context
 			// for the HTTPS GET request.
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
@@ -429,7 +427,6 @@ public class EventController extends MenuActivity {
 																				public void onClick(DialogInterface dialog, int which) {
 
 																					changedMessage = editComment.getText().toString();
-																					System.out.println("changedMessage: " + changedMessage);
 																					new EditComment().execute();
 																				}
 																			});
@@ -597,7 +594,6 @@ public class EventController extends MenuActivity {
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
-				System.out.println(success);
 				if (success == 1) {
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();
 					paramsGetAttendingMember.add(new BasicNameValuePair("do", "readAllAttendingMember"));
@@ -688,7 +684,6 @@ public class EventController extends MenuActivity {
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
-				System.out.println(success);
 
 				// If the server send success reponse, set another request to read all
 				// member which is going to the event.
@@ -790,7 +785,6 @@ public class EventController extends MenuActivity {
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
-				System.out.println(success);
 				if (success == 1) {
 
 					List<NameValuePair> paramsGetAttendingMember = new ArrayList<NameValuePair>();

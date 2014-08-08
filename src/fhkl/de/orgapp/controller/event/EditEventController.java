@@ -373,7 +373,6 @@ public class EditEventController extends MenuActivity {
 
 	private void updateEventTime() {
 
-		System.out.println(calendar.getTime());
 		String format = "kk:mm";
 		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 		eventTime.setText(sdf.format(calendar.getTime()));

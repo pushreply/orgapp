@@ -155,8 +155,6 @@ public class CreateEventController extends MenuActivity {
 					regularityDateChosen.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-							// Logcat helper:
-							System.out.println(parent.getSelectedItem());
 
 							// Hide elements
 							if (parent.getSelectedItem().toString().equals("empty")) {
@@ -314,29 +312,21 @@ public class CreateEventController extends MenuActivity {
 						tmp2.setTime(chosenDate);
 						if (regularityDateChosen.getSelectedItem().toString().equals("daily")) {
 							tmp.add(Calendar.DATE, 1);
-							System.out.println(tmp);
-							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
 								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("weekly")) {
 							tmp.add(Calendar.DATE, 7);
-							System.out.println(tmp);
-							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
 								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("every 2 weeks")) {
 							tmp.add(Calendar.DATE, 14);
-							System.out.println(tmp);
-							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
 								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
 						} else if (regularityDateChosen.getSelectedItem().toString().equals("monthly")) {
 							tmp.add(Calendar.DATE, 28);
-							System.out.println(tmp);
-							System.out.println(tmp2);
 							if (tmp.after(tmp2)) {
 								return IMessages.Error.INVALID_REGULARITY_DATE_3;
 							}
@@ -387,10 +377,6 @@ public class CreateEventController extends MenuActivity {
 					logout();
 				}
 
-				System.out.println("chosenDate" + chosenDate.toString());
-
-				System.out.println("Spinner item: " + regularityDateChosen.getSelectedItem().toString());
-
 				if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_DATE) {
 					Date chosenRegularityDate = null;
 					try {
@@ -423,13 +409,6 @@ public class CreateEventController extends MenuActivity {
 						cnt++;
 					}
 
-					// Test Sysout
-					Iterator<String> dateListIterator = dateList.iterator();
-					for (int i = 0; i < dateList.size(); i++) {
-						String tmpDateList = dateListIterator.next();
-						System.out.println(tmpDateList);
-					}
-					// Test End
 				} else if (radioGroupRegularity.getCheckedRadioButtonId() == R.id.REGULARITY_NUMBER) {
 					Integer chosenNumber = Integer.parseInt(regularityChosen.getText().toString());
 					Calendar tmp = Calendar.getInstance();
@@ -448,13 +427,6 @@ public class CreateEventController extends MenuActivity {
 						}
 						notificationDate = tmp2.getTime();
 					}
-					// Test Sysout
-					Iterator<String> dateListIterator = dateList.iterator();
-					for (int i = 0; i < dateList.size(); i++) {
-						String tmpDateList = dateListIterator.next();
-						System.out.println(tmpDateList);
-					}
-					// Test End
 				}
 
 				Iterator<String> dateListIterator = dateList.iterator();
@@ -662,7 +634,6 @@ public class CreateEventController extends MenuActivity {
 
 	private void updateEventTime() {
 
-		System.out.println(calendar.getTime());
 		String format = "kk:mm";
 		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 		eventTime.setText(sdf.format(calendar.getTime()));

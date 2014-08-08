@@ -33,28 +33,26 @@ import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * CalendarController - handles personal list of events on that 
- * user is going to attend. This is what user sees after 
- * a successful login has been made. 
+ * CalendarController - handles personal list of events on that user is going to
+ * attend. This is what user sees after a successful login has been made.
  * 
  * @author ronaldo.hasiholan
  * @version 1.0
  */
 
 public class CalendarController extends MenuActivity {
-	
+
 	// Android progress dialog.
 	private ProgressDialog pDialog;
-	
+
 	// A json parser and a container for the list of events.
 	JSONParser jsonParser = new JSONParser();
 	ArrayList<HashMap<String, String>> eventList;
-	
-	
+
 	TextView tv_eventId;
 	private static final String TAG_SUCCESS = "success";
-	
-	// All elements needed in a single event item of the list. 
+
+	// All elements needed in a single event item of the list.
 	private static final String TAG_EVENTID = "EVENTID";
 	private static final String TAG_EVENTDATE = "EVENTDATE";
 	private static final String TAG_EVENTTIME = "EVENTTIME";
@@ -70,31 +68,31 @@ public class CalendarController extends MenuActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar);
-		
+
 		// Check any notification and inform the user.
 		checkOnNewNotificationsAndNotifyUser();
 		eventList = new ArrayList<HashMap<String, String>>();
-		
+
 		// Start the calendar
 		new Calendar().execute();
 	}
 
-	// Each time the back button is pressed from this standpoint (calendar activity),
-	// logged the user out. 
+	// Each time the back button is pressed from this standpoint (calendar
+	// activity),
+	// logged the user out.
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
 		logout();
 	}
-	
-	
+
 	/**
-	 * Begin the background operation using asynchronous task to get data
-	 * through the network. The extended AsyncTask, Calendar class creates a
-	 * comment in an event by requesting the commentId using the HTTPS request.
-	 * The string "do=readUserEvents" is being used to execute the corresponding
-	 * PHP file on the server side. It handles the request, return the result as 
-	 * a list and a success marker to the client app.
+	 * Begin the background operation using asynchronous task to get data through
+	 * the network. The extended AsyncTask, Calendar class creates a comment in an
+	 * event by requesting the commentId using the HTTPS request. The string
+	 * "do=readUserEvents" is being used to execute the corresponding PHP file on
+	 * the server side. It handles the request, return the result as a list and a
+	 * success marker to the client app.
 	 * 
 	 * 
 	 */
@@ -103,7 +101,7 @@ public class CalendarController extends MenuActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CalendarController.this);
-			
+
 			// Clicking on the refresh button will inform the user
 			// that the list is updating and will be loaded shortly.
 			if (getIntent().getStringExtra("Refresh") != null)
@@ -112,7 +110,7 @@ public class CalendarController extends MenuActivity {
 				pDialog.setMessage(IMessages.Status.LOADING_CALENDAR);
 
 			pDialog.setIndeterminate(false);
-			
+
 			// If the progress is taking too long, let user cancels
 			// the progress dialog by hitting the android-back-button.
 			pDialog.setCancelable(true);
@@ -121,31 +119,33 @@ public class CalendarController extends MenuActivity {
 
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
-			// Prepare the parameter for the HTTP GET request using the value 
-			// of 'personId' from the temporary storage 'UserData class', 
-			// which has been set after the user successfully logged in from LoginController.
+
+			// Prepare the parameter for the HTTP GET request using the value
+			// of 'personId' from the temporary storage 'UserData class',
+			// which has been set after the user successfully logged in from
+			// LoginController.
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// If any of the user event is available, get the quantity of the events,
-			// append it and the operation marker "do=readUserEvents" 
+			// append it and the operation marker "do=readUserEvents"
 			// and this class as the context through the HTTPS GET parameter.
 			if (!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 			params.add(new BasicNameValuePair("do", "readUserEvents"));
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
-			
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+							CalendarController.this);
+
 			Log.d("Calendar: ", json.toString());
-			
+
 			// Get the result from server using JSON and map the respective key-value.
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
 					calendar = json.getJSONArray("event");
-					
+
 					for (int i = 0; i < calendar.length(); i++) {
 						JSONObject c = calendar.getJSONObject(i);
-						
+
 						String eventId = c.getString("eventId");
 						String event = c.getString("name");
 						String date = c.getString("eventDate");
@@ -164,10 +164,9 @@ public class CalendarController extends MenuActivity {
 				} else {
 
 				}
-			} 
-			catch (JSONException e) {
+			} catch (JSONException e) {
 				e.printStackTrace();
-				// Dismiss the progress dialog before logout. 
+				// Dismiss the progress dialog before logout.
 				pDialog.dismiss();
 				logout();
 			}
@@ -179,15 +178,16 @@ public class CalendarController extends MenuActivity {
 			pDialog.dismiss();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					// An adapter to hold information in a single event item. 
+					// An adapter to hold information in a single event item.
 					ListAdapter adapter = new SimpleAdapter(CalendarController.this, eventList, R.layout.calendar_item,
 									new String[] { TAG_EVENTID, TAG_EVENTDATE, TAG_EVENTTIME, TAG_EVENT }, new int[] { R.id.EVENTID,
 													R.id.EVENTDATE, R.id.EVENTTIME, R.id.EVENT });
-					
+
 					// Update the listview
 					ListView calenderList = (ListView) findViewById(android.R.id.list);
-					
-					// Make the list clickable and view the selected event detail information by executing GetEvent().
+
+					// Make the list clickable and view the selected event detail
+					// information by executing GetEvent().
 					calenderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 						@Override
@@ -202,17 +202,15 @@ public class CalendarController extends MenuActivity {
 			});
 		}
 	}
-	
-	
+
 	/**
 	 * Begin the background operation using asynchronous task to get event data
 	 * through the network. The extended AsyncTask, GetEvent class creates a
-	 * comment in an event by requesting the eventId using the HTTPS request.
-	 * The string "do=readEvent" is being used to execute the corresponding
-	 * PHP file on the server side. It handles the request, return the result as 
-	 * a list and a success marker to the client app, and save them into 
-	 * the class EventData and GroupData to be used as long as 
-	 * the user logged in. 
+	 * comment in an event by requesting the eventId using the HTTPS request. The
+	 * string "do=readEvent" is being used to execute the corresponding PHP file
+	 * on the server side. It handles the request, return the result as a list and
+	 * a success marker to the client app, and save them into the class EventData
+	 * and GroupData to be used as long as the user logged in.
 	 * 
 	 */
 
@@ -221,7 +219,7 @@ public class CalendarController extends MenuActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
+
 			// Start a progress dialog
 			pDialog = new ProgressDialog(CalendarController.this);
 			pDialog.setMessage(IMessages.Status.LOADING_EVENT);
@@ -231,16 +229,16 @@ public class CalendarController extends MenuActivity {
 		}
 
 		protected String doInBackground(String... args) {
-			
-			// Prepare HTTPS request for event details using previously selected eventID. 
+
+			// Prepare HTTPS request for event details using previously selected
+			// eventID.
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+							CalendarController.this);
 
 			Log.d("Event: ", json.toString());
-
-			System.out.println("eventId: " + tv_eventId.getText().toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -249,7 +247,7 @@ public class CalendarController extends MenuActivity {
 
 					for (int i = 0; i < event.length(); i++) {
 						JSONObject c = event.getJSONObject(i);
-						
+
 						// Save the event details to the EventData class
 						EventData.setEVENTID(c.getString("eventId"));
 						EventData.setEVENTDATE(c.getString("eventDate"));
@@ -260,33 +258,35 @@ public class CalendarController extends MenuActivity {
 						EventData.setPERSONID(c.getString("personId"));
 						EventData.setREGULARITY("regularity");
 					}
-					
+
 					// Prepare HTTPS Request for the group and corresponding member.
 					List<NameValuePair> paramsGetGroup = new ArrayList<NameValuePair>();
 					paramsGetGroup.add(new BasicNameValuePair("do", "readGroup"));
 					paramsGetGroup.add(new BasicNameValuePair("groupId", EventData.getGROUPID()));
-					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetGroup, CalendarController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetGroup,
+									CalendarController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						group = json.getJSONArray("groups");
 						for (int i = 0; i < group.length(); i++) {
 							JSONObject c = group.getJSONObject(i);
-							
-							// Save the value to the GroupData class. 
+
+							// Save the value to the GroupData class.
 							GroupData.setGROUPID(c.getString("groupId"));
 							GroupData.setPERSONID(c.getString("personId"));
 							GroupData.setGROUPNAME(c.getString("name"));
 							GroupData.setGROUPINFO(c.getString("info"));
 						}
 					}
-					
+
 					// Prepare HTTPS Request for list of member in a specific group.
 					List<NameValuePair> paramsGetMember = new ArrayList<NameValuePair>();
 					paramsGetMember.add(new BasicNameValuePair("do", "readUserInGroup"));
 					paramsGetMember.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsGetMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember, CalendarController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember,
+									CalendarController.this);
 
 					Log.d("Member: ", json.toString());
 
@@ -296,7 +296,7 @@ public class CalendarController extends MenuActivity {
 
 						for (int i = 0; i < member.length(); i++) {
 							JSONObject c = member.getJSONObject(i);
-							
+
 							// Save the value of member privileges.
 							GroupData.setPRIVILEGE_MANAGEMENT(c.getString("privilegeManagement"));
 							GroupData.setPRIVILEGE_INVITE_MEMBER(c.getString("memberInvitation"));
@@ -322,8 +322,9 @@ public class CalendarController extends MenuActivity {
 
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
-			
-			// Send the user to the eventcontroller after selecting an event from the list. 
+
+			// Send the user to the eventcontroller after selecting an event from the
+			// list.
 			Intent intent = new Intent(CalendarController.this, EventController.class);
 			startActivity(intent);
 		}
