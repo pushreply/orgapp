@@ -20,31 +20,44 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
-public class JSONParser {
+/**
+ * JSONParser - Handles the data to execute requests to the server
+ * 
+ * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
+ * @version 1.0
+ *
+ */
 
+public class JSONParser
+{
+	// For the content of response
 	static InputStream is = null;
+	// Container for the result
 	static JSONObject jObj = null;
+	// For the parsing process
 	static String json = "";
 
-	// constructor
-	public JSONParser() {
-
-	}
-
-	// function get json from url
-	// by making HTTPS POST or GET method
-	// OVERLOAD with context parameter for MyHttpClient https connection
-	public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params, Context ctx) {
-
-		// Making HTTP request
-		try {
-
-			// check for request method
-			if (method == "POST") {
-				// request method is POST
-				// defaultHttpClient
+	/**
+	 * Executes a HTTPS request.
+	 * Offers methods GET and POST.
+	 * Only method GET is used, currently
+	 * 
+	 * @param url the address for the request
+	 * @param method the method for the request
+	 * @param params the params, which are attached in the url
+	 * @param ctx the context, which calls this method
+	 * @return the returned data as JSON
+	 */
+	
+	public JSONObject makeHttpsRequest(String url, String method, List<NameValuePair> params, Context ctx)
+	{
+		try
+		{
+			// POST method
+			// Currently unused
+			if (method == "POST")
+			{
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -55,61 +68,104 @@ public class JSONParser {
 
 			}
 
-			// HTTPS using MyHttpClient
-			else if (method == "GET") {
-				// request method is GET
+			// GET method
+			else if (method == "GET")
+			{
+				// Own HTTPS client
 				MyHttpClient httpsClient = new MyHttpClient(ctx);
+				
+				// Formated parameters
 				String paramString = URLEncodedUtils.format(params, "utf-8");
+				// Attach the parameters at the address
 				url += "?" + paramString;
+				// Required object
 				HttpGet httpGet = new HttpGet(url);
-				System.out.println("URL: " + url);
+				// Execute the request
 				HttpResponse httpResponse = httpsClient.execute(httpGet);
+				// Get the response
 				HttpEntity httpEntity = httpResponse.getEntity();
+				// Get the content of the response
 				is = httpEntity.getContent();
 			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
+		}
+		catch (ClientProtocolException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
+		}
+		catch (IOException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
-		try {
+		try
+		{
+			// Read the content
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			// Object for the text
 			StringBuilder sb = new StringBuilder();
+			// Object for each line
 			String line = null;
-			while ((line = reader.readLine()) != null) {
+			
+			// Read the lines
+			while ((line = reader.readLine()) != null)
+			{
+				// Append lines to the text
 				sb.append(line + "\n");
 			}
+			
+			// Close inputstream
 			is.close();
+			// Convert text to string
 			json = sb.toString();
-		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
+		}
+		catch (Exception e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
-		// try parse the string to a JSON object
-		try {
+		try
+		{
+			// Parse text to a JSON object
 			jObj = new JSONObject(json);
-		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
+		}
+		catch (JSONException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
-		// return JSON String
+		// Return the JSON object
 		return jObj;
 
 	}
 
-	// Standard HTTP
-	public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params) {
-
-		// Making HTTP request
-		try {
-
-			// check for request method
-			if (method == "POST") {
-				// request method is POST
-				// defaultHttpClient
+	/**
+	 * Executes a HTTP request.
+	 * Offers methods GET and POST.
+	 * Only method GET is used, currently
+	 * 
+	 * @param url the address for the request
+	 * @param method the method for the request
+	 * @param params the params, which are attached in the url
+	 * @return the returned data as JSON
+	 */
+	
+	public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params)
+	{
+		try
+		{
+			// POST method
+			// Currently unused
+			if (method == "POST")
+			{
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -118,47 +174,83 @@ public class JSONParser {
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
 
-			} else if (method == "GET") {
-				// request method is GET
+			}
+			// GET method
+			else if (method == "GET")
+			{
+				// Default HTTP client
 				DefaultHttpClient httpClient = new DefaultHttpClient();
+				// Formated parameters
 				String paramString = URLEncodedUtils.format(params, "utf-8");
+				// Attach the parameters at the address
 				url += "?" + paramString;
+				// Required object
 				HttpGet httpGet = new HttpGet(url);
-				System.out.println("URL: " + url);
+				// Execute the request
 				HttpResponse httpResponse = httpClient.execute(httpGet);
+				// Get the response
 				HttpEntity httpEntity = httpResponse.getEntity();
+				// Get the content of the response
 				is = httpEntity.getContent();
 			}
 
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
+		}
+		catch (ClientProtocolException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
+		}
+		catch (IOException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
-		try {
+		try
+		{
+			// Read the content
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			// Object for the text
 			StringBuilder sb = new StringBuilder();
+			// Object for each line
 			String line = null;
-			while ((line = reader.readLine()) != null) {
+			
+			// Read the lines
+			while ((line = reader.readLine()) != null)
+			{
+				// Append lines to the text
 				sb.append(line + "\n");
 			}
+			
+			// Close inputstream
 			is.close();
+			// Convert text to string
 			json = sb.toString();
-		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
+		}
+		catch (Exception e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
 		// try parse the string to a JSON object
-		try {
+		try
+		{
+			// Parse text to a JSON object
 			jObj = new JSONObject(json);
-		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
+		}
+		catch (JSONException e)
+		{
+			// Return an empty object in case of error
+			return new JSONObject();
 		}
 
-		// return JSON String
+		// Return the JSON object
 		return jObj;
 
 	}
