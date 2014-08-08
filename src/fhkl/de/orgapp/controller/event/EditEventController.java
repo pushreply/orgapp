@@ -36,7 +36,6 @@ import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
-import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
@@ -235,12 +234,11 @@ public class EditEventController extends MenuActivity {
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 
-				if (success != 0) {
+				if (success == 1) {
 
 					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
 					paramsGetMemberList.add(new BasicNameValuePair("do", "readAllAttendingMember"));
-					paramsGetMemberList.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-					paramsGetMemberList.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+					paramsGetMemberList.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
 									paramsGetMemberList, EditEventController.this);
 

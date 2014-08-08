@@ -84,18 +84,18 @@ if ($_GET['do']=="updateEvent"
 		&& isset($_GET['eventTime'])
 		&& isset($_GET['eventLocation']))
 {
-	$eventId = $_GET['eventId'];
 	$name = htmlspecialchars($_GET['name'], ENT_QUOTES, 'UTF-8');
 	$eventDate = $_GET['eventDate'];
 	$eventTime = $_GET['eventTime'];
 	$eventLocation = htmlspecialchars($_GET['eventLocation']);
+	$eventId = $_GET['eventId'];
 
 	$response = array ();
 
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/' . $dbpath;
 
 	try {
-		$sql='UPDATE event  SET
+		$sql='UPDATE event SET
 				name = :name,
 				eventDate = :eventDate,
 				eventTime = :eventTime,
@@ -105,11 +105,11 @@ if ($_GET['do']=="updateEvent"
 		$sth = $pdo->prepare($sql);
 
 		/* bind the values, in the same order as the $sql statement. */
-		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT);
 		$sth->bindValue(':name', $name);
 		$sth->bindValue(':eventDate', $eventDate);
 		$sth->bindValue(':eventTime', $eventTime);
 		$sth->bindValue(':eventLocation', $eventLocation);
+		$sth->bindValue(':eventId', $eventId, PDO::PARAM_INT);
 		$confirm = $sth->execute();
 
 		if ($confirm==true) {
@@ -367,12 +367,12 @@ if ($_GET['do']=="readUserEvents" && isset($_GET['personId']))
 					$event['eventTime'] = $result['eventTime'];
 					$event['eventLocation'] = html_entity_decode($result['eventLocation'], ENT_QUOTES, 'UTF-8');
 
-					if ($counter++ == $shownEventEntries) break;
-
 					/*
 					 * push each value to the data container
 					*/
 					array_push($response["event"], $event);
+					$counter++;
+					if ($counter == $shownEventEntries) break;
 				}
 			} else {
 				foreach ($result as $row)
