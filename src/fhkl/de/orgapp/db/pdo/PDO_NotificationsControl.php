@@ -12,7 +12,6 @@ if
 	&& isset($_GET['eMail'])
 	&& isset($_GET['classification'])
 	&& isset($_GET['message'])
-	&& isset($_GET['syncInterval'])
 )
 {
 	/*
@@ -21,7 +20,6 @@ if
 	$eMail = htmlspecialchars($_GET['eMail']); /*escape every '<tag>' (not only HTML) */
 	$classification = $_GET['classification'];
 	$message = htmlspecialchars($_GET['message']); /*escape every '<tag>' (not only HTML) */
-	$syncInterval = $_GET['syncInterval'];
 
 	$response = array ();
 
@@ -29,8 +27,8 @@ if
 
 	try
 	{
-		$sql='INSERT INTO notifications (personId, classification, message, syncInterval)
-				VALUES ((SELECT personId FROM person WHERE eMail = :eMail), :classification, :message, :syncInterval)';
+		$sql='INSERT INTO notifications (personId, classification, message)
+				VALUES ((SELECT personId FROM person WHERE eMail = :eMail), :classification, :message)';
 
 		$sth = $pdo->prepare($sql);
 
@@ -38,7 +36,6 @@ if
 		$sth->bindValue(':eMail', $eMail);
 		$sth->bindValue(':classification', $classification);
 		$sth->bindValue(':message', $message);
-		$sth->bindValue(':syncInterval', $syncInterval);
 
 		$confirm = $sth->execute();
 
@@ -141,7 +138,6 @@ if
 					$notification['personId'] = $row['personId'];
 					$notification['classification'] = $row['classification'];
 					$notification['message'] = html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8');
-					$notification['syncInterval'] = $row['syncInterval'];
 					$notification['isRead'] = $row['isRead'];
 
 					/*
@@ -160,7 +156,6 @@ if
 					$notification['personId'] = $row['personId'];
 					$notification['classification'] = $row['classification'];
 					$notification['message'] = html_entity_decode($row['message'], ENT_QUOTES, 'UTF-8');
-					$notification['syncInterval'] = $row['syncInterval'];
 					$notification['isRead'] = $row['isRead'];
 
 					/*
