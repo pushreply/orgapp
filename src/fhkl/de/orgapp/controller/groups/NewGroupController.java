@@ -144,8 +144,8 @@ public class NewGroupController extends MenuActivity {
 			try {
 				Integer success = json.getInt(TAG_SUCCESS);
 				if (success != 0) {
-					groupId = success.toString();
-					GroupData.setGROUPID(groupId);
+					Integer groupId = json.getInt("groupId");
+					GroupData.setGROUPID(groupId.toString());
 					GroupData.setGROUPNAME(name);
 					GroupData.setGROUPINFO(info);
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
@@ -154,7 +154,7 @@ public class NewGroupController extends MenuActivity {
 
 					// Required parameters
 					paramsCreateUserInGroup.add(new BasicNameValuePair("do", "createPrivilegeAdmin"));
-					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId));
+					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId.toString()));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 

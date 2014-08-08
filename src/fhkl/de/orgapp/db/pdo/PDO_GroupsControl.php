@@ -42,6 +42,7 @@ if ($_GET['do']=="createGroup"
 			// successfully inserted into database
 			$response ["success"] = 1;
 			$response ["message"] = "Group is successfully created.";
+			$response ["groupId"] = $pdo->lastInsertId();
 			// echoing JSON response
 			echo json_encode ($response);
 		}
@@ -222,8 +223,7 @@ if ($_GET['do']=="readUserGroup" && isset($_GET['personId']))
 
 		$sql = 'SELECT g.groupId, g.personId, g.name, g.info
 				FROM groups g join privilege p using (groupId)
-				WHERE p.personId = :personId
-				ORDER BY g.name asc';
+				WHERE p.personId = :personId ORDER BY g.name asc';
 
 		$sth = $pdo->prepare($sql);
 		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);

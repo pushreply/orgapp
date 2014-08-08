@@ -27,7 +27,7 @@ if ($_GET['do']=="createPrivilegeAdmin"
 		$sql='INSERT INTO privilege SET
 				groupId = :groupId,
 				personId = :personId,
-				memberSince = :membersince,
+				memberSince = :memberSince,
 				privilegeManagement = true,
 				memberInvitation = true,
 				memberlistEditing = true,
@@ -41,7 +41,7 @@ if ($_GET['do']=="createPrivilegeAdmin"
 
 		/* bind the values, in the same order as the $sql statement. */
 		$sth->bindValue(':groupId', $groupId, PDO::PARAM_INT);
-		$sth->bindValue(':personId', $personid, PDO::PARAM_INT);
+		$sth->bindValue(':personId', $personId, PDO::PARAM_INT);
 		$sth->bindValue(':memberSince', $memberSince);
 
 		$confirm = $sth->execute();
