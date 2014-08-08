@@ -380,7 +380,7 @@ if ( $_GET['do']=="forget" && isset($_GET['eMail']) )
 }
 
 function generateRandomString($length = 8) {
-	$characters = '123456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+	$characters = '123456789abcdefghijkmnpqrstuvwxyz';
 	$randomString = '';
 	for ($i = 0; $i < $length; $i++) {
 		$randomString .= $characters[rand(0, strlen($characters) - 1)];
@@ -390,13 +390,14 @@ function generateRandomString($length = 8) {
 
 function sendEmail($eMail, $newpassword){
 	$to      = $eMail;
-	$subject = 'Your new password';
-	$message = 'Your new password = ' . $newpassword ;
+	$subject = 'OrgApp: your new password!';
+	$message = 'Hello, this is OrgApp. We have a new password for you. Please change it after your successful login. Your new password = ' . $newpassword ;
 	$headers = 'From: orgapp@pushrply.com ' . "\r\n" .
 			'Reply-To: orgapp@pushrply.com ' . "\r\n" .
 			'X-Mailer: PHP/' . phpversion();
 
 	mail($to, $subject, $message, $headers);
 }
+
 
 ?>
