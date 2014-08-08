@@ -143,40 +143,40 @@ public class LoginController extends Activity
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
-
+			params.add(new BasicNameValuePair("password", inputPassword.getText().toString()));
 			// Make the request to fetch the person
 			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, LoginController.this);
-
+			System.out.println("success " + json.toString());
 			try
 			{
+				System.out.println("success start");
 				success = json.getInt("success");
+				System.out.println("success end");
 				
 				// In case of success
 				if (success == 1)
 				{
+					System.out.println("success " + success);
 					// Fetch the person array
 					person = json.getJSONArray("person");
 
 					// Get the person (the only one)
 					e = person.getJSONObject(0);
-
+					
+					System.out.println("person " + e);
 					// Get the email
 					String eMail = e.getString("eMail");
 					
 					// Check the email on correctness
 					if (eMail.equals(inputEMail.getText().toString()))
 					{
-						// Get the password
-						String password = e.getString("password");
 
-						// Check the password on correctness
-						if (password.equals(inputPassword.getText().toString()))
-						{
+						
 							// The required parameters for the request
 							params = new ArrayList<NameValuePair>();
 							params.add(new BasicNameValuePair("do", "read"));
 							params.add(new BasicNameValuePair("personId", e.getString("personId")));
-
+						
 							// Make the request to fetch the notification settings
 							json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, LoginController.this);
 
@@ -221,12 +221,12 @@ public class LoginController extends Activity
 							}
 
 							return null;
-						}
+						
 						// In case of no success
-						else
-						{
-							return IMessages.Error.INVALID_PASSWORD;
-						}
+//						else
+//						{
+//							return IMessages.Error.INVALID_PASSWORD;
+//						}
 					}
 					// In case of no success
 					else
@@ -237,6 +237,7 @@ public class LoginController extends Activity
 				// In case of no success
 				else
 				{
+					System.out.println("NO success ");
 					return IMessages.Error.INVALID_USER;
 				}
 			}
