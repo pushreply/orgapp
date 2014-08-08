@@ -162,7 +162,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 
 			// Fetch the selected member
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
 							MemberPrivilegeInfoController.this);
 
 			try {
@@ -292,7 +292,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					paramsUpdate.add(new BasicNameValuePair("commentDeleting", afterCommentDeleting));
 					paramsUpdate.add(new BasicNameValuePair("privilegeManagement", afterPrivilegeManagement));
 
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate,
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate,
 									MemberPrivilegeInfoController.this);
 
 					Log.d("Member: ", json.toString());
@@ -384,7 +384,7 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 
 						paramsNotification.add(new BasicNameValuePair("message", message));
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
 										MemberPrivilegeInfoController.this);
 
 						success = json.getInt(TAG_SUCCESS);

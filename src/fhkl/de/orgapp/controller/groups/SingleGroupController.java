@@ -94,7 +94,7 @@ public class SingleGroupController extends MenuActivity {
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 
 			// Fetch the events of a selected group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 							SingleGroupController.this);
 
 			Log.d("Calendar: ", json.toString());
@@ -179,7 +179,7 @@ public class SingleGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", eventId));
 
 			// Fetch the selected event
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 							SingleGroupController.this);
 
 			Log.d("Event: ", json.toString());
@@ -366,7 +366,7 @@ public class SingleGroupController extends MenuActivity {
 			else
 				params.add(new BasicNameValuePair("do", "createPersonInEvent"));
 
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
+			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							SingleGroupController.this);
 
 			Log.d("EventPerson: ", json.toString());

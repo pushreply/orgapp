@@ -175,7 +175,7 @@ public class NotificationController extends MenuActivity
 					paramsNotifications.add(new BasicNameValuePair("shownEntries", NotificationSettingsData.getSHOW_ENTRIES()));
 				
 				// Make the request
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotifications, NotificationController.this);
+				JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotifications, NotificationController.this);
 
 				int success = json.getInt(TAG_SUCCESS);
 				
@@ -363,7 +363,7 @@ public class NotificationController extends MenuActivity
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NotificationController.this);
+								jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NotificationController.this);
 
 								return null;
 							}
@@ -443,7 +443,7 @@ public class NotificationController extends MenuActivity
 								params.add(new BasicNameValuePair("notificationsId", notificationList.get(arg[0]).get(TAG_ID)));
 								
 								// Make the request
-								jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NotificationController.this);
+								jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", params, NotificationController.this);
 
 								return null;
 							}

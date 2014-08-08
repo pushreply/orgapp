@@ -581,9 +581,8 @@ public class MenuActivity extends Activity {
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Make the request to fetch the members of a group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
-							MenuActivity.this);
-
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params, MenuActivity.this);
+			
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 

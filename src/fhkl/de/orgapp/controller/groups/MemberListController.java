@@ -109,7 +109,7 @@ public class MemberListController extends MenuActivity {
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Get member list
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
 							MemberListController.this);
 
 			Log.d("Memberlist: ", json.toString());
@@ -249,7 +249,7 @@ public class MemberListController extends MenuActivity {
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 			// Deletes selected member from group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
 							MemberListController.this);
 
 			Log.d("Response: ", json.toString());
@@ -316,7 +316,7 @@ public class MemberListController extends MenuActivity {
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
 			// Get person data
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
 							MemberListController.this);
 
 			Log.d("Member: ", json.toString());
@@ -345,7 +345,7 @@ public class MemberListController extends MenuActivity {
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 					// Get group data and privileges
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges,
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges,
 									MemberListController.this);
 
 					Log.d("Member: ", json.toString());

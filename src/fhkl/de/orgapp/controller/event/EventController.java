@@ -206,7 +206,7 @@ public class EventController extends MenuActivity {
 
 			// Set a JSON object, give it the URL, the prepared parameters and this context, 
 			// and send the request through HTTPS.
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							EventController.this);
 
 			// Log the JSON string
@@ -271,11 +271,11 @@ public class EventController extends MenuActivity {
 			JSONObject json;
 			if (toggleButtonChecked) {
 				params.add(new BasicNameValuePair("do", "createPersonInEvent"));
-				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
+				json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 								EventController.this);
 			} else {
 				params.add(new BasicNameValuePair("do", "deletePersonInEvent"));
-				json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
+				json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 								EventController.this);
 			}
 
@@ -322,7 +322,7 @@ public class EventController extends MenuActivity {
 
 			// Send the request as a JSON object including this class as context 
 			// for the HTTPS GET request.
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
 							EventController.this);
 
 			Log.d("Comments: ", json.toString());
@@ -588,7 +588,7 @@ public class EventController extends MenuActivity {
 
 			// Send the request as a JSON object including this context for the HTTPS
 			// request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
 							EventController.this);
 			Log.d("comment: ", json.toString());
 
@@ -600,7 +600,7 @@ public class EventController extends MenuActivity {
 					paramsGetAttendingMember.add(new BasicNameValuePair("do", "readAllAttendingMember"));
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
 									paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
@@ -619,7 +619,7 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.DELETE_COMMENT_1
 											+ message + IMessages.Notification.DELETE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 											paramsCreateNotification, EventController.this);
 						}
 					}
@@ -679,7 +679,7 @@ public class EventController extends MenuActivity {
 			params.add(new BasicNameValuePair("commentId", commentId));
 			params.add(new BasicNameValuePair("message", changedMessage));
 
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
 							EventController.this);
 
 			Log.d("comment: ", json.toString());
@@ -696,7 +696,7 @@ public class EventController extends MenuActivity {
 					paramsGetAttendingMember.add(new BasicNameValuePair("do", "readAllAttendingMember"));
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
 									paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
@@ -718,7 +718,7 @@ public class EventController extends MenuActivity {
 											+ message + IMessages.Notification.EDIT_COMMENT_2 + changedMessage
 											+ IMessages.Notification.EDIT_COMMENT_3));
 
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 											paramsCreateNotification, EventController.this);
 						}
 					}
@@ -782,7 +782,7 @@ public class EventController extends MenuActivity {
 			paramsInsertComment.add(new BasicNameValuePair("personId", personId));
 			paramsInsertComment.add(new BasicNameValuePair("message", message));
 
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", paramsInsertComment,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", paramsInsertComment,
 							EventController.this);
 
 			Log.d("comment: ", json.toString());
@@ -796,7 +796,7 @@ public class EventController extends MenuActivity {
 					paramsGetAttendingMember.add(new BasicNameValuePair("do", "readAllAttendingMember"));
 					paramsGetAttendingMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 					paramsGetAttendingMember.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
-					json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
+					json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET",
 									paramsGetAttendingMember, EventController.this);
 
 					success = json.getInt(TAG_SUCCESS);
@@ -815,7 +815,7 @@ public class EventController extends MenuActivity {
 							paramsCreateNotification.add(new BasicNameValuePair("message", IMessages.Notification.CREATE_COMMENT_1
 											+ EventData.getNAME() + IMessages.Notification.CREATE_COMMENT_2));
 
-							json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
+							json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET",
 											paramsCreateNotification, EventController.this);
 						}
 					}

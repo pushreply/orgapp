@@ -96,7 +96,7 @@ public class LeaveGroupController extends MenuActivity {
 			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 
 			// Leave group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
 							LeaveGroupController.this);
 
 			Log.d("Response: ", json.toString());

@@ -119,7 +119,7 @@ public class EventHistoryController extends MenuActivity
 			requestParams.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams, EventHistoryController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams, EventHistoryController.this);
 
 			try
 			{
@@ -253,7 +253,7 @@ public class EventHistoryController extends MenuActivity
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EventHistoryController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EventHistoryController.this);
 
 			try
 			{

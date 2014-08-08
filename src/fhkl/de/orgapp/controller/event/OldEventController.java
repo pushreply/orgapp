@@ -97,7 +97,7 @@ public class OldEventController extends MenuActivity {
 
 			System.out.println("EventData.getEVENTID() : " + EventData.getEVENTID());
 
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp, OldEventController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp, OldEventController.this);
 
 			Log.d("Comments: ", json.toString());
 

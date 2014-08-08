@@ -176,7 +176,7 @@ public class EventSettingsController extends MenuActivity {
 				params.add(new BasicNameValuePair("shownEntries", numberEntries.getText().toString()));
 			}
 
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, EventSettingsController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, EventSettingsController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

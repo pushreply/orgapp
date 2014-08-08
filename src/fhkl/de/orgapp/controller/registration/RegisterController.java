@@ -174,7 +174,7 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("eMail", eMail));
 			
 			// Make the request to check, whether person already exists
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
+			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
 			try
 			{
@@ -208,7 +208,7 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// Make the request to create the person
-			json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
+			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
 			try
 			{
@@ -224,7 +224,7 @@ public class RegisterController extends Activity
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 					
 					// Make the request to create the notification settings
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, RegisterController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, RegisterController.this);
 					
 					success = json.getInt(TAG_SUCCESS);
 					
@@ -237,7 +237,7 @@ public class RegisterController extends Activity
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
 						
 						// Make the request to create event settings
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, RegisterController.this);
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, RegisterController.this);
 						
 						success = json.getInt(TAG_SUCCESS);
 						

@@ -133,7 +133,7 @@ public class CalendarController extends MenuActivity {
 			if (!EventSettingsData.getSHOWN_EVENT_ENTRIES().equals(""))
 				params.add(new BasicNameValuePair("shownEventEntries", EventSettingsData.getSHOWN_EVENT_ENTRIES()));
 			params.add(new BasicNameValuePair("do", "readUserEvents"));
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
 			
 			Log.d("Calendar: ", json.toString());
 			
@@ -236,7 +236,7 @@ public class CalendarController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "readEvent"));
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, CalendarController.this);
 
 			Log.d("Event: ", json.toString());
 
@@ -265,7 +265,7 @@ public class CalendarController extends MenuActivity {
 					List<NameValuePair> paramsGetGroup = new ArrayList<NameValuePair>();
 					paramsGetGroup.add(new BasicNameValuePair("do", "readGroup"));
 					paramsGetGroup.add(new BasicNameValuePair("groupId", EventData.getGROUPID()));
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetGroup, CalendarController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetGroup, CalendarController.this);
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
@@ -286,7 +286,7 @@ public class CalendarController extends MenuActivity {
 					paramsGetMember.add(new BasicNameValuePair("do", "readUserInGroup"));
 					paramsGetMember.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsGetMember.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember, CalendarController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetMember, CalendarController.this);
 
 					Log.d("Member: ", json.toString());
 

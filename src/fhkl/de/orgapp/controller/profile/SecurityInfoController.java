@@ -268,7 +268,7 @@ public class SecurityInfoController extends MenuActivity
 			params.add(new BasicNameValuePair("gender", UserData.getGENDER()));
 			
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, SecurityInfoController.this);
+			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, SecurityInfoController.this);
 			
 			try
 			{

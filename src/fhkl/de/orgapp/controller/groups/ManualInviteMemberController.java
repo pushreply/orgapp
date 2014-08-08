@@ -316,7 +316,7 @@ public class ManualInviteMemberController extends Activity {
 				paramsCheck.add(new BasicNameValuePair("eMail", editTextArray[e]));
 
 				// Fetch person by email
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", paramsCheck,
+				JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", paramsCheck,
 								ManualInviteMemberController.this);
 
 				int success;
@@ -349,7 +349,7 @@ public class ManualInviteMemberController extends Activity {
 				paramsCheck.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 				paramsCheck.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
 
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCheck,
+				JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCheck,
 								ManualInviteMemberController.this);
 
 				int success;
@@ -383,7 +383,7 @@ public class ManualInviteMemberController extends Activity {
 				paramsInvite.add(new BasicNameValuePair("personId", existPersons.get(p).get(TAG_PERSON_ID).toString()));
 
 				// Invite person
-				JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite,
+				JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsInvite,
 								ManualInviteMemberController.this);
 
 				int success;
@@ -400,7 +400,7 @@ public class ManualInviteMemberController extends Activity {
 						paramsNotification.add(new BasicNameValuePair("syncInterval", null));
 
 						// Send Notifications
-						json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATION, "GET", paramsNotification,
 										ManualInviteMemberController.this);
 					}
 				} catch (Exception e) {

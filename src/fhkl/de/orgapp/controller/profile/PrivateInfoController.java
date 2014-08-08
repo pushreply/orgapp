@@ -472,7 +472,7 @@ public class PrivateInfoController extends MenuActivity
 			params.add(new BasicNameValuePair("eMail", UserData.getEMAIL()));
 
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, PrivateInfoController.this);
+			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, PrivateInfoController.this);
 
 			try
 			{

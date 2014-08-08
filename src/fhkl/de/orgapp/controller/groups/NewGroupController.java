@@ -136,7 +136,7 @@ public class NewGroupController extends MenuActivity {
 			paramsCreateGroup.add(new BasicNameValuePair("info", info));
 
 			// Create new group
-			JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup,
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup,
 							NewGroupController.this);
 
 			Log.d("Create Response", json.toString());
@@ -159,7 +159,7 @@ public class NewGroupController extends MenuActivity {
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
 
 					// Create new user in group as admin
-					json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup,
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup,
 									NewGroupController.this);
 				}
 			} catch (Exception e) {
