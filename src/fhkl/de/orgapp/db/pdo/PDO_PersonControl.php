@@ -264,6 +264,7 @@ if
 	&& isset($_GET['lastName'])
 	&& isset($_GET['birthday'])
 	&& isset($_GET['gender'])
+	&& isset($_GET['password'])
 )
 {
 	/*
