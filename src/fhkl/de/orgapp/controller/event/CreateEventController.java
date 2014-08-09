@@ -52,6 +52,7 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 
 /**
  * CrateEventController - Handle each event instantiation in a group.
+ * All event is created and started from here. 
  * 
  * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
  * @version 4.0
@@ -516,13 +517,15 @@ public class CreateEventController extends MenuActivity {
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
 
+			// Prepare a dialog to share the event to social network
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
 				showDialogAndGoToSingleGroupController();
 			}
 		}
-
+		
+		// Dialog to let user share an event to social network
 		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(CreateEventController.this);
 
@@ -565,7 +568,8 @@ public class CreateEventController extends MenuActivity {
 			builder.create().show();
 		}
 	}
-
+	
+	// Social network sharing implementation
 	class SocialNetworkSharer extends AsyncTask<String, String, String> {
 		@Override
 		protected String doInBackground(String... socialNetworkName) {
@@ -595,6 +599,7 @@ public class CreateEventController extends MenuActivity {
 		}
 	};
 
+	// Date and time modification helper
 	private void updateRegularityChosen() {
 
 		String format = "yyyy-MM-dd";

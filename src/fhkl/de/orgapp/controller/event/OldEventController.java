@@ -25,6 +25,8 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
 
 /**
+ * OldEventController - handles all past events. The information is in read-only mode. 
+ * The user cannot make any changes to any events and comments that happened in the past. 
  * 
  * @author Jochen Jung
  * @version 3.7

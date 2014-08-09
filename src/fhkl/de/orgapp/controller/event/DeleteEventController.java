@@ -23,7 +23,11 @@ import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * 
+ * DeleteEventController - deletes an event of a group.
+ * It is only available for user with sufficient privileges, a group admin
+ * or the event creator. A notification will be sent to user after 
+ * an event has been successfully deleted. It is also possible to 
+ * share the event cancellation to the social network. 
  * 
  * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
  * @version 3.7
@@ -42,6 +46,12 @@ public class DeleteEventController extends MenuActivity {
 		new DeleteEvent().execute();
 	}
 
+	/**
+	 * Begin the background operation using asynchronous task to update the data
+	 * through the network. The extended AsyncTask, DeleteEventController class deletes
+	 * an event of a group. 
+	 *
+	 */
 	class DeleteEvent extends AsyncTask<String, String, String> {
 		@Override
 		protected void onPreExecute() {

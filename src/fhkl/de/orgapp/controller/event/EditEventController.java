@@ -40,6 +40,15 @@ import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 /**
+ * EditEventController - handles an event modification and share content to social network.
+ * It does not multiple events that occurred regularly. Every changes on an event
+ * creates a notification for the user. Changes can be made for: 
+ * <ul>
+ * <li>Event Name</li>
+ * <li>Location</li>
+ * <li>Date</li>
+ * <li>Time</li>
+ * </ul>
  * 
  * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
  * @version 3.8
@@ -102,13 +111,16 @@ public class EditEventController extends MenuActivity {
 				timeDialog.show();
 			}
 		});
-
+		
+		// Hide the regularity settings!
 		regularityDate = (CheckBox) findViewById(R.id.REGULARITYDATE);
 		regularityDate.setVisibility(View.GONE);
 
+		// Buttons
 		bSave = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
-
+		
+		// Make each of them clickable
 		bSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -128,6 +140,11 @@ public class EditEventController extends MenuActivity {
 		setText();
 	}
 
+	/**
+	 * Begin the background operation using asynchronous task to update the event data
+	 * through the network.	
+	 *
+	 */
 	class EditEvent extends AsyncTask<String, String, String> {
 
 		@Override
@@ -143,6 +160,7 @@ public class EditEventController extends MenuActivity {
 		protected String doInBackground(String... args) {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 
+			// Check user input, if everything is OK, prepare the parameters.
 			if (!InputValidator.isStringLengthInRange(name.getText().toString(), 0, 255)) {
 				return IMessages.Error.INVALID_NAME;
 			} else {
@@ -184,7 +202,8 @@ public class EditEventController extends MenuActivity {
 			} else {
 				params.add(new BasicNameValuePair("eventTime", eventTime.getText().toString()));
 			}
-
+			
+			// Create the notification for user
 			String message = new String();
 			boolean eventChanged = false;
 			if (!name.getText().toString().equals(EventData.getNAME())) {
@@ -214,6 +233,7 @@ public class EditEventController extends MenuActivity {
 					eventChanged = true;
 				}
 			}
+			
 			String tmp = eventTime.getText().toString();
 			tmp += ":00";
 			if (!tmp.equals(EventData.getEVENTTIME())) {
@@ -230,7 +250,8 @@ public class EditEventController extends MenuActivity {
 			if (!eventChanged) {
 				return IMessages.Error.NO_CHANGES_MADE;
 			}
-
+			
+			// Send the request to HTTPS, function trigger: do=updateEvent
 			params.add(new BasicNameValuePair("do", "updateEvent"));
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
@@ -238,7 +259,8 @@ public class EditEventController extends MenuActivity {
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
-
+				
+				// If the response is a success, read all the members that are going to the event.
 				if (success == 1) {
 
 					List<NameValuePair> paramsGetMemberList = new ArrayList<NameValuePair>();
@@ -276,7 +298,9 @@ public class EditEventController extends MenuActivity {
 
 		protected void onPostExecute(String message) {
 			pDialog.dismiss();
-
+			
+			// Optional action: share an event to social network AFTER editing the event. 
+			// A dialog will appear.
 			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			} else {
@@ -284,9 +308,11 @@ public class EditEventController extends MenuActivity {
 			}
 		}
 
+		// Share event dialog
 		private void showDialogAndGoToSingleGroupController() {
 			AlertDialog.Builder builder = new AlertDialog.Builder(EditEventController.this);
 
+			// Set the button functionality
 			builder.setMessage(IMessages.SecurityIssue.SHARE_EDITED_EVENT);
 			builder.setNeutralButton(IMessages.DialogButton.NO, new android.content.DialogInterface.OnClickListener() {
 				@Override
@@ -326,7 +352,11 @@ public class EditEventController extends MenuActivity {
 			builder.create().show();
 		}
 	}
-
+	
+	/**
+	 * Share an event to the social network. 
+	 *
+	 */
 	class SocialNetworkSharer extends AsyncTask<String, String, String> {
 		@Override
 		protected String doInBackground(String... socialNetworkName) {
@@ -356,6 +386,7 @@ public class EditEventController extends MenuActivity {
 		}
 	};
 
+	// Date modification helper
 	private void updateEventDate() {
 
 		String format = "yyyy-MM-dd";
@@ -364,6 +395,7 @@ public class EditEventController extends MenuActivity {
 		eventDate.setText(sdf.format(calendar.getTime()));
 	}
 
+	// Time modification helper
 	TimePickerDialog.OnTimeSetListener timeEvent = new TimePickerDialog.OnTimeSetListener() {
 
 		@Override
@@ -381,6 +413,7 @@ public class EditEventController extends MenuActivity {
 		eventTime.setText(sdf.format(calendar.getTime()));
 	}
 
+	// Put the modified information to the view
 	private void setText() {
 		name.setText(EventData.getNAME());
 		eventLocation.setText(EventData.getEVENTLOCATION());
