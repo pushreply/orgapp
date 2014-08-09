@@ -2,43 +2,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:weightSum="100" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="0dp" 
+        android:layout_weight="30">
 
-        <TextView
-            android:id="@+id/TV_GROUP_INFO"
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:text="@string/GROUP_INFO"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/GROUP_INFO"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium" 
-            android:layout_marginBottom="10sp"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="10sp" >
 
-    <LinearLayout
-        android:id="@+id/HR"
-        android:layout_width="fill_parent"
-        android:layout_height="2dip"
-        android:layout_marginBottom="10dip"
-        android:background="#000000"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:visibility="invisible" />
+            <TextView
+                android:id="@+id/TV_GROUP_INFO"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/GROUP_INFO"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/GROUP_INFO"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </ScrollView>
+
+    <View style="@style/Divider2" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="10sp" 
+        android:layout_weight="70"/>
 
 </LinearLayout>

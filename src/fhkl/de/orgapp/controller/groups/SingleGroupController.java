@@ -82,7 +82,7 @@ public class SingleGroupController extends MenuActivity {
 		tvGroupInfo = (TextView) findViewById(R.id.TV_GROUP_INFO);
 		groupInfo = (TextView) findViewById(R.id.GROUP_INFO);
 
-		hr = (LinearLayout) findViewById(R.id.HR);
+		// hr = (LinearLayout) findViewById(R.id.HR);
 		new GetGroupCalendar().execute();
 	}
 
@@ -185,7 +185,7 @@ public class SingleGroupController extends MenuActivity {
 					calenderList.setAdapter(adapter);
 					tvGroupInfo.setVisibility(View.VISIBLE);
 					groupInfo.setText(GroupData.getGROUPINFO());
-					hr.setVisibility(View.VISIBLE);
+					//hr.setVisibility(View.VISIBLE);
 				}
 			});
 		}
