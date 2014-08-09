@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -41,8 +40,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * Loads a list of one user's groups. Starts new Activity ''SingleGroup'' on
  * ItemClick. Opens a group menu on ItemLongClick.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Ronaldo Hasiholan, Jochen Jung
+ * @version 3.9
  */
 public class GroupsController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -77,8 +76,6 @@ public class GroupsController extends MenuActivity {
 	 * Async class that loads one user's groups. Handles ItemClick and
 	 * ItemLongClick.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class Groups extends AsyncTask<String, String, String> {
 
@@ -115,8 +112,6 @@ public class GroupsController extends MenuActivity {
 			// Get groups of the user
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", vp,
 							GroupsController.this);
-
-			Log.d("Groups: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -205,8 +200,6 @@ public class GroupsController extends MenuActivity {
 	 * Loads privileges into GroupData. Open new activity ''SingleGroup''
 	 * OnItemClick. Open the group menu OnItemLongClick.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class SetPrivileges extends AsyncTask<String, String, String> {
 
@@ -226,8 +219,6 @@ public class GroupsController extends MenuActivity {
 			// Get current user's privileges
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
 							GroupsController.this);
-
-			Log.d("Member: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

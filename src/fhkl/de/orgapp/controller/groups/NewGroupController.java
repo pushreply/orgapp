@@ -18,7 +18,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,8 +36,8 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * 
  * Adds new group. Gives member admin privileges.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Oliver Neubauer, Jochen Jung
+ * @version 3.9
  */
 public class NewGroupController extends MenuActivity {
 	AlertDialog member_question;
@@ -86,8 +85,6 @@ public class NewGroupController extends MenuActivity {
 	/**
 	 * Async class that creates new group. Gives member admin privileges.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class CreateNewGroup extends AsyncTask<String, String, String> {
 
@@ -138,8 +135,6 @@ public class NewGroupController extends MenuActivity {
 			// Create new group
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsCreateGroup,
 							NewGroupController.this);
-
-			Log.d("Create Response", json.toString());
 
 			try {
 				Integer success = json.getInt(TAG_SUCCESS);

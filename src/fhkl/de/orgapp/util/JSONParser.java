@@ -25,12 +25,11 @@ import android.content.Context;
  * JSONParser - Handles the data to execute requests to the server
  * 
  * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
- * @version 1.0
- *
+ * @version 3.6
+ * 
  */
 
-public class JSONParser
-{
+public class JSONParser {
 	// For the content of response
 	static InputStream is = null;
 	// Container for the result
@@ -39,9 +38,8 @@ public class JSONParser
 	static String json = "";
 
 	/**
-	 * Executes a HTTPS request.
-	 * Offers methods GET and POST.
-	 * Only method GET is used, currently
+	 * Executes a HTTPS request. Offers methods GET and POST. Only method GET is
+	 * used, currently
 	 * 
 	 * @param url the address for the request
 	 * @param method the method for the request
@@ -49,15 +47,12 @@ public class JSONParser
 	 * @param ctx the context, which calls this method
 	 * @return the returned data as JSON
 	 */
-	
-	public JSONObject makeHttpsRequest(String url, String method, List<NameValuePair> params, Context ctx)
-	{
-		try
-		{
+
+	public JSONObject makeHttpsRequest(String url, String method, List<NameValuePair> params, Context ctx) {
+		try {
 			// POST method
 			// Currently unused
-			if (method == "POST")
-			{
+			if (method == "POST") {
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -69,11 +64,10 @@ public class JSONParser
 			}
 
 			// GET method
-			else if (method == "GET")
-			{
+			else if (method == "GET") {
 				// Own HTTPS client
-				MyHttpClient httpsClient = new MyHttpClient(ctx);
-				
+				MyHttpsClient httpsClient = new MyHttpsClient(ctx);
+
 				// Formated parameters
 				String paramString = URLEncodedUtils.format(params, "utf-8");
 				// Attach the parameters at the address
@@ -87,57 +81,44 @@ public class JSONParser
 				// Get the content of the response
 				is = httpEntity.getContent();
 			}
-		}
-		catch (UnsupportedEncodingException e)
-		{
+		} catch (UnsupportedEncodingException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
-		}
-		catch (ClientProtocolException e)
-		{
+		} catch (ClientProtocolException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}
 
-		try
-		{
+		try {
 			// Read the content
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			// Object for the text
 			StringBuilder sb = new StringBuilder();
 			// Object for each line
 			String line = null;
-			
+
 			// Read the lines
-			while ((line = reader.readLine()) != null)
-			{
+			while ((line = reader.readLine()) != null) {
 				// Append lines to the text
 				sb.append(line + "\n");
 			}
-			
+
 			// Close inputstream
 			is.close();
 			// Convert text to string
 			json = sb.toString();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}
 
-		try
-		{
+		try {
 			// Parse text to a JSON object
 			jObj = new JSONObject(json);
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}
@@ -148,24 +129,20 @@ public class JSONParser
 	}
 
 	/**
-	 * Executes a HTTP request.
-	 * Offers methods GET and POST.
-	 * Only method GET is used, currently
+	 * Executes a HTTP request. Offers methods GET and POST. Only method GET is
+	 * used, currently
 	 * 
 	 * @param url the address for the request
 	 * @param method the method for the request
 	 * @param params the params, which are attached in the url
 	 * @return the returned data as JSON
 	 */
-	
-	public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params)
-	{
-		try
-		{
+
+	public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params) {
+		try {
 			// POST method
 			// Currently unused
-			if (method == "POST")
-			{
+			if (method == "POST") {
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -176,8 +153,7 @@ public class JSONParser
 
 			}
 			// GET method
-			else if (method == "GET")
-			{
+			else if (method == "GET") {
 				// Default HTTP client
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				// Formated parameters
@@ -194,58 +170,45 @@ public class JSONParser
 				is = httpEntity.getContent();
 			}
 
-		}
-		catch (UnsupportedEncodingException e)
-		{
+		} catch (UnsupportedEncodingException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
-		}
-		catch (ClientProtocolException e)
-		{
+		} catch (ClientProtocolException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}
 
-		try
-		{
+		try {
 			// Read the content
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
 			// Object for the text
 			StringBuilder sb = new StringBuilder();
 			// Object for each line
 			String line = null;
-			
+
 			// Read the lines
-			while ((line = reader.readLine()) != null)
-			{
+			while ((line = reader.readLine()) != null) {
 				// Append lines to the text
 				sb.append(line + "\n");
 			}
-			
+
 			// Close inputstream
 			is.close();
 			// Convert text to string
 			json = sb.toString();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}
 
 		// try parse the string to a JSON object
-		try
-		{
+		try {
 			// Parse text to a JSON object
 			jObj = new JSONObject(json);
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			// Return an empty object in case of error
 			return new JSONObject();
 		}

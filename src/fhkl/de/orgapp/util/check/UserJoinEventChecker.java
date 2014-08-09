@@ -13,14 +13,13 @@ import fhkl.de.orgapp.util.data.UserData;
 
 /**
  * UserJoinEventChecker - Checks, whether the logged user joined in an event
- *
+ * 
  * @author Jochen Jung
- * @version 1.0
- *
+ * @version 3.5
+ * 
  */
 
-public class UserJoinEventChecker
-{
+public class UserJoinEventChecker {
 	// For json issues
 	private JSONParser jsonParser = new JSONParser();
 	private static final String TAG_SUCCESS = "success";
@@ -31,8 +30,7 @@ public class UserJoinEventChecker
 	 * @param eventId the event id
 	 * @return true, if logged user joined in the event, false otherwise
 	 */
-	public boolean isMemberJoinedEvent(String eventId)
-	{
+	public boolean isMemberJoinedEvent(String eventId) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 		// Required parameters
@@ -43,24 +41,20 @@ public class UserJoinEventChecker
 		// Check logged user joined event
 		JSONObject json = jsonParser.makeHttpRequest(IUniformResourceLocator.URL.URL_EVENTPERSON_HTTP, "GET", params);
 
-		try
-		{
+		try {
 			int success = json.getInt(TAG_SUCCESS);
 
 			// In case of success
-			if (success == 1)
-			{
+			if (success == 1) {
 				return true;
 			}
 			// In case of no success
-			else
-			{
+			else {
 				return false;
 			}
 		}
 		// In case of error
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			return false;
 		}
 	}

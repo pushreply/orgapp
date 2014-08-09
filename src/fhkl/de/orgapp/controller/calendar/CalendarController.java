@@ -36,8 +36,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * CalendarController - handles personal list of events on that user is going to
  * attend. This is what user sees after a successful login has been made.
  * 
- * @author ronaldo.hasiholan
- * @version 1.0
+ * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 3.7
  */
 
 public class CalendarController extends MenuActivity {
@@ -134,8 +134,6 @@ public class CalendarController extends MenuActivity {
 			params.add(new BasicNameValuePair("do", "readUserEvents"));
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 							CalendarController.this);
-
-			Log.d("Calendar: ", json.toString());
 
 			// Get the result from server using JSON and map the respective key-value.
 			try {

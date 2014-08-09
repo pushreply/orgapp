@@ -25,72 +25,69 @@ import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
 /**
- * SecurityInfoController - Handles the data for edit the security information of the user
+ * SecurityInfoController - Handles the data for edit the security information
+ * of the user
  * 
  * @author Oliver Neubauer
- * @version ?
- *
+ * @version 3.9
+ * 
  */
 
-public class SecurityInfoController extends MenuActivity
-{
+public class SecurityInfoController extends MenuActivity {
 	// For progress dialog
 	private ProgressDialog pDialog;
-	
+
 	// Required variables for layout fields
 	TextView textEmail, textPassword, textPasswordConfirm;
 	EditText emailNew, passwordNew, passwordConfirmNew;
 	Button changeButton, cancelButton;
-	
+
 	/**
 	 * Calls the required methods
 	 * 
 	 * @param savedInstanceState
 	 */
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Set the layout
 		setContentView(R.layout.security_information);
-		
+
 		// Check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
-		
+
 		// Fetch the views
 		getViews();
-		
+
 		// Set the texts of the views
 		setTexts();
-		
+
 		// Set the text sizes
 		setTextSizes();
 	}
-	
+
 	/**
 	 * Fetches the views by id
 	 */
-	
-	private void getViews()
-	{
+
+	private void getViews() {
 		textEmail = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_EMAIL);
 		emailNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_EMAIL);
 		textPassword = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_PASSWORD);
-		passwordNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD);	
+		passwordNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD);
 		textPasswordConfirm = (TextView) findViewById(R.id.SECURITY_INFO_TEXT_PASSWORD_CONFIRM);
-		passwordConfirmNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD_CONFIRM);		
+		passwordConfirmNew = (EditText) findViewById(R.id.SECURITY_INFO_USER_PASSWORD_CONFIRM);
 		changeButton = (Button) findViewById(R.id.CHANGE_SECURITY_INFO_BUTTON);
 		cancelButton = (Button) findViewById(R.id.CANCEL_SECURITY_INFO_VIEW);
 	}
-	
+
 	/**
 	 * Sets the texts of the views
 	 */
-	
-	private void setTexts()
-	{
+
+	private void setTexts() {
 		textEmail.setText(getString(R.string.EMAIL_MUST_HAVE) + ":");
 		textPassword.setText(getString(R.string.PASSWORD_MUST_HAVE) + ":");
 		textPasswordConfirm.setText(getString(R.string.PASSWORD_CONFIRM_MUST_HAVE));
@@ -100,13 +97,12 @@ public class SecurityInfoController extends MenuActivity
 		changeButton.setText(getString(R.string.CHANGE_INFO));
 		cancelButton.setText(getString(R.string.CANCEL));
 	}
-	
+
 	/**
 	 * Sets the text sizes
 	 */
-	
-	private void setTextSizes()
-	{
+
+	private void setTextSizes() {
 		// Android specific sizes
 		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		emailNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
@@ -115,137 +111,119 @@ public class SecurityInfoController extends MenuActivity
 		textPasswordConfirm.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		passwordConfirmNew.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 	}
-	
+
 	/**
 	 * Checks the data and calls the updater
 	 * 
 	 * @param view the associated view
 	 */
-	
-	public void changeSecurityInfo(View view)
-	{
+
+	public void changeSecurityInfo(View view) {
 		// Error message in case of incomplete fields
-		if(!isSecurityInfoComplete())
-		{
+		if (!isSecurityInfoComplete()) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.REQUIRED_FIELDS_NOT_COMPLETE, Toast.LENGTH_LONG).show();
 			return;
 		}
-		
+
 		// Error message in case of invalid email
-		if(!isEmailValid())
-		{
+		if (!isEmailValid()) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.INVALID_EMAIL, Toast.LENGTH_LONG).show();
 			return;
 		}
-		
+
 		// Error message in case of no match of the two password
-		if(!passwordNew.getText().toString().equals(passwordConfirmNew.getText().toString()))
-		{
+		if (!passwordNew.getText().toString().equals(passwordConfirmNew.getText().toString())) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.PASSWORDS_DO_NOT_MATCH, Toast.LENGTH_LONG).show();
 			return;
 		}
-		
+
 		// Error message in case of undone changes
-		if(!hasSecurityInfoChanged())
-		{
+		if (!hasSecurityInfoChanged()) {
 			Toast.makeText(getApplicationContext(), IMessages.Error.SECURITY_INFO_NOT_UPDATED, Toast.LENGTH_LONG).show();
 			return;
 		}
-		
+
 		// Update the security information
 		new SecurityInfoUpdater().execute();
 	}
-	
+
 	/**
 	 * Goes back to profile
 	 * 
 	 * @param view
 	 */
-	
-	public void cancelSecurityInfoView(View view)
-	{
+
+	public void cancelSecurityInfoView(View view) {
 		backToProfile();
 	}
-	
+
 	/**
 	 * Starts the ProfileController
 	 */
-	
-	private void backToProfile()
-	{
+
+	private void backToProfile() {
 		// Start the ProfileController
 		Intent intent = new Intent(this, ProfileController.class);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * Checks, whether all required fields are complete
 	 * 
 	 * @return false, if one field is missing. True otherwise
 	 */
-	
-	private boolean isSecurityInfoComplete()
-	{
-		if(
-		     emailNew.getText().toString().equals("")
-			 || passwordNew.getText().toString().equals("")
-			 || passwordConfirmNew.getText().toString().equals("")
-		  )
-				return false;
-			
-			return true;
+
+	private boolean isSecurityInfoComplete() {
+		if (emailNew.getText().toString().equals("") || passwordNew.getText().toString().equals("")
+						|| passwordConfirmNew.getText().toString().equals(""))
+			return false;
+
+		return true;
 	}
-	
+
 	/**
 	 * Checks, whether email is valid
 	 * 
 	 * @return false, if email is invalid. True, otherwise
 	 */
-	
-	private boolean isEmailValid()
-	{
-		if(!InputValidator.isEmailValid(emailNew.getText().toString()))
+
+	private boolean isEmailValid() {
+		if (!InputValidator.isEmailValid(emailNew.getText().toString()))
 			return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Checks, whether changes were done
-	 *
-	 * @return false, if new email and new password contains the same data as previous. True otherwise
+	 * 
+	 * @return false, if new email and new password contains the same data as
+	 *         previous. True otherwise
 	 */
-	
-	private boolean hasSecurityInfoChanged()
-	{
-		if(
-			emailNew.getText().toString().equals(UserData.getEMAIL())
-			&& passwordNew.getText().toString().equals(UserData.getPASSWORD())
-		  )
+
+	private boolean hasSecurityInfoChanged() {
+		if (emailNew.getText().toString().equals(UserData.getEMAIL())
+						&& passwordNew.getText().toString().equals(UserData.getPASSWORD()))
 			return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * SecurityInfoUpdater - Updates the security information
 	 * 
-	 * @author Oliver Neubauer
-	 * @version ?
-	 *
+	 * 
 	 */
-	
-	class SecurityInfoUpdater extends AsyncTask<String, String, String>
-	{
+
+	class SecurityInfoUpdater extends AsyncTask<String, String, String> {
 		/**
 		 * Defines a progress dialog within the main thread
 		 */
-		
+
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
-			
+
 			// Display a progress dialog
 			pDialog = new ProgressDialog(SecurityInfoController.this);
 			pDialog.setMessage(IMessages.Status.UPDATING_SECURITY_INFO);
@@ -259,78 +237,73 @@ public class SecurityInfoController extends MenuActivity
 		 * 
 		 * @param arg0 the arguments as String array
 		 */
-		
+
 		@Override
-		protected String doInBackground(String... arg0)
-		{
+		protected String doInBackground(String... arg0) {
 			// Required parameters for the request
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "update"));
 			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
-			
+
 			// The new value
 			params.add(new BasicNameValuePair("eMail", emailNew.getText().toString()));
 			params.add(new BasicNameValuePair("password", passwordNew.getText().toString()));
-			
-			// This values are not changeable in this layout, but required for the update
+
+			// This values are not changeable in this layout, but required for the
+			// update
 			params.add(new BasicNameValuePair("firstName", UserData.getFIRST_NAME()));
 			params.add(new BasicNameValuePair("lastName", UserData.getLAST_NAME()));
 			params.add(new BasicNameValuePair("birthday", UserData.getBIRTHDAY()));
 			params.add(new BasicNameValuePair("gender", UserData.getGENDER()));
-			
+
 			// Make the request
-			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, SecurityInfoController.this);
-			
-			try
-			{
+			JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
+							SecurityInfoController.this);
+
+			try {
 				int success = json.getInt("success");
-				
+
 				// In case of success
-				if(success == 1)
-				{
+				if (success == 1) {
 					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
 				// In case of no success
-				else
-				{
+				else {
 					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			}
 			// In case of Error
-			catch(Exception e)
-			{
+			catch (Exception e) {
 				e.getStackTrace();
 				pDialog.dismiss();
 				// Logout the user
 				logout();
 			}
-			
+
 			return null;
 		}
 
 		/**
-		 * Displays an user message within main thread.
-		 * Sets the updated user data
-		 *
+		 * Displays an user message within main thread. Sets the updated user data
+		 * 
 		 * @param message the message to be displayed
 		 */
-		
+
 		@Override
-		protected void onPostExecute(String message)
-		{
+		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
-			
+
 			// Hide the progress dialog
 			pDialog.dismiss();
-			
+
 			// Display a message if available
-			if(message != null)
+			if (message != null)
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-			
+
 			// Set the updated data to the POJO
 			UserData.setEMAIL(emailNew.getText().toString());
 			UserData.setPASSWORD(passwordNew.getText().toString());
-			
+
 			// Back to the profile of the user
 			backToProfile();
 		}

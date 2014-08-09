@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +45,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * on icon.
  * 
  * @author Jochen Jung
- * @version 1.0
+ * @version 3.9
  */
 public class SingleGroupController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -90,8 +89,6 @@ public class SingleGroupController extends MenuActivity {
 	/**
 	 * Async class that loads the group events in a ListView
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GetGroupCalendar extends AsyncTask<String, String, String> {
 
@@ -128,8 +125,6 @@ public class SingleGroupController extends MenuActivity {
 			// Fetch the events of a selected group
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 							SingleGroupController.this);
-
-			Log.d("Calendar: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -199,8 +194,6 @@ public class SingleGroupController extends MenuActivity {
 	/**
 	 * Async class that saves event values in EventData.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GetEvent extends AsyncTask<String, String, String> {
 
@@ -233,8 +226,6 @@ public class SingleGroupController extends MenuActivity {
 			// Fetch the selected event
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
 							SingleGroupController.this);
-
-			Log.d("Event: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -278,8 +269,6 @@ public class SingleGroupController extends MenuActivity {
 	/**
 	 * Custom adapter for four TextViews and one ImageView
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	private class CustomAdapter extends BaseAdapter {
 
@@ -309,8 +298,6 @@ public class SingleGroupController extends MenuActivity {
 		/**
 		 * ViewHolder that temporary holds view values.
 		 * 
-		 * @author Jochen Jung
-		 * @version 1.0
 		 */
 		public class ViewHolder {
 
@@ -445,8 +432,6 @@ public class SingleGroupController extends MenuActivity {
 	/**
 	 * Async class that changes attending status depending on current status.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class ChangeAttendingStatus extends AsyncTask<String, String, String> {
 
@@ -488,8 +473,6 @@ public class SingleGroupController extends MenuActivity {
 			// Change attending status
 			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							SingleGroupController.this);
-
-			Log.d("EventPerson: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

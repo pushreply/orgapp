@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,13 +31,12 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 /**
  * RegisterController - Handles the data to register an user
  * 
- * @author Oliver Neubauer
- * @version 1.0
- *
+ * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 3.6
+ * 
  */
 
-public class RegisterController extends Activity
-{
+public class RegisterController extends Activity {
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -53,20 +53,17 @@ public class RegisterController extends Activity
 	private static final String TAG_SUCCESS = "success";
 	List<NameValuePair> params;
 	Integer success, newPersonId;
-	
+
 	/**
-	 * Sets the content view.
-	 * Fetches the views by id.
-	 * Sets onClickListener
+	 * Sets the content view. Fetches the views by id. Sets onClickListener
 	 * 
 	 * @param savedInstanceState contains the data
 	 */
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Set the content view
 		setContentView(R.layout.register);
 
@@ -80,22 +77,18 @@ public class RegisterController extends Activity
 		Button bCancel = (Button) findViewById(R.id.CANCEL);
 
 		// Set onClickListener for submit
-		bSubmit.setOnClickListener(new View.OnClickListener()
-		{
+		bSubmit.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				// Call the person creator
 				new CreateNewPerson().execute();
 			}
 		});
 
 		// Set onClickListener for cancel
-		bCancel.setOnClickListener(new View.OnClickListener()
-		{
+		bCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				// Call the StartController
 				Intent i = new Intent(RegisterController.this, StartController.class);
 				startActivity(i);
@@ -106,20 +99,16 @@ public class RegisterController extends Activity
 	/**
 	 * CreateNewPerson - Registers a new user
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
-	 *
+	 * 
 	 */
-	
-	class CreateNewPerson extends AsyncTask<String, String, String>
-	{
+
+	class CreateNewPerson extends AsyncTask<String, String, String> {
 		/**
 		 * Displays a progress dialog
 		 */
-		
+
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(RegisterController.this);
 			pDialog.setMessage(IMessages.Status.CREATING_PERSON);
@@ -129,17 +118,14 @@ public class RegisterController extends Activity
 		}
 
 		/**
-		 * Validates the user inputs.
-		 * Create a new user.
-		 * Create new notification settings.
-		 * Create new event settings
+		 * Validates the user inputs. Create a new user. Create new notification
+		 * settings. Create new event settings
 		 * 
 		 * @param args the parameters as array
 		 * @return an error message or null in case of success
 		 */
-		
-		protected String doInBackground(String... args)
-		{
+
+		protected String doInBackground(String... args) {
 			// Fetch the user input
 			String eMail = inputEMail.getText().toString();
 			String password = inputPassword.getText().toString();
@@ -163,41 +149,39 @@ public class RegisterController extends Activity
 			if (!InputValidator.isStringLengthInRange(firstName, 0, 255))
 				return IMessages.Error.INVALID_FIRSTNAME;
 
-			// Validate the last name  (only the length of them)
+			// Validate the last name (only the length of them)
 			if (!InputValidator.isStringLengthInRange(lastName, 0, 255))
 				return IMessages.Error.INVALID_LASTNAME;
 
 			params = new ArrayList<NameValuePair>();
-			
+
 			// The required parameters
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", eMail));
-			
-			// Make the request to check, whether person already exists
-			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
-			try
-			{
+			// Make the request to check, whether person already exists
+			json = jsonParser
+							.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
+
+			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				// Person already exists
-				if (success == 1)
-				{
+				if (success == 1) {
 					return IMessages.Error.DUPLICATE_PERSON;
 				}
 			}
 			// In case of error
-			catch(Exception e)
-			{
+			catch (Exception e) {
 				// Back to StartController
 				Intent i = new Intent(RegisterController.this, StartController.class);
 				startActivity(i);
 			}
 
 			// The current date
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 			Date date = new Date();
-			
+
 			// The required parameters
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "create"));
@@ -208,69 +192,64 @@ public class RegisterController extends Activity
 			params.add(new BasicNameValuePair("created", dateFormat.format(date).toString()));
 
 			// Make the request to create the person
-			json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
+			json = jsonParser
+							.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, RegisterController.this);
 
-			try
-			{
+			try {
 				// Fetch the id of new person
 				newPersonId = json.getInt(TAG_SUCCESS);
-				
+
 				// In case of success
-				if (newPersonId.intValue() != 0)
-				{
+				if (newPersonId.intValue() != 0) {
 					// The required parameters
 					params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("do", "create"));
 					params.add(new BasicNameValuePair("personId", newPersonId.toString()));
-					
+
 					// Make the request to create the notification settings
-					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, RegisterController.this);
-					
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params,
+									RegisterController.this);
+
 					success = json.getInt(TAG_SUCCESS);
-					
+
 					// In case of success
-					if (success == 1)
-					{
+					if (success == 1) {
 						// The required parameters
 						params = new ArrayList<NameValuePair>();
 						params.add(new BasicNameValuePair("do", "create"));
 						params.add(new BasicNameValuePair("personId", newPersonId.toString()));
-						
+
 						// Make the request to create event settings
-						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, RegisterController.this);
-						
+						json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params,
+										RegisterController.this);
+
 						success = json.getInt(TAG_SUCCESS);
-						
+
 						// In case of success
-						if(success == 1)
-						{
+						if (success == 1) {
 							return null;
 						}
 						// In case of no success
-						else
-						{
+						else {
 							// Back to StartController
 							Intent i = new Intent(RegisterController.this, StartController.class);
 							startActivity(i);
 						}
 					}
 					// In case of no success
-					else
-					{
+					else {
 						// Back to StartController
 						Intent i = new Intent(RegisterController.this, StartController.class);
 						startActivity(i);
 					}
 				}
 				// In case of no success
-				else
-				{
+				else {
 					return IMessages.Error.PERSON_NOT_CREATED;
 				}
 			}
 			// In case of error
-			catch(Exception e)
-			{
+			catch (Exception e) {
 				// Back to StartController
 				Intent i = new Intent(RegisterController.this, StartController.class);
 				startActivity(i);
@@ -280,33 +259,30 @@ public class RegisterController extends Activity
 		}
 
 		/**
-		 * Dismisses the progress dialog.
-		 * Displays a negative message in case of error.
-		 * Starts the LoginController and displays a positive message in case of success
+		 * Dismisses the progress dialog. Displays a negative message in case of
+		 * error. Starts the LoginController and displays a positive message in case
+		 * of success
 		 * 
 		 * @param message the error message or null in case of success
 		 */
-		
-		protected void onPostExecute(String message)
-		{
+
+		protected void onPostExecute(String message) {
 			super.onPostExecute(message);
-			
+
 			// Dismiss the dialog once done
 			pDialog.dismiss();
 
 			// Error Message
-			if (message != null)
-			{
+			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 			}
 			// Success
-			else
-			{
+			else {
 				Toast.makeText(getApplicationContext(), IMessages.Success.PERSON_SUCCESSFUL_CREATED, Toast.LENGTH_LONG).show();
-				
+
 				// Close screen
 				finish();
-				
+
 				// Start LoginController
 				Intent i = new Intent(getApplicationContext(), LoginController.class);
 				startActivity(i);

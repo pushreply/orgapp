@@ -13,7 +13,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.util.IMessages;
@@ -28,8 +27,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * 
  * Removes a group member from a group.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Ronaldo Hasiholan
+ * @version 3.9
  */
 
 public class LeaveGroupController extends MenuActivity {
@@ -63,8 +62,6 @@ public class LeaveGroupController extends MenuActivity {
 	/**
 	 * Asnyc class that removes user from group.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class LeaveGroup extends AsyncTask<String, String, String> {
 		/**
@@ -98,8 +95,6 @@ public class LeaveGroupController extends MenuActivity {
 			// Leave group
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
 							LeaveGroupController.this);
-
-			Log.d("Response: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

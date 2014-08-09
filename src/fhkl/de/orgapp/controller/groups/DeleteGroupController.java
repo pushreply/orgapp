@@ -25,8 +25,8 @@ import fhkl.de.orgapp.util.data.GroupData;
  * Deletes the chosen group. Deletes all group users. Sends Notifications to
  * members.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Ronadlo Hasiholan, Oliver Neubauer
+ * @version 3.9
  */
 public class DeleteGroupController extends MenuActivity {
 	private static final String TAG_SUCCESS = "success";
@@ -54,8 +54,6 @@ public class DeleteGroupController extends MenuActivity {
 	 * Async class that deletes the group and users and sends notifications to
 	 * users.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GroupDelete extends AsyncTask<String, String, String> {
 		/**

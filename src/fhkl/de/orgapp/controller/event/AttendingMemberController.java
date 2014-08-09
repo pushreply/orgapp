@@ -13,7 +13,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -35,8 +34,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * AttendingMemberController - handles list of members who are attending an
  * event. Each member is marked by email.
  * 
- * @author ronaldo.hasiholan
- * @version ?
+ * @author Jochen Jung
+ * @version 3.6
  */
 public class AttendingMemberController extends MenuActivity {
 
@@ -112,9 +111,8 @@ public class AttendingMemberController extends MenuActivity {
 			params.add(new BasicNameValuePair("eventId", EventData.getEVENTID()));
 
 			// Send the HTTPS request using GET request
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params, AttendingMemberController.this);
-			// Log the JSON http request
-			Log.d("Memberlist: ", json.toString());
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
+							AttendingMemberController.this);
 
 			// If the JSON request is returning a success result,
 			// fill the JSON array with the result,
@@ -211,9 +209,8 @@ public class AttendingMemberController extends MenuActivity {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("personId", tv_memberId.getText().toString()));
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params, AttendingMemberController.this);
-
-			Log.d("Member: ", json.toString());
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
+							AttendingMemberController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -240,9 +237,9 @@ public class AttendingMemberController extends MenuActivity {
 					paramsPrivileges.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
 					paramsPrivileges.add(new BasicNameValuePair("personId", MemberData.getPERSONID()));
 
-					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges, AttendingMemberController.this);
+					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges,
+									AttendingMemberController.this);
 
-					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						member = json.getJSONArray("member");

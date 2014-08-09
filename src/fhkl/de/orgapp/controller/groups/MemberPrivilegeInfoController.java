@@ -12,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +35,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * Privileges Management handling. Additional member information.
  * 
  * @author Jochen Jung
- * @version 1.0
+ * @version 3.9
  */
 public class MemberPrivilegeInfoController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -152,8 +151,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 	/**
 	 * Async class that saves the selected privileges.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class SavePrivileges extends AsyncTask<String, String, String> {
 
@@ -333,8 +330,6 @@ public class MemberPrivilegeInfoController extends MenuActivity {
 					// Update the privileges
 					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsUpdate,
 									MemberPrivilegeInfoController.this);
-
-					Log.d("Member: ", json.toString());
 
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {

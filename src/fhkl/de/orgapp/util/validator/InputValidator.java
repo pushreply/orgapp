@@ -2,26 +2,25 @@ package fhkl.de.orgapp.util.validator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * InputValidator - Checks the data for correctness entered by the user
  * 
- * @author Oliver Neubauer
+ * @author Oliver Neubauer, Jochen Jung
  * @version 1.0
- *
+ * 
  */
 
-public class InputValidator
-{
+public class InputValidator {
 	/**
 	 * Checks the email input
 	 * 
 	 * @param eMail the users email to be checked
 	 * @return true if email is valid, false otherwise
 	 */
-	
-	public static boolean isEmailValid(String eMail)
-	{
+
+	public static boolean isEmailValid(String eMail) {
 		if (eMail == null)
 			return false;
 
@@ -39,9 +38,8 @@ public class InputValidator
 	 * @param maxLength the maximal allow length
 	 * @return true if value is in range, false otherwise
 	 */
-	
-	public static boolean isStringLengthInRange(String value, int minLength, int maxLength)
-	{
+
+	public static boolean isStringLengthInRange(String value, int minLength, int maxLength) {
 		if (value == null)
 			return false;
 
@@ -58,13 +56,12 @@ public class InputValidator
 	 * @param dateFormat the allow date format
 	 * @return true if date is valid, false otherwise
 	 */
-	
-	public static boolean isDateValid(String date, String dateFormat)
-	{
+
+	public static boolean isDateValid(String date, String dateFormat) {
 		if (date == null)
 			return false;
 
-		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMANY);
 		sdf.setLenient(false);
 
 		try {
@@ -82,21 +79,17 @@ public class InputValidator
 	 * @param number the number to be checked
 	 * @return true if number is valid, false otherwise
 	 */
-	
-	public static boolean isNumberValid(String number)
-	{
+
+	public static boolean isNumberValid(String number) {
 		if (number == null)
 			return false;
 
-		try
-		{
+		try {
 			Integer.valueOf(number);
-		}
-		catch (NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

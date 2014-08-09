@@ -39,6 +39,11 @@ import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * 
+ * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 3.8
+ */
 public class EditEventController extends MenuActivity {
 
 	private ProgressDialog pDialog;

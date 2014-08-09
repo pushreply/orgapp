@@ -29,7 +29,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * EventSettingsController - Handles the data for display the event settings
  * 
  * @author Oliver Neubauer
- * @version 1.0
+ * @version 3.6
  * 
  */
 
@@ -129,10 +129,7 @@ public class EventSettingsController extends MenuActivity {
 	/**
 	 * EventSettingsSaver - Saves the event settings
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
 	 */
-
 	class EventSettingsSaver extends AsyncTask<String, String, String> {
 		/**
 		 * Defines a progress dialog within the main thread
@@ -176,7 +173,8 @@ public class EventSettingsController extends MenuActivity {
 				params.add(new BasicNameValuePair("shownEntries", numberEntries.getText().toString()));
 			}
 
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params, EventSettingsController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTSETTINGS, "GET", params,
+							EventSettingsController.this);
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

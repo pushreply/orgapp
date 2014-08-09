@@ -58,8 +58,8 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * 
  * Invites new group members via their respective E-Mail address.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Oliver Neubauer, Jochen Jung
+ * @version 4.0
  */
 public class ManualInviteMemberController extends Activity {
 
@@ -247,8 +247,6 @@ public class ManualInviteMemberController extends Activity {
 	 * 
 	 * Asnyc class that invites selected person into group.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class InviteMembers extends AsyncTask<String, String, String> {
 		/**

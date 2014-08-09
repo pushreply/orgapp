@@ -62,7 +62,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * MenuActivity - Handles the data to define the user menu
  * 
  * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
- * @version ?
+ * @version 3.9
  * 
  */
 
@@ -562,8 +562,6 @@ public class MenuActivity extends Activity {
 	/**
 	 * MemberList - Fetches the members of a group
 	 * 
-	 * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
-	 * @version ?
 	 * 
 	 */
 

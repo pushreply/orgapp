@@ -12,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +31,7 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * Sends Notifications to all group member.
  * 
  * @author Jochen Jung
- * @version 1.0
+ * @version 3.9
  */
 public class EditGroupController extends MenuActivity {
 
@@ -89,8 +88,6 @@ public class EditGroupController extends MenuActivity {
 	/**
 	 * Async class that loads view elements
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GetGroup extends AsyncTask<String, String, String> {
 
@@ -120,8 +117,6 @@ public class EditGroupController extends MenuActivity {
 			// Get group
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
 							EditGroupController.this);
-
-			Log.d("Response", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -235,8 +230,6 @@ public class EditGroupController extends MenuActivity {
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsUpdateGroup,
 							EditGroupController.this);
 
-			Log.d("Create Response", json.toString());
-
 			try {
 				Integer success = json.getInt(TAG_SUCCESS);
 				if (success != 0) {
@@ -248,7 +241,6 @@ public class EditGroupController extends MenuActivity {
 					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsGetUserInGroup,
 									EditGroupController.this);
 
-					Log.d("Response", json.toString());
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 

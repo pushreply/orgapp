@@ -29,15 +29,15 @@ import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * EventHistoryController - Handles the data for display the previous events the user joined
+ * EventHistoryController - Handles the data for display the previous events the
+ * user joined
  * 
- * @author Jochen Jung, Oliver Neubauer
- * @version ?
- *
+ * @author Oliver Neubauer, Jochen Jung
+ * @version 3.6
+ * 
  */
 
-public class EventHistoryController extends MenuActivity
-{
+public class EventHistoryController extends MenuActivity {
 	// For json issues
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_EVENT_ID = "EVENT_ID";
@@ -46,25 +46,23 @@ public class EventHistoryController extends MenuActivity
 	JSONParser jsonParser = new JSONParser();
 	JSONArray events = null;
 	JSONArray event = null;
-	
+
 	// Required variables for progress dialog, event history and text view
 	private ProgressDialog pDialog;
 	List<HashMap<String, String>> eventHistoryList;
 	TextView tv_eventId;
 
 	/**
-	 * Initializes all necessary variables.
-	 * Calls the required methods
+	 * Initializes all necessary variables. Calls the required methods
 	 * 
 	 * @param savedInstanceState contains the data
 	 */
-	
-	protected void onCreate(Bundle savedInstanceState)
-	{
+
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Set the layout
 		setContentView(R.layout.event_history);
-		
+
 		// check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 
@@ -75,24 +73,21 @@ public class EventHistoryController extends MenuActivity
 	}
 
 	/**
-	 * EventHistoryGetter - Fetches the previous events of the user from the database
+	 * EventHistoryGetter - Fetches the previous events of the user from the
+	 * database
 	 * 
-	 * @author Oliver Neubauer
-	 * @version ?
-	 *
+	 * 
 	 */
-	
-	class EventHistoryGetter extends AsyncTask<String, String, String>
-	{
+
+	class EventHistoryGetter extends AsyncTask<String, String, String> {
 		/**
 		 * Defines a progress dialog within the main thread
 		 */
-		
+
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
-			
+
 			// Display a progress dialog
 			pDialog = new ProgressDialog(EventHistoryController.this);
 
@@ -104,30 +99,28 @@ public class EventHistoryController extends MenuActivity
 		}
 
 		/**
-		 * Prepares and makes a http-request within the background thread to fetches the previous events.
-		 * Put the events in a list
+		 * Prepares and makes a http-request within the background thread to fetches
+		 * the previous events. Put the events in a list
 		 * 
 		 * @param params the arguments as String array
 		 */
-		
+
 		@Override
-		protected String doInBackground(String... params)
-		{
+		protected String doInBackground(String... params) {
 			// Required parameters for the request
 			List<NameValuePair> requestParams = new ArrayList<NameValuePair>();
 			requestParams.add(new BasicNameValuePair("do", "readOldEvents"));
 			requestParams.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams, EventHistoryController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", requestParams,
+							EventHistoryController.this);
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success
-				if (success == 1)
-				{
+				if (success == 1) {
 					// Fetch the previous events of the user
 					events = json.getJSONArray("previousEvents");
 					int e;
@@ -136,8 +129,7 @@ public class EventHistoryController extends MenuActivity
 					HashMap<String, String> eventMap;
 
 					// Put the previous events with necessary attributes in a list
-					for (e = 0; e < events.length(); e++)
-					{
+					for (e = 0; e < events.length(); e++) {
 						event = events.getJSONObject(e);
 
 						id = event.getString("eventId");
@@ -154,8 +146,7 @@ public class EventHistoryController extends MenuActivity
 				}
 			}
 			// Error case
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				e.printStackTrace();
 				pDialog.dismiss();
 				// Logout user
@@ -167,13 +158,12 @@ public class EventHistoryController extends MenuActivity
 
 		/**
 		 * Prepares the data for the display with help of an adapter
-		 *
+		 * 
 		 * @param result null or an error message
 		 */
-		
+
 		@Override
-		protected void onPostExecute(String result)
-		{
+		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
 			// Hide the progress dialog
@@ -181,22 +171,22 @@ public class EventHistoryController extends MenuActivity
 
 			// Prepare the data
 			runOnUiThread(new Runnable() {
-				
+
 				// Put the data in an adapter
 				public void run() {
-					
-					// Initialize the adapter and assign the fetched data to the layout fields
+
+					// Initialize the adapter and assign the fetched data to the layout
+					// fields
 					ListAdapter adapter = new SimpleAdapter(EventHistoryController.this, eventHistoryList,
-									R.layout.event_history_item,
-									new String[] {TAG_EVENT_ID, TAG_EVENT_DATE, TAG_EVENT_NAME},
-									new int[] {R.id.EVENTID, R.id.PREVIOUS_EVENT_DATE,  R.id.PREVIOUS_EVENT_NAME});
+									R.layout.event_history_item, new String[] { TAG_EVENT_ID, TAG_EVENT_DATE, TAG_EVENT_NAME },
+									new int[] { R.id.EVENTID, R.id.PREVIOUS_EVENT_DATE, R.id.PREVIOUS_EVENT_NAME });
 
 					// Update listview
 					final ListView eventList = (ListView) findViewById(android.R.id.list);
 
 					// Make the list clickable
 					eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-						
+
 						// Define the action in case of an item click
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -207,7 +197,7 @@ public class EventHistoryController extends MenuActivity
 
 						}
 					});
-					
+
 					// Set the adapter
 					eventList.setAdapter(adapter);
 				}
@@ -218,17 +208,15 @@ public class EventHistoryController extends MenuActivity
 	/**
 	 * GetEvent - Fetches the details of the selected, previous event
 	 * 
-	 * @author Jochen Jung
-	 * @version ?
-	 *
+	 * 
 	 */
-	
+
 	class GetEvent extends AsyncTask<String, String, String> {
 
 		/**
-		 * Defines a progress dialog within the main thread 
+		 * Defines a progress dialog within the main thread
 		 */
-		
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -245,7 +233,7 @@ public class EventHistoryController extends MenuActivity
 		 * 
 		 * @param args the arguments as String array
 		 */
-		
+
 		protected String doInBackground(String... args) {
 			// Required parameters for the request
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -253,21 +241,19 @@ public class EventHistoryController extends MenuActivity
 			params.add(new BasicNameValuePair("eventId", tv_eventId.getText().toString()));
 
 			// Make the request
-			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params, EventHistoryController.this);
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENT, "GET", params,
+							EventHistoryController.this);
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
-				
+
 				// In case of success
-				if (success == 1)
-				{
+				if (success == 1) {
 					// Fetch the event
 					event = json.getJSONArray("event");
 
 					// Set the event attributes
-					for (int i = 0; i < event.length(); i++)
-					{
+					for (int i = 0; i < event.length(); i++) {
 						JSONObject c = event.getJSONObject(i);
 
 						EventData.setEVENTID(c.getString("eventId"));
@@ -282,8 +268,7 @@ public class EventHistoryController extends MenuActivity
 				}
 			}
 			// Error case
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				e.printStackTrace();
 				pDialog.dismiss();
 				// Logout user
@@ -295,12 +280,11 @@ public class EventHistoryController extends MenuActivity
 
 		/**
 		 * Calls the OldEventController
-		 *
+		 * 
 		 * @param result is null
 		 */
-		
-		protected void onPostExecute(String result)
-		{
+
+		protected void onPostExecute(String result) {
 			// Hide the progress dialog
 			pDialog.dismiss();
 

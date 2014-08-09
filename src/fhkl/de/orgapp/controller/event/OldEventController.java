@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -25,6 +24,11 @@ import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
 
+/**
+ * 
+ * @author Jochen Jung
+ * @version 3.7
+ */
 public class OldEventController extends MenuActivity {
 
 	private ProgressDialog pDialog;
@@ -97,8 +101,6 @@ public class OldEventController extends MenuActivity {
 
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
 							OldEventController.this);
-
-			Log.d("Comments: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

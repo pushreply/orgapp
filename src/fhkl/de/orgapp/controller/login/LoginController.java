@@ -32,8 +32,8 @@ import fhkl.de.orgapp.util.validator.OutputValidator;
 /**
  * LoginController - Handles the data for login of the user
  * 
- * @author Oliver Neubauer
- * @version 1.0
+ * @author Ronaldi Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 3.9
  * 
  */
 
@@ -50,7 +50,7 @@ public class LoginController extends Activity {
 	// For the displayed button
 	private Button bSubmit;
 	private Button bCancel;
-	private Button bForgotPassword; 
+	private Button bForgotPassword;
 
 	// For the user input
 	EditText inputEMail;
@@ -94,7 +94,7 @@ public class LoginController extends Activity {
 				startActivity(i);
 			}
 		});
-		
+
 		// Set onClickListener for forgot password
 		bForgotPassword.setOnClickListener(new OnClickListener() {
 			@Override
@@ -109,8 +109,6 @@ public class LoginController extends Activity {
 	/**
 	 * Validator - Checks the data entered by the user
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
 	 * 
 	 */
 
@@ -145,21 +143,19 @@ public class LoginController extends Activity {
 			params.add(new BasicNameValuePair("do", "read"));
 			params.add(new BasicNameValuePair("eMail", inputEMail.getText().toString()));
 			params.add(new BasicNameValuePair("password", inputPassword.getText().toString()));
-			
+
 			// Set password
 			// Reset password in case of no login
 			UserData.setPASSWORD(inputPassword.getText().toString());
-			
+
 			// Make the request to fetch the person
 			json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
 							LoginController.this);
-			try
-			{
+			try {
 				success = json.getInt("success");
 
 				// If the password correct, client receives success = 1
-				if (success == 1)
-				{
+				if (success == 1) {
 					// Fetch the person array
 					person = json.getJSONArray("person");
 
@@ -189,8 +185,7 @@ public class LoginController extends Activity {
 							notificationSettings = notificationSettingsArray.getJSONObject(0);
 						}
 						// In case of no success
-						else
-						{
+						else {
 							pDialog.dismiss();
 							// Reset the data, which saved, yet
 							resetData();
@@ -229,15 +224,13 @@ public class LoginController extends Activity {
 					}
 				}
 				// If the password incorrect, client receives success = 2
-				else if(success==2)
-				{
+				else if (success == 2) {
 					// Reset password in UserData
 					UserData.setPASSWORD("");
 					return IMessages.Error.INVALID_PASSWORD;
 				}
 				// In case of no success
-				else
-				{
+				else {
 					// Reset password in UserData
 					UserData.setPASSWORD("");
 					return IMessages.Error.INVALID_USER;

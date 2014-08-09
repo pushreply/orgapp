@@ -4,7 +4,7 @@ package fhkl.de.orgapp.util;
  * IMessages - Defines all constants to display them. Grouped by message type
  * 
  * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
- * @version 5.1
+ * @version 4.0
  * 
  */
 
@@ -168,8 +168,7 @@ public interface IMessages {
 	 * Messages for success
 	 */
 
-	public static final class Success
-	{
+	public static final class Success {
 		public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
 		public static final String PERSON_SUCCESSFUL_CREATED = "You have created the person";
 		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";

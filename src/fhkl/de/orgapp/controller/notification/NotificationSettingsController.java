@@ -27,27 +27,27 @@ import fhkl.de.orgapp.util.data.NotificationSettingsData;
 import fhkl.de.orgapp.util.data.UserData;
 
 /**
- * NotificationSettingsController - Handles the data to display the notification settings of an user
+ * NotificationSettingsController - Handles the data to display the notification
+ * settings of an user
  * 
- * @author Oliver Neubauer
- * @version 1.0
- *
+ * @author Oliver Neubauer, Jochen Jung
+ * @version 3.6
+ * 
  */
 
-public class NotificationSettingsController extends MenuActivity
-{
+public class NotificationSettingsController extends MenuActivity {
 	// Required variables for progress dialog, vibration and shown entries
 	private ProgressDialog pDialog;
 	boolean vibration;
 	Integer shownEntries;
-	
+
 	// Required variables for layout fields
-	CheckBox groupInvites, groupEdited, groupRemoved, eventsAdded, eventsEdited, eventsRemoved,
-	commentsAdded, commentsEdited, commentsRemoved, privilegeGiven, received_entries;
+	CheckBox groupInvites, groupEdited, groupRemoved, eventsAdded, eventsEdited, eventsRemoved, commentsAdded,
+					commentsEdited, commentsRemoved, privilegeGiven, received_entries;
 	EditText numberEntries;
 	Button bSave, bCancel;
 	RadioButton textVibrationYes, textVibrationNo;
-	
+
 	// For json issues
 	List<NameValuePair> params;
 	private static final String TAG_SUCCESS = "success";
@@ -63,29 +63,26 @@ public class NotificationSettingsController extends MenuActivity
 	private final String TAG_COMMENTS_REMOVED = "commentsRemoved";
 	private final String TAG_PRIVILEGE_GIVEN = "privilegeGiven";
 	private final String TAG_VIBRATION = "vibration";
-	
+
 	// For saving the updated notification settings in the POJO
 	private final String TAG_TRUE = "true";
 	private final String TAG_FALSE = "false";
 
 	/**
-	 * Sets the content view.
-	 * Calls method for check at new notifications.
-	 * Initializes the required variables.
-	 * Calls method to set the hooks and texts.
-	 * Defines onChecked- and onClickListener
-	 *
+	 * Sets the content view. Calls method for check at new notifications.
+	 * Initializes the required variables. Calls method to set the hooks and
+	 * texts. Defines onChecked- and onClickListener
+	 * 
 	 * @param savedInstanceState contains the data
 	 */
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Set the layout
 		setContentView(R.layout.notification_settings);
-		
+
 		// Check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
 
@@ -106,62 +103,54 @@ public class NotificationSettingsController extends MenuActivity
 		bCancel = (Button) findViewById(R.id.NOTIFICATION_SETTINGS_CANCEL);
 		textVibrationYes = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES);
 		textVibrationNo = (RadioButton) findViewById(R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO);
-		
+
 		// Set the view texts
 		setTexts();
-		
+
 		// Set a check listener for received entries
-		received_entries.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-		{
+		received_entries.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			// Define the action in case of check and uncheck
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-			{
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				// Make field for enter a number visible in case of click the checkbox
-				if(isChecked)
-				{
+				if (isChecked) {
 					numberEntries.setVisibility(View.VISIBLE);
 				}
-				// Make field for enter a number invisible and release the space for it in case of uncheck the checkbox
-				else
-				{
+				// Make field for enter a number invisible and release the space for it
+				// in case of uncheck the checkbox
+				else {
 					numberEntries.setVisibility(View.GONE);
 				}
 			}
 		});
 
 		// Set a click listener for save the settings
-		bSave.setOnClickListener(new View.OnClickListener()
-		{
+		bSave.setOnClickListener(new View.OnClickListener() {
 			// Define the action in case of click the button
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				// Save the settings
 				new SaveSettings().execute();
 			}
 		});
 
 		// Set a click listener for cancel the settings
-		bCancel.setOnClickListener(new View.OnClickListener()
-		{
+		bCancel.setOnClickListener(new View.OnClickListener() {
 			// Define the action in case of click the button
 			@Override
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				// Start the NotificationController
 				Intent intent = new Intent(NotificationSettingsController.this, NotificationController.class);
 				startActivity(intent);
 			}
 		});
 	}
-	
+
 	/**
 	 * Sets the hooks and texts of the views
 	 */
-	
-	private void setTexts()
-	{
+
+	private void setTexts() {
 		groupInvites.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_INVITES()));
 		groupEdited.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_EDITED()));
 		groupRemoved.setChecked(Boolean.parseBoolean(NotificationSettingsData.getGROUP_REMOVED()));
@@ -174,71 +163,60 @@ public class NotificationSettingsController extends MenuActivity
 		privilegeGiven.setChecked(Boolean.parseBoolean(NotificationSettingsData.getPRIVILEGE_GIVEN()));
 
 		// Set the radio button "vibration" according the settings
-		if(Boolean.parseBoolean(NotificationSettingsData.getVIBRATION()))
-		{
+		if (Boolean.parseBoolean(NotificationSettingsData.getVIBRATION())) {
 			textVibrationYes.setChecked(true);
 			vibration = true;
-		}
-		else
-		{
+		} else {
 			textVibrationNo.setChecked(true);
 			vibration = false;
 		}
-		
+
 		// In case of shown entries are set
-		if (NotificationSettingsData.getSHOW_ENTRIES() != null && !NotificationSettingsData.getSHOW_ENTRIES().equals(""))
-		{
+		if (NotificationSettingsData.getSHOW_ENTRIES() != null && !NotificationSettingsData.getSHOW_ENTRIES().equals("")) {
 			received_entries.setChecked(true);
 			numberEntries.setText(NotificationSettingsData.getSHOW_ENTRIES());
 			numberEntries.setVisibility(View.VISIBLE);
 		}
 		// In case of shown entries are not set
-		else
-		{
+		else {
 			numberEntries.setVisibility(View.GONE);
 		}
 	}
-	
+
 	/**
 	 * Sets the hook and intern variable for vibration
 	 * 
 	 * @param view
 	 */
-	
-	public void selectVibrationAtNewNotifications(View view)
-	{
+
+	public void selectVibrationAtNewNotifications(View view) {
 		// Toggle between the radio button
-		switch (view.getId())
-		{
-			case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES:
-				vibration =	true;
-				break;
-	
-			case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO:
-				vibration = false;
-				break;
+		switch (view.getId()) {
+		case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_YES:
+			vibration = true;
+			break;
+
+		case R.id.NOTIFICATION_SETTINGS_VIBRATION_AT_NEW_NOTIFICATIONS_NO:
+			vibration = false;
+			break;
 		}
 	}
 
 	/**
 	 * SaveSettings - Saves the notification settings entered by the user
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
-	 *
+	 * 
 	 */
-	
-	class SaveSettings extends AsyncTask<String, String, String>
-	{
+
+	class SaveSettings extends AsyncTask<String, String, String> {
 		/**
 		 * Displayes a progress dialog
 		 */
-		
+
 		@Override
-		protected void onPreExecute()
-		{
+		protected void onPreExecute() {
 			super.onPreExecute();
-			
+
 			// Display a progress dialog
 			pDialog = new ProgressDialog(NotificationSettingsController.this);
 			pDialog.setMessage(IMessages.Status.SAVING_SETTINGS);
@@ -249,12 +227,11 @@ public class NotificationSettingsController extends MenuActivity
 
 		/**
 		 * Prepares and executes the request
-		 *
+		 * 
 		 * @param args the parameters as array
 		 */
-		
-		protected String doInBackground(String... args)
-		{
+
+		protected String doInBackground(String... args) {
 			// Required parameters for the request
 			params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("do", "update"));
@@ -270,53 +247,46 @@ public class NotificationSettingsController extends MenuActivity
 			params.add(new BasicNameValuePair(TAG_COMMENTS_REMOVED, commentsRemoved.isChecked() ? "1" : "0"));
 			params.add(new BasicNameValuePair(TAG_PRIVILEGE_GIVEN, privilegeGiven.isChecked() ? "1" : "0"));
 			params.add(new BasicNameValuePair(TAG_VIBRATION, vibration ? "1" : "0"));
-			
+
 			// In case of received entries is checked
-			if(received_entries.isChecked())
-			{
-				try
-				{
+			if (received_entries.isChecked()) {
+				try {
 					shownEntries = Integer.valueOf(numberEntries.getText().toString());
-					
+
 					// Check for invalid number
-					if (shownEntries > Integer.MAX_VALUE)
-					{
+					if (shownEntries > Integer.MAX_VALUE) {
 						return IMessages.Error.INVALID_NUMBER;
 					}
 				}
 				// In case of error
-				catch (NumberFormatException e)
-				{
+				catch (NumberFormatException e) {
 					return IMessages.Error.INVALID_NUMBER;
 				}
-				
+
 				// Add number entries to the parameters for the request
 				params.add(new BasicNameValuePair(TAG_SHOWN_ENTRIES, numberEntries.getText().toString()));
 			}
-			
-			try
-			{
+
+			try {
 				// Make the request
-				JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS, "GET", params, NotificationSettingsController.this);
+				JSONObject json = new JSONParser().makeHttpsRequest(IUniformResourceLocator.URL.URL_NOTIFICATIONSETTINGS,
+								"GET", params, NotificationSettingsController.this);
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success
-				if(success == 1)
-				{
+				if (success == 1) {
 					// Set the updated notification settings to the POJO
 					updateNotificationSettingsData();
-					
+
 					return IMessages.Success.UPDATE_WAS_SUCCESSFUL;
 				}
 				// In case of no success
-				else
-				{
+				else {
 					return IMessages.Error.UPDATE_WAS_NOT_SUCCESSFUL;
 				}
 			}
 			// In case of error
-			catch(Exception e)
-			{
+			catch (Exception e) {
 				e.printStackTrace();
 				pDialog.dismiss();
 				// Logout the user
@@ -327,35 +297,31 @@ public class NotificationSettingsController extends MenuActivity
 		}
 
 		/**
-		 * Dissmisses the progress dialog.
-		 * Displayes an user message.
-		 * Starts the NotificationController
+		 * Dissmisses the progress dialog. Displayes an user message. Starts the
+		 * NotificationController
 		 * 
 		 * @param message the message to be displayed
 		 */
-		
-		protected void onPostExecute(String message)
-		{
+
+		protected void onPostExecute(String message) {
 			// Hide the progress dialog
 			pDialog.dismiss();
 
 			// Display a message if available
-			if (message != null)
-			{
+			if (message != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-				
+
 				// Start the NotificationController
 				Intent intent = new Intent(NotificationSettingsController.this, NotificationController.class);
 				startActivity(intent);
 			}
 		}
-		
+
 		/**
 		 * Updates the notification settings of the user in POJO
 		 */
-		
-		private void updateNotificationSettingsData()
-		{
+
+		private void updateNotificationSettingsData() {
 			// Set the updated notification settings to the POJO
 			NotificationSettingsData.setSHOW_ENTRIES(received_entries.isChecked() ? numberEntries.getText().toString() : "");
 			NotificationSettingsData.setGROUP_INVITES(groupInvites.isChecked() ? TAG_TRUE : TAG_FALSE);

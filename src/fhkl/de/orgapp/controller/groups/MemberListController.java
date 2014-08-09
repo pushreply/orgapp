@@ -16,7 +16,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -40,7 +39,7 @@ import fhkl.de.orgapp.util.data.UserData;
  * a member onLongItemClicked. Shows user information onItemClicked
  * 
  * @author Jochen Jung
- * @version 1.0
+ * @version 3.9
  */
 public class MemberListController extends MenuActivity {
 	private ProgressDialog pDialog;
@@ -76,8 +75,6 @@ public class MemberListController extends MenuActivity {
 	 * Async class that returns member data. Defines onItemLongClickedListener.
 	 * Defines onItemClickedListener.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GetMemberList extends AsyncTask<String, String, String> {
 
@@ -111,8 +108,6 @@ public class MemberListController extends MenuActivity {
 			// Get member list
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
 							MemberListController.this);
-
-			Log.d("Memberlist: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -216,8 +211,6 @@ public class MemberListController extends MenuActivity {
 	/**
 	 * Async class that deletes selected member.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class DeleteMember extends AsyncTask<String, String, String> {
 
@@ -252,8 +245,6 @@ public class MemberListController extends MenuActivity {
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", params,
 							MemberListController.this);
 
-			Log.d("Response: ", json.toString());
-
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
@@ -287,8 +278,6 @@ public class MemberListController extends MenuActivity {
 	/**
 	 * Asnyc class that sets MemberData and starts new activity.
 	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
 	 */
 	class GetPrivilegesInfo extends AsyncTask<String, String, String> {
 
@@ -319,8 +308,6 @@ public class MemberListController extends MenuActivity {
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PERSON, "GET", params,
 							MemberListController.this);
 
-			Log.d("Member: ", json.toString());
-
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
@@ -348,7 +335,6 @@ public class MemberListController extends MenuActivity {
 					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", paramsPrivileges,
 									MemberListController.this);
 
-					Log.d("Member: ", json.toString());
 					success = json.getInt(TAG_SUCCESS);
 					if (success == 1) {
 						member = json.getJSONArray("member");

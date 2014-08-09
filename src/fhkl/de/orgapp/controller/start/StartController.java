@@ -26,8 +26,8 @@ import fhkl.de.orgapp.util.data.UserData;
 /**
  * StartController - Handles the data for the splash screen
  * 
- * @author Oliver Neubauer
- * @version 1.0
+ * @author Ronaldo Hasiholan, Jochen Jung
+ * @version 3.9
  * 
  */
 
@@ -35,7 +35,7 @@ public class StartController extends Activity {
 	// For the displayed button
 	private Button bLogin;
 	private Button bRegister;
-	private Button bForgotPassword; 
+	private Button bForgotPassword;
 
 	// For the check on internet connection
 	boolean isConnected;
@@ -112,7 +112,7 @@ public class StartController extends Activity {
 		bLogin = (Button) findViewById(R.id.LOGIN);
 		bRegister = (Button) findViewById(R.id.REGISTER);
 		bForgotPassword = (Button) findViewById(R.id.FORGOTPASSWORD);
-		
+
 		// Set onClickListener for login
 		bLogin.setOnClickListener(new OnClickListener() {
 			@Override
@@ -144,7 +144,7 @@ public class StartController extends Activity {
 				}
 			}
 		});
-		
+
 		// Set onClickListener for forgot password
 		bForgotPassword.setOnClickListener(new OnClickListener() {
 			@Override

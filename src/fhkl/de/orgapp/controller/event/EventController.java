@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -48,7 +47,8 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * <li>Show all comments from an event.</li>
  * </ul>
  * 
- * @author ronaldo.hasiholan
+ * @author Ronaldo Hasiholan, Jochen Jung
+ * @version 3.7
  * 
  */
 public class EventController extends MenuActivity {
@@ -211,9 +211,6 @@ public class EventController extends MenuActivity {
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_EVENTPERSON, "GET", params,
 							EventController.this);
 
-			// Log the JSON string
-			Log.d("EventPerson: ", json.toString());
-
 			// Toggle button marks the "going/not going" event.
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -282,8 +279,6 @@ public class EventController extends MenuActivity {
 								EventController.this);
 			}
 
-			Log.d("EventPerson: ", json.toString());
-
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				if (success == 1) {
@@ -325,8 +320,6 @@ public class EventController extends MenuActivity {
 			// for the HTTPS GET request.
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", vp,
 							EventController.this);
-
-			Log.d("Comments: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -590,7 +583,6 @@ public class EventController extends MenuActivity {
 			// request
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
 							EventController.this);
-			Log.d("comment: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -679,8 +671,6 @@ public class EventController extends MenuActivity {
 
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET", params,
 							EventController.this);
-
-			Log.d("comment: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);
@@ -780,8 +770,6 @@ public class EventController extends MenuActivity {
 
 			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_COMMENT, "GET",
 							paramsInsertComment, EventController.this);
-
-			Log.d("comment: ", json.toString());
 
 			try {
 				int success = json.getInt(TAG_SUCCESS);

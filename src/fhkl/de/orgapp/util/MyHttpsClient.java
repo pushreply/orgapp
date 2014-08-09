@@ -11,49 +11,51 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
 
+import android.content.Context;
 import fhkl.de.orgapp.R;
 
-import android.content.Context;
-
 /**
- * MyHttpClient - handles the self-signed certificate (/res/raw/customtruststore146.bks)
- * to access HTTPS through SSL connection. 
- * It extends the DefaultHttpRequest.
+ * MyHttpsClient - Handles the self-signed certificate
+ * (/res/raw/customtruststore146.bks) to access HTTPS through SSL connection. It
+ * extends the DefaultHttpRequest.
  * 
- * @author ronaldo.hasiholan
- *
+ * @author Ronaldo Hasiholan
+ * @version 3.6
+ * 
  */
-public class MyHttpClient extends DefaultHttpClient {
-	
-	// Prepare a context of any given activity 
+public class MyHttpsClient extends DefaultHttpClient {
+
+	// Prepare a context of any given activity
 	final Context context;
-	
-	// Certificate store password 
+
+	// Certificate store password
 	final private String KEYSTORE_PW = "AndroidSS2014";
 
 	// Constructor with given context as parameter
-	public MyHttpClient(Context context) {
+	public MyHttpsClient(Context context) {
 		this.context = context;
 	}
 
 	// Define the connection manager for client
 	@Override
 	protected ClientConnectionManager createClientConnectionManager() {
-		
-		// Need a registry scheme to encapsulate the connection request to a specific protocol.
+
+		// Need a registry scheme to encapsulate the connection request to a
+		// specific protocol.
 		SchemeRegistry registry = new SchemeRegistry();
-		
+
 		// set the plain HTTP scheme port 80 to registry scheme
 		registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-		
-		// Register port 443 for the SSLSocketFactory with 
+
+		// Register port 443 for the SSLSocketFactory with
 		// the keystore to the ConnectionManager
 		registry.register(new Scheme("https", newSslSocketFactory(), 443));
-		
+
 		return new SingleClientConnManager(getParams(), registry);
 	}
 
-	// The SSL Socket, validates the identity of HTTPS Server against the provided certificate
+	// The SSL Socket, validates the identity of HTTPS Server against the provided
+	// certificate
 	// and authenticates the HTTPS server using the private key (KEYSTORE_PW)
 	private SSLSocketFactory newSslSocketFactory() {
 		try {
@@ -64,21 +66,21 @@ public class MyHttpClient extends DefaultHttpClient {
 			// trusted certificate.
 			InputStream in = context.getResources().openRawResource(R.raw.customtruststore146);
 			try {
-				// Initialize keystore with the provided trusted cert and 
+				// Initialize keystore with the provided trusted cert and
 				// the keystore password
 				trusted.load(in, KEYSTORE_PW.toCharArray());
 			} finally {
 				in.close();
 			}
 
-			// Pass the keystore to the SSLSocketFactory. 
-			// The SSLSocketFactory is responsible for 
+			// Pass the keystore to the SSLSocketFactory.
+			// The SSLSocketFactory is responsible for
 			// server certificate verification.
 			SSLSocketFactory sf = new SSLSocketFactory(trusted);
 
 			// Verify hostname of the cert.
 			sf.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
-			
+
 			return sf;
 		} catch (Exception e) {
 			throw new AssertionError(e);

@@ -43,8 +43,8 @@ import fhkl.de.orgapp.util.data.UserData;
  * Invites new group members via a ListView. Sends Notifications to other group
  * members.
  * 
- * @author Jochen Jung
- * @version 1.0
+ * @author Oliver Neubauer
+ * @version 3.9
  */
 public class ListInviteMemberController extends MenuActivity {
 
@@ -125,9 +125,7 @@ public class ListInviteMemberController extends MenuActivity {
 	}
 
 	/**
-	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
+	 * Async class that gets the member data
 	 */
 	class PersonListGetter extends AsyncTask<String, String, String> {
 
@@ -310,10 +308,8 @@ public class ListInviteMemberController extends MenuActivity {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @author Jochen Jung
-	 * @version 1.0
+	 * Async class that Invites selected persons into group. Sends Notification to
+	 * selected persons.
 	 */
 	class PersonListInvite extends AsyncTask<String, String, String> {
 

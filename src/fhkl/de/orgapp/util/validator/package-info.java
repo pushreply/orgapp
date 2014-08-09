@@ -1,8 +1,8 @@
 /**
  * Is a group of utility classes to validate data entered by the user and got from the database
  * 
- * @author Ronaldo Hasiholan, Jochen Jung, Oliver Neubauer
- * @version ?
+ * @author Jochen Jung, Oliver Neubauer
+ * @version 3.9
  *
  */
 

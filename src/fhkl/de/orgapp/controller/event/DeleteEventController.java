@@ -22,6 +22,12 @@ import fhkl.de.orgapp.util.MenuActivity;
 import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.UserData;
 
+/**
+ * 
+ * 
+ * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 3.7
+ */
 public class DeleteEventController extends MenuActivity {
 
 	private static final String TAG_SUCCESS = "success";

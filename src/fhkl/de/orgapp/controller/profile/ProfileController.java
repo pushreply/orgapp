@@ -12,34 +12,31 @@ import fhkl.de.orgapp.util.data.UserData;
  * ProfileController - Handles the data for display the profile of the user
  * 
  * @author Oliver Neubauer
- * @version ?
- *
+ * @version 3.9
+ * 
  */
 
-public class ProfileController extends MenuActivity
-{
+public class ProfileController extends MenuActivity {
 	// Required variables for layout fields
 	TextView textFirstName, textLastName, textBirthday, textGender, textEmail, textPassword, textMemberSince;
 	TextView textPrivateInformation, textSecurityInformation, textGeneralInformation;
 	TextView firstName, lastName, birthday, gender, email, password, memberSince;
-	
+
 	/**
-	 * Sets the content view.
-	 * Calls the required methods
-	 *
+	 * Sets the content view. Calls the required methods
+	 * 
 	 * @param savedInstanceState contains the data
 	 */
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Set the layout
 		setContentView(R.layout.profil);
-		
+
 		// Check for new notifications and signal the user
 		checkOnNewNotificationsAndNotifyUser();
-		
+
 		// Fetch the views
 		getViews();
 		// Set the texts of the views
@@ -47,13 +44,12 @@ public class ProfileController extends MenuActivity
 		// Set the text sizes
 		setTextSizes();
 	}
-	
+
 	/**
 	 * Fetches the views by id
 	 */
-	
-	private void getViews()
-	{
+
+	private void getViews() {
 		textFirstName = (TextView) findViewById(R.id.TEXT_FIRST_NAME);
 		textLastName = (TextView) findViewById(R.id.TEXT_LAST_NAME);
 		textBirthday = (TextView) findViewById(R.id.TEXT_BIRTHDAY);
@@ -64,7 +60,7 @@ public class ProfileController extends MenuActivity
 		textPrivateInformation = (TextView) findViewById(R.id.TEXT_PRIVATE_INFORMATION);
 		textSecurityInformation = (TextView) findViewById(R.id.TEXT_SECURITY_INFORMATION);
 		textGeneralInformation = (TextView) findViewById(R.id.TEXT_GENERAL_INFORMATION);
-		
+
 		firstName = (TextView) findViewById(R.id.USER_FIRST_NAME);
 		lastName = (TextView) findViewById(R.id.USER_LAST_NAME);
 		birthday = (TextView) findViewById(R.id.USER_BIRTHDAY);
@@ -73,67 +69,66 @@ public class ProfileController extends MenuActivity
 		password = (TextView) findViewById(R.id.USER_PASSWORD_PROFIL);
 		memberSince = (TextView) findViewById(R.id.USER_MEMBER_SINCE);
 	}
-	
+
 	/**
 	 * Sets the texts of views
 	 */
-	
-	private void setTexts()
-	{
+
+	private void setTexts() {
 		textPrivateInformation.setText(R.string.PRIVATE_INFORMATION);
 		textPrivateInformation.setPaintFlags(textPrivateInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		textFirstName.setText(getString(R.string.FIRSTNAME) + ":");
 		textLastName.setText(getString(R.string.LASTNAME) + ":");
 		textBirthday.setText(getString(R.string.BIRTHDAY) + ":");
 		textGender.setText(getString(R.string.GENDER) + ":");
-		
+
 		textSecurityInformation.setText(R.string.SECURITY_INFORMATION);
 		textSecurityInformation.setPaintFlags(textSecurityInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		textEmail.setText(getString(R.string.EMAIL) + ":");
 		textPassword.setText(getString(R.string.PASSWORD) + ":");
-		
+
 		textGeneralInformation.setText(R.string.GENERAL_INFORMATION);
 		textGeneralInformation.setPaintFlags(textGeneralInformation.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		textMemberSince.setText(getString(R.string.MEMBER_SINCE) + ":");
-		
+
 		firstName.setText(UserData.getFIRST_NAME());
 		lastName.setText(UserData.getLAST_NAME());
 		birthday.setText(UserData.getBIRTHDAY());
-		
+
 		// User set no gender
-		if(!UserData.getGENDER().equalsIgnoreCase("m") && !UserData.getGENDER().equalsIgnoreCase("w"))
+		if (!UserData.getGENDER().equalsIgnoreCase("m") && !UserData.getGENDER().equalsIgnoreCase("w"))
 			gender.setText("");
 		// User set a gender
 		else
 			gender.setText(UserData.getGENDER());
-		
+
 		email.setText(UserData.getEMAIL());
 		password.setText(UserData.getPASSWORD());
 		// Password appearance in dots
 		password.setTransformationMethod(new PasswordTransformationMethod());
-		
+
 		memberSince.setText(UserData.getMEMBER_SINCE());
 	}
-	
+
 	/**
 	 * Sets text sizes
 	 */
-	
-	private void setTextSizes()
-	{
+
+	private void setTextSizes() {
 		// Android specific sizes
 		textPrivateInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textSecurityInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textGeneralInformation.setTextAppearance(this, android.R.style.TextAppearance_Large);
-		
+
 		textFirstName.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textLastName.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textBirthday.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textGender.setTextAppearance(this, android.R.style.TextAppearance_Large);
 		textEmail.setTextAppearance(this, android.R.style.TextAppearance_Large);
-		textPassword.setTextAppearance(this, android.R.style.TextAppearance_Large);;
+		textPassword.setTextAppearance(this, android.R.style.TextAppearance_Large);
+		;
 		textMemberSince.setTextAppearance(this, android.R.style.TextAppearance_Large);
-		
+
 		firstName.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		lastName.setTextAppearance(this, android.R.style.TextAppearance_Medium);
 		birthday.setTextAppearance(this, android.R.style.TextAppearance_Medium);

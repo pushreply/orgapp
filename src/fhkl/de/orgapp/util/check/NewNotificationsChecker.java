@@ -17,12 +17,11 @@ import fhkl.de.orgapp.util.data.UserData;
  * NewNotificationsChecker - Handles the data to check for new notifications
  * 
  * @author Oliver Neubauer
- * @version 1.0
- *
+ * @version 3.5
+ * 
  */
 
-public class NewNotificationsChecker
-{
+public class NewNotificationsChecker {
 	// Required tags
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_HAS_NEW_NOTIFICATIONS = "hasNewNotifications";
@@ -33,30 +32,27 @@ public class NewNotificationsChecker
 	// For json issues
 	JSONParser jsonParser = new JSONParser();
 	JSONObject json = null;
-	
+
 	// Member attributes
 	private boolean hasNewNotifications;
 	private String numberNewNotifications;
 
 	// Constructor
-	public NewNotificationsChecker()
-	{
+	public NewNotificationsChecker() {
 		// Execute the request
 		// Object for getting the respone within the background thread
 		AsyncTask<String, String, String> notificationChecker = new NotificationChecker().execute();
 
-		try
-		{
+		try {
 			// In case of new notifications
-			if (notificationChecker.get() != null && notificationChecker.get().equals(TAG_NEW_NOTIFICATIONS))
-			{
+			if (notificationChecker.get() != null && notificationChecker.get().equals(TAG_NEW_NOTIFICATIONS)) {
 				hasNewNotifications = true;
 
 				// Execute the request
 				// Object for getting the respone within the background thread
 				AsyncTask<String, String, String> newNotificationsCounter = new NumberNewNotificationsGetter().execute();
 
-				//Get the number of new notifications, if available
+				// Get the number of new notifications, if available
 				if (newNotificationsCounter.get() != null)
 					numberNewNotifications = newNotificationsCounter.get();
 				// Otherwise
@@ -64,15 +60,13 @@ public class NewNotificationsChecker
 					numberNewNotifications = "0";
 			}
 			// In case of no new notifications
-			else
-			{
+			else {
 				hasNewNotifications = false;
 				numberNewNotifications = "0";
 			}
 		}
 		// In case of error
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			hasNewNotifications = false;
 			numberNewNotifications = "0";
 		}
@@ -80,58 +74,53 @@ public class NewNotificationsChecker
 
 	/**
 	 * Get the logical value for new notifications
+	 * 
 	 * @return true, in case of new notifications, false otherwise
 	 */
-	public boolean hasNewNotifications()
-	{
+	public boolean hasNewNotifications() {
 		return hasNewNotifications;
 	}
 
 	/**
-	 * Get the number of new notifications 
+	 * Get the number of new notifications
+	 * 
 	 * @return the number of new notifications
 	 */
-	
-	public String getNumberNewNotifications()
-	{
+
+	public String getNumberNewNotifications() {
 		return numberNewNotifications;
 	}
 
 	/**
 	 * NotificationChecker - Checks for new notifications
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
-	 *
+	 * 
 	 */
-	
-	class NotificationChecker extends AsyncTask<String, String, String>
-	{
+
+	class NotificationChecker extends AsyncTask<String, String, String> {
 		/**
 		 * Makes the request to check for new notifications
 		 * 
 		 * @param arg the arguments as array
 		 * @return the logical value of new notifications or null in case of error
 		 */
-		
+
 		@Override
-		protected String doInBackground(String... arg)
-		{
+		protected String doInBackground(String... arg) {
 			// Define and initialize params
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checkunread"));
 
 			// Make the request to check for new notifications
-			// HTTP request, because the HTTPS request made some problems about the context
+			// HTTP request, because the HTTPS request made some problems about the
+			// context
 			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION_HTTP, "GET", params);
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success
-				if (success == 1)
-				{
+				if (success == 1) {
 					int hasNewNotifications = json.getInt(TAG_HAS_NEW_NOTIFICATIONS);
 
 					// In case of new notifications
@@ -142,14 +131,12 @@ public class NewNotificationsChecker
 					return TAG_NO_NEW_NOTIFICATIONS;
 				}
 				// In case of no success
-				else
-				{
+				else {
 					return null;
 				}
 			}
 			// In case of error
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				return null;
 			}
 		}
@@ -158,49 +145,42 @@ public class NewNotificationsChecker
 	/**
 	 * NumberNewNotificationsGetter - Fetches the number of new notifications
 	 * 
-	 * @author Oliver Neubauer
-	 * @version 1.0
-	 *
+	 * 
 	 */
-	
-	class NumberNewNotificationsGetter extends AsyncTask<String, String, String>
-	{
+
+	class NumberNewNotificationsGetter extends AsyncTask<String, String, String> {
 		/**
 		 * Makes the request to fetch the number of new notifications
 		 * 
 		 * @param arg the arguments as array
 		 * @return the number of new notifications or null in case of error
 		 */
-		
+
 		@Override
-		protected String doInBackground(String... arg)
-		{
+		protected String doInBackground(String... arg) {
 			// Define and initialize params
 			List<NameValuePair> params = initializeParams(new ArrayList<NameValuePair>());
 			params.add(new BasicNameValuePair("do", "checknumberunread"));
 
 			// Make the request to fetch the number of new notifications
-			// HTTP request, because the HTTPS request made some problems about the context
+			// HTTP request, because the HTTPS request made some problems about the
+			// context
 			json = new JSONParser().makeHttpRequest(IUniformResourceLocator.URL.URL_NOTIFICATION_HTTP, "GET", params);
 
-			try
-			{
+			try {
 				int success = json.getInt(TAG_SUCCESS);
 
 				// In case of success
-				if (success == 1)
-				{
+				if (success == 1) {
 					return json.getString(TAG_NUMBER_NEW_NOTIFICATIONS);
 				}
 				// In case of no success
-				else
-				{
+				else {
 					return null;
 				}
 			}
 			// In case of error
-			catch (Exception e)
-			{
+			catch (Exception e) {
 				return null;
 			}
 		}
@@ -212,8 +192,7 @@ public class NewNotificationsChecker
 	 * @param params the empty list
 	 * @return the initialized list
 	 */
-	private List<NameValuePair> initializeParams(List<NameValuePair> params)
-	{
+	private List<NameValuePair> initializeParams(List<NameValuePair> params) {
 		if (params == null)
 			params = new ArrayList<NameValuePair>();
 

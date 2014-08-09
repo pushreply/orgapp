@@ -53,8 +53,8 @@ import fhkl.de.orgapp.util.validator.InputValidator;
 /**
  * CrateEventController - Handle each event instantiation in a group.
  * 
- * @author ronaldo.hasiholan
- * 
+ * @author Ronaldo Hasiholan, Oliver Neubauer, Jochen Jung
+ * @version 4.0
  */
 public class CreateEventController extends MenuActivity {
 
