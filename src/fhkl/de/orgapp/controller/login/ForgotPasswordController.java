@@ -22,6 +22,15 @@ import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.validator.InputValidator;
 
+/**
+ * ForgotPasswordController - handles action if the user forgot own password.
+ * If a request submitted, the server side will send a new password to the
+ * associated email account given by the user.  
+ * 
+ * @author ronaldo.hasiholan
+ * @version 1.0
+ *
+ */
 public class ForgotPasswordController extends Activity {
 
 	// Progress Dialog
@@ -53,6 +62,18 @@ public class ForgotPasswordController extends Activity {
 		});
 	}
 	
+	/**
+	 * Begin the background operation using asynchronous task to send request through
+	 * the network. The extended AsyncTask, SendNewPassword class send the request 
+	 * using the given email account. The string "do=forget" is being used 
+	 * to execute the corresponding PHP 'send a new password' operation in the back-end. 
+	 * The PHP files on the server side handle the request by creating and hashing a new password, 
+	 * and send the new password to the given email. 
+	 * Only the registered email account receives email with a new password. 
+	 * 
+	 * @author ronaldo.hasiholan
+	 *
+	 */
 	class SendNewPassword extends AsyncTask<String, String, String>
 	{
 		/**
