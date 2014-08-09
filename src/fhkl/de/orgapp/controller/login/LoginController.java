@@ -177,9 +177,11 @@ public class LoginController extends Activity {
 							notificationSettings = notificationSettingsArray.getJSONObject(0);
 						}
 						// In case of no success
-						else {
+						else
+						{
 							pDialog.dismiss();
-							logout();
+							// Reset the data, which saved, yet
+							resetData();
 						}
 
 						// The required parameters for the request
@@ -202,8 +204,8 @@ public class LoginController extends Activity {
 						else {
 							// Close the progress dialog
 							pDialog.dismiss();
-							// Logout the user
-							logout();
+							// Reset the data, which saved, yet
+							resetData();
 						}
 
 						return null;
@@ -233,8 +235,8 @@ public class LoginController extends Activity {
 			catch (Exception e) {
 				// Close the progress dialog
 				pDialog.dismiss();
-				// Logout the user
-				logout();
+				// Reset the data, which saved, yet
+				resetData();
 			}
 
 			return null;
@@ -307,19 +309,19 @@ public class LoginController extends Activity {
 				}
 				// In case of error
 				catch (Exception e) {
-					// Logout the user
-					logout();
+					// Reset the data, which saved, yet
+					resetData();
 				}
 			}
 		}
 	}
 
 	/**
-	 * Calls methods for reset the user data, notification settings and event
-	 * settings. Calls the StartController
+	 * Calls methods for reset the data related to the user, which saved, yet.
+	 * Calls the StartController
 	 */
 
-	private void logout() {
+	private void resetData() {
 		resetUserData();
 		resetNotificationSettingsData();
 		resetEventSettingsData();
