@@ -13,6 +13,7 @@
     <string name="YES">Yes</string>
     <string name="NO">No</string>
     <string name="SETTINGS">Settings</string>
+    <string name="SEND_PASSWORD">Request a new password</string>
 
     <!-- Startbildschirm -->
     <string name="LOGIN">Log In</string>
@@ -25,7 +26,7 @@
     <string name="PASSWORD_CONFIRMATION">Password (confirmation)</string>
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
-    <string name="FORGOTPASSWORD_MESSAGE">Enter the e-mail address associated with your OrgApp account, then click Submit. \nWe\'ll email you a new password.</string>
+    <string name="FORGOTPASSWORD_MESSAGE">Enter the e-mail address associated with your OrgApp account, then click "Request a new password". \nWe\'ll email you a new password.</string>
 	<string name="FORGOT_PASSWORD">Forgot Password?</string>
     
     <!-- Main menu -->
