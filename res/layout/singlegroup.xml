@@ -6,23 +6,23 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/TV_GROUP_INFO"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="fill_parent"
             android:text="@string/GROUP_INFO"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:visibility="invisible" />
 
         <TextView
             android:id="@+id/GROUP_INFO"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:layout_marginBottom="10sp"/>
     </LinearLayout>
 
     <LinearLayout
