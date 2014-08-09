@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_marginTop="50sp"
     android:orientation="vertical" >
 
     <EditText
@@ -8,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@+string/EMAIL"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:inputType="textEmailAddress" >
+        android:inputType="textEmailAddress"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
 
         <requestFocus />
     </EditText>
@@ -19,31 +20,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@+string/PASSWORD"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/SAVE"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceButton"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@+string/SUBMIT" />
+            android:text="@+string/SUBMIT"
+            android:textAppearance="?android:attr/textAppearanceButton" />
 
         <Button
             android:id="@+id/CANCEL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceButton"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@+string/CANCEL" />
+            android:text="@+string/CANCEL"
+            android:textAppearance="?android:attr/textAppearanceButton" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/FORGOTPASSWORD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@+string/FORGOTPASSWORD"
+            android:textAppearance="?android:attr/textAppearanceButton" />
     </LinearLayout>
 
 </LinearLayout>

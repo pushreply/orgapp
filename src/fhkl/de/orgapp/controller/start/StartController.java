@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import fhkl.de.orgapp.R;
 import fhkl.de.orgapp.controller.calendar.CalendarController;
+import fhkl.de.orgapp.controller.login.ForgotPasswordController;
 import fhkl.de.orgapp.controller.login.LoginController;
 import fhkl.de.orgapp.controller.registration.RegisterController;
 import fhkl.de.orgapp.util.IMessages;
@@ -34,6 +35,7 @@ public class StartController extends Activity {
 	// For the displayed button
 	private Button bLogin;
 	private Button bRegister;
+	private Button bForgotPassword; 
 
 	// For the check on internet connection
 	boolean isConnected;
@@ -109,7 +111,8 @@ public class StartController extends Activity {
 		// Fetch the views by id
 		bLogin = (Button) findViewById(R.id.LOGIN);
 		bRegister = (Button) findViewById(R.id.REGISTER);
-
+		bForgotPassword = (Button) findViewById(R.id.FORGOTPASSWORD);
+		
 		// Set onClickListener for login
 		bLogin.setOnClickListener(new OnClickListener() {
 			@Override
@@ -139,6 +142,16 @@ public class StartController extends Activity {
 				else {
 					Toast.makeText(getApplicationContext(), IMessages.Error.NO_INTERNET_CONNECTION, Toast.LENGTH_LONG).show();
 				}
+			}
+		});
+		
+		// Set onClickListener for forgot password
+		bForgotPassword.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Go to ForgotControllerController
+				Intent i = new Intent(StartController.this, ForgotPasswordController.class);
+				startActivity(i);
 			}
 		});
 	}

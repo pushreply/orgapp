@@ -50,6 +50,7 @@ public class LoginController extends Activity {
 	// For the displayed button
 	private Button bSubmit;
 	private Button bCancel;
+	private Button bForgotPassword; 
 
 	// For the user input
 	EditText inputEMail;
@@ -71,6 +72,7 @@ public class LoginController extends Activity {
 		// Fetch the views by id
 		bSubmit = (Button) findViewById(R.id.SAVE);
 		bCancel = (Button) findViewById(R.id.CANCEL);
+		bForgotPassword = (Button) findViewById(R.id.FORGOTPASSWORD);
 		inputEMail = (EditText) findViewById(R.id.EMAIL);
 		inputPassword = (EditText) findViewById(R.id.PASSWORD);
 
@@ -89,6 +91,16 @@ public class LoginController extends Activity {
 			public void onClick(View v) {
 				// Back to StartController
 				Intent i = new Intent(LoginController.this, StartController.class);
+				startActivity(i);
+			}
+		});
+		
+		// Set onClickListener for forgot password
+		bForgotPassword.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Go to ForgotControllerController
+				Intent i = new Intent(LoginController.this, ForgotPasswordController.class);
 				startActivity(i);
 			}
 		});

@@ -3,7 +3,6 @@
 
     <string name="app_name">OrgApp</string>
 
-
     <!-- Allgemeine Buttons -->
     <string name="SUBMIT">Submit</string>
     <string name="SAVE">Save</string>
@@ -16,9 +15,9 @@
     <string name="SETTINGS">Settings</string>
 
     <!-- Startbildschirm -->
-    <string name="LOGIN">Login</string>
+    <string name="LOGIN">Log In</string>
     <string name="REGISTER">Register</string>
-    <string name="FORGOTPASSWORD">FORGOT PASSWORD?</string>
+    <string name="FORGOTPASSWORD">Forgot Password?</string>
 
     <!-- Register/Login -->
     <string name="EMAIL">Email address</string>
@@ -26,6 +25,7 @@
     <string name="PASSWORD_CONFIRMATION">Password (confirmation)</string>
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
+    <string name="FORGOTPASSWORD_MESSAGE">Enter the e-mail address associated with your OrgApp account, then click Submit. \nWe\'ll email you a new password.</string>
 
     <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
@@ -51,7 +51,7 @@
     <string name="SHARE">Share</string>
     <string name="SHARE_EVENT_VIA_FACEBOOK">On Facebook</string>
     <string name="SHARE_EVENT_VIA_TWITTER">On Twitter</string>
-    
+
     <!-- Event Settings -->
     <string name="RECEIVED_EVENT_ENTRIES">Do you want to limit how much events you see?</string>
 
@@ -165,6 +165,7 @@
     <string name="COMMENTTEXT">Comment</string>
     <string name="COMMENTLABEL">Comment:</string>
     <string name="action_settings">Settings</string>
-    
+    <string name="title_activity_forgot_password_controller">ForgotPasswordController</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
