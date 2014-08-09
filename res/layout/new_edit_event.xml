@@ -1,41 +1,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:scrollbars="vertical" >
 
-    <EditText
-        android:id="@+id/EVENTNAME"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@+string/EVENTNAME"
-        android:inputType="text" >
+        android:orientation="vertical" >
 
-        <requestFocus />
-    </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTNAME_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/EVENTLOCATION"
+        <EditText
+            android:id="@+id/EVENTNAME"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@+string/EVENTNAME"
+            android:inputType="textMultiLine" 
+            android:maxLines="3" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@+string/EVENTLOCATION"
-        android:inputType="text" >
+        android:orientation="vertical" >
 
-    </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTLOCATION_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/EVENTDATE"
+        <EditText
+            android:id="@+id/EVENTLOCATION"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@+string/EVENTLOCATION"
+            android:inputType="textMultiLine" 
+            android:maxLines="3" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@+string/EVENTDATE"
-        android:focusableInTouchMode="false"
-        android:inputType="date" />
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/EVENTTIME"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTDATE_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/EVENTDATE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:hint="@+string/EVENTDATE"
+            android:inputType="date" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@+string/EVENTTIME"
-        android:focusableInTouchMode="false" />
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EVENTTIME_LABEL"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/EVENTTIME"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:hint="@+string/EVENTTIME" />
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/REGULARITYDATE"
@@ -83,7 +133,6 @@
         android:layout_height="wrap_content"
         android:hint=""
         android:visibility="gone" >
-        
     </EditText>
 
     <LinearLayout
