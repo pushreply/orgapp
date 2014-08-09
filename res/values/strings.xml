@@ -26,7 +26,8 @@
     <string name="FIRSTNAME">First name</string>
     <string name="LASTNAME">Last name</string>
     <string name="FORGOTPASSWORD_MESSAGE">Enter the e-mail address associated with your OrgApp account, then click Submit. \nWe\'ll email you a new password.</string>
-
+	<string name="FORGOT_PASSWORD">Forgot Password?</string>
+    
     <!-- Main menu -->
     <string name="CALENDAR">Calendar</string>
     <string name="GROUPS">My groups</string>
@@ -165,7 +166,7 @@
     <string name="COMMENTTEXT">Comment</string>
     <string name="COMMENTLABEL">Comment:</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_forgot_password_controller">ForgotPasswordController</string>
+
     <string name="hello_world">Hello world!</string>
 
 </resources>
