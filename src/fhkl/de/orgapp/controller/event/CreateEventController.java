@@ -429,6 +429,7 @@ public class CreateEventController extends MenuActivity {
 					}
 				}
 
+				params.add(new BasicNameValuePair("do", "createEvent"));
 				Iterator<String> dateListIterator = dateList.iterator();
 				for (int i = 0; i < dateList.size(); i++) {
 					String tmpDateList = dateListIterator.next();
