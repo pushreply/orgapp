@@ -151,7 +151,7 @@ public interface IMessages {
 		public static final String LOADING_NOTIFICATION_SETTINGS = "Loading notification settings...";
 		public static final String LOADING_NOTIFICATIONS = "Loading notifications...";
 		public static final String MEMBERLIST_EMPTY = "Memberlist is empty";
-		public static final String MESSAGE_INVITED_PERSON = "You have been invited the following persons";
+		public static final String MESSAGE_INVITED_PERSON = "You have invited the following persons";
 		public static final String REMOVING_MEMBER = "Removing member...";
 		public static final String SAVING_COMMENT = "Saving comment...";
 		public static final String SAVING_EVENT = "Saving event...";
