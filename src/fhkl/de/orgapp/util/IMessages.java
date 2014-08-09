@@ -161,6 +161,7 @@ public interface IMessages {
 		public static final String UPDATING = "Updating...";
 		public static final String UPDATING_PRIVATE_INFO = "Updating private information...";
 		public static final String UPDATING_SECURITY_INFO = "Updating security information...";
+		public static final String REQUESTING_NEW_PASSWORD = "Requesting new password...";
 	}
 
 	/**
@@ -172,5 +173,6 @@ public interface IMessages {
 		public static final String GROUP_SUCCESSFUL_DELETED = "You have deleted the group ";
 		public static final String PERSON_SUCCESSFUL_CREATED = "You have created the person";
 		public static final String UPDATE_WAS_SUCCESSFUL = "Update was successful";
+		public static final String PASSWORD_RENEW_SEND = "A new password has been sent to an email associated with your OrgApp account. ";
 	}
 }
