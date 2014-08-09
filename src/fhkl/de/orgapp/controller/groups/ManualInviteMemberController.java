@@ -282,13 +282,6 @@ public class ManualInviteMemberController extends Activity {
 
 			String[] editTextArray = new String[editTextLength / 2];
 
-			for (int i = 0; i < editTextArray.length; i++) {
-				if (!InputValidator.isEmailValid(editTextArray[i])) {
-					// Wrong E-Mail address format
-					return IMessages.Error.INVALID_EMAIL;
-				}
-			}
-
 			for (int i = 0; i < editTextLength; i++) {
 				if (i % 2 == 0) {
 					EditText tmp = (EditText) textLayout.getChildAt(i);
@@ -303,6 +296,13 @@ public class ManualInviteMemberController extends Activity {
 
 						editTextArray[i / 2] = tmp.getText().toString();
 					}
+				}
+			}
+
+			for (int i = 0; i < editTextArray.length; i++) {
+				if (!InputValidator.isEmailValid(editTextArray[i])) {
+					// Wrong E-Mail address format
+					return IMessages.Error.INVALID_EMAIL;
 				}
 			}
 
