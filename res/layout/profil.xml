@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <View style="@style/Divider2" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <View style="@style/Divider1" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
