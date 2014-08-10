@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -27,6 +28,7 @@ import fhkl.de.orgapp.util.IMessages;
 import fhkl.de.orgapp.util.IUniformResourceLocator;
 import fhkl.de.orgapp.util.JSONParser;
 import fhkl.de.orgapp.util.MenuActivity;
+import fhkl.de.orgapp.util.data.EventData;
 import fhkl.de.orgapp.util.data.GroupData;
 import fhkl.de.orgapp.util.data.UserData;
 import fhkl.de.orgapp.util.validator.InputValidator;
@@ -37,7 +39,7 @@ import fhkl.de.orgapp.util.validator.InputValidator;
  * Adds new group. Gives member admin privileges.
  * 
  * @author Oliver Neubauer, Jochen Jung
- * @version 3.9
+ * @version 4.0
  */
 public class NewGroupController extends MenuActivity {
 	AlertDialog member_question;
@@ -46,6 +48,8 @@ public class NewGroupController extends MenuActivity {
 	EditText inputInfo;
 
 	JSONParser jsonParser = new JSONParser();
+
+	JSONArray member = null;
 
 	private static final String TAG_SUCCESS = "success";
 
@@ -140,9 +144,6 @@ public class NewGroupController extends MenuActivity {
 				Integer success = json.getInt(TAG_SUCCESS);
 				if (success != 0) {
 					Integer groupId = json.getInt("groupId");
-					GroupData.setGROUPID(groupId.toString());
-					GroupData.setGROUPNAME(name);
-					GroupData.setGROUPINFO(info);
 					List<NameValuePair> paramsCreateUserInGroup = new ArrayList<NameValuePair>();
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.GERMANY);
 					Date date = new Date();
@@ -152,6 +153,11 @@ public class NewGroupController extends MenuActivity {
 					paramsCreateUserInGroup.add(new BasicNameValuePair("groupId", groupId.toString()));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("personId", personId));
 					paramsCreateUserInGroup.add(new BasicNameValuePair("memberSince", dateFormat.format(date).toString()));
+
+					GroupData.setGROUPID(groupId.toString());
+					GroupData.setPERSONID(personId);
+					GroupData.setGROUPNAME(name);
+					GroupData.setGROUPINFO(info);
 
 					// Create new user in group as admin
 					json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_PRIVILEGE, "GET", paramsCreateUserInGroup,
@@ -187,9 +193,8 @@ public class NewGroupController extends MenuActivity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Intent i = new Intent(NewGroupController.this, ListInviteMemberController.class);
 						dialog.dismiss();
-						startActivity(i);
+						new SetPrivileges().execute("List");
 					}
 
 				});
@@ -197,9 +202,8 @@ public class NewGroupController extends MenuActivity {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(NewGroupController.this, ManualInviteMemberController.class);
 						dialog.dismiss();
-						startActivity(intent);
+						new SetPrivileges().execute();
 					}
 				});
 				builder.setNeutralButton(IMessages.DialogButton.NO_MEMBER_INVITE, new OnClickListener() {
@@ -213,6 +217,83 @@ public class NewGroupController extends MenuActivity {
 
 				dialog = builder.create();
 				dialog.show();
+			}
+		}
+	}
+
+	/**
+	 * Loads privileges into GroupData. Open new activity ''SingleGroup''
+	 * OnItemClick. Open the group menu OnItemLongClick.
+	 * 
+	 */
+	class SetPrivileges extends AsyncTask<String, String, String> {
+
+		/**
+		 * Gets privileges. Saves privileges in GroupData.
+		 * 
+		 * @param args String...
+		 * @return String
+		 */
+		protected String doInBackground(String... args) {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+			params.add(new BasicNameValuePair("do", "readUserInGroup"));
+			params.add(new BasicNameValuePair("groupId", GroupData.getGROUPID()));
+			params.add(new BasicNameValuePair("personId", UserData.getPERSONID()));
+
+			// Get current user's privileges
+			JSONObject json = jsonParser.makeHttpsRequest(IUniformResourceLocator.URL.URL_GROUPS, "GET", params,
+							NewGroupController.this);
+
+			try {
+				int success = json.getInt(TAG_SUCCESS);
+				if (success == 1) {
+					member = json.getJSONArray("member");
+
+					for (int i = 0; i < member.length(); i++) {
+						JSONObject c = member.getJSONObject(i);
+
+						// Set privileges
+						GroupData.setPRIVILEGE_MANAGEMENT(c.getString("privilegeManagement"));
+						GroupData.setPRIVILEGE_INVITE_MEMBER(c.getString("memberInvitation"));
+						GroupData.setPRIVILEGE_EDIT_MEMBERLIST(c.getString("memberlistEditing"));
+						GroupData.setPRIVILEGE_CREATE_EVENT(c.getString("eventCreating"));
+						GroupData.setPRIVILEGE_EDIT_EVENT(c.getString("eventEditing"));
+						GroupData.setPRIVILEGE_DELETE_EVENT(c.getString("eventDeleting"));
+						GroupData.setPRIVILEGE_EDIT_COMMENT(c.getString("commentEditing"));
+						GroupData.setPRIVILEGE_DELETE_COMMENT(c.getString("commentDeleting"));
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				logout();
+			}
+
+			// Differentiate OnItemClick and OnItemLongClick
+			if (args.length != 0) {
+				return args[0];
+			} else {
+				return null;
+			}
+		}
+
+		/**
+		 * Opens group menu when result not null. Opens new activity ''SingleGroup''
+		 * when result null.
+		 * 
+		 * @param result String
+		 */
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+
+			EventData.setBACK(false);
+			if (result != null) {
+				Intent i = new Intent(NewGroupController.this, ListInviteMemberController.class);
+				startActivity(i);
+			} else {
+				Intent i = new Intent(NewGroupController.this, ManualInviteMemberController.class);
+				startActivity(i);
 			}
 		}
 	}
