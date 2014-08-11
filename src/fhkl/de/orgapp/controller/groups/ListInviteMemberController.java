@@ -103,7 +103,7 @@ public class ListInviteMemberController extends MenuActivity {
 	/**
 	 * Returns to previous activity.
 	 */
-	public void backToSingleGroupView() {
+	public void backToSingleGroupView(View v) {
 		Intent intent = new Intent(ListInviteMemberController.this, SingleGroupController.class);
 		startActivity(intent);
 	}
@@ -412,7 +412,7 @@ public class ListInviteMemberController extends MenuActivity {
 			alertDialogBuilder.setPositiveButton(IMessages.DialogButton.OK, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					backToSingleGroupView();
+					backToSingleGroupView(null);
 				}
 			});
 
